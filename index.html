@@ -658,6 +658,9 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
 <div id="tvroot"></div>
 <div id="lbroot"></div>
 
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore-compat.js"></script>
 <script>
 /* ================= utilidades ================= */
 const $=(s,r=document)=>r.querySelector(s);
@@ -747,6 +750,8 @@ function localDb(){
   let S={};
   try{S=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){S=null}
   if(!S||!Object.keys(S).length){S=JSON.parse(JSON.stringify(SEMILLA||{}))}
+  /* usuarios que vienen con el archivo: se agregan si el navegador ya tenía datos de una versión anterior */
+  Object.keys(SEMILLA||{}).forEach(k=>{if(k.indexOf('usuarios/')===0&&!(k in S))S[k]=JSON.parse(JSON.stringify(SEMILLA[k]))});
   const subs=[];
   const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){toast('Este navegador se quedó sin espacio: exportá el respaldo y quitá fotos viejas')}};
   const fire=()=>subs.forEach(f=>f());
@@ -779,9 +784,49 @@ function localDb(){
 const COL={cl:'checklists',au:'auditorias',ha:'hallazgos',bu:'buenas',ev:'evidencias'};
 /* límite por documento de la base: dejamos margen para los metadatos */
 const MAXB64=180*1024;
+
+/* ================= base compartida en la nube (Firebase / Firestore) =================
+   Es la base que usan todos desde el enlace público (GitHub Pages), sin cuenta de Claude.
+   La apiKey no es secreta: identifica el proyecto; lo que protege los datos son las
+   reglas de Firestore (solo lectura/escritura con sesión anónima iniciada). */
+const FIREBASE_CONFIG={apiKey:"AIzaSyD5g593HtURxUyZoAJaZOeRear9b7VsOAQ",authDomain:"cat-calidad-ante-todo.firebaseapp.com",projectId:"cat-calidad-ante-todo",storageBucket:"cat-calidad-ante-todo.firebasestorage.app",messagingSenderId:"122814684757",appId:"1:122814684757:web:0170b5c2829974af83bedc"};
+function firebaseDb(){
+  if(typeof firebase==='undefined'||!firebase.firestore||!FIREBASE_CONFIG.projectId)return null;
+  if(!firebase.apps.length)firebase.initializeApp(FIREBASE_CONFIG);
+  const fs=firebase.firestore();
+  try{fs.enablePersistence({synchronizeTabs:true}).catch(()=>{})}catch(e){}
+  /* Firestore rechaza valores undefined: se limpian antes de guardar */
+  const limpio=d=>JSON.parse(JSON.stringify(d===undefined?{}:d));
+  return {
+    esNube:true,
+    doc:p=>{const r=fs.doc(p);return {id:r.id,path:p,get:()=>r.get(),set:d=>r.set(limpio(d)),update:d=>r.update(limpio(d)),delete:()=>r.delete(),onSnapshot:(n,e)=>r.onSnapshot(n,e)}},
+    collection:c=>fs.collection(c),
+    /* respaldo exportado desde otra copia (Claude o archivo local) → se sube completo */
+    importar:async txt=>{
+      const o=JSON.parse(txt);const d=(o&&o.datos)?o.datos:o;
+      if(!d||typeof d!=='object')throw new Error('formato');
+      const keys=Object.keys(d).filter(k=>k.split('/').length===2&&k!=='config/acceso'); /* la clave de administración de esta base no se pisa */
+      for(let i=0;i<keys.length;i+=200){
+        const b=fs.batch();keys.slice(i,i+200).forEach(k=>b.set(fs.doc(k),limpio(d[k])));await b.commit();
+      }
+      return keys.length;
+    }
+  };
+}
+async function entrarNube(){
+  if(typeof firebase==='undefined'||!firebase.auth)return true;
+  try{
+    const a=firebase.auth();
+    if(a.currentUser)return true;
+    await Promise.race([a.signInAnonymously(),new Promise((_,rj)=>setTimeout(()=>rj(new Error('timeout')),12000))]);
+    return true;
+  }catch(e){state.nubeErr=(e&&e.code)||(e&&e.message)||'error';return false}
+}
 async function conectar(){
   let db=null;
-  try{db=(typeof claude!=='undefined'&&claude.use)?await claude.use('db'):null}catch(e){db=null}
+  try{db=firebaseDb()}catch(e){db=null}
+  if(db){state.nube=true;const ok=await entrarNube();if(!ok){toast('No se pudo iniciar la sesión con la base compartida ('+state.nubeErr+'). Revisá que en Firebase esté habilitado el acceso anónimo.')}}
+  if(!db){try{db=(typeof claude!=='undefined'&&claude.use)?await claude.use('db'):null}catch(e){db=null}}
   if(!db){try{db=localDb();state.local=true}catch(e){db=null}}
   state.db=db;state.dbTried=true;
   if(!db){render();return}
@@ -817,8 +862,9 @@ async function guardarDoc(path,data){
   try{await state.db.doc(path).set(data);registrar(existia?'modificó':'creó',descAccion(path,data),path);return true}
   catch(e){
     const cfg=/^(config|checklists)\//.test(path);
-    if(cfg&&e&&e.code==='invalid_argument')toast('Esta parte solo la puede cambiar Calidad. Pedí el cambio y seguí trabajando normalmente.');
+    if(cfg&&e&&(e.code==='invalid_argument'||e.code==='permission-denied'))toast('Esta parte solo la puede cambiar Calidad. Pedí el cambio y seguí trabajando normalmente.');
     else if(e&&e.code==='quota_exceeded')toast('La base llegó al límite: descargá expedientes viejos y quitá sus fotos');
+    else if(e&&e.code==='permission-denied')toast('La base compartida rechazó el cambio (permiso). Recargá la página; si sigue, avisá a Calidad.');
     else toast('No se pudo guardar: '+(e&&e.message?e.message:'error'));
     return false;
   }
@@ -1277,6 +1323,7 @@ function avisoClave(){
     <button class="btn sm" data-miclave style="margin-left:8px">Cambiar mi clave ahora</button></div></div>`;
 }
 function avisoDb(){
+  if(state.nube&&state.nubeErr){return `<div class="notice warn"><div><b>Sin conexión con la base compartida.</b> Código: ${esc(String(state.nubeErr))}. Los cambios no se guardan hasta que vuelva la conexión. Si el código dice <i>operation-not-allowed</i>, en Firebase hay que habilitar el acceso anónimo (Authentication → Sign-in method → Anónimo).</div></div>`}
   if(state.local){
     /* dos situaciones distintas con el mismo motor: el archivo abierto desde la
        computadora, y la copia publicada en un sitio propio de la empresa. En
@@ -2239,7 +2286,7 @@ function vManual(){
     <p style="margin:0 0 14px;color:var(--ink-2);font-size:14px">El mismo archivo funciona de dos maneras. Desde el <b>enlace</b>: base compartida, varias personas a la vez. <b>Descargado</b> en una computadora o celular: guarda en ese navegador, sirve para trabajar sin internet o para probar sin tocar los datos reales.</p>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="btn primary" id="btnExport">Exportar respaldo</button>
-      ${state.local?`<label class="btn" style="cursor:pointer">Importar respaldo<input type="file" accept="application/json,.json" id="fileImport" style="display:none"></label>`:'<span class="soft2" style="display:inline-flex;align-items:center">La importación solo se habilita en el archivo descargado, para no pisar los datos del equipo.</span>'}
+      ${state.local||(state.nube&&esAdmin())?`<label class="btn" style="cursor:pointer">Importar respaldo${state.nube?' a la base compartida':''}<input type="file" accept="application/json,.json" id="fileImport" style="display:none"></label>`:'<span class="soft2" style="display:inline-flex;align-items:center">La importación solo la hace Calidad (administración).</span>'}
     </div>
     <div class="soft2" style="margin-top:12px">El respaldo es un archivo con todo: sectores, checklists, auditorías, hallazgos y fotos. Guardalo en la carpeta de red una vez por mes.</div>
   </div></section>
@@ -4197,7 +4244,10 @@ document.addEventListener('change',async e=>{
     const f=t.files[0];t.value='';
     try{
       const txt=await f.text();
-      const n=state.db.importar(txt);
+      if(state.nube&&!confirm('Esto sube todos los registros del respaldo a la base compartida y reemplaza los que tengan el mismo identificador. ¿Continuar?'))return;
+      toast('Importando…');
+      const n=await state.db.importar(txt);
+      registrar('modificó','Importó un respaldo ('+n+' registros)','config/respaldo');
       toast(n+' registros importados');
     }catch(e){toast('El archivo no es un respaldo válido de CAT 5S')}
     return;
