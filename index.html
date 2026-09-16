@@ -519,6 +519,19 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .zleg i.na{background:rgba(120,130,140,.13);border-color:rgba(120,130,140,.5);border-style:dashed}
 tr.lsel>td{background:#fff7ed}
 .zsolo{display:inline-flex;gap:7px;align-items:center;font-size:12.5px;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.layimg.zedit .zcapa{pointer-events:auto}
+.layimg.zedit .zona{cursor:move;touch-action:none}
+.layimg.zedit .zona.sel{box-shadow:0 0 0 2px #0f172a inset,0 0 0 2px rgba(15,23,42,.35)}
+.zona.hue{border-style:dashed}
+.zona .zh{position:absolute;right:0;bottom:0;width:14px;height:14px;background:#0f172a;border:2px solid #fff;border-radius:3px;cursor:nwse-resize;touch-action:none}
+body.zdrag{user-select:none;-webkit-user-select:none}
+.zbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:10px 12px;margin-bottom:10px;background:var(--surface-2);border:1px solid var(--line);border-radius:10px}
+.zbar select{min-width:190px}
+.zbar .zsp{flex:1}
+.earow{display:flex;gap:6px;flex-wrap:wrap}
+.eaop{display:inline-flex;gap:5px;align-items:center;font-size:12px;padding:3px 8px;border:1px solid var(--line);border-radius:999px;cursor:pointer;white-space:nowrap;background:var(--surface)}
+.eaop.on{border-color:var(--ink-2);background:var(--surface-2);font-weight:600}
+.eaop input{margin:0}
 table{width:100%;border-collapse:collapse;font-size:13px}
 th{text-align:left;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:600;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap;background:var(--surface)}
 td{padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
@@ -908,7 +921,7 @@ const state={
   sesion:null,acceso:null,claves:[],gateErr:'',gateDest:'',
   f:{sitio:(()=>{try{return localStorage.getItem('cat.sitio')||'p-cd'}catch(e){return 'p-cd'}})(),zona:'all',periodo:'365'},
   fh:{sector:'all',estado:'pendientes',area:'all'},fe:'',
-  draft:null,carga:null,wiz:null,editCl:null,openAudit:null,openHab:null,confirmKey:null,
+  draft:null,carga:null,wiz:null,editCl:null,editAud:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
   pallets:[],productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,us:false,bi:false}
@@ -1026,6 +1039,9 @@ async function conectar(){
   db.doc('config/jefes').onSnapshot(s=>{
     state.jefes=s.exists?s.data():null;state.loaded.je=true;render();
   },()=>{state.loaded.je=true;render()});
+  db.doc('config/zonas').onSnapshot(s=>{
+    state.zonas=(s.exists&&s.data()&&s.data().planos)?s.data():null;state.loaded.zn=true;render();
+  },()=>{state.loaded.zn=true;render()});
   db.doc('config/pilares').onSnapshot(s=>{
     state.pilares=(s.exists&&s.data()&&Array.isArray(s.data().pilares))?s.data():null;state.loaded.pi=true;render();
   },()=>{state.loaded.pi=true;render()});
@@ -1594,7 +1610,7 @@ function render(){
 state.hist=state.hist||[];
 function go(v,desdeHist){document.body.classList.remove('navopen');if(!puede(v)){toast('Esa parte del sistema la maneja Calidad');return}
   if(!desdeHist&&state.view&&state.view!==v){state.hist.push(state.view);if(state.hist.length>30)state.hist.shift();try{history.pushState({v},'', '#'+v)}catch(e){}}
-  state.view=v;state.openAudit=null;state.editCl=null;state.openExp=null;state.openInf=null;window.scrollTo(0,0);render()}
+  state.view=v;state.openAudit=null;state.editCl=null;state.editAud=null;state.openExp=null;state.openInf=null;window.scrollTo(0,0);render()}
 function volver(){
   /* primero cierra lo que esté abierto dentro de la vista; si no hay nada, vuelve a la vista anterior */
   if(state.openAudit){state.openAudit=null;render();return}
@@ -2009,6 +2025,7 @@ async function guardarAuditoria(){
 
 /* ================= auditorías ================= */
 function vAuditorias(){
+  if(state.editAud&&esAdmin())return editorAuditoria(state.editAud);
   const propias=!esAdmin()&&!soloLectura();
   const auds=propias?internasFiltradas():auditoriasFiltradas();
   const a=state.openAudit?state.auditorias.find(x=>x.id===state.openAudit):null;
@@ -2035,6 +2052,7 @@ function detalleAuditoria(a){
   const hs=state.hallazgos.filter(h=>h.auditoriaId===a.id);
   return `<div class="head"><div>
     <button class="btn ghost sm" data-go="auditorias" style="margin-bottom:8px">← Volver</button>
+    ${esAdmin()?`<button class="btn sm" data-edit-audit="${esc(a.id)}" style="margin-bottom:8px;margin-left:6px">Editar auditoría</button>`:''}
     ${esAdmin()?`<button class="btn ghost sm" data-del-audit="${esc(a.id)}" data-ck="delaudit:${esc(a.id)}" style="margin-bottom:8px;margin-left:6px;color:var(--crit)">${state.confirmKey==='delaudit:'+a.id?'¿Eliminar esta auditoría y sus hallazgos? Tocá de nuevo para confirmar':'Eliminar auditoría'}</button>`:''}
     <h1>${esc(a.sectorNombre)}</h1>
     <p>${esc(a.sitioNombre||'')} · ${fmtDate(a.fecha)} · ${esc(a.checklistNombre||'')}${a.checklistVersion?' v'+esc(a.checklistVersion):''} · auditor: ${esc(a.auditor||'—')}${(sectorDe(a.sectorId)||{}).referente?' · <b>Líder 5S: '+esc(sectorDe(a.sectorId).referente)+'</b>':''}</p></div>
@@ -2060,6 +2078,124 @@ function detalleAuditoria(a){
       return `<tr><td>${esc(it.texto)}${it.criterio?`<br><span style="color:var(--ink-3);font-size:12px">${esc(it.criterio)}</span>`:''}</td><td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
       <td class="r"><span class="badge ${cls}">${esc(lab)}</span></td><td style="color:var(--ink-3)">${esc(rr.obs||'')}</td></tr>`}).join('')}
     </tbody></table></div></section>`).join(''):''}`;
+}
+
+/* ================= corregir una auditoría ya guardada ================= */
+function editorAuditoria(e){
+  const cl=state.checklists.find(c=>c.id===e.checklistId);
+  const bin=(e.modo||'binario')!=='escala';
+  const detalle=!!(cl&&e.respuestas);
+  const r=detalle?calcular(cl,e.respuestas):{pct:Number(e.pct)||0,fallas:0,fallasB:0,evaluados:0,total:0,secciones:[]};
+  const v=nivel(r.pct);
+  const hs=state.hallazgos.filter(h=>h.auditoriaId===e.id);
+  const opciones=bin?[{v:1,l:'Cumple'},{v:0,l:'No cumple'}]:ESCALA4.map(x=>({v:x.v,l:x.v+' · '+x.l}));
+  const item=(s,it)=>{
+    const rr=(e.respuestas||{})[it.id]||{};
+    const val=rr.v==null?'':String(rr.v);
+    return `<tr>
+      <td>${esc(it.texto)}${it.criterio?`<br><span style="color:var(--ink-3);font-size:12px">${esc(it.criterio)}</span>`:''}</td>
+      <td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
+      <td><div class="earow">
+        ${opciones.map(o=>`<label class="eaop${String(o.v)===val?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value="${o.v}"${String(o.v)===val?' checked':''}> ${esc(o.l)}</label>`).join('')}
+        <label class="eaop${val==='na'?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value="na"${val==='na'?' checked':''}> N/A</label>
+        <label class="eaop${val===''?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value=""${val===''?' checked':''}> Sin responder</label>
+      </div></td>
+      <td><input type="text" data-eao="${esc(it.id)}" value="${esc(rr.obs||'')}" placeholder="Observación"></td></tr>`;
+  };
+  return `${avisoDb()}
+  <div class="head"><div>
+    <button class="btn ghost sm" id="btnEaCancel" style="margin-bottom:8px">← Salir sin guardar</button>
+    <h1>Corregir la auditoría</h1>
+    <p>${esc(e.sectorNombre)} · ${esc(e.sitioNombre||'')} · ${esc(e.checklistNombre||'')}${e.checklistVersion?' v'+esc(e.checklistVersion):''}. Cambiá lo que haga falta y guardá: el puntaje se vuelve a calcular y el plan de acción se pone al día.</p></div>
+    <div style="text-align:right"><div class="num" style="font-family:Figtree;font-weight:700;font-size:40px;line-height:1">${n1(r.pct)}<small style="font-size:19px;color:var(--ink-3)">%</small></div>
+      <span class="badge ${v.k} dot">${v.l}</span><br>
+      <button class="btn primary" id="btnEaSave" style="margin-top:10px">Guardar los cambios</button></div></div>
+  <div class="notice info"><div>Queda registrado en la bitácora quién corrigió la auditoría y cuándo. El original no se recupera, así que corregí solo lo que estuvo mal cargado.</div></div>
+  <section class="panel" style="margin-bottom:14px"><header><h3>Datos de la auditoría</h3></header>
+    <div class="body"><div class="filters" style="margin:0">
+      <div class="field"><label for="eaFecha">Fecha</label><input type="date" id="eaFecha" data-eaf="fecha" value="${esc(String(e.fecha||'').slice(0,10))}"></div>
+      <div class="field" style="min-width:200px"><label for="eaAuditor">Auditor</label><input type="text" id="eaAuditor" data-eaf="auditor" value="${esc(e.auditor||'')}" placeholder="Nombre y apellido"></div>
+      <div class="field"><label for="eaTipo">Tipo</label><select id="eaTipo" data-eaf="tipoAuditoria">
+        <option value="externa"${tipoAud(e)==='externa'?' selected':''}>Auditoría externa (Calidad)</option>
+        <option value="interna"${tipoAud(e)==='interna'?' selected':''}>Auditoría interna (jefes)</option></select></div>
+      <div class="field"><label for="eaEstado">Estado</label><select id="eaEstado" data-eaf="estado">
+        ${Object.keys(ESTCARGA).map(k=>`<option value="${k}"${estadoCarga(e)===k?' selected':''}>${esc(ESTCARGA[k].l)}</option>`).join('')}</select></div>
+      ${detalle?'':`<div class="field"><label for="eaPct">Puntaje (%)</label><input type="text" inputmode="decimal" id="eaPct" data-eaf="pct" value="${esc(String(e.pct==null?'':e.pct))}" style="text-align:right"></div>`}
+    </div>
+    ${detalle?'':'<div class="soft2" style="margin-top:10px">Esta auditoría se cargó como resultado importado, sin detalle ítem por ítem: se corrige el puntaje a mano.</div>'}
+    </div></section>
+  ${detalle?(cl.secciones||[]).map(s=>`<section class="panel" style="margin-bottom:12px"><header><h3>${esc(s.codigo)} · ${esc(s.nombre)}</h3><span class="sub">${esc(s.jp||'')}</span></header>
+    <div class="tw"><table><thead><tr><th style="min-width:230px">Ítem</th><th style="width:70px">Bloque</th><th style="min-width:280px">Resultado</th><th style="width:26%">Observación</th></tr></thead>
+    <tbody>${(s.items||[]).map(it=>item(s,it)).join('')}</tbody></table></div></section>`).join(''):''}
+  <section class="panel"><header><h3>Qué va a pasar con el plan de acción</h3><span class="sub">${hs.length} hallazgo${hs.length===1?'':'s'} de esta auditoría</span></header>
+    <div class="body" style="font-size:13px;color:var(--ink-2);display:flex;flex-direction:column;gap:7px">
+      <p style="margin:0">Al guardar, cada ítem que quede en <b>no cumple</b> y todavía no tenga hallazgo genera uno nuevo con su plazo.</p>
+      <p style="margin:0">Los hallazgos de ítems que pasaron a <b>cumple</b> o a <b>N/A</b> se dan de baja, con su foto de corrección si la tenían.</p>
+      <p style="margin:0;color:var(--ink-3)">Los hallazgos ya cerrados no se tocan.</p>
+    </div></section>`;
+}
+async function guardarEditAud(){
+  const e=state.editAud;if(!e)return;
+  if(!String(e.auditor||'').trim()){toast('Completá el nombre del auditor');return}
+  const cl=state.checklists.find(c=>c.id===e.checklistId);
+  const detalle=!!(cl&&e.respuestas);
+  const r=detalle?calcular(cl,e.respuestas):null;
+  if(detalle&&!r.evaluados&&!r.fallasB){toast('Tiene que quedar al menos un ítem calificado');return}
+  const prev=state.auditorias.find(x=>x.id===e.id)||{};
+  const doc=Object.assign({},prev,{
+    fecha:e.fecha,auditor:String(e.auditor).trim(),tipoAuditoria:e.tipoAuditoria,estado:e.estado,
+    quincena:quincenaDe(e.fecha),
+    editadoPor:(state.sesion&&state.sesion.nombre)||state.auditor||'',editadoEl:new Date().toISOString()
+  });
+  delete doc.id;
+  if(detalle){
+    doc.respuestas=e.respuestas;doc.pct=r.pct;doc.fallas=r.fallas;doc.fallasB=r.fallasB;
+    doc.evaluados=r.evaluados;doc.cumple=Math.max(0,r.evaluados-r.fallas);doc.total=r.total;
+    doc.secciones=r.secciones.map(s=>({codigo:s.codigo,nombre:s.nombre,pct:s.pct,fallas:s.fallas,evaluados:s.evaluados,total:s.total}));
+  }else{
+    const p=Number(String(e.pct).replace(',','.'));
+    if(!isFinite(p)||p<0||p>100){toast('El puntaje tiene que ser un número entre 0 y 100');return}
+    doc.pct=Math.round(p*10)/10;
+  }
+  if(!await guardarDoc(COL.au+'/'+e.id,doc))return;
+  let nuevos=0,bajas=0;
+  if(detalle){
+    const sec=sectorDe(e.sectorId)||{id:e.sectorId,nombre:e.sectorNombre,sitioId:e.sitioId,sitioNombre:e.sitioNombre};
+    const mios=state.hallazgos.filter(h=>h.auditoriaId===e.id);
+    const falla={};
+    for(const s of (cl.secciones||[])){
+      for(const it of (s.items||[])){
+        const rr=(e.respuestas||{})[it.id];
+        if(!rr||rr.v==null||rr.v==='na'||!esFalla(cl,rr.v))continue;
+        falla[it.id]=true;
+        const ya=mios.find(h=>h.itemId===it.id);
+        if(ya){
+          const d=(rr.obs||'').trim();
+          if((ya.descripcion||'')!==d){const hd=Object.assign({},ya,{descripcion:d});delete hd.id;await guardarDoc(COL.ha+'/'+ya.id,hd)}
+          continue;
+        }
+        const prevN=state.hallazgos.filter(h=>h.sectorId===sec.id&&h.itemId===it.id).length;
+        const reinc=prevN+1;let sev=it.severidad||'menor';if(reinc>=3)sev='critico';
+        const B=(it.bloque||'A')==='B';
+        await guardarDoc(COL.ha+'/'+uid('h-'),{
+          auditoriaId:e.id,sitioId:sec.sitioId,sitioNombre:sec.sitioNombre,sectorId:sec.id,sectorNombre:sec.nombre,
+          seccionCodigo:s.codigo,seccionNombre:s.nombre,itemId:it.id,item:it.texto,
+          bloque:B?'B':'A',severidad:sev,reincidencia:reinc,escalado:reinc>=3,sinFoto:!!it.sinFoto,
+          descripcion:(rr.obs||'').trim(),responsable:'',area:B?(it.area||'mantenimiento'):'sector',
+          fechaLimite:addDaysISO(SEV[sev].dias),estado:'abierto',causaRaiz:'',accionPreventiva:'',
+          detectadoPor:String(e.auditor).trim(),fecha:e.fecha,creado:new Date().toISOString()
+        });
+        nuevos++;
+      }
+    }
+    for(const h of mios){
+      if(falla[h.itemId]||h.estado==='cerrado')continue;
+      await borrarDoc(COL.ha+'/'+h.id);bajas++;
+    }
+  }
+  state.editAud=null;
+  toast(`Auditoría corregida · ${n1(doc.pct)}%${nuevos?` · ${nuevos} hallazgo${nuevos===1?'':'s'} nuevo${nuevos===1?'':'s'}`:''}${bajas?` · ${bajas} dado${bajas===1?'':'s'} de baja`:''}`);
+  state.openAudit=e.id;state.view='auditorias';window.scrollTo(0,0);render();
 }
 
 /* ================= plan de acción ================= */
@@ -2405,21 +2541,72 @@ function semSector(s,U){
   const ref=e||i;const nv=nivel(ref?ref.pct:null);
   return {e,i,ref,nv,origen:e?'externa':(i?'interna':'')};
 }
+/* Las zonas que se ven: las que editó Calidad (config/zonas) si existen, si no las que
+   vienen medidas de fábrica. Mientras se está editando manda el borrador en pantalla. */
+const zonasCfg=()=>((state.zonas&&state.zonas.planos)||{});
+function zonasDe(slug){const c=zonasCfg();return Array.isArray(c[slug])?c[slug]:(ZPLANO[slug]||[])}
+function zonasVista(slug){
+  const L=state.lay||{};
+  return (L.edit===slug&&Array.isArray(L.draft))?L.draft:zonasDe(slug);
+}
+const editandoZonas=slug=>!!(esAdmin()&&state.lay&&state.lay.edit===slug);
+const guardarZonas=cfg=>guardarDoc('config/zonas',Object.assign({},cfg,{actualizado:new Date().toISOString()}));
+const r2=n=>Math.round(n*100)/100;
+function zonasEdit(fn){
+  const L=state.lay;if(!L||!Array.isArray(L.draft))return;
+  fn(L.draft);
+}
+/* nombre del sector aunque todavía no esté en la estructura del sitio */
+function nombreSector(id){
+  const s=todosSectores().find(x=>x.id===id);if(s)return s.nombre;
+  const d=SECTORES_PLANO.find(x=>x.id===id);return d?d.nombre:id;
+}
+
 /* dibuja las zonas del plano y las pinta con el color del semáforo del sector */
 function capaZonas(slug,U,secs){
-  const zs=ZPLANO[slug]||[];if(!zs.length)return '';
+  const ed=editandoZonas(slug);
+  const zs=zonasVista(slug);if(!zs.length&&!ed)return '';
   const map={};secs.forEach(s=>map[s.id]=s);
+  /* editando se ven todas, aunque el sector no esté en la lista de esta lámina */
+  let pares=zs.map((z,i)=>({z:z,i:i})).filter(p=>ed||map[p.z.sec]);
+  if(!pares.length&&!ed)return '';
   /* las chicas van arriba: si no, una zona grande tapa a la de al lado y no se puede tocar */
-  const vis=zs.filter(z=>map[z.sec]).slice().sort((a,b)=>(b.w*b.h)-(a.w*a.h));if(!vis.length)return '';
-  const big={};vis.forEach(z=>{const a=z.w*z.h;if(!big[z.sec]||a>big[z.sec].a)big[z.sec]={a:a,z:z}});
-  const solo=!!(state.lay&&state.lay.solo),sel=(state.lay||{}).sel;
-  return `<div class="zcapa">${vis.map(z=>{
-    const s=map[z.sec],S=semSector(s,U),k=S.nv.k;
-    const apagada=solo&&(k==='ok'||k==='na');
-    const tit=`${s.nombre} · ${S.nv.l}${S.ref?' · '+n1(S.ref.pct)+'%':''}`;
-    const et=(big[z.sec].z===z&&z.w>=9&&z.h>=4.5&&!apagada)?`<b>${esc(s.nombre)}${S.ref?' · '+n1(S.ref.pct)+'%':''}</b>`:'';
-    return `<button type="button" class="zona ${k}${apagada?' off':''}${sel===s.id?' sel':''}" data-zsec="${s.id}" title="${esc(tit)}" aria-label="${esc(tit)}" style="left:${z.x}%;top:${z.y}%;width:${z.w}%;height:${z.h}%">${et}</button>`;
+  pares=pares.slice().sort((a,b)=>(b.z.w*b.z.h)-(a.z.w*a.z.h));
+  const big={};pares.forEach(p=>{const a=p.z.w*p.z.h;if(!big[p.z.sec]||a>big[p.z.sec].a)big[p.z.sec]={a:a,i:p.i}});
+  const solo=!!(state.lay&&state.lay.solo),sel=(state.lay||{}).sel,zi=(state.lay||{}).zi;
+  return `<div class="zcapa">${pares.map(p=>{
+    const z=p.z,s=map[z.sec],S=s?semSector(s,U):null,k=S?S.nv.k:'na';
+    const nom=s?s.nombre:nombreSector(z.sec);
+    const apagada=!ed&&solo&&(k==='ok'||k==='na');
+    const tit=ed?`${nom} · arrastrá para moverla, tirá del cuadrito para agrandarla`
+                :`${nom} · ${S.nv.l}${S.ref?' · '+n1(S.ref.pct)+'%':''}`;
+    const marca=ed?(zi===p.i):(sel===z.sec);
+    const et=ed?`<b>${esc(nom)}</b>`
+      :((big[z.sec].i===p.i&&z.w>=9&&z.h>=4.5&&!apagada)?`<b>${esc(nom)}${S.ref?' · '+n1(S.ref.pct)+'%':''}</b>`:'');
+    const attr=ed?`data-zmove="1" data-zi="${p.i}"`:`data-zsec="${z.sec}"`;
+    return `<button type="button" class="zona ${k}${apagada?' off':''}${marca?' sel':''}${s?'':' hue'}" ${attr} title="${esc(tit)}" aria-label="${esc(tit)}" style="left:${z.x}%;top:${z.y}%;width:${z.w}%;height:${z.h}%">${et}${ed?'<i class="zh" data-zres="1"></i>':''}</button>`;
   }).join('')}</div>`;
+}
+/* barra de edición de zonas: agregar, borrar, restaurar, guardar */
+function barraZonas(slug){
+  const L=state.lay,zs=zonasVista(slug),z=(L.zi!=null)?zs[L.zi]:null;
+  const secs=todosSectores().slice().sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  const propio=Array.isArray(zonasCfg()[slug]);
+  return `<div class="zbar">
+    <span class="badge warn dot">Editando zonas</span>
+    <div class="field" style="margin:0"><select id="zNuevoSec" aria-label="Sector para la zona nueva">
+      <option value="">Elegí el sector…</option>
+      ${secs.map(s=>`<option value="${s.id}"${L.zsec===s.id?' selected':''}>${esc(s.nombre)}</option>`).join('')}</select></div>
+    <button class="btn sm" id="btnZAdd">＋ Agregar zona</button>
+    ${z?`<span class="soft2" style="margin:0;padding:0;border:0">Seleccionada: <b>${esc(nombreSector(z.sec))}</b></span>
+      <button class="btn sm" id="btnZDel" style="color:var(--crit)">Borrar la zona seleccionada</button>`
+      :'<span class="soft2" style="margin:0;padding:0;border:0">Tocá una zona para seleccionarla. Con las flechas del teclado la movés fino.</span>'}
+    <span class="zsp"></span>
+    <button class="btn sm" id="btnZReset" data-ck="zreset:${slug}">${state.confirmKey==='zreset:'+slug?'¿Volver a las zonas originales? Tocá de nuevo':'Restaurar originales'}</button>
+    <button class="btn sm" id="btnZCancel">Cancelar</button>
+    <button class="btn primary sm" id="btnZSave">Guardar zonas</button>
+    ${propio?'':'<span class="soft2" style="margin:0;padding:0;border:0;width:100%">Todavía no se editó este plano: se están mostrando las zonas de fábrica.</span>'}
+  </div>`;
 }
 function vLayouts(){
   state.lay=state.lay||{plano:'all'};
@@ -2457,9 +2644,12 @@ function vLayouts(){
   ${planos.map(p=>{
     const del=p.slug==='plano-general'?secs:secs.filter(s=>planosDeSector(s).indexOf(p.slug)>=0);
     const nv=del.length?nivel(pooled(del.map(s=>semSector(s,U).ref).filter(Boolean))):{k:'na',l:'Sin dato'};
-    return `<section class="panel" style="margin-bottom:16px"><header><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h3 style="font-size:15px">${esc(p.nombre)}</h3><span class="badge ${nv.k==='na'?'':nv.k} dot">${nv.l}</span></div><span class="sub">${del.length} sector${del.length===1?'':'es'}</span></header>
+    const ed=editandoZonas(p.slug);
+    return `<section class="panel" style="margin-bottom:16px"><header><div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><h3 style="font-size:15px">${esc(p.nombre)}</h3><span class="badge ${nv.k==='na'?'':nv.k} dot">${nv.l}</span></div>
+      <span style="display:flex;gap:8px;align-items:center"><span class="sub">${del.length} sector${del.length===1?'':'es'}</span>${esAdmin()&&!ed?`<button class="btn sm" data-zedit="${p.slug}">Editar zonas</button>`:''}</span></header>
     <div class="laywrap">
-      <div class="laybox"><div class="layimg"><img src="${planoUrl(p.slug)}" data-slug="${p.slug}" alt="${esc(p.nombre)}" loading="lazy" onerror="planoErr(this)"><span class="layfalta">No se encontró la imagen de este plano. Tiene que estar publicada junto al index.html, como <b>planos/nombre.jpg</b> o suelta en la raíz.</span>${capaZonas(p.slug,U,del)}</div>
+      ${ed?barraZonas(p.slug):''}
+      <div class="laybox"><div class="layimg${ed?' zedit':''}" data-slug="${p.slug}"><img src="${planoUrl(p.slug)}" data-slug="${p.slug}" alt="${esc(p.nombre)}" loading="lazy" onerror="planoErr(this)"><span class="layfalta">No se encontró la imagen de este plano. Tiene que estar publicada junto al index.html, como <b>planos/nombre.jpg</b> o suelta en la raíz.</span>${capaZonas(p.slug,U,del)}</div>
         <div class="zleg"><span><i class="ok"></i>Verde</span><span><i class="warn"></i>Amarillo</span><span><i class="crit"></i>Rojo</span><span><i class="na"></i>Sin auditar</span>
           <a href="${planoUrl(p.slug)}" target="_blank" rel="noopener">Abrir el plano en grande</a></div>
         ${(()=>{const dib=new Set((ZPLANO[p.slug]||[]).map(z=>z.sec));const sin=del.filter(s=>!dib.has(s.id));
@@ -2468,8 +2658,80 @@ function vLayouts(){
           return `<div class="zleg" style="padding-top:2px">Sin zona dibujada en esta lámina (${sin.length}): ${nom}. Se auditan igual; el color se ve en la tabla.</div>`})()}</div>
       <div class="tw">${del.length?`<table><thead><tr><th style="width:96px">Semáforo</th><th style="min-width:150px">Sector</th><th style="width:110px" class="num">Vigente</th><th style="width:110px" class="num">Externa</th><th style="width:110px" class="num">Interna</th><th style="min-width:130px">Responsable</th><th style="width:90px" class="num">Abiertos</th></tr></thead><tbody>${del.map(fila).join('')}</tbody></table>`:'<div class="empty">Ningún sector asignado a este plano.</div>'}</div>
     </div></section>`}).join('')}
-  <div class="soft2">Las zonas pintadas salen de los planos del arquitecto. Si un sector cambió de lugar, el plano de ese sector se corrige en <b>Sitios y sectores</b> (columna Plano). Las imágenes se leen de la carpeta <code>planos/</code> publicada junto al sistema; en el manual del pilar Seguridad (cap. 14) están los mismos planos para imprimir.</div>`;
+  <div class="soft2">Las zonas pintadas salen de los planos del arquitecto y Calidad las puede acomodar con <b>Editar zonas</b>, en la cabecera de cada plano. Si un sector cambió de lugar, el plano de ese sector se corrige en <b>Sitios y sectores</b> (columna Plano). Las imágenes se leen de la carpeta <code>planos/</code> publicada junto al sistema; en el manual del pilar Seguridad (cap. 14) están los mismos planos para imprimir.</div>`;
 }
+
+/* ================= eventos del editor de auditorías ================= */
+document.addEventListener('click',async e=>{
+  const t=e.target;if(!t||!t.closest)return;
+  const ea=t.closest('[data-edit-audit]');
+  if(ea&&esAdmin()){
+    const a=state.auditorias.find(x=>x.id===ea.dataset.editAudit);
+    if(!a){toast('Esa auditoría ya no existe');return}
+    state.editAud=JSON.parse(JSON.stringify(a));
+    state.editAud.tipoAuditoria=tipoAud(a);state.editAud.estado=estadoCarga(a);
+    state.openAudit=null;state.view='auditorias';window.scrollTo(0,0);render();return}
+  if(t.id==='btnEaCancel'){const id=state.editAud?state.editAud.id:null;state.editAud=null;state.openAudit=id;render();return}
+  if(t.id==='btnEaSave'){await guardarEditAud();return}
+});
+document.addEventListener('change',e=>{
+  const t=e.target;if(!state.editAud||!t||!t.dataset)return;
+  if(t.dataset.eaf!=null){state.editAud[t.dataset.eaf]=t.value;if(t.dataset.eaf!=='pct')render();return}
+  if(t.dataset.eav!=null){
+    const id=t.dataset.eav,R=state.editAud.respuestas=state.editAud.respuestas||{};
+    const cur=R[id]||{};
+    if(t.value==='')R[id]=Object.assign({},cur,{v:null});
+    else R[id]=Object.assign({},cur,{v:t.value==='na'?'na':Number(t.value)});
+    render();return}
+});
+document.addEventListener('input',e=>{
+  const t=e.target;if(!state.editAud||!t||!t.dataset)return;
+  if(t.dataset.eao!=null){
+    const R=state.editAud.respuestas=state.editAud.respuestas||{};
+    R[t.dataset.eao]=Object.assign({},R[t.dataset.eao]||{},{obs:t.value});return}
+  if(t.dataset.eaf==='auditor'||t.dataset.eaf==='pct'){state.editAud[t.dataset.eaf]=t.value;return}
+});
+
+/* ================= arrastre de las zonas del plano ================= */
+let ZD=null;
+document.addEventListener('pointerdown',e=>{
+  const h=e.target.closest&&e.target.closest('[data-zres],[data-zmove]');if(!h)return;
+  const box=h.closest('.layimg');if(!box||!box.classList.contains('zedit'))return;
+  const slug=box.dataset.slug;if(!editandoZonas(slug))return;
+  const res=h.hasAttribute('data-zres'),el=res?h.parentNode:h;
+  const i=Number(el.dataset.zi),z=(state.lay.draft||[])[i];if(!z)return;
+  e.preventDefault();
+  ZD={i:i,res:res,el:el,r:box.getBoundingClientRect(),x0:e.clientX,y0:e.clientY,z:{x:z.x,y:z.y,w:z.w,h:z.h},cur:null};
+  if(state.lay.zi!==i){state.lay.zi=i;render();ZD.el=document.querySelector('.layimg.zedit [data-zi="'+i+'"]')||ZD.el}
+  document.body.classList.add('zdrag');
+});
+document.addEventListener('pointermove',e=>{
+  if(!ZD)return;
+  const dx=(e.clientX-ZD.x0)/ZD.r.width*100,dy=(e.clientY-ZD.y0)/ZD.r.height*100;
+  let x=ZD.z.x,y=ZD.z.y,w=ZD.z.w,h=ZD.z.h;
+  if(ZD.res){w=Math.max(1.5,Math.min(w+dx,100-x));h=Math.max(1.5,Math.min(h+dy,100-y))}
+  else{x=Math.min(Math.max(x+dx,0),100-w);y=Math.min(Math.max(y+dy,0),100-h)}
+  ZD.cur={x:x,y:y,w:w,h:h};
+  ZD.el.style.left=x+'%';ZD.el.style.top=y+'%';ZD.el.style.width=w+'%';ZD.el.style.height=h+'%';
+});
+function zfin(){
+  if(!ZD)return;const d=ZD;ZD=null;document.body.classList.remove('zdrag');
+  if(d.cur)zonasEdit(a=>{a[d.i]=Object.assign({},a[d.i],{x:r2(d.cur.x),y:r2(d.cur.y),w:r2(d.cur.w),h:r2(d.cur.h)})});
+  render();
+}
+document.addEventListener('pointerup',zfin);
+document.addEventListener('pointercancel',zfin);
+/* con las flechas se mueve fino; con Shift, de a poco más */
+document.addEventListener('keydown',e=>{
+  const L=state.lay;if(!L||!L.edit||L.zi==null||!Array.isArray(L.draft))return;
+  if(/^(INPUT|SELECT|TEXTAREA)$/.test((e.target.tagName||'')))return;
+  const p={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]}[e.key];if(!p)return;
+  e.preventDefault();
+  const d=(e.shiftKey?1.5:0.25),z=L.draft[L.zi];if(!z)return;
+  if(e.altKey){z.w=Math.max(1.5,Math.min(r2(z.w+p[0]*d),100-z.x));z.h=Math.max(1.5,Math.min(r2(z.h+p[1]*d),100-z.y))}
+  else{z.x=r2(Math.min(Math.max(z.x+p[0]*d,0),100-z.w));z.y=r2(Math.min(Math.max(z.y+p[1]*d,0),100-z.h))}
+  render();
+});
 
 /* ================= pantalla del CD ================= */
 function vPantalla(){
@@ -3126,6 +3388,7 @@ function detalleExpediente(a){
     </div></section>
   <div class="head"><div>
     <button class="btn ghost sm" data-go="expedientes" style="margin-bottom:8px">← Volver a la carpeta</button>
+    ${esAdmin()?`<button class="btn sm" data-edit-audit="${esc(a.id)}" style="margin-bottom:8px;margin-left:6px">Editar auditoría</button>`:''}
     ${esAdmin()?`<button class="btn ghost sm" data-del-audit="${esc(a.id)}" data-ck="delaudit:${esc(a.id)}" style="margin-bottom:8px;margin-left:6px;color:var(--crit)">${state.confirmKey==='delaudit:'+a.id?'¿Eliminar esta auditoría y sus hallazgos? Tocá de nuevo para confirmar':'Eliminar auditoría'}</button>`:''}
     <h1>${esc(a.sectorNombre)} · ${fmtDate(a.fecha)}</h1>
     <p>${esc(a.sitioNombre||'')} · ${labelTipo(a)}${a.auditorSectorNombre?' (auditó '+esc(a.auditorSectorNombre)+')':''} · auditor: ${esc(a.auditor||'—')} · ${esc(a.checklistNombre||'')}${a.checklistVersion?' v'+esc(a.checklistVersion):''}</p></div>
@@ -4844,6 +5107,35 @@ document.addEventListener('click',async e=>{
   if(jd&&esAdmin()){const ck=t.closest('[data-ck]');if(ck&&state.confirmKey===ck.dataset.ck)return;
     const cfg=jefesCfg();cfg.lista=cfg.lista.filter(x=>x.id!==jd.dataset.jdel);
     state.jefes=cfg;await guardarJefes(cfg);toast('Jefe eliminado');render();return}
+  const ze=t.closest('[data-zedit]');
+  if(ze&&esAdmin()){
+    const slug=ze.dataset.zedit;
+    state.lay=state.lay||{plano:'all'};
+    state.lay.edit=slug;state.lay.zi=null;state.lay.sel=null;
+    state.lay.draft=JSON.parse(JSON.stringify(zonasDe(slug)));
+    if(state.lay.plano!=='all'&&state.lay.plano!==slug)state.lay.plano=slug;
+    render();toast('Arrastrá las zonas para acomodarlas. Al terminar, Guardar zonas.');return}
+  if(t.id==='btnZCancel'){state.lay.edit=null;state.lay.draft=null;state.lay.zi=null;render();return}
+  if(t.id==='btnZAdd'){
+    const sel=document.getElementById('zNuevoSec'),sid=sel?sel.value:'';
+    if(!sid){toast('Elegí primero el sector de la zona nueva');return}
+    zonasEdit(a=>{a.push({sec:sid,x:42,y:42,w:16,h:12})});
+    state.lay.zi=state.lay.draft.length-1;state.lay.zsec=sid;
+    render();toast('Zona agregada en el centro: arrastrala al lugar que le corresponde');return}
+  if(t.id==='btnZDel'){
+    if(state.lay.zi==null)return;
+    zonasEdit(a=>{a.splice(state.lay.zi,1)});state.lay.zi=null;render();return}
+  if(t.id==='btnZReset'){
+    const slug=state.lay.edit,k='zreset:'+slug;
+    if(state.confirmKey!==k){state.confirmKey=k;render();setTimeout(()=>{if(state.confirmKey===k){state.confirmKey=null;render()}},4000);return}
+    state.confirmKey=null;state.lay.draft=JSON.parse(JSON.stringify(ZPLANO[slug]||[]));state.lay.zi=null;
+    render();toast('Volvieron las zonas originales. Guardá para que quede así para todos.');return}
+  if(t.id==='btnZSave'){
+    const slug=state.lay.edit;
+    const cfg=Object.assign({planos:{}},state.zonas||{});
+    cfg.planos=Object.assign({},cfg.planos);cfg.planos[slug]=state.lay.draft.map(z=>({sec:z.sec,x:r2(z.x),y:r2(z.y),w:r2(z.w),h:r2(z.h)}));
+    if(await guardarZonas(cfg)){state.zonas=cfg;state.lay.edit=null;state.lay.draft=null;state.lay.zi=null;toast('Zonas guardadas: ya las ven todos');render()}
+    return}
   const zs=t.closest('[data-zsec]');
   if(zs){state.lay=state.lay||{plano:'all'};
     state.lay.sel=state.lay.sel===zs.dataset.zsec?null:zs.dataset.zsec;render();
