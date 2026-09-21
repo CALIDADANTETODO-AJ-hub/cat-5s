@@ -478,6 +478,10 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .dqedit .g{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
 @media (max-width:760px){.dqedit .g{grid-template-columns:1fr}}
 .dqedit input,.dqedit select{width:100%;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.hdet{padding:12px 14px;background:var(--surface-2);border-radius:10px}
+.hdet table{font-size:12px;margin:0}
+tr.det.oculto{display:none}
+tr.det td{padding:0 0 10px}
 .audnota{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   background:var(--accent-soft);color:var(--ink-2);border-radius:12px;padding:12px 16px;margin-bottom:16px;
   font-size:13px;line-height:1.55}
@@ -1235,7 +1239,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,audK:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
+  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
 
@@ -1636,9 +1640,9 @@ const ROLES=[
 ];
 const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
 const PERM={
-  jefe:['manual','piso','audgen','audsec','audint','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
-  sector:['manual','piso','audsec','audint','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
-  sitio:['manual','piso','audgen','audsec','audint','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares','etiquetas'],
+  jefe:['manual','piso','audgen','audsec','audint','seginf','seginf','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
+  sector:['manual','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
+  sitio:['manual','piso','audgen','audsec','audint','seginf','seginf','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares','etiquetas'],
   planta:['manual','etiquetas','pilares'],
   rrhh:['manual','pilares'],
   enfermeria:['manual','pilares'],
@@ -2464,7 +2468,7 @@ function render(){
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={manual:vManual,informe:vInforme,copa:vCopa,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,expedientes:vExpedientes,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={manual:vManual,informe:vInforme,copa:vCopa,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
@@ -3325,10 +3329,10 @@ function firmaBorrador(a){
   if(!state.firma||state.firma.id!==a.id){
     const sec=sectorDe(a.sectorId)||{};
     state.firma={id:a.id,
-      auditorNombre:a.firmaAuditorNombre||a.auditorJefeNombre||a.auditor||'',
-      auditorCargo:a.firmaAuditorCargo||'Auditor',
+      auditorNombre:a.firmaAuditorNombre||a.auditorJefeNombre||a.auditor||a.por||'',
+      auditorCargo:a.firmaAuditorCargo||a.auditorCargoDef||'Auditor',
       auditadoNombre:a.firmaAuditadoNombre||a.liderSector||sec.referente||'',
-      auditadoCargo:a.firmaAuditadoCargo||a.liderRol||'Líder 5S del sector',
+      auditadoCargo:a.firmaAuditadoCargo||a.liderRol||a.auditadoCargoDef||'Líder 5S del sector',
       obs:a.firmaObs||'',
       auditor:a.firmaAuditor||'',auditado:a.firmaAuditado||''};
   }
@@ -3372,10 +3376,10 @@ function firmasHTML(a){
       :(a.firmaObs?`<div class="body"><div class="soft2" style="margin:0">${esc(a.firmaObs)}</div></div>`:'')}
     <div class="fbloque">
       ${caja('auditor','Auditor · quien realizó la auditoría','Firmá con el dedo o con el mouse dentro del recuadro.')}
-      ${caja('auditado','Auditado · líder del sector','El auditado firma en conformidad de lo relevado.')}
+      ${caja('auditado',a.auditadoTit||'Auditado · líder del sector','El auditado firma en conformidad de lo relevado.')}
     </div>
     ${puedeFirmar()?`<div class="body" style="border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap;align-items:center">
-      <button class="btn primary" id="btnFirmaGuardar"${cambios?'':' disabled'}>Guardar las firmas</button>
+      <button class="btn primary" id="btnFirmaGuardar" data-firmacol="${esc(a.firmaCol||COL.au)}"${cambios?'':' disabled'}>Guardar las firmas</button>
       <span class="soft2" style="margin:0;padding:0;border:0">${a.firmadoEl?'Firmado el '+esc(a.firmadoEl)+(a.firmadoPor?' · registrado por '+esc(a.firmadoPor):''):'La firma queda guardada en la auditoría y sale en el informe descargado.'}</span>
     </div>`:''}
     ${guardado&&!cambios?'':''}</section>`;
@@ -3400,9 +3404,11 @@ function activarFirmas(){
     cv.addEventListener('pointerup',fin);cv.addEventListener('pointercancel',fin);cv.addEventListener('pointerleave',fin);
   });
 }
-async function guardarFirmas(){
+async function guardarFirmas(col){
   const f=state.firma;if(!f)return;
-  const a=state.auditorias.find(x=>x.id===f.id);if(!a){toast('Esa auditoría ya no existe');return}
+  col=col||COL.au;
+  const lista=col==='segAud'?(state.segAud||[]):state.auditorias;
+  const a=lista.find(x=>x.id===f.id);if(!a){toast('Esa auditoría ya no existe');return}
   if(!f.auditor&&!f.auditado){toast('Falta firmar: pasá el dedo o el mouse por el recuadro');return}
   if(f.auditor&&!String(f.auditorNombre||'').trim()){toast('Poné el nombre de quien auditó');return}
   if(f.auditado&&!String(f.auditadoNombre||'').trim()){toast('Poné el nombre de quien fue auditado');return}
@@ -3416,12 +3422,12 @@ async function guardarFirmas(){
     firmadoEl:new Date().toLocaleString('es-PY'),
     firmadoPor:(state.sesion&&state.sesion.nombre)||state.auditor||''
   });
-  delete doc.id;
-  if(!await guardarDoc(COL.au+'/'+f.id,doc))return;
+  if(col===COL.au)delete doc.id;
+  if(!await guardarDoc(col+'/'+f.id,doc))return;
   const dos=f.auditor&&f.auditado;
   toast(dos?'Auditoría firmada por las dos partes · ya podés descargar el informe':'Firma guardada: falta la otra firma');
   render();
-  if(dos){const b=document.querySelector('[data-dl-exp]');if(b)b.scrollIntoView({block:'center',behavior:'smooth'})}
+  if(dos&&col===COL.au){const b=document.querySelector('[data-dl-exp]');if(b)b.scrollIntoView({block:'center',behavior:'smooth'})}
 }
 
 /* ================= corregir una auditoría ya guardada ================= */
@@ -4038,7 +4044,7 @@ document.addEventListener('click',async e=>{
   if(lpi){const cv=document.getElementById('pad-'+lpi.dataset.limpiapad);
     if(cv){const cx=cv.getContext('2d');cx.clearRect(0,0,cv.width,cv.height);cv.classList.remove('trazada')}
     if(state.firma)state.firma[lpi.dataset.limpiapad]='';return}
-  if(t.id==='btnFirmaGuardar'){await guardarFirmas();return}
+  if(t.id==='btnFirmaGuardar'){await guardarFirmas(t.dataset.firmacol);return}
   if(t.id==='btnEaCancel'){const id=state.editAud?state.editAud.id:null;state.editAud=null;state.openAudit=id;render();return}
   if(t.id==='btnEaSave'){await guardarEditAud();return}
 });
@@ -4434,7 +4440,9 @@ function vAudInt(){
 
 /* ================= vista: Auditar · auditoría interna del sector ================= */
 const puedeAud=()=>esAdmin()||['sitio','jefe','sector'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
-const AUD_SUBS=[['docs','Documentos que debe tener'],['ol','Orden y limpieza'],['hip','Riesgos del sector'],['acc','Acciones abiertas']];
+const AUD_SUBS=[['docs','Documentos que debe tener'],['ol','Orden y limpieza'],['hip','Riesgos del sector'],
+ ['acc','Acciones abiertas'],['hechas','Auditorías hechas']];
+const AUDTIPO_L={doc:'Documentos',ol:'Orden y limpieza',hip:'Riesgos del sector'};
 
 function audPilarHTML(p){
   const A=state.aud, secs=sectoresVista();
@@ -4462,6 +4470,7 @@ function audPilarHTML(p){
   ${A.sub==='docs'?audDocsHTML(sec,ed)
    :A.sub==='ol'?audOlHTML(sec,ed)
    :A.sub==='hip'?audHipHTML(sec,ed)
+   :A.sub==='hechas'?audHechasHTML(sec)
    :audAccHTML(sec,ed)}`;
 }
 
@@ -4570,7 +4579,7 @@ function audOlHTML(sec,ed){
   const pct=tot?Math.round(obt/tot*100):0, marc=f.items.length-sin;
   const cls=pct>=90?'ok':(pct>=75?'warn':'crit');
   const hist=(state.segAud||[]).filter(x=>x.tipo==='ol'&&(!sec||x.sectorId===sec))
-    .sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||''))).slice(0,12);
+    .sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||''))).slice(0,6);
   return `
   <div class="olbar">
     <div class="field" style="min-width:270px"><label for="olForm">Formato</label>
@@ -4595,8 +4604,8 @@ function audOlHTML(sec,ed){
           <button class="med" data-olv="0.5" data-oli="${i}" aria-pressed="${v===0.5}">Parcial</button>
           <button class="no" data-olv="0" data-oli="${i}" aria-pressed="${v===0}">No cumple</button>
         </div></div>`}).join('')}</div></section>
-  <section class="panel" style="margin-top:16px"><header><h3>Verificaciones guardadas</h3>
-    <div class="sub">${hist.length?hist.length+' en la base':'todavía ninguna'}</div></header>
+  <section class="panel" style="margin-top:16px"><header><h3>Las últimas verificaciones</h3>
+    <div class="sub">${hist.length?'las '+hist.length+' más recientes · están todas en Auditorías hechas':'todavía ninguna'}</div></header>
     <div class="body">${hist.length?`<div class="tw"><table class="lst"><thead><tr><th>Fecha</th><th>Sector</th>
       <th>Formato</th><th>Verifica</th><th class="n">Cumplimiento</th></tr></thead><tbody>
       ${hist.map(h=>{const c=h.pct>=90?'var(--ok)':(h.pct>=75?'var(--warn)':'var(--crit)');
@@ -4625,7 +4634,7 @@ function audHipHTML(sec,ed){
       <div class="barra"><i style="width:${pct||0}%;background:${pct==null?'var(--surface-3)':(pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)'))}"></i></div>
       <div class="olm">${marc?('Marcados '+marc+' de '+L.length+(na?' · '+na+' no aplican':'')+(mal.length?' · '+mal.length+' con desvío':' · sin desvíos')):'Todavía sin marcar'}</div></div>
     ${urg?`<span class="dgch crit" style="font-size:12.5px;padding:5px 11px">⊗ ${urg} de acción inmediata</span>`:''}
-    ${ed&&mal.length?`<button class="btn primary" id="btnHipCerrar">Cerrar y generar las acciones</button>`:''}
+    ${ed&&marc?`<button class="btn primary" id="btnHipCerrar">Cerrar la auditoría${mal.length?' y generar '+mal.length+(mal.length===1?' acción':' acciones'):''}</button>`:''}
   </div>
   <section class="panel"><header><h3>Los riesgos de ${esc(nombreSector(sec))}</h3>
     <div class="sub">${L.length} ${L.length===1?'punto':'puntos'} de la hipermatriz · por cada uno: ¿el control está? ¿el elemento está?</div></header>
@@ -4652,6 +4661,188 @@ function audHipHTML(sec,ed){
           <div class="hipplz">${N.cls==='crit'?'⊗':'⚠'} Como es <b>${N.l}</b>, la acción vence ${N.dias===0?'<b>hoy mismo y se detiene la tarea</b>':'en <b>'+N.plazo+'</b>'} · se verifica con: ${esc(r.indicador)}</div>
         </div>`:''}
       </div>`}).join(''):'<div class="empty">Este sector todavía no tiene riesgos cargados en la hipermatriz.</div>'}</div></section>`;
+}
+
+/* ================= informe imprimible de la auditoría interna =================
+   El mismo formato que el informe de las auditorías 5S: encabezado con el logo,
+   los datos, el detalle punto por punto, las acciones que salieron y las dos firmas. */
+function segInfDe(){ return (state.segAud||[]).find(x=>x.id===state.openSeg) }
+function estadoFirmaSeg(a){
+  const A=!!a.firmaAuditor,L=!!a.firmaAuditado;
+  if(A&&L)return {k:'ok',l:'Firmado por las dos partes',d:''};
+  if(A||L)return {k:'warn',l:'Falta una firma',d:A?'Firmó quien auditó; falta la firma del responsable del sector':'Firmó el responsable; falta la firma de quien auditó'};
+  return {k:'crit',l:'Sin firmar',d:'Firman las dos partes: quien auditó y el responsable del sector'};
+}
+function vSegInf(){
+  const a=segInfDe();
+  if(!a){state.openSeg=null;state.view='audint';return vAudInt()}
+  const ef=estadoFirmaSeg(a);
+  const sec=a.sectorId==='_cd'?'Todo el Centro de Distribución':(nombreSector(a.sectorId)||a.sectorId);
+  const sit=sitioCat(a.sitioId||state.sitioSel);
+  const tit=AUDTIPO_L[a.tipo]||a.tipo;
+  const acc=(state.segAcc||[]).filter(x=>x.sectorId===a.sectorId&&x.fecha===a.fecha);
+  const col=a.pct==null?'var(--ink-3)':(a.pct>=90?'var(--ok)':(a.pct>=75?'var(--warn)':'var(--crit)'));
+  const des=a.tipo==='doc'?(a.no||0):(a.desvios||0);
+  /* para firmar, el registro se presenta con los mismos nombres que usa el informe 5S */
+  const shim=Object.assign({},a,{firmaCol:'segAud',auditorCargoDef:'Encargado del pilar Seguridad',
+    auditadoCargoDef:'Responsable del sector',auditadoTit:'Auditado · responsable del sector'});
+  return `
+  <div class="infbar">
+    <button class="btn ghost sm" id="btnSegVolver">← Volver a Auditorías hechas</button>
+    ${ef.k==='ok'||soloLectura()?'':'<button class="btn primary" id="btnSegFirma">✍ Firmar el informe</button>'}
+    <button class="btn" onclick="window.print()">Imprimir o guardar en PDF</button>
+    <span class="badge ${ef.k} dot">${ef.l}</span>
+  </div>
+  ${ef.k==='ok'||soloLectura()?'':`<div class="notice" style="margin-bottom:14px"><div>
+    <b>Falta firmar este informe.</b> ${esc(ef.d)}. Firmá vos y pasale el dispositivo al responsable del
+    sector para que firme en conformidad, antes de imprimirlo.</div>
+    <button class="btn primary sm" id="btnSegFirma2">Ir a firmar</button></div>`}
+
+  <div class="inf">
+    <div class="ih">
+      <div><h1>Auditoría interna · ${esc(tit)}</h1>
+        <div class="im">${esc(sit.corto||sit.nombre||'')} · ${fmtDate(a.fecha)} · Pilar Seguridad<br>
+        <b>Sector:</b> ${esc(sec)} · <b>Auditó:</b> ${esc(a.por||'—')}<br>
+        ${a.formato?`Instrumento: ${esc(a.formato)}<br>`:''}
+        ${a.tipo==='hip'?'Instrumento: hipermatriz de riesgo y salud ocupacional del sector<br>':''}
+        ${a.tipo==='doc'?'Instrumento: lista de documentos que el sector debe tener<br>':''}
+        Registro: ${esc(a.id)}</div></div>
+      <img src="${LOGO}" alt="Calidad Ante Todo">
+    </div>
+
+    <div class="ik">
+      <div><b>${a.marcados!=null?a.marcados:(a.puntos||'—')}</b><span>Puntos verificados</span></div>
+      <div><b>${a.puntos||'—'}</b><span>Puntos del instrumento</span></div>
+      <div><b style="color:${des?'var(--crit)':'var(--ok)'}">${des}</b><span>Desvíos</span></div>
+      <div><b style="color:${col}">${a.pct==null?'—':n1(a.pct)+' %'}</b><span>Resultado</span></div>
+    </div>
+
+    <h3>Detalle de lo verificado</h3>
+    ${segInfDetalle(a)}
+
+    ${a.tipo==='hip'&&acc.length?`<h3>Acciones que genera esta auditoría</h3>
+      <div class="tw"><table><thead><tr><th>Riesgo</th><th>Qué faltaba</th><th>Acción preventiva</th>
+        <th>Vence</th><th>Se verifica con</th></tr></thead><tbody>
+        ${acc.map(x=>{const N=HIPNIV[x.niv]||HIPNIV.moderado;
+          return `<tr><td>${esc(x.peligro)}<br><span class="badge ${N.cls}">${N.l}</span></td>
+            <td>${esc(x.falta||'')}${x.obs?'<br><span style="color:var(--ink-3);font-size:12px">'+esc(x.obs)+'</span>':''}</td>
+            <td>${esc(x.accion||'')}</td><td><b>${fmtDate(x.limite)}</b><br><span style="color:var(--ink-3);font-size:12px">${esc(N.plazo)}</span></td>
+            <td style="color:var(--ink-3)">${esc(x.indicador||'')}</td></tr>`}).join('')}
+      </tbody></table></div>`:''}
+    ${a.tipo==='hip'&&!des?`<div class="soft2" style="margin-top:14px">En esta auditoría <b>no se registraron desvíos</b>: todos los puntos verificados cumplen y tienen su elemento. No se generaron acciones.</div>`:''}
+
+    ${a.firmaObs?`<h3>Observaciones</h3><p style="font-size:13.5px;color:var(--ink-2)">${esc(a.firmaObs)}</p>`:''}
+
+    <div class="firma">
+      
+      <div>${a.firmaAuditor?`<img src="${a.firmaAuditor}" alt="Firma" style="max-height:62px;display:block;margin-bottom:6px">`:'<div style="height:62px"></div>'}
+        <b>${esc(a.firmaAuditorNombre||a.por||'')}</b><br>${esc(a.firmaAuditorCargo||'Encargado del pilar Seguridad')} · auditó</div>
+      <div>${a.firmaAuditado?`<img src="${a.firmaAuditado}" alt="Firma" style="max-height:62px;display:block;margin-bottom:6px">`:'<div style="height:62px"></div>'}
+        <b>${esc(a.firmaAuditadoNombre||'')}</b><br>${esc(a.firmaAuditadoCargo||'Responsable del sector')} · en conformidad</div>
+    </div>
+    ${a.firmadoEl?`<div style="margin-top:14px;font-size:11.5px;color:var(--ink-3)">Firmado el ${esc(a.firmadoEl)}${a.firmadoPor?' · registrado por '+esc(a.firmadoPor):''}</div>`:''}
+  </div>
+
+  ${soloLectura()?'':firmasHTML(shim)}`;
+}
+function segInfDetalle(a){
+  const D=a.detalle||[];
+  if(!D.length)return '<div class="soft2">Este registro se guardó sin el detalle punto por punto.</div>';
+  if(a.tipo==='ol')return `<div class="tw"><table><thead><tr><th class="r" style="width:64px">Peso</th>
+    <th>Punto verificado</th><th class="r" style="width:110px">Resultado</th></tr></thead><tbody>
+    ${D.map(x=>`<tr><td class="r">${x.p} %</td><td>${esc(x.t)}</td>
+      <td class="r">${x.v==null?'<span class="badge">Sin marcar</span>'
+        :(x.v===1?'<span class="badge ok">Cumple</span>'
+        :(x.v===0.5?'<span class="badge warn">Parcial</span>':'<span class="badge crit">No cumple</span>'))}</td></tr>`).join('')}
+  </tbody></table></div>`;
+  if(a.tipo==='doc')return `<div class="tw"><table><thead><tr><th>Documento</th><th style="width:90px">Alcance</th>
+    <th class="r" style="width:110px">Estado</th><th style="width:92px">Vence</th><th style="width:24%">Observación</th></tr></thead><tbody>
+    ${D.map(x=>`<tr><td>${esc(x.t)}</td><td style="color:var(--ink-3)">${x.alcance==='cd'?'Del CD':'Del sector'}</td>
+      <td class="r"><span class="badge ${(DOCEST[x.v]||{}).cls||''}">${(DOCEST[x.v]||{}).l||x.v}</span></td>
+      <td>${x.vence?fmtDate(x.vence):'—'}</td><td style="color:var(--ink-3)">${esc(x.obs||'')}</td></tr>`).join('')}
+  </tbody></table></div>`;
+  return `<div class="tw"><table><thead><tr><th>Riesgo</th><th style="width:15%">Puesto</th>
+    <th style="width:92px">Criticidad</th><th class="r" style="width:108px">Control</th>
+    <th class="r" style="width:96px">Elemento</th><th style="width:20%">Qué se vio</th></tr></thead><tbody>
+    ${D.map(x=>{const N=HIPNIV[x.niv]||HIPNIV.moderado;
+      return `<tr><td>${esc(x.peligro)}</td><td style="color:var(--ink-3)">${esc(x.puesto)}</td>
+      <td><span class="badge ${N.cls}">${N.l}</span></td>
+      <td class="r">${x.v==='cumple'?'<span class="badge ok">Cumple</span>'
+        :(x.v==='no'?'<span class="badge crit">No cumple</span>'
+        :(x.v==='na'?'<span class="badge">No aplica</span>':'—'))}</td>
+      <td class="r">${x.t==='tiene'?'<span class="badge ok">Tiene</span>'
+        :(x.t==='notiene'?'<span class="badge crit">No tiene</span>':'—')}</td>
+      <td style="color:var(--ink-3)">${esc(x.obs||'')}</td></tr>`}).join('')}
+  </tbody></table></div>`;
+}
+
+/* ---------- 5. auditorías hechas: el registro de todo lo que se auditó ---------- */
+function audHechasHTML(sec){
+  const L=(state.segAud||[]).filter(a=>!sec||a.sectorId===sec||(a.sectorId==='_cd'&&a.tipo==='doc'))
+    .sort((a,b)=>String(b.fecha+b.creado).localeCompare(String(a.fecha+a.creado)));
+  const porTipo=t=>L.filter(a=>a.tipo===t).length;
+  const ult=L[0];
+  return `
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi ${L.length?'':'tint'}"><div class="k">Auditorías guardadas</div><div class="v">${L.length}</div>
+      <div class="m">${sec?'en '+esc(nombreSector(sec)):'en todos los sectores'}</div></div>
+    <div class="kpi"><div class="k">De riesgos</div><div class="v">${porTipo('hip')}</div>
+      <div class="m">con la hipermatriz del sector</div></div>
+    <div class="kpi"><div class="k">De orden y limpieza</div><div class="v">${porTipo('ol')}</div>
+      <div class="m">con los formatos de SySO</div></div>
+    <div class="kpi"><div class="k">De documentos</div><div class="v">${porTipo('doc')}</div>
+      <div class="m">verificaciones de lo que hay que tener</div></div>
+  </div>
+  <section class="panel"><header><h3>Todo lo que se auditó</h3>
+    <div class="sub">${ult?'la última, el '+fmtDate(ult.fecha):'todavía no hay ninguna'} · tocá una fila para ver el detalle</div></header>
+    <div class="body">${L.length?`<div class="tw"><table class="lst"><thead><tr>
+      <th>Fecha</th><th>Qué se auditó</th><th>Sector</th><th>Quién</th><th class="n">Puntos</th>
+      <th class="n">Desvíos</th><th class="n">Resultado</th></tr></thead><tbody>
+      ${L.map(a=>{
+        const col=a.pct==null?'var(--ink-3)':(a.pct>=90?'var(--ok)':(a.pct>=75?'var(--warn)':'var(--crit)'));
+        const des=a.tipo==='doc'?(a.no||0):(a.desvios||0);
+        return `<tr data-hech="${esc(a.id)}" style="cursor:pointer">
+          <td>${fmtDate(a.fecha)}</td>
+          <td><b>${esc(AUDTIPO_L[a.tipo]||a.tipo)}</b>${a.formato?`<div class="sm">${esc(a.formato)}</div>`:''}</td>
+          <td>${esc(a.sectorId==='_cd'?'Todo el CD':(nombreSector(a.sectorId)||a.sectorId))}</td>
+          <td class="sm">${esc(a.por||'—')}</td>
+          <td class="n">${a.marcados!=null?a.marcados+' de '+a.puntos:(a.puntos||'—')}</td>
+          <td class="n">${des?`<b style="color:var(--crit)">${des}</b>`:'0'}</td>
+          <td class="n" style="color:${col}"><b>${a.pct==null?'—':n1(a.pct)+' %'}</b>
+            <div class="sm"><a href="#" data-seginf="${esc(a.id)}">ver el informe</a></div></td></tr>
+        <tr class="det oculto" data-hdet="${esc(a.id)}"><td colspan="7">${audDetalleHTML(a)}</td></tr>`}).join('')}
+    </tbody></table></div>`:`<div class="empty">Todavía no se guardó ninguna auditoría de este sector.
+      Cuando Christian cierre la primera, queda acá con su fecha, quién la hizo y el detalle.</div>`}</div></section>`;
+}
+function audDetalleHTML(a){
+  const D=a.detalle||[];
+  if(!D.length)return '<div class="hdet"><span class="sm">Esta auditoría se guardó sin el detalle punto por punto.</span></div>';
+  if(a.tipo==='ol')return `<div class="hdet"><div class="tw"><table class="lst"><thead><tr>
+    <th class="n">Peso</th><th>Punto verificado</th><th>Resultado</th></tr></thead><tbody>
+    ${D.map(x=>`<tr><td class="n">${x.p} %</td><td>${esc(x.t)}</td>
+      <td>${x.v==null?'<span class="dgch">Sin marcar</span>'
+        :(x.v===1?'<span class="dgch ok">✓ Cumple</span>'
+        :(x.v===0.5?'<span class="dgch warn">⚠ Parcial</span>':'<span class="dgch crit">⊗ No cumple</span>'))}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  if(a.tipo==='doc')return `<div class="hdet"><div class="tw"><table class="lst"><thead><tr>
+    <th>Documento</th><th>Alcance</th><th>Estado</th><th>Vence</th><th>Observación</th></tr></thead><tbody>
+    ${D.map(x=>`<tr><td>${esc(x.t)}</td><td class="sm">${x.alcance==='cd'?'Del CD':'Del sector'}</td>
+      <td><span class="dgch ${(DOCEST[x.v]||{}).cls||''}">${(DOCEST[x.v]||{}).l||x.v}</span></td>
+      <td class="sm">${x.vence?fmtDate(x.vence):'—'}</td><td class="sm">${esc(x.obs||'')}</td></tr>`).join('')}
+  </tbody></table></div></div>`;
+  return `<div class="hdet"><div class="tw"><table class="lst"><thead><tr>
+    <th>Riesgo</th><th>Puesto</th><th>Criticidad</th><th>¿El control se cumple?</th><th>¿El elemento está?</th>
+    <th>Qué se vio</th></tr></thead><tbody>
+    ${D.map(x=>{const N=HIPNIV[x.niv]||HIPNIV.moderado;
+      return `<tr><td>${esc(x.peligro)}</td><td class="sm">${esc(x.puesto)}</td>
+      <td><span class="dgch ${N.cls}">${N.l}</span></td>
+      <td>${x.v==='cumple'?'<span class="dgch ok">✓ Cumple</span>'
+        :(x.v==='no'?'<span class="dgch crit">⊗ No cumple</span>'
+        :(x.v==='na'?'<span class="dgch">No aplica</span>':'—'))}</td>
+      <td>${x.t==='tiene'?'<span class="dgch ok">✓ Tiene</span>'
+        :(x.t==='notiene'?'<span class="dgch crit">⊗ No tiene</span>':'—')}</td>
+      <td class="sm">${esc(x.obs||'')}</td></tr>`}).join('')}
+  </tbody></table></div></div>`;
 }
 
 /* ---------- 4. acciones ---------- */
@@ -6992,7 +7183,7 @@ const SITIOS_CAT=[
   {id:'ind-arrocera',grupo:'industria',nombre:'Arrocera',corto:'Arrocera',ciudad:''},
   {id:'ind-yerbatera',grupo:'industria',nombre:'Yerbatera',corto:'Yerbatera',ciudad:''}
 ];
-const MENU5S=[['Dirección',['resumen','ahorro','impacto']],['Operación',['audgen','audsec','audint','rotacion','tablero','evolucion','validar','expedientes','auditorias','hallazgos','buenas']],['Gestión visual',['copa','pantalla','layouts']]];
+const MENU5S=[['Dirección',['resumen','ahorro','impacto']],['Operación',['audgen','audsec','audint','seginf','seginf','rotacion','tablero','evolucion','validar','expedientes','auditorias','hallazgos','buenas']],['Gestión visual',['copa','pantalla','layouts']]];
 function sitiosMenu(){
   const extra=state.sitios.filter(x=>!SITIOS_CAT.some(c=>c.id===x.id)).map(x=>({id:x.id,grupo:x.grupo||'cd',padre:x.padre||'',nombre:x.nombre,corto:x.nombre,ciudad:x.ciudad||''}));
   return SITIOS_CAT.concat(extra);
@@ -7600,6 +7791,12 @@ document.addEventListener('click',async e=>{
     if(state.pil.editManual!=null&&pt.dataset.ptab!=='manual'){toast('Guardá o cancelá la edición del manual primero');return}
     if(state.pil.tab==='diag'&&pt.dataset.ptab!=='diag'&&diagSucio(state.pil.id)){toast('Guardá el diagnóstico antes de salir de la pestaña');return}
     state.pil.tab=pt.dataset.ptab;render();return}
+  const sgi=t.closest('[data-seginf]');
+  if(sgi){ e.preventDefault(); state.openSeg=sgi.dataset.seginf; state.firma=null; state.view='seginf'; window.scrollTo(0,0); render(); return }
+  if(t.id==='btnSegVolver'){ state.openSeg=null; state.view='audint'; state.aud.sub='hechas'; render(); return }
+  if(t.id==='btnSegFirma'||t.id==='btnSegFirma2'){ const pf=document.getElementById('panelFirma'); if(pf)pf.scrollIntoView({block:'start',behavior:'smooth'}); return }
+  const hh=t.closest('[data-hech]');
+  if(hh){ const d=document.querySelector('[data-hdet="'+hh.dataset.hech+'"]'); if(d)d.classList.toggle('oculto'); return }
   const asb=t.closest('[data-asub]');
   if(asb){ state.aud.sub=asb.dataset.asub; render(); return }
   const dq=t.closest('[data-dq]');
@@ -8273,8 +8470,22 @@ document.addEventListener('click',async e=>{
         alcance:alc,resp:limpio,pct:g.pct,tiene:g.tiene,no:g.no,noAplica:g.na,sinVerificar:g.sin,total:g.tot,
         actualizado:new Date().toISOString(),actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'});
     };
-    guardarUno('_cd','cd').then(ok=>sec?guardarUno(sec,'sector'):ok)
-      .then(ok=>{if(ok){state.docEd=null;toast('Guardado lo que el sector tiene que tener');render()}});
+    const f=($('#audFecha')&&$('#audFecha').value)||hoyIso();
+    const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
+    guardarUno('_cd','cd').then(ok=>sec?guardarUno(sec,'sector'):ok).then(ok=>{
+      if(!ok)return ok;
+      /* además del estado actual, queda la constancia de esta verificación */
+      const id=uid('dv-'), gCD=calcDocs('_cd','cd'), gS=sec?calcDocs(sec,'sector'):null;
+      const det=[];
+      const meter=(clave,alc)=>{const R=docReqResp(clave);
+        reqsDe(alc).forEach(r=>{const x=R[r.id]||{};
+          det.push({id:r.id,t:r.t,alcance:alc,v:docEstado(clave,r),obs:x.obs||'',vence:x.vence||''})})};
+      meter('_cd','cd'); if(sec)meter(sec,'sector');
+      return guardarDoc('segAud/'+id,{id:id,tipo:'doc',sitioId:state.sitioSel,sectorId:sec||'_cd',
+        fecha:f,por:por,puntos:det.length,
+        tiene:gCD.tiene+(gS?gS.tiene:0),no:gCD.no+(gS?gS.no:0),
+        pct:gS?gS.pct:gCD.pct,detalle:det,creado:new Date().toISOString()});
+    }).then(ok=>{if(ok){state.docEd=null;toast('Guardado · queda la constancia de la verificación');render()}});
     return}
   if(t.id==='btnOlGuardar'){
     const A=state.aud, sec=A.sec;
@@ -8297,7 +8508,8 @@ document.addEventListener('click',async e=>{
     const f=($('#audFecha')&&$('#audFecha').value)||hoyIso();
     const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
     const mal=L.filter(r=>{const v=A.resp[r.id]||{};return v.v==='no'||v.t==='notiene'});
-    if(!mal.length){toast('No hay desvíos para generar acciones');return}
+    const marc=L.filter(r=>{const v=A.resp[r.id]||{};return !!(v.v||v.t)});
+    if(!marc.length){toast('Marcá al menos un punto antes de cerrar');return}
     const na=L.filter(r=>(A.resp[r.id]||{}).v==='na').length;
     Promise.all(mal.map(r=>{
       const v=A.resp[r.id]||{}, N=HIPNIV[r.niv]||HIPNIV.moderado, id=uid('ac-');
@@ -8308,9 +8520,19 @@ document.addEventListener('click',async e=>{
         creado:new Date().toISOString()});
     })).then(()=>{
       const id=uid('au-');
+      const base=L.length-na, ok=base-mal.length;
       return guardarDoc('segAud/'+id,{id:id,tipo:'hip',sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
-        puntos:L.length,noAplica:na,desvios:mal.length,creado:new Date().toISOString()});
-    }).then(()=>{ state.aud.resp={}; state.aud.sub='acc'; toast(mal.length+' acción(es) generada(s)'); render() });
+        puntos:L.length,marcados:marc.length,noAplica:na,desvios:mal.length,
+        pct:base>0?Math.round(ok/base*100):null,
+        /* el detalle de lo que se marcó: es la evidencia de la auditoría */
+        detalle:marc.map(r=>{const v=A.resp[r.id]||{};
+          return {id:r.id,peligro:r.peligro,puesto:r.puesto,niv:r.niv,
+                  v:v.v||'',t:v.t||'',obs:v.obs||''}}),
+        creado:new Date().toISOString()});
+    }).then(()=>{ state.aud.resp={}; state.aud.sub='hechas';
+      toast(mal.length?('Auditoría cerrada · '+mal.length+(mal.length===1?' acción generada':' acciones generadas'))
+        :'Auditoría cerrada · el sector no tuvo desvíos');
+      render() });
     return}
   if(t.id==='btnDiagImp'){window.print();return}
   if(t.id==='btnDiagCsv'){
