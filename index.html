@@ -1,4 +1,5 @@
-<!doctype html><html><head><meta charset="utf-8"><title>CAT</title></head><body><title>CAT · Calidad Ante Todo</title>
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>CAT</title></head><body>
+<title>CAT · Calidad Ante Todo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* el archivo descargado se abre sin la hoja base del sistema: fijamos el reset acá */
@@ -418,6 +419,65 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 
 /* diagnóstico del sistema del pilar */
 .manualdoc .nota{background:var(--surface-2);border-left:3px solid var(--line-strong);padding:10px 13px;border-radius:8px;font-size:13px;color:var(--ink-2);line-height:1.6}
+
+/* auditoría interna del sector */
+.audhead{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 18px;margin-bottom:14px}
+.audhead .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--coral);font-weight:700}
+.audhead h3{font-family:"Cormorant Garamond",Georgia,serif;font-size:24px;font-weight:600;margin:3px 0 6px}
+.audhead p{margin:0;font-size:13px;color:var(--ink-3);max-width:70ch;line-height:1.55}
+.audsel{display:flex;gap:12px;flex-wrap:wrap}
+.audsel .field{min-width:190px}
+.ptabs.sub{margin-bottom:16px}
+.ptabs.sub button{font-size:13.5px;padding:9px 13px}
+.dqi{padding:13px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--surface)}
+.dqi.ok{box-shadow:inset 3px 0 0 var(--ok)} .dqi.crit{box-shadow:inset 3px 0 0 var(--crit)}
+.dqi.warn{box-shadow:inset 3px 0 0 var(--warn)}
+.dqt{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+.dqn{font-size:14px;font-weight:600;line-height:1.35}
+.dqm{margin-top:4px;font-size:11.5px;color:var(--ink-3)}
+.dqg{display:grid;grid-template-columns:2fr 1fr;gap:12px;margin-top:11px}
+@media (max-width:700px){.dqg{grid-template-columns:1fr}}
+.dqg input,.dqg select{width:100%;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.dqg p{margin:0;font-size:12.5px;color:var(--ink-2)}
+.dqlink{margin-top:6px;font-size:12px}
+.olbar{display:flex;gap:16px;align-items:center;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);padding:14px 18px;margin-bottom:14px}
+.olres .lbl{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.olres .pv{font-size:32px;font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums}
+.olres .pv.ok{color:var(--ok)} .olres .pv.warn{color:var(--warn)} .olres .pv.crit{color:var(--crit)}
+.olm{margin-top:7px;font-size:12.5px;color:var(--ink-3)}
+.barra{height:9px;background:var(--surface-3);border-radius:999px;overflow:hidden}
+.barra i{display:block;height:100%;border-radius:999px;transition:width .25s}
+.olit{display:flex;gap:14px;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line)}
+.olit:last-child{border-bottom:0}
+.olit .oln{width:26px;height:26px;border-radius:8px;background:var(--surface-3);color:var(--ink-2);
+  display:grid;place-items:center;font-size:12px;font-weight:800;flex:none}
+.olit .olc{flex:1;min-width:0}
+.olit .olt{font-size:13.5px;line-height:1.45}
+.olit .olp{font-size:10.5px;color:var(--ink-3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:4px}
+.hipi{padding:13px 14px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--surface)}
+.hipi.ok{box-shadow:inset 3px 0 0 var(--ok)} .hipi.warn{box-shadow:inset 3px 0 0 var(--warn)}
+.hipi.crit{box-shadow:inset 3px 0 0 var(--crit)}
+.hipc{margin-top:8px;font-size:12.5px;color:var(--ink-2);line-height:1.5}
+.hipops{display:flex;gap:22px;flex-wrap:wrap;margin-top:11px}
+.hipops .glbl{display:block;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.hipobs{margin-top:11px;border-top:1px dashed var(--line-strong);padding-top:10px}
+.hipobs label{display:block;font-size:12px;font-weight:600;color:var(--crit);margin-bottom:5px}
+.hipobs input{width:100%;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.hipplz{margin-top:8px;font-size:12px;color:var(--ink-3);line-height:1.45}
+.sacc{padding:13px 15px;border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--surface)}
+.sacc.venc{box-shadow:inset 3px 0 0 var(--crit)} .sacc.lista{box-shadow:inset 3px 0 0 var(--ok);opacity:.88}
+.saccg{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:11px}
+.saccg p{margin:0;font-size:12.5px;color:var(--ink-2);line-height:1.45}
+.saccf{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-top:11px;border-top:1px solid var(--line);padding-top:10px}
+.saccf input{border:1px solid var(--line);border-radius:9px;padding:6px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.saccf.listo{font-size:12.5px;color:var(--ink-3)}
+.dgopt button.med[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.dqedit{border:1px dashed var(--line-strong);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:var(--surface-2)}
+.dqedit .g{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
+@media (max-width:760px){.dqedit .g{grid-template-columns:1fr}}
+.dqedit input,.dqedit select{width:100%;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
 .dgaviso{border-left:3px solid var(--hazard,#DFA33C);background:var(--warn-soft);border-radius:10px;padding:13px 15px;margin-bottom:16px;font-size:13px;line-height:1.55;color:var(--ink-2)}
 .dgb{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;background:var(--surface)}
 .dgbh{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
@@ -1171,7 +1231,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,us:false,bi:false}
+  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
 
@@ -1301,7 +1361,9 @@ async function conectar(){
   sub(COL.pd,'pilarDocs','pd');
   sub(COL.pi,'pilarInd','pi2');
   sub('pilarDiag','diag','dg');
+  sub('docSector','docSector','ds'); sub('segAud','segAud','sa'); sub('segAcc','segAcc','sc');
   db.doc('config/pilarDiag').onSnapshot(s=>{state.diagCfg=s.exists?s.data():null;render()},()=>{});
+  db.doc('config/docReq').onSnapshot(s=>{state.docReqCfg=s.exists?s.data():null;render()},()=>{});
   sub('claves','claves','cv');
   sub(COL.cl,'checklists','cl');sub(COL.au,'auditorias','au');sub(COL.ha,'hallazgos','ha');sub(COL.bu,'buenas','bu');sub(COL.ev,'evidencias','ev');
 }
@@ -2308,6 +2370,15 @@ document.addEventListener('change',e=>{
   if(t.id==='bfUsuario'){state.bf.usuario=t.value;render();return}
 });
 document.addEventListener('input',e=>{const t=e.target;
+  if(t.dataset&&t.dataset.ho!=null){
+    state.aud.resp[t.dataset.ho]=state.aud.resp[t.dataset.ho]||{};
+    state.aud.resp[t.dataset.ho].obs=t.value; return }
+  if(t.dataset&&t.dataset.dqo!=null){ docTocar(t.dataset.dqs,t.dataset.dqo,'obs',t.value); return }
+  if(state.docReqEd&&t.dataset){
+    const m={dqt:'t',dqq:'quien',dqit:'item'};
+    for(const k in m){ if(t.dataset[k]!=null){
+      const r=state.docReqEd.items.find(x=>x.id===t.dataset[k]); if(r)r[m[k]]=t.value; return } }
+  }
   if(t.dataset){
     const m={dev:'ev',dac:'acc',drs:'resp',dpl:'plazo'};
     for(const k in m){ if(t.dataset[k]!=null){ diagTocar(state.pil.id,t.dataset[k],m[k],t.value); return } }
@@ -4325,6 +4396,274 @@ function manualConDocs(html,pid){
     });
     return raiz.innerHTML;
   }catch(e){return html}
+}
+
+/* ================= vista: Auditar · auditoría interna del sector ================= */
+const puedeAud=()=>esAdmin()||['sitio','jefe','sector'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
+const AUD_SUBS=[['docs','Documentos que debe tener'],['ol','Orden y limpieza'],['hip','Riesgos del sector'],['acc','Acciones abiertas']];
+
+function audPilarHTML(p){
+  const A=state.aud, secs=sectoresVista();
+  if(!A.sec&&secs.length&&state.sesion&&state.sesion.sectorId)A.sec=state.sesion.sectorId;
+  const sec=A.sec, secN=sec?nombreSector(sec):'';
+  const ed=puedeAud();
+  const abiertas=(state.segAcc||[]).filter(x=>x.estado==='abierta'&&(!sec||x.sectorId===sec));
+  return `
+  <div class="audhead">
+    <div><div class="k">Auditoría interna</div>
+      <h3>Lo que le audito a mi propio sector</h3>
+      <p>Los documentos que el sector tiene que tener, cómo está el orden y la limpieza, y los riesgos
+         de la hipermatriz. Lo que no cumple genera su acción con el plazo que le pone la criticidad.</p></div>
+    <div class="audsel">
+      <div class="field"><label for="audSec">Sector</label>
+        <select id="audSec"><option value="">Elegí el sector…</option>
+        ${secs.map(x=>`<option value="${esc(x.id)}"${sec===x.id?' selected':''}>${esc(x.nombre)}</option>`).join('')}</select></div>
+      <div class="field"><label for="audFecha">Fecha</label><input type="date" id="audFecha" value="${esc(A.fecha||hoyIso())}"></div>
+    </div>
+  </div>
+  <div class="ptabs sub" role="tablist">
+    ${AUD_SUBS.map(([k,l])=>`<button role="tab" data-asub="${k}" aria-selected="${A.sub===k}">${l}${
+      k==='acc'&&abiertas.length?` <span class="badge crit">${abiertas.length}</span>`:''}</button>`).join('')}
+  </div>
+  ${A.sub==='docs'?audDocsHTML(sec,ed)
+   :A.sub==='ol'?audOlHTML(sec,ed)
+   :A.sub==='hip'?audHipHTML(sec,ed)
+   :audAccHTML(sec,ed)}`;
+}
+
+/* ---------- 1. documentos que debe tener ---------- */
+function audDocsHTML(sec,ed){
+  const gCD=calcDocs('_cd','cd'), gS=sec?calcDocs(sec,'sector'):null;
+  const fila=(alc,clave)=>reqsDe(alc).map(r=>{
+    const e=docEstado(clave,r), E=DOCEST[e], v=docReqResp(clave)[r.id]||{};
+    const dd=r.doc?docsVisibles(AUD_PILAR).filter(d=>d.id===r.doc)[0]:null;
+    const dsel=v.docId?docsVisibles(AUD_PILAR).filter(d=>d.id===v.docId)[0]:dd;
+    return `<div class="dqi ${E.cls}">
+      <div class="dqt"><div><div class="dqn">${esc(r.t)}</div>
+        <div class="dqm">Lo emite ${esc(r.quien)}${r.item?` · ítem ${r.item} del diagnóstico`:''}</div></div>
+        <span class="dgch ${E.cls}">${E.cls==='ok'?'✓':(E.cls==='crit'?'⊗':(E.cls==='warn'?'⚠':'—'))} ${E.l}</span></div>
+      ${ed?`<div class="dgopt" style="margin-top:9px">
+        <button class="si" data-dq="tiene" data-dqi="${r.id}" data-dqs="${esc(clave)}" aria-pressed="${e==='tiene'}">Tiene</button>
+        <button class="no" data-dq="no" data-dqi="${r.id}" data-dqs="${esc(clave)}" aria-pressed="${e==='no'}">No tiene</button>
+        <button class="na" data-dq="na" data-dqi="${r.id}" data-dqs="${esc(clave)}" aria-pressed="${e==='na'}">No aplica</button>
+      </div>`:''}
+      <div class="dqg">
+        <div><div class="dgk">Documento en el aplicativo</div>
+          ${ed?`<select data-dqd="${r.id}" data-dqs="${esc(clave)}">
+            <option value="">Ninguno todavía</option>
+            ${docsVisibles(AUD_PILAR).map(d=>`<option value="${esc(d.id)}"${dsel&&dsel.id===d.id?' selected':''}>${esc(d.titulo)}</option>`).join('')}
+          </select>`:`<p>${dsel?esc(dsel.titulo):'—'}</p>`}
+          ${dsel?`<div class="dqlink">${dsel.tipo==='form'
+            ? `<a href="#" data-form="${esc(dsel.id)}">abrir el formulario</a>`
+            : (dsel.data?`<a href="${dsel.data}" download="${esc(dsel.nombreArchivo||dsel.titulo)}">descargar</a>`:(dsel.url?`<a href="${esc(dsel.url)}" target="_blank" rel="noopener">abrir</a>`:''))}</div>`:''}
+        </div>
+        <div><div class="dgk">Vence</div>
+          ${ed?`<input type="date" data-dqv="${r.id}" data-dqs="${esc(clave)}" value="${esc(v.vence||'')}">`:`<p>${v.vence?fmtDate(v.vence):'—'}</p>`}</div>
+        <div style="grid-column:1/-1"><div class="dgk">Observación</div>
+          ${ed?`<input data-dqo="${r.id}" data-dqs="${esc(clave)}" value="${esc(v.obs||'')}" placeholder="Dónde está, quién lo tiene, qué falta">`:`<p>${esc(v.obs||'')||'—'}</p>`}</div>
+      </div></div>`}).join('');
+  const kpi=(g,t)=>`<div class="kpi ${g.pct==null?'':(g.pct>=90?'tintok':(g.no?'tint':''))}"><div class="k">${t}</div>
+    <div class="v">${g.pct==null?'—':n1(g.pct)+'<small>%</small>'}</div>
+    <div class="m">${g.pct==null?'todavía sin verificar':g.tiene+' de '+g.base+(g.na?' · '+g.na+' no aplican':'')+(g.sin?' · '+g.sin+' sin verificar':'')}</div></div>`;
+  if(state.docReqEd)return docReqEditorHTML();
+  return `
+  <div class="grid g4" style="margin-bottom:16px">
+    ${kpi(gCD,'Documentos del CD')}
+    ${gS?kpi(gS,'Documentos de '+nombreSector(sec)):`<div class="kpi"><div class="k">Documentos del sector</div><div class="v">—</div><div class="m">Elegí un sector arriba</div></div>`}
+    <div class="kpi ${gCD.no+(gS?gS.no:0)?'tint':'tintok'}"><div class="k">Faltan</div>
+      <div class="v">${gCD.no+(gS?gS.no:0)}</div><div class="m">documentos marcados como que no están</div></div>
+    <div class="kpi"><div class="k">Cargados en el pilar</div>
+      <div class="v">${docsVisibles(AUD_PILAR).length}</div><div class="m">archivos y formatos disponibles</div></div>
+  </div>
+  <section class="panel" style="margin-bottom:16px"><header><h3>Del Centro de Distribución</h3>
+    <div class="sub">uno solo para todo el CD · ${reqsDe('cd').length} documentos</div></header>
+    <div class="body">${fila('cd','_cd')}</div></section>
+  <section class="panel"><header><h3>${sec?'De '+esc(nombreSector(sec)):'Por sector'}</h3>
+    <div class="sub">${sec?reqsDe('sector').length+' documentos que tiene que tener este sector':'elegí un sector arriba'}</div></header>
+    <div class="body">${sec?fila('sector',sec):'<div class="empty">Elegí el sector en el selector de arriba.</div>'}</div></section>
+  ${ed?`<div class="dgsave" style="margin-top:14px"><button class="btn primary" id="btnDocGuardar">Guardar lo verificado</button>
+    ${esAdmin()?`<button class="btn" id="btnDocEditar">${state.docReqEd?'Terminar de editar la lista':'✎ Editar la lista'}</button>`:''}
+    <span class="sub">Para subir un archivo nuevo, entrá a la pestaña <b>Documentos</b> del pilar y después elegilo acá.</span></div>`:''}`;
+}
+
+/* ---------- el editor de la lista: qué documentos corresponden ---------- */
+function docReqEditorHTML(){
+  const L=state.docReqEd.items;
+  return `
+  <div class="dgaviso"><b>Acá decidís qué corresponde y qué no.</b> Esta es la lista de documentos que el
+    aplicativo le va a pedir a cada sector. La armé con tu manual del pilar y con los 40 ítems del
+    diagnóstico del Jefe de SSO — <b>es una propuesta</b>. Cambiá el texto, cambiá quién lo emite, sacá lo
+    que no corresponda y agregá lo que falte. Cuando guardes, es lo que ven todos.</div>
+  <section class="panel" style="margin-bottom:16px"><header><h3>Del Centro de Distribución</h3>
+    <div class="sub">uno solo para todo el CD</div></header>
+    <div class="body">${L.filter(r=>r.alcance==='cd').map(r=>filaEditor(r)).join('')||'<div class="empty">Ninguno todavía.</div>'}
+      <button class="btn sm" data-dqadd="cd">+ Agregar uno del CD</button></div></section>
+  <section class="panel" style="margin-bottom:16px"><header><h3>Por sector</h3>
+    <div class="sub">cada sector tiene que tener el suyo</div></header>
+    <div class="body">${L.filter(r=>r.alcance==='sector').map(r=>filaEditor(r)).join('')||'<div class="empty">Ninguno todavía.</div>'}
+      <button class="btn sm" data-dqadd="sector">+ Agregar uno por sector</button></div></section>
+  <div class="dgsave"><button class="btn primary" id="btnDocReqGuardar">Guardar la lista</button>
+    <button class="btn ghost" id="btnDocReqCancelar">Cancelar</button>
+    <button class="btn ghost" id="btnDocReqBase">Volver a la propuesta original</button>
+    <span class="sub">${L.length} documentos en total.</span></div>`;
+}
+function filaEditor(r){
+  const docs=docsVisibles(AUD_PILAR);
+  return `<div class="dqedit"><div class="g">
+    <div><div class="dgk">Qué documento</div><input data-dqt="${esc(r.id)}" value="${esc(r.t)}"></div>
+    <div><div class="dgk">Quién lo emite</div><input data-dqq="${esc(r.id)}" value="${esc(r.quien||'')}"></div>
+    <div><button class="btn sm ghost" data-dqdel="${esc(r.id)}">Sacar</button></div>
+  </div>
+  <div class="g" style="margin-top:10px">
+    <div><div class="dgk">Documento del pilar que le corresponde</div>
+      <select data-dqdoc="${esc(r.id)}"><option value="">Ninguno</option>
+      ${docs.map(d=>`<option value="${esc(d.id)}"${r.doc===d.id?' selected':''}>${esc(d.titulo)}</option>`).join('')}</select></div>
+    <div><div class="dgk">Alcance</div><select data-dqalc="${esc(r.id)}">
+      <option value="cd"${r.alcance==='cd'?' selected':''}>Del CD</option>
+      <option value="sector"${r.alcance==='sector'?' selected':''}>Por sector</option></select></div>
+    <div><div class="dgk">Ítem del diagnóstico</div><input data-dqit="${esc(r.id)}" value="${esc(r.item||'')}" placeholder="Ej.: G1"></div>
+  </div></div>`;
+}
+
+/* ---------- 2. orden y limpieza ---------- */
+function audOlHTML(sec,ed){
+  const A=state.aud, ks=Object.keys(OLFORM);
+  if(!A.olf)A.olf=ks[0];
+  const f=OLFORM[A.olf]||{items:[]};
+  let tot=0,obt=0,sin=0,malos=[];
+  f.items.forEach((it,i)=>{tot+=it.p;const v=A.ol[i];
+    if(v==null){sin++;return}obt+=it.p*v;if(v<1)malos.push(i+1)});
+  const pct=tot?Math.round(obt/tot*100):0, marc=f.items.length-sin;
+  const cls=pct>=90?'ok':(pct>=75?'warn':'crit');
+  const hist=(state.segAud||[]).filter(x=>x.tipo==='ol'&&(!sec||x.sectorId===sec))
+    .sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||''))).slice(0,12);
+  return `
+  <div class="olbar">
+    <div class="field" style="min-width:270px"><label for="olForm">Formato</label>
+      <select id="olForm">${ks.map(k=>`<option value="${k}"${A.olf===k?' selected':''}>${esc(OLFORM[k].n)}</option>`).join('')}</select></div>
+    <div class="olres">
+      <div class="lbl">Cumplimiento</div>
+      <div class="pv ${marc?cls:''}">${marc?pct+' %':'—'}</div>
+    </div>
+    <div style="flex:1;min-width:220px">
+      <div class="barra"><i style="width:${marc?pct:0}%;background:${marc?(pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)')):'var(--surface-3)'}"></i></div>
+      <div class="olm">${marc?('Marcados '+marc+' de '+f.items.length+(malos.length?' · no cumplen: '+malos.join(', '):' · todo cumple')):'Marcá los puntos para ver el resultado'}</div>
+    </div>
+    ${ed?`<button class="btn primary" id="btnOlGuardar"${sec?'':' disabled'}>Guardar la verificación</button>`:''}
+  </div>
+  <section class="panel"><header><h3>${esc(f.n||'')}</h3>
+    <div class="sub">${f.items.length} puntos · los pesos suman 100 %</div></header>
+    <div class="body">${f.items.map((it,i)=>{const v=A.ol[i];
+      return `<div class="olit"><div class="oln">${i+1}</div>
+        <div class="olc"><div class="olt">${esc(it.t)}</div><div class="olp">Peso ${it.p} %</div></div>
+        <div class="dgopt">
+          <button class="si" data-olv="1" data-oli="${i}" aria-pressed="${v===1}">Cumple</button>
+          <button class="med" data-olv="0.5" data-oli="${i}" aria-pressed="${v===0.5}">Parcial</button>
+          <button class="no" data-olv="0" data-oli="${i}" aria-pressed="${v===0}">No cumple</button>
+        </div></div>`}).join('')}</div></section>
+  <section class="panel" style="margin-top:16px"><header><h3>Verificaciones guardadas</h3>
+    <div class="sub">${hist.length?hist.length+' en la base':'todavía ninguna'}</div></header>
+    <div class="body">${hist.length?`<div class="tw"><table class="lst"><thead><tr><th>Fecha</th><th>Sector</th>
+      <th>Formato</th><th>Verifica</th><th class="n">Cumplimiento</th></tr></thead><tbody>
+      ${hist.map(h=>{const c=h.pct>=90?'var(--ok)':(h.pct>=75?'var(--warn)':'var(--crit)');
+        return `<tr><td>${fmtDate(h.fecha)}</td><td>${esc(nombreSector(h.sectorId)||h.sectorId)}</td>
+        <td>${esc(h.formato||'')}</td><td>${esc(h.por||'')}</td>
+        <td class="n" style="color:${c}"><b>${h.pct} %</b></td></tr>`}).join('')}
+    </tbody></table></div>`:'<div class="empty">Cuando guardes la primera, aparece acá.</div>'}</div></section>`;
+}
+
+/* ---------- 3. riesgos del sector · hipermatriz ---------- */
+function audHipHTML(sec,ed){
+  const A=state.aud, L=sec?hipDe(sec):[];
+  if(!sec)return '<div class="empty" style="padding:40px;text-align:center">Elegí el sector en el selector de arriba.</div>';
+  const marc=L.filter(r=>{const v=A.resp[r.id]||{};return !!(v.v||v.t)}).length;
+  const mal=L.filter(r=>{const v=A.resp[r.id]||{};return v.v==='no'||v.t==='notiene'});
+  const na=L.filter(r=>(A.resp[r.id]||{}).v==='na').length;
+  const base=L.length-na, ok=base-mal.length;
+  const pct=base>0&&marc?Math.round(ok/base*100):null;
+  const cls=pct==null?'':(pct>=90?'ok':(pct>=75?'warn':'crit'));
+  const urg=mal.filter(r=>r.niv==='critico'||r.niv==='importante').length;
+  return `
+  <div class="olbar">
+    <div class="olres"><div class="lbl">Cumplimiento del sector</div>
+      <div class="pv ${cls}">${pct==null?'—':pct+' %'}</div></div>
+    <div style="flex:1;min-width:220px">
+      <div class="barra"><i style="width:${pct||0}%;background:${pct==null?'var(--surface-3)':(pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)'))}"></i></div>
+      <div class="olm">${marc?('Marcados '+marc+' de '+L.length+(na?' · '+na+' no aplican':'')+(mal.length?' · '+mal.length+' con desvío':' · sin desvíos')):'Todavía sin marcar'}</div></div>
+    ${urg?`<span class="dgch crit" style="font-size:12.5px;padding:5px 11px">⊗ ${urg} de acción inmediata</span>`:''}
+    ${ed&&mal.length?`<button class="btn primary" id="btnHipCerrar">Cerrar y generar las acciones</button>`:''}
+  </div>
+  <section class="panel"><header><h3>Los riesgos de ${esc(nombreSector(sec))}</h3>
+    <div class="sub">${L.length} ${L.length===1?'punto':'puntos'} de la hipermatriz · por cada uno: ¿el control está? ¿el elemento está?</div></header>
+    <div class="body">${L.length?L.map(r=>{
+      const v=A.resp[r.id]||{}, N=HIPNIV[r.niv];
+      return `<div class="hipi ${N.cls}">
+        <div class="dqt"><div><div class="dqn">${esc(r.peligro)}</div>
+          <div class="dqm">${esc(r.puesto)} · ${esc(HIPTIPO[r.tipo]||r.tipo)}${r.agente?' · '+esc(r.agente):''} · ${r.p}×${r.s}=${r.n}</div></div>
+          <span class="dgch ${N.cls}">${N.cls==='ok'?'✓':(N.cls==='crit'?'⊗':'⚠')} ${N.l}</span></div>
+        <div class="hipc"><b>Qué le hace al cuerpo:</b> ${esc(r.cuerpo)}</div>
+        <div class="hipc"><b>Control que tiene que estar:</b> ${esc(r.control)}</div>
+        ${ed?`<div class="hipops">
+          <div class="grp"><span class="glbl">¿El control se cumple?</span><div class="dgopt">
+            <button class="si" data-hv="cumple" data-hi="${r.id}" aria-pressed="${v.v==='cumple'}">Cumple</button>
+            <button class="no" data-hv="no" data-hi="${r.id}" aria-pressed="${v.v==='no'}">No cumple</button>
+            <button class="na" data-hv="na" data-hi="${r.id}" aria-pressed="${v.v==='na'}">No aplica</button></div></div>
+          <div class="grp"><span class="glbl">¿El elemento o el EPP está?</span><div class="dgopt">
+            <button class="si" data-ht="tiene" data-hi="${r.id}" aria-pressed="${v.t==='tiene'}">Tiene</button>
+            <button class="no" data-ht="notiene" data-hi="${r.id}" aria-pressed="${v.t==='notiene'}">No tiene</button></div></div>
+        </div>`:''}
+        ${(v.v==='no'||v.t==='notiene')?`<div class="hipobs">
+          <label>¿Qué viste y dónde? Esto es lo que va a la acción</label>
+          <input data-ho="${r.id}" value="${esc(v.obs||'')}" placeholder="Ej.: dos pallets frente al extintor del pasillo 4">
+          <div class="hipplz">${N.cls==='crit'?'⊗':'⚠'} Como es <b>${N.l}</b>, la acción vence ${N.dias===0?'<b>hoy mismo y se detiene la tarea</b>':'en <b>'+N.plazo+'</b>'} · se verifica con: ${esc(r.indicador)}</div>
+        </div>`:''}
+      </div>`}).join(''):'<div class="empty">Este sector todavía no tiene riesgos cargados en la hipermatriz.</div>'}</div></section>`;
+}
+
+/* ---------- 4. acciones ---------- */
+function audAccHTML(sec,ed){
+  const L=(state.segAcc||[]).filter(a=>!sec||a.sectorId===sec)
+    .sort((a,b)=>String(a.limite||'').localeCompare(String(b.limite||'')));
+  const ab=L.filter(a=>a.estado==='abierta'), ve=L.filter(segVencida);
+  const vf=L.filter(a=>a.estado==='verificada');
+  const enPlazo=vf.filter(a=>a.verifEl&&a.verifEl<=a.limite).length;
+  const pct=vf.length?Math.round(enPlazo/vf.length*1000)/10:null;
+  return `
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi ${ab.length?'':'tintok'}"><div class="k">Abiertas</div><div class="v">${ab.length}</div>
+      <div class="m">esperando que se hagan</div></div>
+    <div class="kpi ${ve.length?'tint':'tintok'}"><div class="k">Vencidas</div><div class="v">${ve.length}</div>
+      <div class="m">pasó el plazo y siguen abiertas</div></div>
+    <div class="kpi"><div class="k">Verificadas</div><div class="v">${vf.length}</div>
+      <div class="m">con su indicador cumplido</div></div>
+    <div class="kpi ${pct!=null&&pct>=90?'tintok':''}"><div class="k">Cierre en plazo</div>
+      <div class="v">${pct==null?'—':n1(pct)+'<small>%</small>'}</div>
+      <div class="m">${pct==null?'todavía sin acciones cerradas':enPlazo+' de '+vf.length+' a tiempo'}</div></div>
+  </div>
+  <section class="panel"><header><h3>Acciones de la auditoría interna</h3>
+    <div class="sub">el plazo lo pone la criticidad · cada acción se cierra con su indicador</div></header>
+    <div class="body">${L.length?L.map(a=>{const N=HIPNIV[a.niv]||HIPNIV.moderado, ven=segVencida(a);
+      return `<div class="sacc ${a.estado==='verificada'?'lista':(ven?'venc':'')}">
+        <div class="dqt"><div><div class="dqn">${esc(a.peligro)}</div>
+          <div class="dqm">${esc(nombreSector(a.sectorId)||a.sectorId)} · ${esc(a.puesto||'')} · auditó ${esc(a.por||'')} el ${fmtDate(a.fecha)}</div></div>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span class="dgch ${N.cls}">${N.l}</span>
+            <span class="dgch ${a.estado==='verificada'?'ok':(ven?'crit':'warn')}">${a.estado==='verificada'
+              ?'✓ Verificada el '+fmtDate(a.verifEl):(ven?'⊗ Vencida el '+fmtDate(a.limite):'⚠ Vence el '+fmtDate(a.limite))}</span>
+          </div></div>
+        <div class="saccg">
+          <div><div class="dgk">Qué faltaba</div><p>${esc(a.falta||'')}${a.obs?' · '+esc(a.obs):''}</p></div>
+          <div><div class="dgk">Acción preventiva</div><p>${esc(a.accion||'')}</p></div>
+          <div><div class="dgk">Indicador de seguimiento</div><p>${esc(a.indicador||'')}</p></div>
+          <div><div class="dgk">Plazo por criticidad</div><p>${esc(N.plazo)} · verificación ${esc(N.ver)}</p></div>
+        </div>
+        ${ed?(a.estado==='abierta'
+          ?`<div class="saccf"><input placeholder="Quién verificó" data-sv="${esc(a.id)}" value="${esc(a.verifPor||'')}">
+             <input type="date" data-se="${esc(a.id)}" value="${esc(a.verifEl||hoyIso())}">
+             <button class="btn sm primary" data-sok="${esc(a.id)}">Marcar verificada</button></div>`
+          :`<div class="saccf listo">Verificada por <b>${esc(a.verifPor||'—')}</b> el ${fmtDate(a.verifEl)}
+             · <button class="btn sm ghost" data-sre="${esc(a.id)}">Reabrir</button></div>`):''}
+      </div>`}).join(''):'<div class="empty">Todavía no hay acciones. Se generan solas al cerrar una auditoría de riesgos con algún desvío.</div>'}</div></section>`;
 }
 
 /* ================= vista: diagnóstico del sistema y KPI del manual ================= */
@@ -6814,6 +7153,67 @@ const DIAG_KPI=[
  {id:'k5',n:'Hallazgos corregidos dentro del plazo',f:'(acciones cerradas en plazo ÷ acciones cerradas) × 100',
   fr:'Mensual',meta:90,cmp:'mayor',un:'%',auto:'hall',nota:'Sale solo de los hallazgos cerrados del mes.'}];
 
+
+/* ================= auditoría interna del pilar Seguridad =================
+   Lo que Christian le audita a su propio sector: los documentos que tiene que tener,
+   el orden y la limpieza, y los riesgos de la hipermatriz.
+   Tres colecciones: docSector (uno por sector), segAud (las verificaciones que se
+   guardan) y segAcc (las acciones con su plazo por criticidad).                     */
+const DOCREQ_COLS=['id','t','alcance','quien','doc','item'];
+const DOCREQ_BASE=[["d01","Política de Seguridad y Salud Ocupacional firmada y comunicada","cd","Jefatura de SySO + Gerencia de Calidad","","A1"],["d02","Plan anual de SSO con objetivos medibles y responsables","cd","Jefatura de SySO","","A3"],["d03","Matriz de riesgos IPER actualizada y firmada","cd","Jefatura de SySO + Responsable SySO","","A5"],["d04","Actas mensuales del Comité Interno de SSO (CIPA)","cd","CIPA","","A2"],["d05","Hojas de datos de seguridad (MSDS) de todos los químicos","cd","Jefatura de SySO + Compras","","A6"],["d06","Procedimiento de investigación de incidentes y accidentes","cd","Jefatura de SySO","","A7"],["d07","Plan de emergencia, brigada conformada y registro de simulacros","cd","Jefatura de SySO","","E1"],["d08","Inspección y mantenimiento de PCI: extintores, luces, salidas, rociadores, hidrantes y BIE","cd","Mantenimiento + SySO","","B3"],["d09","Procedimientos operativos seguros (POS) documentados","cd","Jefatura de SySO + Mantenimiento","","D1"],["d10","Procedimiento de bloqueo y etiquetado (LOTO)","cd","Mantenimiento + SySO","","D3"],["d11","Calendario anual de capacitación de seguridad y medicina laboral","cd","Jefatura de SySO + Medicina laboral","","F1"],["d12","Documento de autoridad de parada de trabajo para todo el personal","cd","Gerencia","",""],["s01","Matriz de EPP por puesto del sector","sector","Jefatura de SySO","","C1"],["s02","Entrega de EPP firmada por el personal del sector","sector","Jefe del sector","doc-epp","C2"],["s03","Entrega de uniforme firmada","sector","Recursos Humanos","doc-unif",""],["s04","Exámenes médicos del personal: preocupacional, periódico y de egreso","sector","Medicina laboral","","G1"],["s05","Control de vacunación del personal al día","sector","Medicina laboral","","G2"],["s06","Habilitación de los operadores de equipo: reach, zorra y montacargas","sector","Jefatura de SySO + Mantenimiento","","D5"],["s07","Permisos de trabajo del sector: altura, contratistas y tareas especiales","sector","Jefatura de SySO","form-permiso",""],["s08","Inducción de seguridad del personal del sector, firmada","sector","Jefatura de SySO","","F2"],["s09","Verificación de orden y limpieza del sector","sector","Jefe del sector","doc-ol-dep",""],["s10","Pictograma de EPP requerido, instalado y legible en el acceso","sector","Jefatura de SySO","","B1"],["s11","Registro de charlas de seguridad de 5 minutos","sector","Jefe del sector","","F3"],["s12","Registro de actos y condiciones inseguras del sector, con seguimiento","sector","Jefe del sector + SySO","","F5"]].map(r=>{const o={};DOCREQ_COLS.forEach((k,i)=>o[k]=r[i]);return o});
+/* la lista es editable por Calidad: si hay config/docReq manda esa */
+const docReqCfg=()=>(state.docReqCfg&&Array.isArray(state.docReqCfg.items)&&state.docReqCfg.items.length)
+  ?state.docReqCfg.items:DOCREQ_BASE;
+const HIP_COLS=['id','fila','proceso','puesto','sectores','peligro','tipo','inc','agente','cuerpo','p','s','n','niv','nivPlanilla','control','accion','indicador','rutina','terc','trab'];
+const HIP=[["m001",15,"Oficinas Admistrativas","Administrativo",["s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",5,4,20,"bajo","Moderado","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Pausa activa.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinario",false,"11"],["m002",15,"Oficinas Admistrativas","Administrativo",["s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",5,4,20,"bajo","Moderado","Mantenimiento de equipos de oficina. Uso de calzados cerrados. Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa. Apertura de ventanas para renovaciòn de aire.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinario",false,"11"],["m003",15,"Oficinas Admistrativas","Administrativo",["s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",5,4,20,"bajo","Moderado","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa. Apertura de ventanas para renovaciòn de aire.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinario",false,"11"],["m004",16,"Oficina Recepción / Secretaria","Recepcionista",["s-recepcion","s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Ajuste ergonómico del puesto. Desinfección constante. Orden y limpieza.","Pausas activas.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinario",false,"1"],["m005",16,"Oficina Recepción / Secretaria","Recepcionista",["s-recepcion","s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Ajuste ergonómico del puesto. Desinfección constante. Orden y limpieza.","Pausas activas. Charlas de 5 minutos.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinario",false,"1"],["m006",16,"Oficina Recepción / Secretaria","Recepcionista",["s-recepcion","s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Ajuste ergonómico del puesto.","Pausas activas. Charlas de 5 minutos.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinario",false,"1"],["m007",16,"Oficina Recepción / Secretaria","Recepcionista",["s-recepcion","s-ofiadm"],"Exigencia visual sostenida en pantalla","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, visión borrosa, cefalea",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Ajuste ergonómico del puesto. Desinfección constante. Orden y limpieza.","Pausas activas.","Agudeza visual en el examen periódico + pausa visual cada 2 horas registrada","Rutinario",false,"1"],["m008",17,"Gerencia","Dirigir y Coordinar",["s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinario",false,"1"],["m009",17,"Gerencia","Dirigir y Coordinar",["s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Uso de calzados cerrados. Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral. Capacitar en liderazgo positivo y comunicación efectiva para reducir conflictos y mejorar el clima laboral.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinario",false,"1"],["m010",17,"Gerencia","Dirigir y Coordinar",["s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinario",false,"1"],["m011",17,"Gerencia","Dirigir y Coordinar",["s-ofiadm"],"Exigencia visual sostenida en pantalla","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, visión borrosa, cefalea",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Agudeza visual en el examen periódico + pausa visual cada 2 horas registrada","Rutinario",false,"1"],["m012",18,"Director/unidad de negocios industrias","Planificación comercial, aplicación de estrategias corporativas, desarrollo de negocios.",["s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",false,"1"],["m013",18,"Director/unidad de negocios industrias","Planificación comercial, aplicación de estrategias corporativas, desarrollo de negocios.",["s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Uso de calzados cerrados. Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral. Capacitar en liderazgo positivo y comunicación efectiva para reducir conflictos y mejorar el clima laboral.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"1"],["m014",18,"Director/unidad de negocios industrias","Planificación comercial, aplicación de estrategias corporativas, desarrollo de negocios.",["s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"1"],["m015",18,"Director/unidad de negocios industrias","Planificación comercial, aplicación de estrategias corporativas, desarrollo de negocios.",["s-ofiadm"],"Exigencia visual sostenida en pantalla","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, visión borrosa, cefalea",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Fomentar pausas activas y ergonomía en el uso de computadoras para prevenir fatiga física, Gestionar adecuadamente la carga de trabajo y los tiempos de presión para evitar el estrés laboral.","Agudeza visual en el examen periódico + pausa visual cada 2 horas registrada","Rutinaria",false,"1"],["m016",19,"R.R.H.H","Responsable de atraer, evaluar y seleccionar talento para la empresa.",["s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Pausa activa.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",false,"4"],["m017",19,"R.R.H.H","Responsable de atraer, evaluar y seleccionar talento para la empresa.",["s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Uso de calzados cerrados. Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa. Apertura de ventanas para renovaciòn de aire.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"4"],["m018",19,"R.R.H.H","Responsable de atraer, evaluar y seleccionar talento para la empresa.",["s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa. Apertura de ventanas para renovaciòn de aire.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"4"],["m019",19,"R.R.H.H","Responsable de atraer, evaluar y seleccionar talento para la empresa.",["s-ofiadm"],"Exigencia visual sostenida en pantalla","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, visión borrosa, cefalea",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Pausa activa.","Agudeza visual en el examen periódico + pausa visual cada 2 horas registrada","Rutinaria",false,"4"],["m020",20,"Control de Calidad","Asegurar estandares/servicios. Realizar auditorias y analisis de procesos.",["s-boston","s-boston-alm","s-muelles","s-pasillos","s-ofiope"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Uso de EPP adecuado, zapaton industrial, casco de seguridad.","Asegurar zonas de inspección libres de tránsito y bien iluminadas para evitar accidentes. Capacitar al personal de control de calidad en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"3"],["m021",20,"Control de Calidad","Asegurar estandares/servicios. Realizar auditorias y analisis de procesos.",["s-boston","s-boston-alm","s-muelles","s-pasillos","s-ofiope"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Uso de EPP adecuado, zapaton industrial, casco de seguridad.","Capacitar al personal de control de calidad en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"3"],["m022",20,"Control de Calidad","Asegurar estandares/servicios. Realizar auditorias y analisis de procesos.",["s-boston","s-boston-alm","s-muelles","s-pasillos","s-ofiope"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,4,12,"bajo","Bajo","Uso de EPP adecuado, zapaton industrial, casco de seguridad.","Capacitar al personal de control de calidad en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinaria",false,"3"],["m023",21,"Oficina de TIC / Informatica","Tecnicos",["s-ofiadm","s-ofiope","s-salas"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",5,6,30,"moderado","Moderado","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura.Capacitacion de riesgos de acuerdo a la labor a realiza","Inducciòn de seguridad sobre los potenciales riesgos del trabajo, recomendaciones, revision constante de los equipos informaticos y CCTV, trabajos elèctricos.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",true,"2"],["m024",21,"Oficina de TIC / Informatica","Tecnicos",["s-ofiadm","s-ofiope","s-salas"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",5,6,30,"moderado","Moderado","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura.Capacitacion de riesgos de acuerdo a la labor a realiza","Inducciòn de seguridad sobre los potenciales riesgos del trabajo, recomendaciones, revision constante de los equipos informaticos y CCTV, trabajos elèctricos.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",true,"2"],["m025",21,"Oficina de TIC / Informatica","Tecnicos",["s-ofiadm","s-ofiope","s-salas"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",5,6,30,"moderado","Moderado","Uso de EPP, permisos de trabajo.","Inducciòn de seguridad sobre los potenciales riesgos del trabajo, recomendaciones, revision constante de los equipos informaticos y CCTV, trabajos elèctricos.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",true,"2"],["m026",21,"Oficina de TIC / Informatica","Tecnicos",["s-ofiadm","s-ofiope","s-salas"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",5,6,30,"moderado","Moderado","Uso de EPP, permisos de trabajo.","Inducciòn de seguridad sobre los potenciales riesgos del trabajo, recomendaciones, revision constante de los equipos informaticos y CCTV, trabajos elèctricos.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinaria",true,"2"],["m027",21,"Oficina de TIC / Informatica","Tecnicos",["s-ofiadm","s-ofiope","s-salas"],"Exposición a ruido","higiene","Exposición a Ruido","Ruido","Oído: hipoacusia inducida por ruido, acúfeno",5,6,30,"moderado","Moderado","Uso de EPP, permisos de trabajo.","Inducciòn de seguridad sobre los potenciales riesgos del trabajo, recomendaciones, revision constante de los equipos informaticos y CCTV, trabajos elèctricos.","Audiometría anual + dosimetría del puesto y protector auditivo en uso","Rutinaria",true,"2"],["m028",22,"SST","Evalúa riesgos como caídas, exposición a agentes y estrés laboral.",["s-ofiadm","s-ofiope"],"Exposición a agentes químicos o biológicos en la recorrida","higiene","Contacto con sustancias químicas","Químico","Piel y vía respiratoria: dermatitis, irritación, infección",3,4,12,"bajo","Bajo","Uso de EPP, permisos de trabajo.","Asegurar zonas de inspección libres de tránsito y bien iluminadas para evitar accidentes. Capacitar al personal SYSO,en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","EPP de recorrida completo + relevamiento de agentes por sector al día","Rutinaria",false,"2"],["m029",22,"SST","Evalúa riesgos como caídas, exposición a agentes y estrés laboral.",["s-ofiadm","s-ofiope"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",3,4,12,"bajo","Bajo","Uso de EPP, permisos de trabajo.","Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones. Capacitar al personal SYSO,en ergonomía y manipulación segura de productos.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinaria",false,"2"],["m030",22,"SST","Evalúa riesgos como caídas, exposición a agentes y estrés laboral.",["s-ofiadm","s-ofiope"],"Caída al mismo nivel en recorrida por el depósito","seguridad","Caída al mismo nivel","","Rodillas, muñecas y cabeza: esguince, fractura, golpe",3,4,12,"bajo","Bajo","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura.Capacitacion de riesgos de acuerdo a la labor a realiza","Asegurar zonas de inspección libres de tránsito y bien iluminadas para evitar accidentes. Capacitar al personal SYSO,en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","Ronda con zonas de inspección libres y bien iluminadas + cero caídas del mes","Rutinaria",false,"2"],["m031",22,"SST","Evalúa riesgos como caídas, exposición a agentes y estrés laboral.",["s-ofiadm","s-ofiope"],"Atrapamiento con partes en movimiento","seguridad","Atrapamiento por objeto fijo o en movimiento","","Manos y brazos: amputación, aplastamiento, fractura",3,4,12,"bajo","Bajo","Uso de EPP, permisos de trabajo.","Asegurar zonas de inspección libres de tránsito y bien iluminadas para evitar accidentes. Capacitar al personal SYSO,en ergonomía y manipulación segura de productos. Implementar pausas activas y controlar la carga de trabajo para mantener la precisión en las inspecciones.","Guardas colocadas + bloqueo de energía antes de intervenir, con tarjeta","Rutinaria",false,"2"],["m032",23,"Tesoreria","Rendicion de fleteros",["s-ofiadm"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Conteo de valores, ajuste ergonomico, desinfeccion constante, pausas activas.","Charlas de seguridad , pausas activas.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",false,"4"],["m033",23,"Tesoreria","Rendicion de fleteros",["s-ofiadm"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Conteo de valores, ajuste ergonomico, desinfeccion constante, pausas activas.","Charlas de seguridad , pausas activas.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"4"],["m034",23,"Tesoreria","Rendicion de fleteros",["s-ofiadm"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Conteo de valores, ajuste ergonomico, desinfeccion constante, pausas activas.","Charlas de seguridad , pausas activas.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"4"],["m035",23,"Tesoreria","Rendicion de fleteros",["s-ofiadm"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",3,4,12,"bajo","Bajo","Conteo de valores, ajuste ergonomico, desinfeccion constante, pausas activas.","Charlas de seguridad , pausas activas.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinaria",false,"4"],["m036",24,"Cocina Comedor","Produccion de alimentos",["s-cocina","s-comedor"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene.","Inducciones de seguridad y BPM. Control rutinario y recomendación de mantenimiento. Mantener limpio e higienizado. Controlar que los extintores. Los equipos deben ser de uso industrial.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",true,"4"],["m037",24,"Cocina Comedor","Produccion de alimentos",["s-cocina","s-comedor"],"Contacto con superficies u objetos calientes","seguridad","Contacto con objetos calientes","","Manos, antebrazos y cara: quemadura de primer a tercer grado",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene.","Control rutinario y recomendación de mantenimiento. Mantener limpio e higienizado. Controlar que los extintores. Los equipos deben ser de uso industrial.","Guante y manopla térmica en uso + mantenimiento de artefactos al día","Rutinaria",true,"4"],["m038",24,"Cocina Comedor","Produccion de alimentos",["s-cocina","s-comedor"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene.","Inducciones de seguridad y BPM. Control rutinario y recomendación de mantenimiento. Mantener limpio e higienizado. Controlar que los extintores. Los equipos deben ser de uso industrial.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",true,"4"],["m039",24,"Cocina Comedor","Produccion de alimentos",["s-cocina","s-comedor"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene.","Inducciones de seguridad y BPM. Control rutinario y recomendación de mantenimiento. Mantener limpio e higienizado. Controlar que los extintores. Los equipos deben ser de uso industrial.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinaria",true,"4"],["m040",25,"Taller de Mantenimiento","Operario electricista",["s-manten","s-baterias"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo.","Inducciòn de seguridad. Provisión de equipos dieléctricos.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"1"],["m041",25,"Taller de Mantenimiento","Operario electricista",["s-manten","s-baterias"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo.","Inducciòn de seguridad. Provisión de equipos dieléctricos.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinaria",false,"1"],["m042",25,"Taller de Mantenimiento","Operario electricista",["s-manten","s-baterias"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura.","Provisión de equipos dieléctricos.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"1"],["m043",25,"Taller de Mantenimiento","Operario electricista",["s-manten","s-baterias"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura.","Inducciòn de seguridad. Provisión de equipos dieléctricos.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinaria",false,"1"],["m044",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Exposición a ruido","higiene","Exposición a Ruido","Ruido","Oído: hipoacusia inducida por ruido, acúfeno",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Audiometría anual + dosimetría del puesto y protector auditivo en uso","Rutinaria",false,"2"],["m045",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Soldadura: radiación y humos metálicos","higiene","Exposición a humos metálicos - Agentes Químicos","Químico","Ojos y vía respiratoria: queratitis por arco, fiebre de los humos metálicos",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Máscara de soldar y extracción localizada + espirometría en el examen periódico","Rutinaria",false,"2"],["m046",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Contacto con objetos cortantes","seguridad","Contacto con objetos cortantes","","Manos y antebrazos: herida cortante, lesión de tendón",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Guante anticorte en uso + cuchillos y hojas con funda o guarda","Rutinaria",false,"2"],["m047",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Atrapamiento con partes en movimiento","seguridad","Atrapamiento por objeto fijo o en movimiento","","Manos y brazos: amputación, aplastamiento, fractura",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Guardas colocadas + bloqueo de energía antes de intervenir, con tarjeta","Rutinaria",false,"2"],["m048",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Contacto con productos químicos o inflamables","higiene","Contacto con sustancias químicas","Químico","Piel y vía respiratoria: dermatitis, quemadura química, intoxicación",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Hoja de datos de seguridad visible + EPP químico y kit antiderrame completo","Rutinaria",false,"2"],["m049",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Caída al mismo nivel por piso resbaladizo u obstáculo","seguridad","Caída al mismo nivel","","Rodillas, muñecas, cadera y cabeza: esguince, fractura, golpe",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Piso seco y señalizado en la ronda + cero caídas del mes","Rutinaria",false,"2"],["m050",26,"Taller de Mantenimiento","Operario mecanico",["s-manten"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",5,8,40,"importante","Medio","Uso de EPP, permisos de trabajo. Charlas de seguridad para trabajos en altura, charlas sobre utilizaciòn de EPP para trabajos criticos, orden y limpieza e higiene.","Inducciònde seguridad sobre los riesgos laborales, provision de los equipos de seguridad acorde al trabajo a realizar.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinaria",false,"2"],["m051",27,"Taller de Mantenimiento","Operario de limpieza / Deposito",["s-manten","s-basura","s-reciclados","s-banos"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,8,24,"moderado","Medio","Uso de EPP, charlas de seguridad, orden y limpieza e higiene.","Inducciòn de seguridad previa, provision de señalizaciones conos para delimitar el area de trabajo.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinaria",false,"2"],["m052",27,"Taller de Mantenimiento","Operario de limpieza / Deposito",["s-manten","s-basura","s-reciclados","s-banos"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",3,8,24,"moderado","Medio","Uso de EPP, charlas de seguridad, orden y limpieza e higiene.","Inducciòn de seguridad previa, provision de señalizaciones conos para delimitar el area de trabajo.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinaria",false,"2"],["m053",27,"Taller de Mantenimiento","Operario de limpieza / Deposito",["s-manten","s-basura","s-reciclados","s-banos"],"Atrapamiento con partes en movimiento","seguridad","Atrapamiento por objeto fijo o en movimiento","","Manos y brazos: amputación, aplastamiento, fractura",3,8,24,"moderado","Medio","Uso de EPP, charlas de seguridad, orden y limpieza e higiene.","Inducciòn de seguridad previa, provision de señalizaciones conos para delimitar el area de trabajo.","Guardas colocadas + bloqueo de energía antes de intervenir, con tarjeta","Rutinaria",false,"2"],["m054",27,"Taller de Mantenimiento","Operario de limpieza / Deposito",["s-manten","s-basura","s-reciclados","s-banos"],"Caída al mismo nivel por piso resbaladizo u obstáculo","seguridad","Caída al mismo nivel","","Rodillas, muñecas, cadera y cabeza: esguince, fractura, golpe",3,8,24,"moderado","Medio","Uso de EPP, charlas de seguridad, orden y limpieza e higiene.","Inducciòn de seguridad previa, provision de señalizaciones conos para delimitar el area de trabajo.","Piso seco y señalizado en la ronda + cero caídas del mes","Rutinaria",false,"2"],["m055",27,"Taller de Mantenimiento","Operario de limpieza / Deposito",["s-manten","s-basura","s-reciclados","s-banos"],"Movimiento repetitivo","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Muñecas, codos y hombros: tendinitis, síndrome del túnel carpiano",3,8,24,"moderado","Medio","Uso de EPP, charlas de seguridad, orden y limpieza e higiene.","Inducciòn de seguridad previa, provision de señalizaciones conos para delimitar el area de trabajo.","Evaluación de trabajo repetitivo + rotación de tarea registrada","Rutinaria",false,"2"],["m056",28,"Taller de Mantenimiento","Operario de limpieza / Area Verde",["s-verdes","s-estacionamiento"],"Exposición a calor","higiene","Exposición a Calor","Calor","Cuerpo entero: deshidratación, calambre por calor, agotamiento, insolación",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene y charlas de seguridad.","Inducciòn sobre el manejo de químicos industriales. Inducciòn en trabajos que impliquen altura. Uso de EPP.","Agua fresca disponible y rotación de tarea + índice TGBH del puesto","Rutinaria",false,"2"],["m057",28,"Taller de Mantenimiento","Operario de limpieza / Area Verde",["s-verdes","s-estacionamiento"],"Contacto con productos químicos o inflamables","higiene","Contacto con sustancias químicas","Químico","Piel y vía respiratoria: dermatitis, quemadura química, intoxicación",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene y charlas de seguridad.","Inducciòn sobre el manejo de químicos industriales. Uso de EPP.","Hoja de datos de seguridad visible + EPP químico y kit antiderrame completo","Rutinaria",false,"2"],["m058",28,"Taller de Mantenimiento","Operario de limpieza / Area Verde",["s-verdes","s-estacionamiento"],"Manejo manual de carga","higiene","Exposición a manejo manual de carga - Agente Ergonómico","Ergonómico","Columna lumbar: lumbalgia, hernia de disco",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene y charlas de seguridad.","Uso de EPP.","Peso por bulto dentro del límite + capacitación de levantamiento firmada","Rutinaria",false,"2"],["m059",28,"Taller de Mantenimiento","Operario de limpieza / Area Verde",["s-verdes","s-estacionamiento"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene y charlas de seguridad.","Uso de EPP.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"2"],["m060",28,"Taller de Mantenimiento","Operario de limpieza / Area Verde",["s-verdes","s-estacionamiento"],"Picadura o mordedura de animal o insecto","seguridad","Picadura o mordedura causado por animal o insecto","","Piel y sistema general: envenenamiento, reacción alérgica, infección",3,4,12,"bajo","Bajo","Uso de EPP, orden y limpieza e higiene y charlas de seguridad.","Inducciòn sobre el manejo de químicos industriales. Uso de EPP.","Desbroce previo y botín de caña alta + protocolo y suero disponible","Rutinaria",false,"2"],["m061",29,"Operador de zorras electricas.","Picqueador ambos turnos",["s-pasillos","s-boston-alm","s-punto","s-laser","s-bk"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,8,24,"moderado","Medio","Atención del operador. Mantenimiento preventivo de la zorra electrica. Utilizar las luces de seguridad. Uso EPP.","Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. circulación a 10 km por hora. No exceder los pesos. Uso de EPP.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinaria",false,"16"],["m062",30,"Reacheros","Reacheros ambos turnos",["s-pasillos","s-boston-alm","s-laser","s-mezz"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,8,24,"moderado","Medio","Atención del operador. Mantenimiento preventivo de la zorra electrica. Utilizar las luces de seguridad. Uso EPP.","Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Indicar circulación a 10 km por hora. No exceder los pesos.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinaria",false,"8"],["m063",30,"Reacheros","Reacheros ambos turnos",["s-pasillos","s-boston-alm","s-laser","s-mezz"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",3,8,24,"moderado","Medio","Inducciòn. Atención del operador. Mantenimiento preventivo de la zorra electrica. Utilizar las luces de seguridad. Uso EPP.","Inducciòn. Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Prestar atención. Indicar circulación a 10 km por hora. No exceder los pesos.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinaria",false,"8"],["m064",31,"Piqueadores","Picqueador ambos turnos",["s-pasillos","s-boston-alm","s-laser","s-punto"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,6,18,"bajo","Bajo","Atención del operador. Mantenimiento preventivo de la zorra electrica. Utilizar las luces de seguridad. Uso EPP.","Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Indicar circulación a 10 km por hora. No exceder los pesos.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinaria",false,"11"],["m065",31,"Piqueadores","Picqueador ambos turnos",["s-pasillos","s-boston-alm","s-laser","s-punto"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",3,6,18,"bajo","Bajo","Inducciòn. Atención del operador. Mantenimiento preventivo de la zorra electrica. Utilizar las luces de seguridad. Uso EPP.","Inducciòn. Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Prestar atención. Indicar circulación a 10 km por hora. No exceder los pesos.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinaria",false,"11"],["m066",32,"Oficina de Operaciones Depósito","Personal administrativo",["s-ofiope"],"Iluminación del puesto — riesgo de fatiga visual","higiene","Otro: fatiga visual","Iluminación","Vista: fatiga visual, ojo seco, cefalea al final del turno",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Pausa activa.","Medición de lux en el puesto + agudeza visual en el examen periódico","Rutinaria",false,"8"],["m067",32,"Oficina de Operaciones Depósito","Personal administrativo",["s-ofiope"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,4,12,"bajo","Bajo","Mantenimiento de equipos de oficina. Uso de calzados cerrados. Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinaria",false,"8"],["m068",32,"Oficina de Operaciones Depósito","Personal administrativo",["s-ofiope"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Capacitación en prevención de riesgos, recorrida por parte de salud ocupacional, pausas activas, evaluaciòn ergonomica por medicina laboral.","Charla de seguridad 5 minutos antes de iniciar las labores. Pausa activa.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",false,"8"],["m069",33,"Tercerizados, limpieza estibadores","Personal de limpieza administrativo",["s-ofiadm","s-banos","s-salas","s-kitch"],"Caída al mismo nivel por piso resbaladizo u obstáculo","seguridad","Caída al mismo nivel","","Rodillas, muñecas, cadera y cabeza: esguince, fractura, golpe",3,6,18,"bajo","Bajo","Uso de EPP.Desenergizar cuando se hace el proceso de limpieza","Inducciòn de seguridad. Uso de EPP. Controlar mantener el orden.","Piso seco y señalizado en la ronda + cero caídas del mes","Rutinaria",true,"2"],["m070",33,"Tercerizados, limpieza estibadores","Personal de limpieza administrativo",["s-ofiadm","s-banos","s-salas","s-kitch"],"Contacto con productos químicos o inflamables","higiene","Contacto con sustancias químicas","Químico","Piel y vía respiratoria: dermatitis, quemadura química, intoxicación",3,6,18,"bajo","Bajo","Uso de EPP.","Uso de EPP.","Hoja de datos de seguridad visible + EPP químico y kit antiderrame completo","Rutinaria",true,"2"],["m071",33,"Tercerizados, limpieza estibadores","Personal de limpieza administrativo",["s-ofiadm","s-banos","s-salas","s-kitch"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,6,18,"bajo","Bajo","Uso de EPP.","Uso de EPP.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinaria",true,"2"],["m072",34,"Camara de frio","Personal de depòsito exclusivo para Burger King",["s-bk"],"Exposición a frío en cámara","higiene","Exposición a Frío","Frío","Vía respiratoria y extremidades: bronquitis, entumecimiento, hipotermia",3,4,12,"bajo","Bajo","Uso de EPP adecuado para el lugar.","Uso de EPP.","Campera y guante térmico en uso + tiempo máximo de permanencia respetado","Rutinaria",false,"5"],["m073",35,"Choferes y ayudantes tercerizados","Transporte de cargas",["s-muelles","s-pista","s-estacionamiento","s-porteria1"],"Accidente de tránsito en la conducción","seguridad","Choque por otro vehículo","","Cuerpo entero: politraumatismo o fatalidad",5,6,30,"moderado","Moderado","Mantenimiento del vehiculo, chequeo rutinario, luces, frenos, aire, aceite, neumaticos.","Inducciòn, capacitaciòn en manejo defensivo, mecànica ligera.","Checklist del vehículo por viaje + licencia y manejo defensivo vigentes","Rutinaria",true,"180"],["m074",36,"Enfermería Laboral","Personal de Medicina Laboral",["s-enfermeria"],"Contacto con electricidad en equipos o tableros","seguridad","Contacto con electricidad","","Piel y corazón: quemadura eléctrica, fibrilación, paro cardíaco",3,6,18,"bajo","Bajo","Deposición segura de insumos médicos. Uso de EPP.","Uniforme reglamentario. Desifecciòn de caja de cirugia menor. Residuos médicos deben ser descartadas en las cajas recomendadas para tal fin.","Tableros con tapa y rotulados + permiso de trabajo eléctrico firmado","Rutinario",true,"4"],["m075",36,"Enfermería Laboral","Personal de Medicina Laboral",["s-enfermeria"],"Exposición a agentes biológicos","higiene","Exposición a Ag. Biológicos (Virus, Bacterias, hongos, etc.)","Biológico","Vía respiratoria y piel: infección respiratoria, gastrointestinal o cutánea",3,6,18,"bajo","Bajo","Uso de EPP.","Uniforme reglamentario. Desifecciòn de caja de cirugia menor. Residuos médicos deben ser descartadas en las cajas recomendadas para tal fin.","Esquema de vacunación al día + insumos de desinfección disponibles","Rutinario",true,"4"],["m076",36,"Enfermería Laboral","Personal de Medicina Laboral",["s-enfermeria"],"Contacto con material corto punzante","seguridad","Contacto con objetos punzantes","","Manos y dedos: herida punzante, riesgo de contagio por vía sanguínea",3,6,18,"bajo","Bajo","Deposición segura de insumos médicos. Uso de EPP.","Desifecciòn de caja de cirugia menor. Residuos médicos deben ser descartadas en las cajas recomendadas para tal fin.","Descarte en caja de bioseguridad + registro de accidente punzocortante en cero","Rutinario",true,"4"],["m077",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Agresión de terceros en el control de accesos y rondas","seguridad","Golpeado con objeto o herramienta","","Cabeza y tronco: contusión, herida, estrés postraumático",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas.","Capacitaciones, uso de EPP y pausas activas.","Protocolo de agresión difundido + botón de pánico y CCTV probados","Rutinario",false,"25"],["m078",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Carga postural y trabajo sentado prolongado","higiene","Exposición a mov repetitivo - Agente Ergonómico","Ergonómico","Columna lumbar y cervical, hombros: lumbalgia, cervicalgia, contractura",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas.","Capacitaciones, uso de EPP y pausas activas.","Evaluación ergonómica del puesto + pausas activas del turno registradas","Rutinario",false,"25"],["m079",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Carga mental y estrés psicosocial","higiene","Otro: estrés laboral","Psicosocial","Sistema nervioso: insomnio, ansiedad, agotamiento, gastritis",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas.","Capacitaciones, uso de EPP y pausas activas.","Encuesta de carga y clima + horas extra del mes por puesto","Rutinario",false,"25"],["m080",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Exposición a calor","higiene","Exposición a Calor","Calor","Cuerpo entero: deshidratación, calambre por calor, agotamiento, insolación",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas.","Capacitaciones, uso de EPP y pausas activas.","Agua fresca disponible y rotación de tarea + índice TGBH del puesto","Rutinario",false,"25"],["m081",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Exposición a ruido","higiene","Exposición a Ruido","Ruido","Oído: hipoacusia inducida por ruido, acúfeno",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas.","Capacitaciones, uso de EPP y pausas activas.","Audiometría anual + dosimetría del puesto y protector auditivo en uso","Rutinario",false,"25"],["m082",37,"Seguridad","Seguridad Patrimonial",["s-porteria1","s-porteria2","s-estacionamiento","s-recepcion"],"Caída al mismo nivel en recorrida por el depósito","seguridad","Caída al mismo nivel","","Rodillas, muñecas y cabeza: esguince, fractura, golpe",3,4,12,"bajo","Bajo","Capacitaciones, uso de EPP y pausas activas","Capacitaciones, uso de EPP y pausas activas","Ronda con zonas de inspección libres y bien iluminadas + cero caídas del mes","Rutinario",false,"25"],["m083",38,"Mae","Recepcion de productos en mal estado",["s-mae","s-devol"],"Circulación de equipos de movimiento de carga y peatones","seguridad","Atropello","","Miembros inferiores y tronco: fractura, aplastamiento o fatalidad",3,4,12,"bajo","Medio","Atención del operador. Utilizar las luces de seguridad. Bocinar entre los cruces para advertir a los peatones. Uso de casco de EPP.","Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Indicar circulación a 10 km por hora. No exceder los pesos.","Checklist del equipo firmado por turno + senda peatonal visible y respetada","Rutinario",false,"6"],["m084",38,"Mae","Recepcion de productos en mal estado",["s-mae","s-devol"],"Caída a diferente nivel","seguridad","Caída a diferente nivel","","Cabeza y columna: politraumatismo, paraplejia o fatalidad",3,4,12,"bajo","Medio","Capacitación. Atención del operador. Utilizar las luces de seguridad. Bocinar entre los cruces para advertir a los peatones. Uso de casco de EPP. Realizar periodicamente estudios de vista y oido cada un año.","Inducciòn. Check list de seguridad antes de iniciar la actividad. Utilizar luces y señales acústicas para advertir su circulación. Prestar atención. Indicar circulación a 10 km por hora. No exceder los pesos.","Permiso de trabajo en altura firmado + arnés con inspección vigente","Rutinario",false,"6"]].map(r=>{const o={};HIP_COLS.forEach((k,i)=>o[k]=r[i]);return o});
+const OLFORM={"deposito": {"n": "Orden y limpieza · depósito y devoluciones", "sec": "Devoluciones · Depósito", "items": [{"t": "El area se encuentra despejado libre de materiales, cajas, pallets, equipos y basuras en general. Se garantiza el libre paso con seguridad.", "p": 15}, {"t": "Las ubicaciones se encuentran ordenadas , las cajas se encuentran correctamente ubicacdas y alineadas sobre los pallets", "p": 15}, {"t": "Los pallets ubicados en el area se encuentran en condiciones (libres de roturas).", "p": 15}, {"t": "No se observan productos averiados o derrame de productos en las ubicaciones.", "p": 15}, {"t": "Todo elemento de limpieza, herramientas de trabajo y equipos se encuentran en buenas condiciones, ordenados y limpios.", "p": 10}, {"t": "Los muebles y equipos del area ( escritorios, armarios, equipos informaticos, heladera se encuentran en buenas condiciones, ordenados y limpios libre de polvos y telas de araña.", "p": 10}, {"t": "Las divisorias metalicas que dividen de los sectores de AJ Laser-BK se encuentran despejadas libre de materiales y se encuentran en buenas condiciones.", "p": 10}, {"t": "Los equipos PCI se encuentran libre de obstrucciones (Extintor operativo en buenas condiciones).", "p": 10}]}, "pasillos": {"n": "Orden y limpieza · pasillos Burger King", "sec": "Burger King", "items": [{"t": "Los pasillos se encuentran despejados libre de materiales, cajas, pallets, equipos y basuras en general. Se garantiza el libre paso con seguridad.", "p": 15}, {"t": "Las ubicaciones se encuentran ordenadas , las cajas se encuentran correctamente ubicacdas y alineadas todas cerradas", "p": 15}, {"t": "Los pallets almacenados en racks se encuentran en condiciones (roturas en la estiba).", "p": 15}, {"t": "Los muebles de oficinas (armario, sillas, escritorios) se encuentran ordenados, limpios y en buenas condiciones, asi tambien estan separadas de las divisorias metalicas a una distancia de aproximadamente 10 a 15 cm para evitar daños a la estructura tambien se tiene en cuenta los productos paletizados en el sector.", "p": 15}, {"t": "No se observan derrame de productos en el piso", "p": 10}, {"t": "El lava manos del sector se encuentra limpio y cuenta con detergente, papel y basurero.", "p": 5}, {"t": "El sector de Puerta 34 (tunel de recepcion de productos) se encuentra ordenados y limpio, el basurero en buenas condiciones y vacio, los pallets correctamente ubicados.", "p": 10}, {"t": "Los elementos de limpieza se encuentran correctamente ubicados y en buenas condiciones", "p": 5}, {"t": "Los equipos de proteccion personal para frio - ingreso a camara (trajes, pasa montañas, guantes y botas termicas) se encuentran ordenados en un lugar asignado", "p": 5}, {"t": "Los equipos PCI se encuentran libre de obstrucciones (Extintor, BIE, Pulsador manual de emergencia, Salida de emergencia", "p": 5}]}};
+const HIPNIV={
+ critico:{l:'Crítico',cls:'crit',dias:0,plazo:'Inmediato · se detiene la tarea',ver:'24 horas'},
+ importante:{l:'Importante',cls:'crit',dias:2,plazo:'48 horas',ver:'trimestral'},
+ moderado:{l:'Moderado',cls:'warn',dias:7,plazo:'7 días',ver:'anual'},
+ bajo:{l:'Bajo',cls:'ok',dias:30,plazo:'Se mantiene el control',ver:'próxima auditoría'}};
+const HIPTIPO={seguridad:'Seguridad',higiene:'Higiene y salud ocupacional',acto:'Acto o comportamiento'};
+const DOCEST={tiene:{l:'Tiene',cls:'ok'},no:{l:'No tiene',cls:'crit'},na:{l:'No aplica',cls:''},sin:{l:'Sin verificar',cls:'warn'}};
+const AUD_PILAR='seguridad';
+
+const docSecKey=sec=>state.sitioSel+'__'+(sec||'_cd');
+const docSecDe=sec=>state.diag&&0?null:(state.docSector||[]).find(x=>x.id===docSecKey(sec))||{};
+function docReqResp(sec){
+  const base=(docSecDe(sec)||{}).resp||{};
+  const ed=state.docEd;
+  if(!ed||ed.key!==docSecKey(sec))return base;
+  const out={};Object.keys(base).forEach(k=>out[k]=Object.assign({},base[k]));
+  Object.keys(ed.resp||{}).forEach(k=>out[k]=Object.assign({},out[k]||{},ed.resp[k]));
+  return out;
+}
+function docTocar(sec,id,campo,valor){
+  const k=docSecKey(sec);
+  if(!state.docEd||state.docEd.key!==k)state.docEd={key:k,resp:{}};
+  state.docEd.resp[id]=Object.assign({},state.docEd.resp[id]||{});
+  state.docEd.resp[id][campo]=valor;
+}
+const docSucio=sec=>!!(state.docEd&&state.docEd.key===docSecKey(sec)&&Object.keys(state.docEd.resp||{}).length);
+const reqsDe=alc=>docReqCfg().filter(r=>r.alcance===alc);
+function docEstado(sec,r){
+  const v=(docReqResp(sec)[r.id]||{}).v;
+  if(v)return v;
+  /* si el documento ya está cargado en el pilar, cuenta como que lo tiene */
+  if(r.doc&&docsVisibles(AUD_PILAR).some(d=>d.id===r.doc))return 'tiene';
+  return 'sin';
+}
+function calcDocs(sec,alc){
+  const L=reqsDe(alc);let t=0,n=0,na=0,sin=0;
+  L.forEach(r=>{const e=docEstado(sec,r);
+    if(e==='tiene')t++;else if(e==='no')n++;else if(e==='na')na++;else sin++});
+  const base=L.length-na;
+  /* si todavía no se verificó nada, no es 0 %: es que no se miró */
+  const pct=(base&&sin<base)?Math.round(t/base*1000)/10:null;
+  return {tot:L.length,tiene:t,no:n,na:na,sin:sin,base:base,pct:pct};
+}
+/* los riesgos de la hipermatriz que le tocan a un sector */
+const hipDe=sec=>HIP.filter(r=>(r.sectores||[]).indexOf(sec)>=0).sort((a,b)=>b.n-a.n);
+const segVencida=a=>a.estado==='abierta'&&a.limite<iso(new Date());
+
 const hoyIso=()=>iso(new Date());
 function masDiasIso(f,n){const d=new Date(f+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)}
 const MAN_SEG_ANEXO="<div data-cat=\"prog-sso\"><h2>El programa del pilar Seguridad</h2><p class=\"nota\">De la carpeta del Jefe de Salud y Seguridad Ocupacional · Programa CAT · Pilar Seguridad. El diagnóstico de los 40 ítems y los indicadores se cargan y se miden en la pestaña <b>Diagnóstico y KPI</b> de este mismo pilar.</p><h3>Objetivo</h3><p>Garantizar la protección de la integridad física, mental y social de todos los colaboradores mediante la implementación de un sistema estructurado de gestión en seguridad y salud ocupacional.</p><h3>Alcance</h3><p>Aplica a todas las instalaciones industriales y logísticas del Grupo Vierci:</p><ul><li>Complejo Itauguá — pastas, tomatados, café, jugos y caña</li><li>Arrocera</li><li>Yerbatera</li><li>Centro de Distribución San Antonio</li></ul><p>Incluye personal propio, tercerizado y visitantes.</p><h3>Responsables</h3><table><thead><tr><th>Rol</th><th>Responsabilidad principal</th></tr></thead><tbody><tr><td>Jefe de Salud y Seguridad Ocupacional</td><td>Liderar la implementación del pilar, establecer estándares, auditar cumplimiento, elaborar reportes y KPI.</td></tr><tr><td>Jefes de Calidad y de Planta</td><td>Asegurar la aplicación diaria en su planta, gestionar acciones correctivas, comunicar incidentes.</td></tr><tr><td>Supervisores y encargados</td><td>Promover el cumplimiento operativo y el uso de EPP, registrar hallazgos.</td></tr><tr><td>Líder CAT</td><td>Integrar los indicadores del pilar Seguridad en los reportes generales del programa CAT.</td></tr><tr><td>Gerencia de Aseguramiento de Calidad</td><td>Supervisar el cumplimiento del plan y asegurar la alineación con el enfoque de cultura de calidad y seguridad.</td></tr></tbody></table><h3>Plan de implementación</h3><table><thead><tr><th>Etapa</th><th>Descripción</th><th>Responsable</th><th>Duración</th><th>Entregable</th></tr></thead><tbody><tr><td>1. Diagnóstico inicial</td><td>Aplicación del checklist en todas las plantas y en el CDSA.</td><td>Jefe SSO + jefes de planta</td><td>3 semanas</td><td>Reporte de brechas por sitio.</td></tr><tr><td>2. Priorización de riesgos</td><td>Clasificar los hallazgos según criticidad.</td><td>Jefe SSO</td><td>1 semana</td><td>Matriz de priorización.</td></tr><tr><td>3. Plan de acción</td><td>Elaborar el plan con responsables, fechas y recursos.</td><td>Jefe SSO + Gerencia de Calidad</td><td>2 semanas</td><td>Plan firmado por Dirección.</td></tr><tr><td>4. Ejecución</td><td>Implementar mejoras: señalización, EPP, procedimientos, capacitaciones.</td><td>Supervisores + Mantenimiento</td><td>3 meses</td><td>Registros de ejecución y evidencias.</td></tr><tr><td>5. Capacitación y comunicación</td><td>Lanzamiento del pilar con charlas y cartelería CAT Seguridad.</td><td>Jefe SSO + Líder CAT</td><td>1 mes</td><td>Materiales y registros.</td></tr><tr><td>6. Auditoría interna CAT Seguridad</td><td>Verificar el cumplimiento del checklist.</td><td>Líder CAT + Jefe SSO</td><td>1 mes</td><td>Informe de auditoría.</td></tr><tr><td>7. Seguimiento y mejora continua</td><td>Indicadores mensuales, lecciones aprendidas y acciones preventivas.</td><td>Jefe SSO + Líder CAT</td><td>Permanente</td><td>Tablero CAT Seguridad.</td></tr></tbody></table><h3>Los indicadores del pilar</h3><table><thead><tr><th>Indicador</th><th>Fórmula</th><th>Frecuencia</th><th>Meta</th></tr></thead><tbody><tr><td>Tasa de accidentes con tiempo perdido</td><td>(accidentes con baja ÷ dotación total) × 100</td><td>Mensual</td><td>0 %</td></tr><tr><td>Cumplimiento del checklist de seguridad</td><td>(ítems cumplidos ÷ ítems totales) × 100</td><td>Trimestral</td><td>≥ 90 %</td></tr><tr><td>Uso correcto de EPP</td><td>(observaciones conformes ÷ total de observaciones) × 100</td><td>Mensual</td><td>≥ 95 %</td></tr><tr><td>Capacitaciones en seguridad realizadas</td><td>(ejecutadas ÷ planificadas) × 100</td><td>Trimestral</td><td>100 %</td></tr><tr><td>Hallazgos corregidos dentro del plazo</td><td>(acciones cerradas en plazo ÷ acciones cerradas) × 100</td><td>Mensual</td><td>≥ 90 %</td></tr></tbody></table><p class=\"nota\"><b>Dos cosas a resolver.</b> La tasa de accidentes de este cuadro se calcula sobre la dotación; los tableros de SySO usan el índice de frecuencia, que es sobre el millón de horas hombre. Son dos indicadores distintos con el mismo nombre y hay que definir cuál va al informe mensual de Gerencia. Y el cumplimiento del checklist da <b>75,0 %</b> sobre los 40 ítems del documento, no el 73,7 % que figuraba en su resumen ejecutivo: ese número salía de contar 38 ítems y 28 cumplidos.</p></div>";
@@ -7091,6 +7491,7 @@ function vPilarDetalle(){
   const c=pilCfg(),p=pilarDe(state.pil.id),adm=esAdmin();
   if(state.pil.tab==='inc'&&!veInd())state.pil.tab='ind';
   if(state.pil.tab==='diag'&&p.id!==DIAG_PILAR)state.pil.tab='ind';
+  if(state.pil.tab==='aud'&&p.id!==AUD_PILAR)state.pil.tab='ind';
   const per=state.pil.per||new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,7);
   const secs=sectoresVista().sort((a,b)=>a.nombre.localeCompare(b.nombre));
   const pond=pondPilarCD(p,per,secs),nv=nivel(pond.v);
@@ -7103,8 +7504,8 @@ function vPilarDetalle(){
     <div class="eyebrow2">${esc(sitioActual().corto)}</div><h1 style="margin-top:6px">P${p.num} · ${esc(p.nombre)}</h1>
     <p>${esc(p.lema||'')}${p.estado?' · <span class="badge warn">'+esc(p.estado)+'</span>':''}</p></div>
     <div class="headbtns">${state.pil.tab==='manual'?'':pilHead()}</div></div>
-  <div class="ptabs" role="tablist"><button role="tab" data-ptab="ind" aria-selected="${state.pil.tab!=='manual'&&state.pil.tab!=='docs'&&state.pil.tab!=='inc'&&state.pil.tab!=='form'}">Indicadores y sub-auditorías</button><button role="tab" data-ptab="manual" aria-selected="${state.pil.tab==='manual'||state.pil.tab==='form'}">Manual del pilar</button>${veInd()?`<button role="tab" data-ptab="inc" aria-selected="${state.pil.tab==='inc'}">Incidencias y accidentes${(()=>{const hoy=new Date().getMonth(),D=indAnio(p.id,anioInd());const t=D.filter((d,m)=>m<=hoy&&BLOQIND.some(b=>faltaBloque(d,b.id).length)).length;return t?` <span class="badge crit">${t}</span>`:''})()}</button>`:''}${p.id===DIAG_PILAR?`<button role="tab" data-ptab="diag" aria-selected="${state.pil.tab==='diag'}">Diagnóstico y KPI${(()=>{const n=diagAbiertos(p.id).length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}<button role="tab" data-ptab="docs" aria-selected="${state.pil.tab==='docs'}">Documentos${(()=>{const f=marcadoresManual(manualDe(p.id).html).filter(x=>!docsAqui(p.id,x.texto,x.k).length).length;return f?` <span class="badge crit">${f}</span>`:''})()}</button></div>
-  ${state.pil.tab==='form'?formHTML(state.pil.form):state.pil.tab==='diag'?diagPilarHTML(p):state.pil.tab==='inc'?indPilarHTML(p):state.pil.tab==='docs'?docsPilarHTML(p):state.pil.tab==='manual'?manualHTML(p):`${panelIndOtroPilar(p.id)}<div class="grid g4" style="margin-bottom:16px">
+  <div class="ptabs" role="tablist"><button role="tab" data-ptab="ind" aria-selected="${state.pil.tab!=='manual'&&state.pil.tab!=='docs'&&state.pil.tab!=='inc'&&state.pil.tab!=='form'}">Indicadores y sub-auditorías</button><button role="tab" data-ptab="manual" aria-selected="${state.pil.tab==='manual'||state.pil.tab==='form'}">Manual del pilar</button>${veInd()?`<button role="tab" data-ptab="inc" aria-selected="${state.pil.tab==='inc'}">Incidencias y accidentes${(()=>{const hoy=new Date().getMonth(),D=indAnio(p.id,anioInd());const t=D.filter((d,m)=>m<=hoy&&BLOQIND.some(b=>faltaBloque(d,b.id).length)).length;return t?` <span class="badge crit">${t}</span>`:''})()}</button>`:''}${p.id===AUD_PILAR?`<button role="tab" data-ptab="aud" aria-selected="${state.pil.tab==='aud'}">Auditar${(()=>{const n=(state.segAcc||[]).filter(x=>x.estado==='abierta').length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}${p.id===DIAG_PILAR?`<button role="tab" data-ptab="diag" aria-selected="${state.pil.tab==='diag'}">Diagnóstico y KPI${(()=>{const n=diagAbiertos(p.id).length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}<button role="tab" data-ptab="docs" aria-selected="${state.pil.tab==='docs'}">Documentos${(()=>{const f=marcadoresManual(manualDe(p.id).html).filter(x=>!docsAqui(p.id,x.texto,x.k).length).length;return f?` <span class="badge crit">${f}</span>`:''})()}</button></div>
+  ${state.pil.tab==='form'?formHTML(state.pil.form):state.pil.tab==='aud'?audPilarHTML(p):state.pil.tab==='diag'?diagPilarHTML(p):state.pil.tab==='inc'?indPilarHTML(p):state.pil.tab==='docs'?docsPilarHTML(p):state.pil.tab==='manual'?manualHTML(p):`${panelIndOtroPilar(p.id)}<div class="grid g4" style="margin-bottom:16px">
     <div class="kpi ${pond.v==null?'':(nv.k==='ok'?'tintok':(nv.k==='crit'?'tint':''))}"><div class="k">Ponderado del pilar · ${esc(fmtMes(per))}</div><div class="v">${pond.v==null?'—':n1(pond.v)+'<small>%</small>'}</div><div class="m">${pond.v==null?'Sin sub-auditorías con dato':`<span class="badge ${nv.k} dot">${nv.l}</span>`}</div></div>
     <div class="kpi"><div class="k">Cobertura de pesos</div><div class="v">${pond.cobertura}<small> / ${sumPeso}</small></div><div class="m">Peso de las sub-auditorías que ya tienen dato${sumPeso!==100?` · <span style="color:var(--crit);font-weight:600">los pesos suman ${sumPeso}, deben sumar 100</span>`:''}</div></div>
     <div class="kpi"><div class="k">Sectores con dato</div><div class="v">${nSec}<small> / ${secs.length}</small></div><div class="m">En este mes</div></div>
@@ -7164,6 +7565,40 @@ document.addEventListener('click',async e=>{
     if(state.pil.editManual!=null&&pt.dataset.ptab!=='manual'){toast('Guardá o cancelá la edición del manual primero');return}
     if(state.pil.tab==='diag'&&pt.dataset.ptab!=='diag'&&diagSucio(state.pil.id)){toast('Guardá el diagnóstico antes de salir de la pestaña');return}
     state.pil.tab=pt.dataset.ptab;render();return}
+  const asb=t.closest('[data-asub]');
+  if(asb){ state.aud.sub=asb.dataset.asub; render(); return }
+  const dq=t.closest('[data-dq]');
+  if(dq){
+    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    const id=dq.dataset.dqi, clave=dq.dataset.dqs, v=dq.dataset.dq;
+    const act=docReqResp(clave)[id]||{};
+    docTocar(clave,id,'v',act.v===v?'sin':v);
+    render();return}
+  const ol=t.closest('[data-olv]');
+  if(ol){
+    const i=Number(ol.dataset.oli), v=Number(ol.dataset.olv);
+    state.aud.ol[i]=state.aud.ol[i]===v?null:v;
+    if(state.aud.ol[i]==null)delete state.aud.ol[i];
+    render();return}
+  const hb=t.closest('[data-hv],[data-ht]');
+  if(hb){
+    const id=hb.dataset.hi; state.aud.resp[id]=state.aud.resp[id]||{};
+    if(hb.dataset.hv)state.aud.resp[id].v=state.aud.resp[id].v===hb.dataset.hv?null:hb.dataset.hv;
+    if(hb.dataset.ht)state.aud.resp[id].t=state.aud.resp[id].t===hb.dataset.ht?null:hb.dataset.ht;
+    render();return}
+  const sok=t.closest('[data-sok]'), sre=t.closest('[data-sre]');
+  if(sok){
+    const a=(state.segAcc||[]).find(x=>x.id===sok.dataset.sok); if(!a)return;
+    const vp=$('[data-sv="'+a.id+'"]'), ve=$('[data-se="'+a.id+'"]');
+    guardarDoc('segAcc/'+a.id,Object.assign({},a,{estado:'verificada',
+      verifPor:(vp&&vp.value)||'',verifEl:(ve&&ve.value)||hoyIso()}))
+      .then(ok=>{if(ok)toast('Acción verificada')});
+    return}
+  if(sre){
+    const a=(state.segAcc||[]).find(x=>x.id===sre.dataset.sre); if(!a)return;
+    guardarDoc('segAcc/'+a.id,Object.assign({},a,{estado:'abierta',verifPor:'',verifEl:''}))
+      .then(ok=>{if(ok)toast('Acción reabierta')});
+    return}
   const dg=t.closest('[data-dg]');
   if(dg){
     if(!puedeDiag()){toast('El diagnóstico lo cargan Calidad y la Jefatura de SySO');return}
@@ -7204,6 +7639,16 @@ document.addEventListener('click',async e=>{
 document.addEventListener('change',async e=>{
   const t=e.target;
   if(t.id==='pilPer'){state.pil.per=t.value;render();return}
+  if(t.id==='audSec'){ state.aud.sec=t.value; state.aud.resp={}; state.aud.ol={}; render(); return }
+  if(t.id==='olForm'){ state.aud.olf=t.value; state.aud.ol={}; render(); return }
+  if(t.id==='audFecha'){ state.aud.fecha=t.value; return }
+  if(state.docReqEd&&(t.dataset.dqdoc!=null||t.dataset.dqalc!=null)){
+    const id=t.dataset.dqdoc||t.dataset.dqalc;
+    const r=state.docReqEd.items.find(x=>x.id===id);
+    if(r){ if(t.dataset.dqdoc!=null)r.doc=t.value; else r.alcance=t.value; render() }
+    return}
+  if(t.dataset.dqd!=null){ docTocar(t.dataset.dqs,t.dataset.dqd,'docId',t.value); render(); return }
+  if(t.dataset.dqv!=null){ docTocar(t.dataset.dqs,t.dataset.dqv,'vence',t.value); return }
   if(state.view!=='pilares')return;
   if(t.dataset.pf&&esAdmin()){const p=pilarDe(state.pil.id);if(!p)return;p[t.dataset.pf]=t.value;await guardarPilares();render();return}
   if(t.dataset.sf&&esAdmin()){const p=pilarDe(state.pil.id);const s=p&&p.subs.find(x=>x.id===t.dataset.sid);if(!s)return;
@@ -7761,6 +8206,77 @@ document.addEventListener('click',async e=>{
       actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'})
       .then(ok=>{if(ok){toast('Objetivo, alcance, responsables, plan e indicadores agregados al manual · v'+v);render()}});
     return}
+  if(t.id==='btnDocEditar'){
+    state.docReqEd=state.docReqEd?null:{items:JSON.parse(JSON.stringify(docReqCfg()))};
+    render();return}
+  if(t.id==='btnDocReqCancelar'){ state.docReqEd=null; render(); return }
+  if(t.id==='btnDocReqBase'){
+    if(!confirm('¿Volver a la propuesta original? Se pierden los cambios de la lista.'))return;
+    state.docReqEd={items:JSON.parse(JSON.stringify(DOCREQ_BASE))}; render(); return}
+  if(t.id==='btnDocReqGuardar'){
+    const L=(state.docReqEd&&state.docReqEd.items||[]).filter(r=>String(r.t||'').trim());
+    guardarDoc('config/docReq',{items:L,actualizado:new Date().toISOString(),
+      actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'})
+      .then(ok=>{if(ok){state.docReqEd=null;toast('Lista guardada · '+L.length+' documentos');render()}});
+    return}
+  const dqa=t.closest('[data-dqadd]');
+  if(dqa&&state.docReqEd){
+    state.docReqEd.items.push({id:uid('r-'),t:'',alcance:dqa.dataset.dqadd,quien:'',doc:'',item:''});
+    render();return}
+  const dqd2=t.closest('[data-dqdel]');
+  if(dqd2&&state.docReqEd){
+    state.docReqEd.items=state.docReqEd.items.filter(x=>x.id!==dqd2.dataset.dqdel);
+    render();return}
+  if(t.id==='btnDocGuardar'){
+    const sec=state.aud.sec;
+    const guardarUno=(clave,alc)=>{
+      const R=docReqResp(clave), limpio={};
+      reqsDe(alc).forEach(r=>{const x=R[r.id]||{};
+        limpio[r.id]={v:docEstado(clave,r),docId:x.docId||r.doc||'',vence:x.vence||'',obs:x.obs||''}});
+      const g=calcDocs(clave,alc);
+      return guardarDoc('docSector/'+docSecKey(clave),{sitioId:state.sitioSel,sectorId:clave,pilarId:AUD_PILAR,
+        alcance:alc,resp:limpio,pct:g.pct,tiene:g.tiene,no:g.no,noAplica:g.na,sinVerificar:g.sin,total:g.tot,
+        actualizado:new Date().toISOString(),actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'});
+    };
+    guardarUno('_cd','cd').then(ok=>sec?guardarUno(sec,'sector'):ok)
+      .then(ok=>{if(ok){state.docEd=null;toast('Guardado lo que el sector tiene que tener');render()}});
+    return}
+  if(t.id==='btnOlGuardar'){
+    const A=state.aud, sec=A.sec;
+    if(!sec){toast('Elegí el sector');return}
+    const f=OLFORM[A.olf]||{items:[]};
+    let tot=0,obt=0,marc=0;
+    f.items.forEach((it,i)=>{tot+=it.p;const v=A.ol[i];if(v!=null){obt+=it.p*v;marc++}});
+    if(!marc){toast('Marcá al menos un punto');return}
+    const id=uid('ol-');
+    guardarDoc('segAud/'+id,{id:id,tipo:'ol',sitioId:state.sitioSel,sectorId:sec,formato:f.n,formatoId:A.olf,
+      fecha:($('#audFecha')&&$('#audFecha').value)||hoyIso(),
+      por:state.auditor||(state.sesion&&state.sesion.nombre)||'—',
+      pct:tot?Math.round(obt/tot*100):0,puntos:f.items.length,marcados:marc,
+      detalle:f.items.map((it,i)=>({t:it.t,p:it.p,v:A.ol[i]==null?null:A.ol[i]})),
+      creado:new Date().toISOString()})
+      .then(ok=>{if(ok){state.aud.ol={};toast('Verificación guardada');render()}});
+    return}
+  if(t.id==='btnHipCerrar'){
+    const A=state.aud, sec=A.sec, L=hipDe(sec);
+    const f=($('#audFecha')&&$('#audFecha').value)||hoyIso();
+    const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
+    const mal=L.filter(r=>{const v=A.resp[r.id]||{};return v.v==='no'||v.t==='notiene'});
+    if(!mal.length){toast('No hay desvíos para generar acciones');return}
+    const na=L.filter(r=>(A.resp[r.id]||{}).v==='na').length;
+    Promise.all(mal.map(r=>{
+      const v=A.resp[r.id]||{}, N=HIPNIV[r.niv]||HIPNIV.moderado, id=uid('ac-');
+      return guardarDoc('segAcc/'+id,{id:id,sitioId:state.sitioSel,sectorId:sec,rowId:r.id,
+        puesto:r.puesto,peligro:r.peligro,niv:r.niv,cuerpo:r.cuerpo,accion:r.accion,indicador:r.indicador,
+        falta:(v.t==='notiene'?'No tiene el elemento o el EPP':'El control no se cumple'),obs:v.obs||'',
+        fecha:f,limite:masDiasIso(f,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
+        creado:new Date().toISOString()});
+    })).then(()=>{
+      const id=uid('au-');
+      return guardarDoc('segAud/'+id,{id:id,tipo:'hip',sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
+        puntos:L.length,noAplica:na,desvios:mal.length,creado:new Date().toISOString()});
+    }).then(()=>{ state.aud.resp={}; state.aud.sub='acc'; toast(mal.length+' acción(es) generada(s)'); render() });
+    return}
   if(t.id==='btnDiagImp'){window.print();return}
   if(t.id==='btnDiagCsv'){
     const pid=state.pil.id,R=diagResp(pid),its=diagItems();
@@ -8136,5 +8652,6 @@ document.addEventListener('submit',e=>{
 },true);
 conectar();
 </script>
+
 
 </body></html>
