@@ -474,6 +474,9 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .saccf input{border:1px solid var(--line);border-radius:9px;padding:6px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
 .saccf.listo{font-size:12.5px;color:var(--ink-3)}
 .dgopt button.med[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.chkg{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+  margin:18px 0 9px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.chkg:first-child{margin-top:2px}
 .dqedit{border:1px dashed var(--line-strong);border-radius:12px;padding:12px 14px;margin-bottom:10px;background:var(--surface-2)}
 .dqedit .g{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
 @media (max-width:760px){.dqedit .g{grid-template-columns:1fr}}
@@ -1239,7 +1242,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'ol',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[]},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
+  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'syso',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[]},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
 
@@ -2379,6 +2382,9 @@ document.addEventListener('change',e=>{
   if(t.dataset&&t.dataset.cko!=null){
     const R=chkResp(t.dataset.ckb); R[t.dataset.cko]=R[t.dataset.cko]||{};
     R[t.dataset.cko].obs=t.value; return }
+  if(t.dataset&&t.dataset.cka!=null){
+    const R=chkResp(t.dataset.ckb); R[t.dataset.cka]=R[t.dataset.cka]||{};
+    R[t.dataset.cka].acc=t.value; return }
   if(t.dataset&&t.dataset.olo!=null){
     state.aud.olObs=state.aud.olObs||{}; state.aud.olObs[t.dataset.olo]=t.value; return }
   if(t.id==='olHora'){ state.aud.hora=t.value; return }
@@ -2400,7 +2406,7 @@ document.addEventListener('change',e=>{
     if(mt[t.id]){ state.aud.trab[mt[t.id]]=t.value; return }
   }
   if(state.segChkEd&&t.dataset){
-    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item'};
+    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item',skac:'acc'};
     for(const k in ms){ if(t.dataset[k]!=null){
       const r=state.segChkEd.items.find(x=>x.id===t.dataset[k]); if(r)r[ms[k]]=t.value; return } }
   }
@@ -2415,6 +2421,9 @@ document.addEventListener('input',e=>{const t=e.target;
   if(t.dataset&&t.dataset.cko!=null){
     const R=chkResp(t.dataset.ckb); R[t.dataset.cko]=R[t.dataset.cko]||{};
     R[t.dataset.cko].obs=t.value; return }
+  if(t.dataset&&t.dataset.cka!=null){
+    const R=chkResp(t.dataset.ckb); R[t.dataset.cka]=R[t.dataset.cka]||{};
+    R[t.dataset.cka].acc=t.value; return }
   if(t.dataset&&t.dataset.olo!=null){
     state.aud.olObs=state.aud.olObs||{}; state.aud.olObs[t.dataset.olo]=t.value; return }
   if(t.id==='olHora'){ state.aud.hora=t.value; return }
@@ -2436,7 +2445,7 @@ document.addEventListener('input',e=>{const t=e.target;
     if(mt[t.id]){ state.aud.trab[mt[t.id]]=t.value; return }
   }
   if(state.segChkEd&&t.dataset){
-    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item'};
+    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item',skac:'acc'};
     for(const k in ms){ if(t.dataset[k]!=null){
       const r=state.segChkEd.items.find(x=>x.id===t.dataset[k]); if(r)r[ms[k]]=t.value; return } }
   }
@@ -4492,20 +4501,20 @@ function vAudInt(){
   return `<div class="head"><div>
     <h1>Auditoría interna</h1>
     <p>La que hace el encargado del pilar sobre su propio sector, sector por sector:
-       <b>orden y limpieza</b>, <b>permiso de trabajo</b>, <b>EPP</b> y <b>apto de trabajo</b>, más los
-       riesgos de la hipermatriz y los documentos que hay que tener. Hoy la usa
-       ${esc(p.lider||'el encargado del pilar Seguridad')}.</p></div></div>`
+       <b>salud y seguridad ocupacional</b>, <b>orden y limpieza</b>, <b>permiso de trabajo</b>,
+       <b>EPP</b> y <b>apto de trabajo</b>, más los riesgos de la hipermatriz y los documentos que hay
+       que tener. Hoy la usa ${esc(p.lider||'el encargado del pilar Seguridad')}.</p></div></div>`
     +audPilarHTML(p);
 }
 
 /* ================= vista: Auditar · auditoría interna del sector ================= */
 const puedeAud=()=>esAdmin()||['sitio','jefe','sector'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
 /* el orden es el que pidió Calidad: primero lo que se mira en el piso, después el respaldo */
-const AUD_SUBS=[['ol','Orden y limpieza'],['permiso','Permiso de trabajo'],['epp','EPP'],
- ['apto','Apto de trabajo'],['hip','Riesgos del sector'],['docs','Documentos que debe tener'],
+const AUD_SUBS=[['syso','Salud y seguridad'],['ol','Orden y limpieza'],['permiso','Permiso de trabajo'],
+ ['epp','EPP'],['apto','Apto de trabajo'],['hip','Riesgos del sector'],['docs','Documentos que debe tener'],
  ['acc','Acciones abiertas'],['hechas','Auditorías hechas']];
 const AUDTIPO_L={doc:'Documentos',ol:'Orden y limpieza',hip:'Riesgos del sector',
- permiso:'Permiso de trabajo',epp:'EPP',apto:'Apto de trabajo'};
+ permiso:'Permiso de trabajo',epp:'EPP',apto:'Apto de trabajo',syso:'Salud y seguridad ocupacional'};
 
 function audPilarHTML(p){
   const A=state.aud, secs=sectoresVista();
@@ -4517,10 +4526,11 @@ function audPilarHTML(p){
   <div class="audhead">
     <div><div class="k">Auditoría interna</div>
       <h3>Lo que le audito a mi propio sector</h3>
-      <p>Se hace <b>sector por sector</b>: orden y limpieza, permiso de trabajo, EPP y apto de trabajo.
-         Atrás quedan los riesgos de la hipermatriz y los documentos que el sector tiene que tener.
-         En cada bloque podés anotar <b>lo que vayas viendo</b>, aunque no esté en la lista, y lo que no
-         cumple genera su acción con el plazo que le pone la criticidad.</p></div>
+      <p>Se hace <b>sector por sector</b>: salud y seguridad ocupacional, orden y limpieza, permiso de
+         trabajo, EPP y apto de trabajo. Atrás quedan los riesgos de la hipermatriz y los documentos que
+         el sector tiene que tener. En cada bloque podés anotar <b>lo que vayas viendo</b>, aunque no esté
+         en la lista; lo que no cumple pide <b>foto del hallazgo</b> y <b>acción correctiva</b>, y se
+         cierra con la <b>foto de la corrección</b>.</p></div>
     <div class="audsel">
       <div class="field"><label for="audSec">Sector</label>
         <select id="audSec"><option value="">Elegí el sector…</option>
@@ -4534,7 +4544,7 @@ function audPilarHTML(p){
   </div>
   ${A.sub==='docs'?audDocsHTML(sec,ed)
    :A.sub==='ol'?audOlHTML(sec,ed)
-   :(A.sub==='permiso'||A.sub==='epp'||A.sub==='apto')?audChkHTML(A.sub,sec,ed)
+   :(A.sub==='permiso'||A.sub==='epp'||A.sub==='apto'||A.sub==='syso')?audChkHTML(A.sub,sec,ed)
    :A.sub==='hip'?audHipHTML(sec,ed)
    :A.sub==='hechas'?audHechasHTML(sec)
    :audAccHTML(sec,ed)}`;
@@ -4658,7 +4668,7 @@ function audOlHTML(sec,ed){
     </div>
     <div style="flex:1;min-width:220px">
       <div class="barra"><i style="width:${marc?pct:0}%;background:${marc?(pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)')):'var(--surface-3)'}"></i></div>
-      <div class="olm">${marc?('Marcados '+marc+' de '+f.items.length+(malos.length?' · no cumplen: '+malos.join(', '):' · todo cumple')):'Marcá los puntos para ver el resultado'}</div>
+      <div class="olm">${marc?('Marcados '+marc+' de '+f.items.length+(malos.length?' · no cumplen: '+malos.join(', '):' · todo cumple')):'Marcá los puntos: cumple o no cumple'}</div>
     </div>
     ${ed?`<button class="btn primary" id="btnOlGuardar"${sec?'':' disabled'}>Guardar la verificación</button>`:''}
   </div>
@@ -4680,12 +4690,11 @@ function audOlHTML(sec,ed){
             <label>¿Qué viste y dónde? Esto es lo que va a la acción</label>
             <input data-olo="${i}" value="${esc((A.olObs||{})[i]||'')}"
               placeholder="Ej.: dos pallets rotos frente al rack 12">
-            <div class="hipplz">${v===0?'⊗':'⚠'} Se abre una acción con plazo de
+            <div class="hipplz">⊗ Se abre una acción con plazo de
               <b>${v===0?HIPNIV.importante.plazo:HIPNIV.moderado.plazo}</b></div></div>`:''}
         </div>
         <div class="dgopt">
           <button class="si" data-olv="1" data-oli="${i}" aria-pressed="${v===1}">Cumple</button>
-          <button class="med" data-olv="0.5" data-oli="${i}" aria-pressed="${v===0.5}">Parcial</button>
           <button class="no" data-olv="0" data-oli="${i}" aria-pressed="${v===0}">No cumple</button>
         </div></div>`}).join('')}</div></section>
   <section class="panel" style="margin-top:16px"><header><h3>Lo que vi y no está en el formato</h3>
@@ -4784,13 +4793,18 @@ async function guardarChk(b){
   const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
   const aid=uid('sg-');   /* se genera antes: cada acción queda atada a esta auditoría */
   const accs=[];
+  const fotosPorAcc={};
   g.mal.forEach(r=>{
     const v=g.R[r.id]||{}, N=HIPNIV[r.crit]||HIPNIV.moderado, id=uid('ac-');
+    fotosPorAcc[id]=(v.fotos||[]).slice(0,CHK_MAXFOTO);
     accs.push({id:id,auditId:aid,sitioId:state.sitioSel,sectorId:sec,rowId:r.id,bloque:b,
       puesto:B.t,peligro:r.t,niv:r.crit,cuerpo:'',
-      accion:'Corregir lo observado y volver a verificar en la próxima recorrida',
+      /* la acción la escribe quien audita; si la dejó como vino, queda la sugerida del punto */
+      accion:String(v.acc!=null?v.acc:(r.acc||'')).trim()
+        ||'Corregir lo observado y volver a verificar en la próxima recorrida',
       indicador:r.ev||'Nueva recorrida del sector',
       falta:(v.v==='parcial'?'Cumple sólo en parte':'No cumple'),obs:v.obs||'',
+      fotos:(v.fotos||[]).length,
       fecha:f,limite:masDiasIso(f,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
       creado:new Date().toISOString()})});
   libres.forEach(x=>{
@@ -4803,11 +4817,23 @@ async function guardarChk(b){
       fecha:f,limite:masDiasIso(f,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
       creado:new Date().toISOString()})});
   for(let i=0;i<accs.length;i++){ if(!await guardarDoc('segAcc/'+accs[i].id,accs[i]))return }
+  /* las fotos del hallazgo van aparte, una por documento: así ninguna acción se pasa de tamaño */
+  for(const acid in fotosPorAcc){
+    for(const ft of fotosPorAcc[acid]){
+      await guardarDoc(COL.ev+'/'+uid('e-'),{accionId:acid,segAudId:aid,bloque:b,
+        sitioId:state.sitioSel,sectorId:sec,sectorNombre:nombreSector(sec)||sec,fecha:f,
+        nombre:ft.nombre||'hallazgo.jpg',mime:'image/jpeg',esImagen:true,bytes:ft.bytes,
+        ancho:ft.ancho||0,alto:ft.alto||0,data:ft.data,url:'',
+        nota:'Hallazgo: '+String((accs.find(x=>x.id===acid)||{}).peligro||'').slice(0,120),
+        tipo:'hallazgo',subidoPor:por,creado:new Date().toISOString()});
+    }
+  }
   const doc={id:aid,tipo:b,sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
     puntos:g.L.length,marcados:g.marc,noAplica:g.na,
     desvios:g.mal.length+libres.length,pct:g.pct,
     detalle:g.L.filter(r=>g.R[r.id]&&g.R[r.id].v).map(r=>{const v=g.R[r.id];
-      return {id:r.id,t:r.t,crit:r.crit,ev:r.ev||'',v:v.v,obs:v.obs||''}}),
+      return {id:r.id,t:r.t,crit:r.crit,ev:r.ev||'',v:v.v,obs:v.obs||'',
+              acc:String(v.acc!=null?v.acc:(r.acc||'')).trim(),fotos:(v.fotos||[]).length}}),
     libres:libres.map(x=>({t:x.t,crit:x.crit})),
     creado:new Date().toISOString()};
   if(b==='permiso')doc.trabajo=sinTrab?{sin:true}:Object.assign({sin:false},A.trab||{});
@@ -4855,6 +4881,12 @@ function audChkHTML(b,sec,ed){
   </div>
 
   ${b==='permiso'?audTrabHTML(ed,sinTrab):''}
+  ${b==='syso'?`<div class="soft2" style="margin-bottom:16px">Lista de <b>${esc(nombreSector(sec))}</b>${
+    tipoSector(sec)?' · sector de '+esc(SYSO_TIPOL[tipoSector(sec)]||tipoSector(sec)):''}.
+    Son los puntos comunes a todo el CD más los que le tocan por el tipo de sector y los que la
+    hipermatriz le asigna a este sector en particular. Cuando algo no cumple, se saca la
+    <b>foto del hallazgo</b>, se escribe la <b>acción correctiva</b> y después, al cerrarla, se sube la
+    <b>foto de la corrección</b>.</div>`:''}
 
   ${sinTrab?`<div class="soft2" style="margin-bottom:16px">Marcaste que <b>hoy no hay trabajos de alto riesgo</b>
      en ${esc(nombreSector(sec))}. Guardá igual: queda la constancia de que se recorrió el sector y no había
@@ -4863,18 +4895,20 @@ function audChkHTML(b,sec,ed){
     <div class="sub">${g.L.length} ${g.L.length===1?'punto':'puntos'} · ${esc(B.d)}</div></header>
     <div class="body">${g.L.length?g.L.map((r,i)=>{
       const v=g.R[r.id]||{}, N=HIPNIV[r.crit]||HIPNIV.moderado, C=v.v?CHKV[v.v]:null;
-      return `<div class="dqi ${C?C.cls:''}">
+      const gr=r.g&&SYSO_G[r.g]?r.g:'', prev=i?g.L[i-1]:null;
+      const cab=gr&&(!prev||prev.g!==gr)
+        ? `<div class="chkg">${esc(r.g)} · ${esc(SYSO_G[r.g])}</div>` : '';
+      return cab+`<div class="dqi ${C?C.cls:''}">
         <div class="dqt"><div><div class="dqn">${i+1}. ${esc(r.t)}</div>
           <div class="dqm">Se mira en: ${esc(r.ev||'observación directa')}${
             r.item?' · sale del ítem '+esc(r.item)+' del diagnóstico del Jefe de SSO':''}${
-            r.alcance&&r.alcance!=='todos'?' · sólo para este sector':''}</div></div>
+            alcanceL(r.alcance)}</div></div>
           <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
             <span class="dgch ${N.cls}">${N.l}</span>
             ${C?`<span class="dgch ${C.cls}">${C.cls==='ok'?'✓':(C.cls==='crit'?'⊗':(C.cls==='warn'?'⚠':'—'))} ${C.l}</span>`:''}
           </div></div>
         ${ed?`<div class="dgopt" style="margin-top:9px">
           <button class="si" data-ckv="cumple" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='cumple'}">Cumple</button>
-          <button class="med" data-ckv="parcial" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='parcial'}">Parcial</button>
           <button class="no" data-ckv="no" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='no'}">No cumple</button>
           <button class="na" data-ckv="na" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='na'}">No aplica</button>
         </div>`:''}
@@ -4882,8 +4916,22 @@ function audChkHTML(b,sec,ed){
           <label>¿Qué viste y dónde? Esto es lo que va a la acción</label>
           <input data-cko="${esc(r.id)}" data-ckb="${b}" value="${esc(v.obs||'')}"
             placeholder="${esc(CHKPH[b]||'Escribí lo que viste, con el lugar exacto')}">
+          <div class="wfotos">
+            ${(v.fotos||[]).map((f,fi)=>`<figure><img src="${f.data}" alt="Foto del hallazgo">
+              <button type="button" class="wfx" data-ckfx="${fi}" data-cki="${esc(r.id)}" data-ckb="${b}"
+                aria-label="Quitar la foto">✕</button></figure>`).join('')}
+            ${(v.fotos||[]).length>=CHK_MAXFOTO?'<span class="sm" style="color:var(--ink-3)">Hasta '+CHK_MAXFOTO+' fotos por punto</span>'
+              :`<label class="btn sm wfoto">📷 Foto del hallazgo<input type="file" accept="image/*" capture="environment"
+                 data-ckfoto="${esc(r.id)}" data-ckb="${b}" multiple hidden></label>
+               <label class="btn sm ghost wfoto">Elegir de la galería<input type="file" accept="image/*"
+                 data-ckfoto="${esc(r.id)}" data-ckb="${b}" multiple hidden></label>`}
+          </div>
+          <div style="margin-top:11px"><div class="dgk">Acción correctiva</div>
+            <input data-cka="${esc(r.id)}" data-ckb="${b}" value="${esc(v.acc!=null?v.acc:(r.acc||''))}"
+              placeholder="Qué hay que hacer para corregirlo"></div>
           <div class="hipplz">${N.cls==='crit'?'⊗':'⚠'} Como este punto es <b>${N.l}</b>, la acción vence
-            ${N.dias===0?'<b>hoy mismo y se detiene la tarea</b>':'en <b>'+N.plazo+'</b>'} · se verifica con: ${esc(r.ev||'nueva recorrida')}</div>
+            ${N.dias===0?'<b>hoy mismo y se detiene la tarea</b>':'en <b>'+N.plazo+'</b>'} · se verifica con: ${esc(r.ev||'nueva recorrida')}
+            · al cerrarla se sube la foto de la corrección</div>
         </div>`:''}
       </div>`}).join(''):`<div class="empty">Calidad todavía no dejó ningún punto en esta lista para este sector.
         ${esAdmin()?'Tocá <b>✎ Editar la lista</b> abajo para armarla.':''}</div>`}</div></section>`}
@@ -4921,9 +4969,36 @@ function audChkHTML(b,sec,ed){
     <span class="sub">La lista es una propuesta de Calidad. Revisala con ${esc((pilarDe(AUD_PILAR)||{}).lider||'el encargado del pilar')}
       y dejá sólo lo que corresponde.</span></div>`:''}`;
 }
+const CHK_MAXFOTO=3;
+/* cómo se explica de dónde le viene el punto a este sector */
+function alcanceL(a){
+  if(!a||a==='todos')return '';
+  if(String(a).indexOf('t:')===0){const t=String(a).slice(2);
+    return ' · le toca por ser sector de '+(SYSO_TIPOL[t]||t)}
+  return ' · puesto sólo para este sector';
+}
+/* las fotos de una acción: la del hallazgo y la de la corrección */
+const fotosDe=(id,tipo)=>(state.evidencias||[]).filter(e=>e.accionId===id
+  &&(tipo==='correccion'?e.tipo==='correccion':e.tipo!=='correccion'));
+function accFotosHTML(a,ed){
+  const H=fotosDe(a.id,'hallazgo'), C=fotosDe(a.id,'correccion');
+  const tira=(L,t,btn,cls)=>`<div><div class="dgk">${t}</div><div class="wfotos">
+    ${L.map(e=>`<figure><img src="${e.data}" alt="${esc(t)}" title="${esc(e.nota||'')}">
+      ${ed?`<button type="button" class="wfx" data-delev="${esc(e.id)}" aria-label="Quitar la foto">✕</button>`:''}
+    </figure>`).join('')||'<span class="sm" style="color:var(--ink-3)">'+(L===C?'todavía sin foto':'sin foto')+'</span>'}
+    ${ed&&L.length<CHK_MAXFOTO?`<label class="btn sm ${cls} wfoto">${btn}
+      <input type="file" accept="image/*" capture="environment" data-accfoto="${esc(a.id)}"
+        data-tipo="${L===C?'correccion':'hallazgo'}" multiple hidden></label>`:''}
+  </div></div>`;
+  return `<div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px">
+    ${tira(H,'Foto del hallazgo','📷 Agregar','ghost')}
+    ${tira(C,'Foto de la corrección','✔ Foto de la corrección','')}
+  </div>`;
+}
 const CHKPH={permiso:'Ej.: el soldador de la puerta 34 empezó sin el permiso firmado',
  epp:'Ej.: dos operadores del pasillo 7 sin protector auditivo',
- apto:'Ej.: el chofer de la tercerizada no tiene el apto cargado'};
+ apto:'Ej.: el chofer de la tercerizada no tiene el apto cargado',
+ syso:'Ej.: el protector de la columna 14 está partido y la viga tiene un golpe'};
 
 /* el trabajo concreto que se está mirando cuando se audita el permiso */
 function audTrabHTML(ed,sinTrab){
@@ -4979,13 +5054,17 @@ function segChkEditorHTML(){
   const E=state.segChkEd, b=E.b, B=SEGBLOQ[b]||{t:b};
   const L=E.items.filter(r=>r.b===b);
   const secs=sectoresVista();
+  const sec=state.aud.sec, tp=sec?tipoSector(sec):'';
   return `
   <div class="dgaviso"><b>Acá decidís qué corresponde y qué no.</b> Esta es la lista de
     <b>${esc(B.t)}</b> que el aplicativo le va a pedir al sector. La armé con el diagnóstico de 40 ítems
     del Jefe de SSO, con la hipermatriz y con los requisitos del apto por trabajo — <b>es una propuesta</b>.
     Cambiá el texto, cambiá la criticidad (que es la que fija el plazo de la acción), sacá lo que no
-    corresponda y agregá lo que falte. Si un punto vale sólo para un sector, elegilo en <b>Alcance</b>.
-    Cuando guardes, es lo que ven todos.</div>
+    corresponda y agregá lo que falte. En <b>Alcance</b> decidís si el punto vale para todos los
+    sectores, para todos los de un tipo (depósito, oficinas, cocina, mantenimiento, patio) o sólo para
+    uno. Cuando guardes, es lo que ven todos.${sec?` <br><br>Estás mirando
+    <b>${esc(nombreSector(sec))}</b>${tp?', que es un sector de <b>'+esc(SYSO_TIPOL[tp]||tp)+'</b>':''}:
+    a ese sector le tocan ${segChkDe(b,sec).length} de estos ${L.length} puntos.`:''}</div>
   <section class="panel" style="margin-bottom:16px"><header><h3>${esc(B.t)}</h3>
     <div class="sub">${L.length} ${L.length===1?'punto':'puntos'}</div></header>
     <div class="body">${L.map(r=>`<div class="dqedit">
@@ -5000,9 +5079,14 @@ function segChkEditorHTML(){
         <div><div class="dgk">Dónde se mira · la evidencia</div><input data-ske="${esc(r.id)}" value="${esc(r.ev||'')}"></div>
         <div><div class="dgk">Alcance</div><select data-ska="${esc(r.id)}">
           <option value="todos"${(!r.alcance||r.alcance==='todos')?' selected':''}>Todos los sectores</option>
+          ${Object.keys(SYSO_TIPOL).map(k=>`<option value="t:${k}"${r.alcance==='t:'+k?' selected':''}>Todos los de ${esc(SYSO_TIPOL[k])}</option>`).join('')}
           ${secs.map(x=>`<option value="${esc(x.id)}"${r.alcance===x.id?' selected':''}>Sólo ${esc(x.nombre)}</option>`).join('')}
         </select></div>
         <div><div class="dgk">Ítem del diagnóstico</div><input data-ski="${esc(r.id)}" value="${esc(r.item||'')}" placeholder="Ej.: C2"></div>
+      </div>
+      <div class="g" style="margin-top:10px">
+        <div style="grid-column:1/-1"><div class="dgk">Acción correctiva sugerida · aparece escrita cuando el punto no cumple</div>
+          <input data-skac="${esc(r.id)}" value="${esc(r.acc||'')}" placeholder="Qué hay que hacer si este punto no cumple"></div>
       </div></div>`).join('')||'<div class="empty">Ninguno todavía.</div>'}
       <button class="btn sm" data-skadd="${b}">+ Agregar un punto</button></div></section>
   <div class="dgsave"><button class="btn primary" id="btnSegChkGuardar">Guardar la lista</button>
@@ -5189,13 +5273,15 @@ function segInfDetalle(a){
 function chkDetTabla(a,cl){
   const D=a.detalle||[], LB=a.libres||[];
   const fila=x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado, C=CHKV[x.v]||{l:x.v,cls:''};
+    const mal=x.v==='no'||x.v==='parcial';
     return `<tr><td>${esc(x.t)}</td><td><span class="${cl} ${N.cls}">${N.l}</span></td>
       <td><span class="${cl} ${C.cls}">${C.cls==='ok'?'✓ ':(C.cls==='crit'?'⊗ ':(C.cls==='warn'?'⚠ ':''))}${C.l}</span></td>
-      <td class="sm" style="color:var(--ink-3)">${esc(x.obs||'')||'—'}</td>
-      <td class="sm" style="color:var(--ink-3)">${esc(x.ev||'')}</td></tr>`};
+      <td class="sm" style="color:var(--ink-3)">${esc(x.obs||'')||'—'}${
+        x.fotos?'<br><span style="font-size:11px">📷 '+x.fotos+(x.fotos===1?' foto':' fotos')+'</span>':''}</td>
+      <td class="sm" style="color:var(--ink-3)">${mal&&x.acc?esc(x.acc):esc(x.ev||'')}</td></tr>`};
   const tabla=D.length?`<div class="tw"><table class="lst"><thead><tr><th>Punto verificado</th>
     <th style="width:92px">Criticidad</th><th style="width:108px">Resultado</th>
-    <th style="width:22%">Qué se vio</th><th style="width:18%">Dónde se miró</th></tr></thead><tbody>
+    <th style="width:22%">Qué se vio</th><th style="width:20%">Acción / dónde se miró</th></tr></thead><tbody>
     ${D.map(fila).join('')}</tbody></table></div>`
     :'<div class="soft2">Esta verificación se guardó sin puntos marcados.</div>';
   const trab=a.tipo==='permiso'&&a.trabajo?(a.trabajo.sin
@@ -5213,14 +5299,23 @@ function chkDetTabla(a,cl){
         <td><span class="${cl} ${p.ok==='si'?'ok':(p.ok==='vence'?'warn':'crit')}">${
           p.ok==='si'?'✓ Vigente':(p.ok==='vence'?'⚠ Vence en 30 días':'⊗ No lo tiene o vencido')}</span></td></tr>`).join('')}
     </tbody></table></div>`:'';
+  /* las fotos del hallazgo y de la corrección, por si el informe se presenta impreso */
+  const accs=(state.segAcc||[]).filter(x=>x.auditId===a.id);
+  const fot=accs.filter(x=>fotosDe(x.id,'hallazgo').length||fotosDe(x.id,'correccion').length);
+  const fotos=fot.length?`<h4 style="margin:14px 0 7px;font-size:13px">Fotos de los hallazgos</h4>
+    ${fot.map(x=>`<div style="margin-bottom:12px">
+      <div class="sm" style="color:var(--ink-3);margin-bottom:5px">${esc(x.peligro)}${x.obs?' · '+esc(x.obs):''}</div>
+      <div class="wfotos">${fotosDe(x.id,'hallazgo').map(e=>`<figure><img src="${e.data}" alt="Hallazgo"></figure>`).join('')}
+        ${fotosDe(x.id,'correccion').map(e=>`<figure style="border-color:var(--ok)"><img src="${e.data}" alt="Corrección"></figure>`).join('')}</div>
+    </div>`).join('')}`:'';
   const lib=LB.length?`<h4 style="margin:14px 0 7px;font-size:13px">Lo que se vio y no estaba en la lista</h4>
     <div class="tw"><table class="lst"><thead><tr><th>Qué se vio</th><th style="width:120px">Criticidad</th>
     </tr></thead><tbody>${LB.map(x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado;
       return `<tr><td>${esc(x.t)}</td><td><span class="${cl} ${N.cls}">${N.l}</span></td></tr>`}).join('')}
     </tbody></table></div>`:'';
-  return trab+tabla+pers+lib;
+  return trab+tabla+pers+fotos+lib;
 }
-const CHK_TIPOS=['permiso','epp','apto'];
+const CHK_TIPOS=['permiso','epp','apto','syso'];
 
 /* ---------- 5. auditorías hechas: el registro de todo lo que se auditó ---------- */
 function audHechasHTML(sec){
@@ -5340,6 +5435,9 @@ function audAccHTML(sec,ed){
           <div><div class="dgk">Indicador de seguimiento</div><p>${esc(a.indicador||'')}</p></div>
           <div><div class="dgk">Plazo por criticidad</div><p>${esc(N.plazo)} · verificación ${esc(N.ver)}</p></div>
         </div>
+        ${accFotosHTML(a,ed)}
+        ${ed&&a.estado==='abierta'&&!fotosDe(a.id,'correccion').length
+          ?'<div class="soft2" style="margin-top:10px">Antes de darla por verificada, subí la <b>foto de la corrección</b>: es la evidencia de que se hizo.</div>':''}
         ${ed?(a.estado==='abierta'
           ?`<div class="saccf"><input placeholder="Quién verificó" data-sv="${esc(a.id)}" value="${esc(a.verifPor||'')}">
              <input type="date" data-se="${esc(a.id)}" value="${esc(a.verifEl||hoyIso())}">
@@ -7892,14 +7990,35 @@ const SEGBLOQ={
  ol:{t:'Orden y limpieza',ic:'\u{1F9F9}',d:'El formato real del sector con sus pesos. De acá sale el porcentaje de cumplimiento.'},
  permiso:{t:'Permiso de trabajo',ic:'\u{1F4CB}',d:'El trabajo que se está haciendo en el sector: si tiene permiso, si está vigente y si se cumple lo que el permiso exige.'},
  epp:{t:'EPP',ic:'\u{1F9BA}',d:'Si el sector tiene los EPP que pide cada puesto, si se entregaron contra firma y si se están usando.'},
- apto:{t:'Apto de trabajo',ic:'\u{1FA7A}',d:'Si la gente que está trabajando hoy tiene su apto vigente para la tarea que hace.'}
+ apto:{t:'Apto de trabajo',ic:'\u{1FA7A}',d:'Si la gente que está trabajando hoy tiene su apto vigente para la tarea que hace.'},
+ syso:{t:'Salud y seguridad ocupacional',ic:'\u{1F9BA}',foto:true,
+   d:'Las condiciones del lugar y la forma de trabajar del sector. Cada sector tiene su lista, armada con los peligros que la hipermatriz le asigna.'}
 };
-const SEGCHK_COLS=['id','b','t','crit','ev','item','alcance'];
-const SEGCHK_BASE=[["p1","permiso","El trabajo tiene permiso escrito, emitido antes de empezar y firmado por SySO","critico","El permiso del día, firmado","D1","todos"],["p2","permiso","El permiso dice qué trabajo es, en qué lugar exacto, con qué fecha y en qué horario","importante","Cuerpo del permiso","D1","todos"],["p3","permiso","El trabajo se está haciendo dentro del horario que el permiso autoriza","critico","La hora del permiso contra la hora de la recorrida","D1","todos"],["p4","permiso","Las personas que están trabajando son las que el permiso autoriza","critico","Nombres y cédulas del permiso","D1","todos"],["p5","permiso","Cada persona del trabajo tiene su apto de trabajo vigente para esa tarea","critico","Aptos cargados en Apto por trabajo","G1","todos"],["p6","permiso","El análisis de riesgo de la tarea está hecho y firmado por los que la ejecutan","importante","ART o ATS adjunto al permiso","A5","todos"],["p7","permiso","Los EPP que exige el permiso están puestos y en condiciones","critico","Observación directa","C3","todos"],["p8","permiso","Trabajo en caliente: extintor a mano, material combustible retirado y vigía de fuego","critico","Observación directa y permiso específico","B3","todos"],["p9","permiso","Trabajo en altura: arnés con doble cabo anclado a punto fijo, escalera o plataforma en condiciones","critico","Observación directa","D5","todos"],["p10","permiso","Trabajo eléctrico: bloqueo y etiquetado (LOTO) aplicado y ausencia de tensión verificada","critico","Tarjeta y candado colocados","D3","todos"],["p11","permiso","El área del trabajo está delimitada y señalizada, sin paso de gente ni de producto","importante","Observación directa","B1","todos"],["p12","permiso","Empresa tercerizada: presentó seguro, IPS y la documentación de su personal antes de entrar","importante","Carpeta del contratista en portería","A7","todos"],["p13","permiso","Al terminar se cierra el permiso, el área queda limpia y se firma el cierre","importante","Permiso cerrado y firmado","D1","todos"],["e1","epp","El sector tiene el listado de EPP por puesto, actualizado y a la vista","importante","Matriz de EPP del sector","C1","todos"],["e2","epp","Cada persona del sector tiene entregados los EPP que pide su puesto","critico","Planilla de entrega","C2","todos"],["e3","epp","La entrega está registrada y firmada por quien la recibió","importante","Planilla de entrega firmada","C2","todos"],["e4","epp","En la recorrida, todos usan el EPP que corresponde a la tarea","critico","Observación directa","C3","todos"],["e5","epp","Los EPP están en buen estado: sin roturas, sin vencer y limpios","critico","Observación directa","C4","todos"],["e6","epp","Hay stock de reposición en el sector o está claro a quién se le pide","moderado","Control de stock","C4","todos"],["e7","epp","Los EPP de frío para entrar a cámara están completos, en su lugar asignado y en condiciones","importante","Observación directa · punto 9 del formato de pasillos","C4","todos"],["e8","epp","Los terceros que trabajan en el sector usan sus propios EPP y cumplen la misma exigencia","critico","Observación directa","C3","todos"],["e9","epp","La señalización de EPP obligatorio está puesta en los accesos del sector","moderado","Observación directa","B1","todos"],["e10","epp","La gente del sector recibió capacitación este año en uso, cuidado y cambio de EPP","moderado","Registro de capacitación","C5","todos"],["a1","apto","Todas las personas que trabajan hoy en el sector tienen apto médico ocupacional vigente","critico","Módulo Apto por trabajo","G1","todos"],["a2","apto","Nadie está haciendo una tarea que su apto le restringe","critico","Ficha médica con restricciones","G1","todos"],["a3","apto","Los que operan equipos (reach, zorra, montacargas) tienen su habilitación vigente","critico","Habilitación del operador por tipo de equipo","D5","todos"],["a4","apto","Los que hacen trabajo en altura tienen el apto específico de altura vigente","critico","Apto de altura y curso vigente","G1","todos"],["a5","apto","Los que hacen trabajo eléctrico o en caliente tienen su habilitación vigente","critico","Curso y habilitación","D3","todos"],["a6","apto","Los que manipulan alimentos tienen carnet de salud vigente","importante","Carnet de salud municipal","G1","todos"],["a7","apto","El esquema de vacunación (tétanos y hepatitis B) está al día","moderado","Registro de salud","G2","todos"],["a8","apto","Los tercerizados presentaron el apto de su personal antes de entrar al sector","critico","Carpeta del contratista","G1","todos"],["a9","apto","Los aptos que vencen dentro de 30 días están avisados a RRHH y a enfermería","moderado","Vencimientos del módulo Apto","G1","todos"]].map(r=>{const o={};SEGCHK_COLS.forEach((c,i)=>o[c]=r[i]);return o});
+const SEGCHK_COLS=['id','b','t','crit','ev','item','alcance','acc','g'];
+/* el tipo de cada sector del CD: decide qué puntos de SySO le tocan.
+   Si la estructura ya trae el tipo del sector, manda esa; esto es el respaldo. */
+const SYSO_TIPOS={"s-boston":"deposito","s-bk":"deposito","s-laser":"deposito","s-pasillos":"deposito","s-devol":"deposito","s-punto":"deposito","s-mezz":"deposito","s-zonau":"deposito","s-muelles":"deposito","s-insumos":"deposito","s-libreria":"deposito","s-mae":"deposito","s-zonaroja":"deposito","s-manten":"mantenimiento","s-baterias":"mantenimiento","s-ofiope":"oficina","s-ofiadm":"oficina","s-salas":"oficina","s-banos":"oficina","s-enfermeria":"oficina","s-porteria1":"oficina","s-porteria2":"oficina","s-recepcion":"oficina","s-kitch":"cocina","s-comedor":"cocina","s-cocina":"cocina","s-estacionamiento":"general","s-pista":"general","s-verdes":"general","s-agua":"general","s-reciclados":"general","s-basura":"general"};
+const SYSO_TIPOL={deposito:'depósito y operación',oficina:'oficinas y salas',
+ cocina:'cocina y comedor',mantenimiento:'mantenimiento y taller',general:'patio, accesos y áreas generales'};
+/* los bloques de la recorrida de SySO: se camina el sector en este orden */
+const SYSO_G={A:'Condiciones del lugar de trabajo',B:'La forma de trabajar y los riesgos de la tarea',
+ C:'Equipos de protección personal',D:'Emergencia y contra incendio',E:'Salud de la gente',
+ F:'Señalización, capacitación y gestión'};
+function tipoSector(id){
+  const s=todosSectores().find(x=>x.id===id);
+  if(s&&s.tipo)return s.tipo;
+  const d=SECTORES_PLANO.find(x=>x.id===id);
+  if(d&&d.tipo)return d.tipo;
+  return SYSO_TIPOS[id]||'';
+}
+const SEGCHK_SYSO=[["sy-baterias-baterias","syso","La sala de baterías está ventilada, sin fuentes de ignición, con lavaojos y ducha de emergencia operativos y con EPP para ácido disponible","critico","Observación directa de la sala y prueba del lavaojos","B7","s-baterias","Ventilar, retirar la fuente de ignición y reparar el lavaojos antes de seguir cargando","A"],["sy-cables-toficina","syso","Los cables y las zapatillas no cruzan el paso ni están sobrecargados","importante","Observación directa bajo los escritorios","B4","t:oficina","Canalizar los cables y repartir la carga en tomas distintas","A"],["sy-campana-tcocina","syso","La campana extractora funciona y está limpia de grasa","importante","Observación directa y plan de limpieza","D4","t:cocina","Programar la limpieza de la campana y el filtro","A"],["sy-clima-toficina","syso","La temperatura y la ventilación son adecuadas, y los equipos de aire tienen su limpieza al día","moderado","Evaluación de confort térmico y plan de limpieza de equipos","B5","t:oficina","Programar la limpieza del equipo y revisar la renovación de aire del ambiente","A"],["sy-desnivel-tgeneral","syso","Los bordes, rampas, fosas y desniveles tienen baranda, tope o señalización","importante","Observación directa · la matriz marca caída a diferente nivel","B7","t:general","Poner baranda o tope y señalizar el desnivel","A"],["sy-estiba-tdeposito","syso","La estiba no pasa la altura definida, está estable y no hay pallets rotos en uso","importante","Observación directa de las ubicaciones","D2","t:deposito","Rebajar la estiba, retirar los pallets rotos y reponerlos","A"],["sy-gas-tcocina","syso","La instalación de gas no tiene olor ni fuga, las garrafas están sujetas, en lugar ventilado y lejos de fuentes de calor","critico","Prueba de fuga y observación directa","D4","t:cocina","Cortar el gas, ventilar y llamar al servicio técnico antes de volver a usarlo","A"],["sy-herram-tmantenimiento","syso","Las herramientas y las escaleras están en condiciones, sin improvisaciones, y se controlan una vez por semana","importante","Check de seguridad semanal de herramientas y escaleras","D5","t:mantenimiento","Retirar de uso lo dañado y retomar el control semanal","A"],["sy-ilum-todos","syso","La iluminación alcanza para trabajar sin esfuerzo visual: no hay luminarias quemadas ni parpadeando","moderado","Observación directa · medición de lux si hay duda","B5","todos","Reponer las luminarias y medir lux en el puesto","A"],["sy-muebAlt-toficina","syso","Los armarios y estantes altos están fijados a la pared y lo pesado está guardado abajo","moderado","Observación directa","B5","t:oficina","Fijar el mueble a la pared y bajar lo pesado a los estantes de abajo","A"],["sy-muelle-muelles","syso","Los muelles tienen tope y calce para el camión, y nadie queda entre el camión y el muelle durante la maniobra","critico","Observación directa de la maniobra de acople","D2","s-muelles","Poner el calce, marcar la zona de exclusión y detener la maniobra si alguien está en el medio","A"],["sy-muelle-pista","syso","Los muelles tienen tope y calce para el camión, y nadie queda entre el camión y el muelle durante la maniobra","critico","Observación directa de la maniobra de acople","D2","s-pista","Poner el calce, marcar la zona de exclusión y detener la maniobra si alguien está en el medio","A"],["sy-piso-todos","syso","El piso del sector está en condiciones: sin desniveles, sin baldosas flojas, sin roturas y sin zonas resbaladizas","importante","Recorrida del sector, mirando el piso","B5","todos","Reparar el tramo de piso y, mientras tanto, señalizar y desviar la circulación","A"],["sy-pisoMojado-banos","syso","El piso se mantiene seco o con antideslizante y el derrame se limpia en el momento","critico","Observación directa · la matriz marca caída por piso resbaladizo","B5","s-banos","Limpiar el derrame en el momento, señalizar piso mojado y poner antideslizante","A"],["sy-pisoMojado-tcocina","syso","El piso se mantiene seco o con antideslizante y el derrame se limpia en el momento","critico","Observación directa · la matriz marca caída por piso resbaladizo","B5","t:cocina","Limpiar el derrame en el momento, señalizar piso mojado y poner antideslizante","A"],["sy-rack-tdeposito","syso","Los racks y las vigas están sin golpes ni deformaciones, y los protectores de columna están puestos","critico","Recorrida del pasillo, mirando columnas y vigas","D2","t:deposito","Descargar la ubicación afectada, señalizarla y pedir la reparación estructural","A"],["sy-ruidoDep-tdeposito","syso","El nivel de ruido permite hablar a un metro sin levantar la voz; si no, está medido y se usa protección auditiva","moderado","Medición de ruido anual · la matriz marca exposición a ruido","D6","t:deposito","Medir el ruido del sector y entregar protección auditiva al puesto expuesto","A"],["sy-ruidoTaller-tmantenimiento","syso","La exposición a ruido del taller está medida y se usa protección auditiva","importante","Medición anual · la matriz marca exposición a ruido como Importante","D6","t:mantenimiento","Medir el ruido del taller y entregar protección auditiva con registro","A"],["sy-tableros-todos","syso","Los tableros eléctricos están cerrados, identificados y sin cables sueltos ni empalmes precarios","critico","Observación directa de cada tablero del sector","B4","todos","Cerrar e identificar el tablero y corregir el empalme con personal habilitado","A"],["sy-altura-tdeposito","syso","Nadie sube a los racks ni trabaja en altura sin arnés, plataforma o escalera en condiciones","critico","Observación directa · la matriz marca caída a diferente nivel en este sector","D5","t:deposito","Detener la tarea, bajar a la persona y reprogramar con plataforma y arnés","B"],["sy-caliente-tcocina","syso","Quien trabaja con hornos, freidoras o superficies calientes tiene guante térmico, y las superficies calientes están señalizadas","importante","Observación directa · la matriz marca contacto con superficies calientes","C1","t:cocina","Entregar el guante térmico y señalizar la superficie caliente","B"],["sy-cargaMan-tdeposito","syso","El levantamiento manual de carga se hace con la técnica y con ayuda mecánica cuando el peso lo pide","importante","Observación directa · evaluación ergonómica del puesto","G4","t:deposito","Capacitar en levantamiento y poner a disposición la zorra o el carro","B"],["sy-circula-reciclados","syso","La circulación de equipos y de peatones está separada: la franja peatonal está marcada, libre y se respeta","critico","Observación directa durante la operación","B1","s-reciclados","Remarcar la franja, despejarla y recordar la regla en la charla del turno","B"],["sy-circula-tdeposito","syso","La circulación de equipos y de peatones está separada: la franja peatonal está marcada, libre y se respeta","critico","Observación directa durante la operación","B1","t:deposito","Remarcar la franja, despejarla y recordar la regla en la charla del turno","B"],["sy-corte-tcocina","syso","Los cuchillos y elementos cortantes se guardan con la hoja protegida y en su lugar","importante","Observación directa · la matriz marca contacto con objetos cortantes","C1","t:cocina","Poner el portacuchillos y retirar de circulación los mangos rotos","B"],["sy-electrico-tmantenimiento","syso","El trabajo eléctrico se hace sin tensión, con verificación previa y con equipo dieléctrico, y lo hace gente habilitada","critico","Habilitación del operario y observación directa","D3","t:mantenimiento","Detener el trabajo, verificar ausencia de tensión y entregar el equipo dieléctrico","B"],["sy-equipos-tdeposito","syso","Los equipos de movimiento de carga tienen el chequeo del turno hecho, bocina y luces funcionando, y los opera gente habilitada","critico","Check de seguridad del turno y habilitación del operador","D5","t:deposito","Sacar de servicio el equipo hasta repararlo y verificar la habilitación del operador","B"],["sy-ergo-toficina","syso","Los puestos están armados para trabajar sentado: silla regulable, pantalla a la altura de los ojos y apoyo para los antebrazos","importante","Informe ergonómico del puesto · la matriz marca carga postural","G4","t:oficina","Regular el puesto y pedir la evaluación ergonómica de medicina laboral","B"],["sy-guardas-tmantenimiento","syso","Las máquinas tienen sus guardas y protecciones puestas, y nadie las saca para trabajar","critico","Inspección técnica · la matriz marca atrapamiento con partes en movimiento","D2","t:mantenimiento","Sacar la máquina de servicio hasta reponer la guarda","B"],["sy-loto-tmantenimiento","syso","Se aplica bloqueo y etiquetado (LOTO) antes de intervenir un equipo, y hay candados y tarjetas disponibles","critico","Procedimiento LOTO y observación del trabajo","D3","t:mantenimiento","Detener la intervención hasta aplicar el bloqueo y reponer candados y tarjetas","B"],["sy-pantalla-toficina","syso","La pantalla no tiene reflejo ni contraluz, y quien la usa todo el turno tiene su control de vista al día","moderado","Observación directa y agudeza visual del examen periódico","G1","t:oficina","Reubicar la pantalla y pedir el control de vista en el próximo examen periódico","B"],["sy-quimLimp-banos","syso","Los químicos de limpieza están rotulados, en su envase original, con la hoja de seguridad a mano y separados de los alimentos","importante","Carpeta MSDS del sector","A6","s-banos","Rotular y reubicar los químicos, y poner la MSDS en el sector","B"],["sy-quimLimp-tcocina","syso","Los químicos de limpieza están rotulados, en su envase original, con la hoja de seguridad a mano y separados de los alimentos","importante","Carpeta MSDS del sector","A6","t:cocina","Rotular y reubicar los químicos, y poner la MSDS en el sector","B"],["sy-quimPatio-tgeneral","syso","Los agroquímicos y combustibles están bajo llave, rotulados y con su hoja de seguridad","importante","Carpeta MSDS y depósito de químicos","A6","t:general","Guardar bajo llave, rotular y sumar la hoja de seguridad a la carpeta","B"],["sy-quimTaller-tmantenimiento","syso","Los químicos e inflamables están en armario ventilado, rotulados, con su hoja de seguridad y lejos de fuentes de calor","importante","Carpeta MSDS del taller","A6","t:mantenimiento","Reubicar en el armario de inflamables y completar las hojas de seguridad","B"],["sy-residuos-mae","syso","Los residuos están separados, en recipiente cerrado, y quien los manipula usa guantes; no hay corto punzante suelto","importante","Observación directa del depósito de residuos","A6","s-mae","Separar y cerrar los recipientes, y entregar guantes al personal de limpieza","B"],["sy-residuos-tgeneral","syso","Los residuos están separados, en recipiente cerrado, y quien los manipula usa guantes; no hay corto punzante suelto","importante","Observación directa del depósito de residuos","A6","t:general","Separar y cerrar los recipientes, y entregar guantes al personal de limpieza","B"],["sy-soldadura-tmantenimiento","syso","La soldadura se hace con máscara y pantalla, con extracción o ventilación, y con permiso de trabajo en caliente","critico","Permiso de trabajo en caliente · la matriz marca radiación y humos metálicos","D1","t:mantenimiento","Detener la soldadura hasta emitir el permiso y montar la pantalla y la extracción","B"],["sy-transito-muelles","syso","La circulación de vehículos y de personas está separada, con sentido marcado, velocidad definida y visibilidad en los puntos ciegos","critico","Observación directa · la matriz marca accidente de tránsito","B1","s-muelles","Marcar el sentido y la senda peatonal, y poner espejo en el punto ciego","B"],["sy-transito-porteria1","syso","La circulación de vehículos y de personas está separada, con sentido marcado, velocidad definida y visibilidad en los puntos ciegos","critico","Observación directa · la matriz marca accidente de tránsito","B1","s-porteria1","Marcar el sentido y la senda peatonal, y poner espejo en el punto ciego","B"],["sy-transito-tgeneral","syso","La circulación de vehículos y de personas está separada, con sentido marcado, velocidad definida y visibilidad en los puntos ciegos","critico","Observación directa · la matriz marca accidente de tránsito","B1","t:general","Marcar el sentido y la senda peatonal, y poner espejo en el punto ciego","B"],["sy-botiq-todos","syso","El botiquín del sector está completo, sin vencidos y se sabe quién lo repone","importante","Control mensual de stock del botiquín","B6","todos","Reponer lo faltante y dejar el control mensual firmado","D"],["sy-camaraEmerg-bk","syso","La cámara y la antecámara tienen la apertura de emergencia interior funcionando y la alarma de persona atrapada probada","critico","Prueba de la apertura interior y de la alarma","E1","s-bk","Reparar la apertura interior y probar la alarma antes de volver a operar la cámara","D"],["sy-evac-todos","syso","La vía de evacuación y la salida de emergencia del sector están libres, señalizadas e iluminadas","critico","Recorrer la vía completa hasta la salida","B2","todos","Despejar la vía en el momento y reponer la señalización o la luz de emergencia","D"],["sy-pci-todos","syso","Extintores, BIE y pulsadores libres de obstrucción, con la carga vigente y a la vista","critico","Tarjeta de control del extintor y observación directa","B3","todos","Despejar el acceso en el momento y reponer la carga vencida","D"],["sy-agresion-estacionamiento","syso","El puesto de control tiene comunicación con la guardia, el protocolo ante agresión de terceros está claro y nadie atiende solo de noche","importante","Protocolo de seguridad patrimonial · la matriz marca agresión de terceros","A7","s-estacionamiento","Probar el medio de comunicación y repasar el protocolo con el personal del turno noche","E"],["sy-agresion-porteria1","syso","El puesto de control tiene comunicación con la guardia, el protocolo ante agresión de terceros está claro y nadie atiende solo de noche","importante","Protocolo de seguridad patrimonial · la matriz marca agresión de terceros","A7","s-porteria1","Probar el medio de comunicación y repasar el protocolo con el personal del turno noche","E"],["sy-agresion-porteria2","syso","El puesto de control tiene comunicación con la guardia, el protocolo ante agresión de terceros está claro y nadie atiende solo de noche","importante","Protocolo de seguridad patrimonial · la matriz marca agresión de terceros","A7","s-porteria2","Probar el medio de comunicación y repasar el protocolo con el personal del turno noche","E"],["sy-agresion-recepcion","syso","El puesto de control tiene comunicación con la guardia, el protocolo ante agresión de terceros está claro y nadie atiende solo de noche","importante","Protocolo de seguridad patrimonial · la matriz marca agresión de terceros","A7","s-recepcion","Probar el medio de comunicación y repasar el protocolo con el personal del turno noche","E"],["sy-aguaPot-agua","syso","El agua de consumo tiene su análisis vigente y el tanque su limpieza registrada","importante","Análisis de agua y registro de limpieza del tanque","G5","s-agua","Pedir el análisis de agua y programar la limpieza del tanque","E"],["sy-aguaPot-verdes","syso","El agua de consumo tiene su análisis vigente y el tanque su limpieza registrada","importante","Análisis de agua y registro de limpieza del tanque","G5","s-verdes","Pedir el análisis de agua y programar la limpieza del tanque","E"],["sy-animal-tgeneral","syso","El sector está sin maleza alta, sin agua estancada y sin nidos, y la gente sabe qué hacer ante una picadura","moderado","Recorrida del predio · la matriz marca picadura o mordedura","E5","t:general","Desmalezar, eliminar el agua estancada y repasar el procedimiento de primeros auxilios","E"],["sy-aptoSec-todos","syso","Todo el que trabaja en el sector tiene su apto médico ocupacional vigente","critico","Módulo Apto por trabajo","G1","todos","Pedir a RRHH y enfermería el apto de los que faltan y suspender la tarea si el apto no está","E"],["sy-bio-basura","syso","El material corto punzante se descarta en descartador rígido, hay lavaojos y el personal tiene la vacunación al día","critico","Observación directa · la matriz marca agentes biológicos y corto punzante","G2","s-basura","Poner el descartador rígido, verificar el lavaojos y completar el esquema de vacunación","E"],["sy-bio-enfermeria","syso","El material corto punzante se descarta en descartador rígido, hay lavaojos y el personal tiene la vacunación al día","critico","Observación directa · la matriz marca agentes biológicos y corto punzante","G2","s-enfermeria","Poner el descartador rígido, verificar el lavaojos y completar el esquema de vacunación","E"],["sy-calor-porteria1","syso","Quien trabaja al aire libre tiene sombra, agua e hidratación, y el trabajo se organiza fuera de las horas de más calor","importante","Control clínico por exposición térmica · la matriz marca exposición a calor","G1","s-porteria1","Poner agua y sombra en el punto de trabajo y correr la tarea a la primera hora","E"],["sy-calor-porteria2","syso","Quien trabaja al aire libre tiene sombra, agua e hidratación, y el trabajo se organiza fuera de las horas de más calor","importante","Control clínico por exposición térmica · la matriz marca exposición a calor","G1","s-porteria2","Poner agua y sombra en el punto de trabajo y correr la tarea a la primera hora","E"],["sy-calor-tgeneral","syso","Quien trabaja al aire libre tiene sombra, agua e hidratación, y el trabajo se organiza fuera de las horas de más calor","importante","Control clínico por exposición térmica · la matriz marca exposición a calor","G1","t:general","Poner agua y sombra en el punto de trabajo y correr la tarea a la primera hora","E"],["sy-estres-toficina","syso","La carga de trabajo y los turnos están conversados con el equipo y hay a quién recurrir si alguien está sobrepasado","moderado","Encuesta de carga laboral · la matriz marca carga mental en este sector","G3","t:oficina","Revisar la distribución de la carga con el jefe del sector y derivar a medicina laboral","E"],["sy-frio-bk","syso","Quien entra a cámara usa el traje térmico completo, entra por tiempo limitado y no entra solo","importante","Observación directa · la matriz marca exposición a frío en cámara","C1","s-bk","Completar el equipo de frío, fijar el tiempo máximo de permanencia y la regla de no entrar solo","E"],["sy-pausas-toficina","syso","Se hacen las pausas activas y la gente sabe cuándo y cómo","moderado","Registro de pausas activas · es el control que pide la propia matriz","G4","t:oficina","Reprogramar la pausa activa con salud ocupacional y dejar el registro","E"],["sy-sanit-banos","syso","Los sanitarios y vestuarios están limpios, con agua, jabón y papel, y la ventilación funciona","importante","Inspección de higiene","G5","s-banos","Reponer los insumos y reparar la ventilación","E"],["sy-sanit-cocina","syso","Los sanitarios y vestuarios están limpios, con agua, jabón y papel, y la ventilación funciona","importante","Inspección de higiene","G5","s-cocina","Reponer los insumos y reparar la ventilación","E"],["sy-charla-todos","syso","La gente del sector recibió la charla de seguridad del mes y quedó registrada","moderado","Registro de charlas de 5 minutos","F3","todos","Dar la charla pendiente y dejar el registro con la lista de firmas","F"],["sy-reporte-todos","syso","El sector sabe cómo reportar un acto o una condición insegura y hay reportes cargados del último mes","moderado","Formato CAT de reporte de actos y condiciones inseguras","F5","todos","Explicar el circuito de reporte en la charla y dejar el formato a la vista","F"],["sy-senal-todos","syso","La señalización del sector está puesta, visible y en buen estado: riesgos, EPP obligatorio, salidas y prohibiciones","importante","Observación directa de los accesos y los puestos","B1","todos","Reponer la señalización faltante según el plan de señalización del CD","F"]];
+const SEGCHK_BASE=[["p1","permiso","El trabajo tiene permiso escrito, emitido antes de empezar y firmado por SySO","critico","El permiso del día, firmado","D1","todos"],["p2","permiso","El permiso dice qué trabajo es, en qué lugar exacto, con qué fecha y en qué horario","importante","Cuerpo del permiso","D1","todos"],["p3","permiso","El trabajo se está haciendo dentro del horario que el permiso autoriza","critico","La hora del permiso contra la hora de la recorrida","D1","todos"],["p4","permiso","Las personas que están trabajando son las que el permiso autoriza","critico","Nombres y cédulas del permiso","D1","todos"],["p5","permiso","Cada persona del trabajo tiene su apto de trabajo vigente para esa tarea","critico","Aptos cargados en Apto por trabajo","G1","todos"],["p6","permiso","El análisis de riesgo de la tarea está hecho y firmado por los que la ejecutan","importante","ART o ATS adjunto al permiso","A5","todos"],["p7","permiso","Los EPP que exige el permiso están puestos y en condiciones","critico","Observación directa","C3","todos"],["p8","permiso","Trabajo en caliente: extintor a mano, material combustible retirado y vigía de fuego","critico","Observación directa y permiso específico","B3","todos"],["p9","permiso","Trabajo en altura: arnés con doble cabo anclado a punto fijo, escalera o plataforma en condiciones","critico","Observación directa","D5","todos"],["p10","permiso","Trabajo eléctrico: bloqueo y etiquetado (LOTO) aplicado y ausencia de tensión verificada","critico","Tarjeta y candado colocados","D3","todos"],["p11","permiso","El área del trabajo está delimitada y señalizada, sin paso de gente ni de producto","importante","Observación directa","B1","todos"],["p12","permiso","Empresa tercerizada: presentó seguro, IPS y la documentación de su personal antes de entrar","importante","Carpeta del contratista en portería","A7","todos"],["p13","permiso","Al terminar se cierra el permiso, el área queda limpia y se firma el cierre","importante","Permiso cerrado y firmado","D1","todos"],["e1","epp","El sector tiene el listado de EPP por puesto, actualizado y a la vista","importante","Matriz de EPP del sector","C1","todos"],["e2","epp","Cada persona del sector tiene entregados los EPP que pide su puesto","critico","Planilla de entrega","C2","todos"],["e3","epp","La entrega está registrada y firmada por quien la recibió","importante","Planilla de entrega firmada","C2","todos"],["e4","epp","En la recorrida, todos usan el EPP que corresponde a la tarea","critico","Observación directa","C3","todos"],["e5","epp","Los EPP están en buen estado: sin roturas, sin vencer y limpios","critico","Observación directa","C4","todos"],["e6","epp","Hay stock de reposición en el sector o está claro a quién se le pide","moderado","Control de stock","C4","todos"],["e7","epp","Los EPP de frío para entrar a cámara están completos, en su lugar asignado y en condiciones","importante","Observación directa · punto 9 del formato de pasillos","C4","todos"],["e8","epp","Los terceros que trabajan en el sector usan sus propios EPP y cumplen la misma exigencia","critico","Observación directa","C3","todos"],["e9","epp","La señalización de EPP obligatorio está puesta en los accesos del sector","moderado","Observación directa","B1","todos"],["e10","epp","La gente del sector recibió capacitación este año en uso, cuidado y cambio de EPP","moderado","Registro de capacitación","C5","todos"],["a1","apto","Todas las personas que trabajan hoy en el sector tienen apto médico ocupacional vigente","critico","Módulo Apto por trabajo","G1","todos"],["a2","apto","Nadie está haciendo una tarea que su apto le restringe","critico","Ficha médica con restricciones","G1","todos"],["a3","apto","Los que operan equipos (reach, zorra, montacargas) tienen su habilitación vigente","critico","Habilitación del operador por tipo de equipo","D5","todos"],["a4","apto","Los que hacen trabajo en altura tienen el apto específico de altura vigente","critico","Apto de altura y curso vigente","G1","todos"],["a5","apto","Los que hacen trabajo eléctrico o en caliente tienen su habilitación vigente","critico","Curso y habilitación","D3","todos"],["a6","apto","Los que manipulan alimentos tienen carnet de salud vigente","importante","Carnet de salud municipal","G1","todos"],["a7","apto","El esquema de vacunación (tétanos y hepatitis B) está al día","moderado","Registro de salud","G2","todos"],["a8","apto","Los tercerizados presentaron el apto de su personal antes de entrar al sector","critico","Carpeta del contratista","G1","todos"],["a9","apto","Los aptos que vencen dentro de 30 días están avisados a RRHH y a enfermería","moderado","Vencimientos del módulo Apto","G1","todos"]].concat(SEGCHK_SYSO).map(r=>{const o={};SEGCHK_COLS.forEach((c,i)=>o[c]=r[i]);return o});
 const segChkCfg=()=>(state.segChkCfg&&Array.isArray(state.segChkCfg.items)&&state.segChkCfg.items.length)
   ?state.segChkCfg.items:SEGCHK_BASE;
 /* un punto vale para el sector si es de todos o si Calidad lo dejó sólo para ese sector */
-const segChkDe=(b,sec)=>segChkCfg().filter(r=>r.b===b&&(!r.alcance||r.alcance==='todos'||r.alcance===sec));
+const segChkDe=(b,sec)=>{const tp=tipoSector(sec);
+  return segChkCfg().filter(r=>r.b===b&&(!r.alcance||r.alcance==='todos'
+    ||r.alcance===sec||(tp&&r.alcance==='t:'+tp)))};
 const chkResp=b=>(state.aud.chk[b]||(state.aud.chk[b]={}));
 const CHKV={cumple:{l:'Cumple',cls:'ok',v:1},parcial:{l:'Parcial',cls:'warn',v:0.5},
  no:{l:'No cumple',cls:'crit',v:0},na:{l:'No aplica',cls:'',v:null}};
@@ -7912,6 +8031,7 @@ function chkPuntaje(b,sec){
   const marc=L.filter(r=>R[r.id]&&R[r.id].v);
   const na=marc.filter(r=>R[r.id].v==='na').length, base=marc.length-na;
   let pts=0; marc.forEach(r=>{const c=CHKV[R[r.id].v]; if(c&&c.v!=null)pts+=c.v});
+  /* el desvío es no cumple · Calidad pidió que no haya parcial */
   const mal=marc.filter(r=>R[r.id].v==='no'||R[r.id].v==='parcial');
   return {L:L,R:R,marc:marc.length,na:na,base:base,mal:mal,
           pct:base?Math.round(pts/base*100):null};
@@ -8320,6 +8440,12 @@ document.addEventListener('click',async e=>{
     render();return}
   const ckg=t.closest('[data-ckg]');
   if(ckg){ guardarChk(ckg.dataset.ckg); return }
+  const dlev=t.closest('[data-delev]');
+  if(dlev){ borrarDoc(COL.ev+'/'+dlev.dataset.delev).then(ok=>{if(ok)toast('Foto quitada')}); return }
+  const ckfx=t.closest('[data-ckfx]');
+  if(ckfx){ const R=chkResp(ckfx.dataset.ckb), x=R[ckfx.dataset.cki];
+    if(x&&x.fotos)x.fotos.splice(Number(ckfx.dataset.ckfx),1);
+    render();return}
   const lba=t.closest('[data-lbadd]');
   if(lba){ state.aud.libres=state.aud.libres||[];
     state.aud.libres.push({id:uid('lb-'),b:lba.dataset.lbadd,t:'',crit:'importante'});
@@ -8337,7 +8463,7 @@ document.addEventListener('click',async e=>{
     window.scrollTo(0,0); render();return}
   const ska=t.closest('[data-skadd]');
   if(ska&&state.segChkEd){
-    state.segChkEd.items.push({id:uid('sk-'),b:ska.dataset.skadd,t:'',crit:'importante',ev:'',item:'',alcance:'todos'});
+    state.segChkEd.items.push({id:uid('sk-'),b:ska.dataset.skadd,t:'',crit:'importante',ev:'',item:'',alcance:'todos',acc:''});
     render();return}
   const skd=t.closest('[data-skdel]');
   if(skd&&state.segChkEd){
@@ -9296,6 +9422,44 @@ document.addEventListener('change',async e=>{
       toast(n+' registros importados');
     }catch(e){toast('El archivo no es un respaldo válido de CAT 5S')}
     return;
+  }
+  if(t.dataset&&t.dataset.ckfoto!=null&&t.files&&t.files.length){
+    const b=t.dataset.ckb, id=t.dataset.ckfoto, R=chkResp(b);
+    R[id]=R[id]||{}; R[id].fotos=R[id].fotos||[];
+    const files=Array.from(t.files); t.value='';
+    toast('Preparando la foto…');
+    for(const f of files){
+      if(R[id].fotos.length>=CHK_MAXFOTO){toast('Hasta '+CHK_MAXFOTO+' fotos por punto');break}
+      try{const out=await comprimirImagen(f);
+        R[id].fotos.push({nombre:f.name||'hallazgo.jpg',mime:'image/jpeg',data:out.data,
+          bytes:out.bytes,ancho:out.w||0,alto:out.h||0})}
+      catch(err){toast('Esa foto no se pudo procesar: sacala de nuevo con menos resolución')}
+    }
+    render();return;
+  }
+  if(t.dataset&&t.dataset.accfoto!=null&&t.files&&t.files.length){
+    const a=(state.segAcc||[]).find(x=>x.id===t.dataset.accfoto);
+    if(!a){t.value='';return}
+    const files=Array.from(t.files); t.value='';
+    const tipo=t.dataset.tipo||'correccion';
+    const ya=(state.evidencias||[]).filter(e=>e.accionId===a.id&&e.tipo===tipo).length;
+    toast('Guardando la foto…');
+    let n=0;
+    for(const f of files){
+      if(ya+n>=CHK_MAXFOTO){toast('Hasta '+CHK_MAXFOTO+' fotos');break}
+      try{const out=await comprimirImagen(f);
+        await guardarDoc(COL.ev+'/'+uid('e-'),{accionId:a.id,segAudId:a.auditId||'',bloque:a.bloque||'',
+          sitioId:a.sitioId,sectorId:a.sectorId,sectorNombre:nombreSector(a.sectorId)||a.sectorId,
+          fecha:hoyIso(),nombre:f.name||'correccion.jpg',mime:'image/jpeg',esImagen:true,
+          bytes:out.bytes,ancho:out.w||0,alto:out.h||0,data:out.data,url:'',
+          nota:(tipo==='correccion'?'Corrección de: ':'Hallazgo: ')+String(a.peligro||'').slice(0,120),
+          tipo:tipo,subidoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—',
+          creado:new Date().toISOString()});
+        n++}
+      catch(err){toast('Esa foto no se pudo procesar')}
+    }
+    if(n)toast(n===1?'Foto guardada':n+' fotos guardadas');
+    render();return;
   }
   if(t.dataset&&t.dataset.wfoto!=null&&t.files&&t.files.length&&state.wiz){
     const w=state.wiz;const cl=state.checklists.find(c=>c.id===w.checklistId);
