@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Verificación de orden y limpieza · CDSA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F7F5EF; --surface:#FFFFFF; --surface-2:#F1EFE6; --surface-3:#E6E3D7;
+  --line:#E1DDD0; --line-strong:#C5BFAE;
+  --ink:#153731; --ink-2:#41615A; --ink-3:#7B8E87;
+  --accent:#0E4B43; --accent-2:#0A3A33; --accent-soft:#DEEDE8;
+  --ok:#2E7D57; --ok-soft:#E1F1E8;
+  --warn:#B07406; --warn-soft:#FBEED9;
+  --crit:#C0483A; --crit-soft:#FBE5E0;
+  --hazard:#DFA33C;
+  --v1:#2a78d6; --v2:#eb6834; --v3:#1baf7a; --v4:#eda100;
+  --seq-1:#DCE9E4; --seq-2:#AFCFC6; --seq-3:#78B0A3; --seq-4:#3F8578; --seq-5:#12564C;
+  --shadow:0 1px 2px rgba(21,55,49,.04), 0 12px 32px -18px rgba(21,55,49,.24);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --ground:#0E2A26; --surface:#143830; --surface-2:#1B443B; --surface-3:#245046;
+  --line:#275147; --line-strong:#3D6C60;
+  --ink:#F4EBD8; --ink-2:#C4D6CE; --ink-3:#8DA79F;
+  --accent:#74D6C0; --accent-2:#A8E7D8; --accent-soft:#1B443B;
+  --ok:#63C08C; --ok-soft:#16342A;
+  --warn:#DDAB4E; --warn-soft:#332A15;
+  --crit:#EC8570; --crit-soft:#3A211C;
+  --v1:#3987e5; --v2:#d95926; --v3:#199e70; --v4:#c98500;
+  --seq-1:#1F3F39; --seq-2:#2D5C53; --seq-3:#3F8577; --seq-4:#59AC98; --seq-5:#7BD1BB;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -20px rgba(0,0,0,.75);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E2A26; --surface:#143830; --surface-2:#1B443B; --surface-3:#245046;
+  --line:#275147; --line-strong:#3D6C60;
+  --ink:#F4EBD8; --ink-2:#C4D6CE; --ink-3:#8DA79F;
+  --accent:#74D6C0; --accent-2:#A8E7D8; --accent-soft:#1B443B;
+  --ok:#63C08C; --ok-soft:#16342A; --warn:#DDAB4E; --warn-soft:#332A15;
+  --crit:#EC8570; --crit-soft:#3A211C;
+  --v1:#3987e5; --v2:#d95926; --v3:#199e70; --v4:#c98500;
+  --seq-1:#1F3F39; --seq-2:#2D5C53; --seq-3:#3F8577; --seq-4:#59AC98; --seq-5:#7BD1BB;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -20px rgba(0,0,0,.75);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:Figtree,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;letter-spacing:-.01em}
+h1,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;letter-spacing:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+a{color:var(--accent)}
+
+.wrap{max-width:1320px;margin:0 auto;padding:26px 24px 72px}
+.top{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;border-bottom:3px solid #F6D901;padding-bottom:18px;margin-bottom:8px}
+.brand{display:flex;gap:14px;align-items:center}
+.brand .mk{width:56px;height:56px;flex:none}
+.brand .mk svg{width:100%;height:100%;display:block}
+.brand .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.brand h1{font-size:30px;line-height:1.05;margin:2px 0 3px}
+.brand .m{font-size:12.5px;color:var(--ink-3)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;border:1px solid var(--line-strong);background:var(--surface);cursor:pointer;font-weight:500;transition:background .12s}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+:root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#0A2A25}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{padding:5px 10px;font-size:12.5px;border-radius:7px}
+
+.sim{display:flex;gap:12px;align-items:center;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--hazard) 55%,transparent);border-left:4px solid var(--hazard);border-radius:0 12px 12px 0;padding:12px 16px;margin:18px 0 22px;font-size:13.5px;color:var(--ink)}
+.sim b{color:var(--ink)}
+
+.hero{background:var(--accent);color:#F4EBD8;border-radius:20px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:18px}
+:root[data-theme="dark"] .hero,:root:not([data-theme="light"]) .hero{background:var(--surface-2);color:var(--ink)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .hero{background:var(--accent);color:#F4EBD8}}
+.hero .hk{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.85}
+.hero .hv{font-family:"Cormorant Garamond",Georgia,serif;font-size:76px;font-weight:700;line-height:.95;font-variant-numeric:tabular-nums}
+.hero .hm{font-size:13px;opacity:.85;margin-top:4px}
+.hero .hst{display:flex;gap:30px;flex-wrap:wrap}
+.hero .hst div{text-align:right}
+.hero .hst .v{font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.hero .hst .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.8;font-weight:700}
+
+.g{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1080px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.g4,.g5{grid-template-columns:1fr}}
+
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 17px;box-shadow:var(--shadow)}
+.kpi .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.kpi .v{font-weight:800;font-size:34px;line-height:1.05;margin-top:7px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .v small{font-size:15px;font-weight:700;color:var(--ink-3)}
+.kpi .m{margin-top:6px;font-size:12px;color:var(--ink-3)}
+.kpi.falta .v{color:var(--ink-3)}
+.kpi.mal{background:var(--crit-soft);border-color:color-mix(in srgb,var(--crit) 32%,transparent)}
+.kpi.mal .v{color:var(--crit)}
+.kpi.bien{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 28%,transparent)}
+.kpi.bien .v{color:var(--ok)}
+
+.sec{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:23px;margin:28px 0 12px;display:flex;align-items:baseline;gap:12px}
+.sec small{font-family:Figtree,sans-serif;font-size:12.5px;color:var(--ink-3);font-weight:400}
+
+.slc{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--surface);box-shadow:var(--shadow)}
+.slc .sst{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:2px 9px 2px 7px;border-radius:999px}
+.slc.ok .sst{background:var(--ok-soft);color:var(--ok)}
+.slc.warn .sst{background:var(--warn-soft);color:var(--warn)}
+.slc.crit .sst{background:var(--crit-soft);color:var(--crit)}
+.slc .sv{font-size:36px;font-weight:800;line-height:1;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.slc.cero .sv{color:var(--ink-3)}
+.slc .sl{font-size:13.5px;font-weight:600}
+.slc .sd{font-size:11.5px;color:var(--ink-3);margin-top:4px;line-height:1.4}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.panel>header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.panel>header h3{font-size:14px;font-weight:700}
+.panel>header .sub{font-size:11.5px;color:var(--ink-3);text-align:right}
+.panel .body{padding:14px 16px 16px}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);padding:0 0 10px}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.leg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.vacio{text-align:center;padding:34px 10px;color:var(--ink-3)}
+.vacio b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;color:var(--ink-2);margin-bottom:4px}
+
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:9px 12px;font-size:12.5px;box-shadow:0 10px 28px -12px rgba(0,0,0,.4);z-index:60;opacity:0;transition:opacity .1s;max-width:260px}
+.tip.on{opacity:1}
+.tip b{display:block;font-size:13px;margin-bottom:5px}
+.tip .r{display:flex;align-items:center;gap:7px;justify-content:space-between}
+.tip .r i{width:9px;height:9px;border-radius:2px;flex:none}
+.tip .r span{color:var(--ink-3)}
+.tip .r em{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:700;background:var(--surface-2)}
+tbody tr:hover td{background:var(--surface-2)}
+.tw{overflow-x:auto}
+
+.carga{margin-top:12px}
+.bloques{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.bloques .bl:nth-child(n+4){border-top:1px solid var(--line)}
+@media(max-width:1000px){.bloques{grid-template-columns:1fr}}
+.bl{border-right:1px solid var(--line);min-width:0}
+.bl:last-child{border-right:0}
+@media(max-width:1000px){.bl{border-right:0;border-bottom:1px solid var(--line)}}
+.bl>header{padding:11px 15px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.bl>header b{display:block;font-size:13.5px}
+.bl>header i{font-style:normal;font-size:11.5px;color:var(--ink-3)}
+.bl.syso>header{background:var(--accent-soft)}
+.bl.rrhh>header{background:var(--warn-soft)}
+.bl.enf>header{background:var(--crit-soft)}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:14px 15px}
+@media(max-width:560px){.campos{grid-template-columns:1fr}}
+.cm{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cm>span{font-size:11.5px;color:var(--ink-2);font-weight:600;line-height:1.25}
+.cm>span i{font-style:normal;display:block;font-size:10.5px;color:var(--ink-3);font-weight:400}
+.cm.sub>span{color:var(--ink-3);font-weight:500;padding-left:8px}
+.cm input{padding:6px 9px;font-size:13.5px;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:7px;background:var(--surface);width:100%}
+.cm input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.mesbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;padding:14px 16px;border-bottom:1px solid var(--line)}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.fld select,.fld input{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--surface-3);color:var(--ink-2)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.falta{background:var(--crit-soft);color:var(--crit)}
+.pie{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);line-height:1.6}
+.oculto{display:none!important}
+@media print{
+  body{background:#fff}
+  .btns,.sim,.carga,.noprint{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .panel,.kpi,.slc,.hero{box-shadow:none;break-inside:avoid}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .g5{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+}
+</style>
+<style>
+.olitem{display:grid;grid-template-columns:34px 1fr 190px;gap:14px;align-items:start;padding:14px 0;border-bottom:1px solid var(--line)}
+.olitem:last-child{border-bottom:0}
+@media(max-width:820px){.olitem{grid-template-columns:34px 1fr}.olitem .olr{grid-column:2}}
+.olitem .oln{font-family:"IBM Plex Mono",monospace;font-weight:600;color:var(--ink-3);padding-top:4px}
+.olitem .olt{font-size:14px;line-height:1.45}
+.olitem .olp{font-size:11px;color:var(--ink-3);font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-top:5px}
+.olitem textarea{width:100%;margin-top:8px;border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:13px;min-height:44px;background:var(--surface);resize:vertical}
+.olr{display:flex;flex-direction:column;gap:6px}
+.opt{display:flex;gap:7px}
+.opt button{flex:1;min-height:38px;border-radius:9px;border:2px solid var(--line);background:var(--surface);cursor:pointer;font-weight:700;font-size:12.5px}
+.opt button.si{border-color:color-mix(in srgb,var(--ok) 45%,var(--line))}
+.opt button.si[aria-pressed="true"]{background:var(--ok);border-color:var(--ok);color:#fff}
+.opt button.med{border-color:color-mix(in srgb,var(--warn) 45%,var(--line))}
+.opt button.med[aria-pressed="true"]{background:var(--warn);border-color:var(--warn);color:#fff}
+.opt button.no{border-color:color-mix(in srgb,var(--crit) 45%,var(--line))}
+.opt button.no[aria-pressed="true"]{background:var(--crit);border-color:var(--crit);color:#fff}
+.olsum{position:sticky;top:0;z-index:5;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 20px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;box-shadow:var(--shadow);margin-bottom:16px}
+.olsum .pv{font-family:"Cormorant Garamond",Georgia,serif;font-size:56px;font-weight:700;line-height:1;font-variant-numeric:tabular-nums}
+.olsum .pv.ok{color:var(--ok)}.olsum .pv.warn{color:var(--warn)}.olsum .pv.crit{color:var(--crit)}
+.barra{flex:1;min-width:220px;height:14px;background:var(--surface-3);border-radius:99px;overflow:hidden}
+.barra i{display:block;height:100%;border-radius:99px;transition:width .25s}
+.fir{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:40px}
+.fir div{border-top:1px solid var(--ink-3);padding-top:9px;font-size:12.5px;color:var(--ink-3)}
+.hist td{text-align:left}
+.hist td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+@media print{ .btns,.sim,.noprint,.opt{display:none!important} .olsum{position:static} .olitem{break-inside:avoid} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="top">
+    <div class="brand">
+      <div class="mk"><svg viewBox="0 0 64 64" aria-label="CAT">
+        <circle cx="32" cy="14" r="9" fill="#F6D901"/><circle cx="15" cy="40" r="9" fill="#1E9E4A"/>
+        <circle cx="49" cy="40" r="9" fill="#D64533"/><circle cx="32" cy="42" r="10" fill="#124334"/></svg></div>
+      <div>
+        <div class="k">CAT · Calidad Ante Todo — Pilar Seguridad</div>
+        <h1>Verificación de orden y limpieza</h1>
+        <div class="m">Centro de Distribución San Antonio · la usa SySO cuando ve algo que hace a la seguridad</div>
+      </div>
+    </div>
+    <div class="btns">
+      <button class="btn" id="btnNueva">Nueva verificación</button>
+      <button class="btn" id="btnHist">Ver el histórico</button>
+      <button class="btn" id="btnCsv">Descargar CSV</button>
+      <button class="btn" id="btnImp">Imprimir o PDF</button>
+      <button class="btn primary" id="btnGuardar">Guardar esta verificación</button>
+    </div>
+  </div>
+
+  <div class="sim"><div><b>Cómo se usa.</b> Elegí el formato, escribí el sector y quién verifica, y marcá cada punto:
+  <b>cumple</b>, <b>parcial</b> (la mitad del peso) o <b>no cumple</b>. El porcentaje se calcula solo con el peso de cada punto,
+  igual que en la planilla de Excel. Cuando termines, apretá <b>Guardar esta verificación</b>: queda en el histórico de este
+  archivo y se puede bajar en CSV o imprimir con las firmas.</div></div>
+
+  <div class="panel" style="margin-bottom:16px"><div class="mesbar" style="border-bottom:0">
+    <div class="fld"><label for="selForm">Formato</label><select id="selForm"></select></div>
+    <div class="fld"><label for="inSector">Sector verificado</label><input id="inSector" placeholder="Ej.: Devoluciones"></div>
+    <div class="fld"><label for="inFecha">Fecha</label><input type="date" id="inFecha"></div>
+    <div class="fld"><label for="inHora">Hora</label><input type="time" id="inHora"></div>
+    <div class="fld" style="flex:1;min-width:200px"><label for="inSup">Responsable del sector</label><input id="inSup" placeholder="A quién se le verifica"></div>
+    <div class="fld" style="flex:1;min-width:200px"><label for="inVer">Verifica</label><input id="inVer" placeholder="Christian Monges · SySO"></div>
+  </div></div>
+
+  <div class="olsum">
+    <div><div class="k" style="font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700">Cumplimiento</div>
+      <div class="pv" id="pct">—</div></div>
+    <div style="flex:1;min-width:240px">
+      <div class="barra"><i id="bar" style="width:0%"></i></div>
+      <div style="margin-top:8px;font-size:12.5px;color:var(--ink-3)" id="detalle">Marcá los puntos para ver el resultado.</div>
+    </div>
+    <div id="estado"></div>
+  </div>
+
+  <section class="panel"><header><h3 id="tituloForm">Puntos a verificar</h3><div class="sub" id="subForm"></div></header>
+    <div class="body" id="items"></div></section>
+
+  <div class="fir noprint" style="display:none"></div>
+  <div class="fir" id="firmas">
+    <div>Firma del responsable del sector</div>
+    <div>Firma de quien verifica</div>
+  </div>
+
+  <section class="panel oculto" id="panelHist" style="margin-top:22px">
+    <header><h3>Verificaciones guardadas</h3><div class="sub" id="subHist"></div></header>
+    <div class="body tw hist" id="hist"></div>
+  </section>
+
+  <div class="pie">
+    <b>De dónde sale.</b> Los puntos y sus pesos son los de las planillas de Christian
+    <i>“Verificación orden y limpieza · depósito”</i> y <i>“Verificación interna orden y limpieza · pasillos Burger King”</i>.
+    El cálculo es el mismo: la suma de los pesos de los puntos que cumplen, sobre 100.<br>
+    <b>Guardar esta verificación</b> baja este mismo archivo con el histórico adentro. Es un HTML: se abre con doble clic,
+    sin internet y sin instalar nada. Cada verificación guardada queda en la tabla del final.
+  </div>
+</div>
+
+<script id="formatos" type="application/json">{"deposito": {"n": "Depósito · devoluciones y almacenamiento", "sec": "Devoluciones · Depósito", "items": [{"t": "El area se encuentra despejado libre de materiales, cajas, pallets, equipos y basuras en general. Se garantiza el libre paso con seguridad.", "p": 15}, {"t": "Las ubicaciones se encuentran ordenadas , las cajas se encuentran correctamente ubicacdas y alineadas sobre los pallets", "p": 15}, {"t": "Los pallets ubicados en el area se encuentran en condiciones (libres de roturas).", "p": 15}, {"t": "No se observan productos averiados o derrame de productos en las ubicaciones.", "p": 15}, {"t": "Todo elemento de limpieza, herramientas de trabajo y equipos se encuentran en buenas condiciones, ordenados y limpios.", "p": 10}, {"t": "Los muebles y equipos del area ( escritorios, armarios, equipos informaticos, heladera se encuentran en buenas condiciones, ordenados y limpios libre de polvos y telas de araña.", "p": 10}, {"t": "Las divisorias metalicas que dividen de los sectores de AJ Laser-BK se encuentran despejadas libre de materiales y se encuentran en buenas condiciones.", "p": 10}, {"t": "Los equipos PCI se encuentran libre de obstrucciones (Extintor operativo en buenas condiciones).", "p": 10}]}, "pasillos": {"n": "Pasillos · Burger King", "sec": "Burger King", "items": [{"t": "Los pasillos se encuentran despejados libre de materiales, cajas, pallets, equipos y basuras en general. Se garantiza el libre paso con seguridad.", "p": 15}, {"t": "Las ubicaciones se encuentran ordenadas , las cajas se encuentran correctamente ubicacdas y alineadas todas cerradas", "p": 15}, {"t": "Los pallets almacenados en racks se encuentran en condiciones (roturas en la estiba).", "p": 15}, {"t": "Los muebles de oficinas (armario, sillas, escritorios) se encuentran ordenados, limpios y en buenas condiciones, asi tambien estan separadas de las divisorias metalicas a una distancia de aproximadamente 10 a 15 cm para evitar daños a la estructura tambien se tiene en cuenta los productos paletizados en el sector.", "p": 15}, {"t": "No se observan derrame de productos en el piso", "p": 10}, {"t": "El lava manos del sector se encuentra limpio y cuenta con detergente, papel y basurero.", "p": 5}, {"t": "El sector de Puerta 34 (tunel de recepcion de productos) se encuentra ordenados y limpio, el basurero en buenas condiciones y vacio, los pallets correctamente ubicados.", "p": 10}, {"t": "Los elementos de limpieza se encuentran correctamente ubicados y en buenas condiciones", "p": 5}, {"t": "Los equipos de proteccion personal para frio - ingreso a camara (trajes, pasa montañas, guantes y botas termicas) se encuentran ordenados en un lugar asignado", "p": 5}, {"t": "Los equipos PCI se encuentran libre de obstrucciones (Extintor, BIE, Pulsador manual de emergencia, Salida de emergencia", "p": 5}]}}</script>
+<script id="historico" type="application/json">[]</script>
+<script>
+(function(){
+"use strict";
+var F={},H=[];
+try{F=JSON.parse(document.getElementById('formatos').textContent)||{};}catch(e){}
+try{H=JSON.parse(document.getElementById('historico').textContent)||[];}catch(e){}
+var S={f:Object.keys(F)[0],resp:{},hist:false};
+function $(s){return document.querySelector(s)}
+function esc(t){return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function hoy(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function hora(){var d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')}
+
+$('#selForm').innerHTML=Object.keys(F).map(function(k){return '<option value="'+k+'">'+esc(F[k].n)+'</option>'}).join('');
+$('#inFecha').value=hoy(); $('#inHora').value=hora();
+
+function items(){ return (F[S.f]&&F[S.f].items)||[] }
+function pintarItems(){
+  var f=F[S.f]||{n:'',items:[]};
+  $('#tituloForm').textContent=f.n;
+  $('#subForm').textContent=f.items.length+' puntos · suma 100 %';
+  if(!$('#inSector').value) $('#inSector').value=f.sec||'';
+  $('#items').innerHTML=f.items.map(function(it,i){
+    var v=S.resp[i]||{};
+    return '<div class="olitem"><div class="oln">'+(i+1)+'</div>'
+      +'<div><div class="olt">'+esc(it.t)+'</div><div class="olp">Peso '+it.p+' %</div>'
+      +'<textarea data-obs="'+i+'" placeholder="Observación: qué viste y dónde">'+esc(v.obs||'')+'</textarea></div>'
+      +'<div class="olr"><div class="opt">'
+      +'<button class="si" data-v="1" data-i="'+i+'" aria-pressed="'+(v.v===1)+'">Cumple</button>'
+      +'<button class="med" data-v="0.5" data-i="'+i+'" aria-pressed="'+(v.v===0.5)+'">Parcial</button>'
+      +'<button class="no" data-v="0" data-i="'+i+'" aria-pressed="'+(v.v===0)+'">No cumple</button>'
+      +'</div></div></div>';
+  }).join('');
+  calc();
+}
+function calc(){
+  var its=items(), tot=0, obt=0, sin=0, malos=[];
+  its.forEach(function(it,i){
+    tot+=it.p;
+    var v=S.resp[i];
+    if(v==null||v.v==null){ sin++; return; }
+    obt+=it.p*v.v;
+    if(v.v<1) malos.push(i+1);
+  });
+  var pct = (tot-0)>0 ? Math.round(obt/tot*100) : 0;
+  var completo = sin===0;
+  var cls = pct>=90?'ok':(pct>=75?'warn':'crit');
+  var col = pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)');
+  $('#pct').textContent = (sin===its.length)?'—':(pct+' %');
+  $('#pct').className='pv '+cls;
+  $('#bar').style.width=pct+'%'; $('#bar').style.background=col;
+  $('#detalle').textContent = completo
+    ? ('Los '+its.length+' puntos marcados'+(malos.length?' · no cumplen: '+malos.join(', '):' · todo cumple'))
+    : ('Faltan '+sin+' de '+its.length+' puntos por marcar');
+  var txt = pct>=90?'Bien':(pct>=75?'Atención':'Hay que corregir');
+  var ico = pct>=90?'\u2713':(pct>=75?'\u26A0':'\u2297');
+  $('#estado').innerHTML = (sin===its.length)?'' : '<span class="chip '+(pct>=90?'ok':'falta')+'" style="font-size:13px;padding:6px 14px">'+ico+' '+txt+'</span>';
+}
+$('#items').addEventListener('click',function(e){
+  var b=e.target.closest('button[data-v]'); if(!b) return;
+  var i=Number(b.dataset.i), v=Number(b.dataset.v);
+  S.resp[i]=S.resp[i]||{};
+  S.resp[i].v = (S.resp[i].v===v)? null : v;
+  b.parentNode.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', String(Number(x.dataset.v)===S.resp[i].v)); });
+  calc();
+});
+$('#items').addEventListener('input',function(e){
+  var t=e.target; if(t.dataset.obs==null) return;
+  var i=Number(t.dataset.obs); S.resp[i]=S.resp[i]||{}; S.resp[i].obs=t.value;
+});
+$('#selForm').addEventListener('change',function(){ S.f=this.value; S.resp={}; $('#inSector').value=''; pintarItems(); });
+$('#btnNueva').addEventListener('click',function(){ S.resp={}; $('#inFecha').value=hoy(); $('#inHora').value=hora(); pintarItems(); window.scrollTo({top:0,behavior:'smooth'}); });
+$('#btnHist').addEventListener('click',function(){ S.hist=!S.hist; $('#panelHist').classList.toggle('oculto',!S.hist); this.textContent=S.hist?'Ocultar el histórico':'Ver el histórico'; });
+$('#btnImp').addEventListener('click',function(){ window.print(); });
+
+function registro(){
+  var its=items(), tot=0, obt=0;
+  its.forEach(function(it,i){ tot+=it.p; var v=S.resp[i]; if(v&&v.v!=null) obt+=it.p*v.v; });
+  return {f:S.f, formato:(F[S.f]||{}).n, sector:$('#inSector').value, fecha:$('#inFecha').value, hora:$('#inHora').value,
+    sup:$('#inSup').value, ver:$('#inVer').value, pct: tot? Math.round(obt/tot*100):0,
+    det: its.map(function(it,i){ var v=S.resp[i]||{}; return {p:it.p, v:v.v==null?null:v.v, obs:v.obs||''} })};
+}
+$('#btnGuardar').addEventListener('click',function(){
+  var r=registro();
+  if(!r.sector){ alert('Escribí el sector verificado.'); return; }
+  var sinMarcar=r.det.filter(function(d){return d.v==null}).length;
+  if(sinMarcar && !confirm('Quedan '+sinMarcar+' puntos sin marcar. ¿Guardar igual?')) return;
+  H.push(r); pintarHist();
+  var doc=document.documentElement.cloneNode(true);
+  var h=doc.querySelector('#historico'); if(h) h.textContent=JSON.stringify(H);
+  bajar('Verificacion orden y limpieza CDSA.html','<!doctype html>\n'+doc.outerHTML,'text/html;charset=utf-8');
+});
+$('#btnCsv').addEventListener('click',function(){
+  var l=['fecha;hora;formato;sector;responsable;verifica;cumplimiento'];
+  H.forEach(function(r){ l.push([r.fecha,r.hora,r.formato,r.sector,r.sup,r.ver,r.pct+'%'].join(';')); });
+  bajar('Orden y limpieza CDSA.csv','\uFEFF'+l.join('\n'),'text/csv;charset=utf-8');
+});
+function pintarHist(){
+  $('#subHist').textContent=H.length+' verificación'+(H.length===1?'':'es');
+  if(!H.length){ $('#hist').innerHTML='<div class="vacio"><b>Todavía no hay ninguna</b>Cuando guardes la primera, aparece acá.</div>'; return; }
+  var h='<table><thead><tr><th>Fecha</th><th>Hora</th><th>Sector</th><th>Formato</th><th>Responsable</th><th>Verifica</th><th>Cumplimiento</th></tr></thead><tbody>';
+  H.slice().reverse().forEach(function(r){
+    var cls=r.pct>=90?'var(--ok)':(r.pct>=75?'var(--warn)':'var(--crit)');
+    h+='<tr><td>'+esc(r.fecha)+'</td><td>'+esc(r.hora)+'</td><td><b>'+esc(r.sector)+'</b></td><td>'+esc(r.formato)+'</td>'
+      +'<td>'+esc(r.sup)+'</td><td>'+esc(r.ver)+'</td><td class="n" style="color:'+cls+'">'+r.pct+' %</td></tr>';
+  });
+  $('#hist').innerHTML=h+'</tbody></table>';
+}
+function bajar(nombre,txt,tipo){
+  var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([txt],{type:tipo}));
+  a.download=nombre; document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },400);
+}
+pintarItems(); pintarHist();
+})();
+</script>
+
+</body>
+</html>

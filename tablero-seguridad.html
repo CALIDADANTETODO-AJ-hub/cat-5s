@@ -1,0 +1,708 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pilar Seguridad · Tablero de incidencias CDSA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#F7F5EF; --surface:#FFFFFF; --surface-2:#F1EFE6; --surface-3:#E6E3D7;
+  --line:#E1DDD0; --line-strong:#C5BFAE;
+  --ink:#153731; --ink-2:#41615A; --ink-3:#7B8E87;
+  --accent:#0E4B43; --accent-2:#0A3A33; --accent-soft:#DEEDE8;
+  --ok:#2E7D57; --ok-soft:#E1F1E8;
+  --warn:#B07406; --warn-soft:#FBEED9;
+  --crit:#C0483A; --crit-soft:#FBE5E0;
+  --hazard:#DFA33C;
+  --v1:#2a78d6; --v2:#eb6834; --v3:#1baf7a; --v4:#eda100;
+  --seq-1:#DCE9E4; --seq-2:#AFCFC6; --seq-3:#78B0A3; --seq-4:#3F8578; --seq-5:#12564C;
+  --shadow:0 1px 2px rgba(21,55,49,.04), 0 12px 32px -18px rgba(21,55,49,.24);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --ground:#0E2A26; --surface:#143830; --surface-2:#1B443B; --surface-3:#245046;
+  --line:#275147; --line-strong:#3D6C60;
+  --ink:#F4EBD8; --ink-2:#C4D6CE; --ink-3:#8DA79F;
+  --accent:#74D6C0; --accent-2:#A8E7D8; --accent-soft:#1B443B;
+  --ok:#63C08C; --ok-soft:#16342A;
+  --warn:#DDAB4E; --warn-soft:#332A15;
+  --crit:#EC8570; --crit-soft:#3A211C;
+  --v1:#3987e5; --v2:#d95926; --v3:#199e70; --v4:#c98500;
+  --seq-1:#1F3F39; --seq-2:#2D5C53; --seq-3:#3F8577; --seq-4:#59AC98; --seq-5:#7BD1BB;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -20px rgba(0,0,0,.75);
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --ground:#0E2A26; --surface:#143830; --surface-2:#1B443B; --surface-3:#245046;
+  --line:#275147; --line-strong:#3D6C60;
+  --ink:#F4EBD8; --ink-2:#C4D6CE; --ink-3:#8DA79F;
+  --accent:#74D6C0; --accent-2:#A8E7D8; --accent-soft:#1B443B;
+  --ok:#63C08C; --ok-soft:#16342A; --warn:#DDAB4E; --warn-soft:#332A15;
+  --crit:#EC8570; --crit-soft:#3A211C;
+  --v1:#3987e5; --v2:#d95926; --v3:#199e70; --v4:#c98500;
+  --seq-1:#1F3F39; --seq-2:#2D5C53; --seq-3:#3F8577; --seq-4:#59AC98; --seq-5:#7BD1BB;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 14px 34px -20px rgba(0,0,0,.75);
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:Figtree,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;letter-spacing:-.01em}
+h1,.serif{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;letter-spacing:0}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace;font-variant-numeric:tabular-nums}
+.num{font-variant-numeric:tabular-nums}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+a{color:var(--accent)}
+
+.wrap{max-width:1320px;margin:0 auto;padding:26px 24px 72px}
+.top{display:flex;gap:18px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;border-bottom:3px solid #F6D901;padding-bottom:18px;margin-bottom:8px}
+.brand{display:flex;gap:14px;align-items:center}
+.brand .mk{width:56px;height:56px;flex:none}
+.brand .mk svg{width:100%;height:100%;display:block}
+.brand .k{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.brand h1{font-size:30px;line-height:1.05;margin:2px 0 3px}
+.brand .m{font-size:12.5px;color:var(--ink-3)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:8px 14px;border-radius:9px;border:1px solid var(--line-strong);background:var(--surface);cursor:pointer;font-weight:500;transition:background .12s}
+.btn:hover{background:var(--surface-2)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+:root[data-theme="dark"] .btn.primary,:root:not([data-theme="light"]) .btn.primary{color:#0A2A25}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .btn.primary{color:#fff}}
+.btn.primary:hover{filter:brightness(1.08)}
+.btn.sm{padding:5px 10px;font-size:12.5px;border-radius:7px}
+
+.sim{display:flex;gap:12px;align-items:center;background:var(--warn-soft);border:1px solid color-mix(in srgb,var(--hazard) 55%,transparent);border-left:4px solid var(--hazard);border-radius:0 12px 12px 0;padding:12px 16px;margin:18px 0 22px;font-size:13.5px;color:var(--ink)}
+.sim b{color:var(--ink)}
+
+.hero{background:var(--accent);color:#F4EBD8;border-radius:20px;padding:24px 28px;display:flex;justify-content:space-between;align-items:center;gap:28px;flex-wrap:wrap;margin-bottom:18px}
+:root[data-theme="dark"] .hero,:root:not([data-theme="light"]) .hero{background:var(--surface-2);color:var(--ink)}
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]) .hero{background:var(--accent);color:#F4EBD8}}
+.hero .hk{font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;opacity:.85}
+.hero .hv{font-family:"Cormorant Garamond",Georgia,serif;font-size:76px;font-weight:700;line-height:.95;font-variant-numeric:tabular-nums}
+.hero .hm{font-size:13px;opacity:.85;margin-top:4px}
+.hero .hst{display:flex;gap:30px;flex-wrap:wrap}
+.hero .hst div{text-align:right}
+.hero .hst .v{font-weight:800;font-size:28px;line-height:1.1;font-variant-numeric:tabular-nums}
+.hero .hst .k{font-size:10px;letter-spacing:.1em;text-transform:uppercase;opacity:.8;font-weight:700}
+
+.g{display:grid;gap:14px}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g5{grid-template-columns:repeat(5,minmax(0,1fr))}
+@media(max-width:1080px){.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.g5{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.g4,.g5{grid-template-columns:1fr}}
+
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:15px 17px;box-shadow:var(--shadow)}
+.kpi .k{font-size:10.5px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.kpi .v{font-weight:800;font-size:34px;line-height:1.05;margin-top:7px;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.kpi .v small{font-size:15px;font-weight:700;color:var(--ink-3)}
+.kpi .m{margin-top:6px;font-size:12px;color:var(--ink-3)}
+.kpi.falta .v{color:var(--ink-3)}
+.kpi.mal{background:var(--crit-soft);border-color:color-mix(in srgb,var(--crit) 32%,transparent)}
+.kpi.mal .v{color:var(--crit)}
+.kpi.bien{background:var(--ok-soft);border-color:color-mix(in srgb,var(--ok) 28%,transparent)}
+.kpi.bien .v{color:var(--ok)}
+
+.sec{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;font-size:23px;margin:28px 0 12px;display:flex;align-items:baseline;gap:12px}
+.sec small{font-family:Figtree,sans-serif;font-size:12.5px;color:var(--ink-3);font-weight:400}
+
+.slc{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--surface);box-shadow:var(--shadow)}
+.slc .sst{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;padding:2px 9px 2px 7px;border-radius:999px}
+.slc.ok .sst{background:var(--ok-soft);color:var(--ok)}
+.slc.warn .sst{background:var(--warn-soft);color:var(--warn)}
+.slc.crit .sst{background:var(--crit-soft);color:var(--crit)}
+.slc .sv{font-size:36px;font-weight:800;line-height:1;margin:10px 0 2px;font-variant-numeric:tabular-nums}
+.slc.cero .sv{color:var(--ink-3)}
+.slc .sl{font-size:13.5px;font-weight:600}
+.slc .sd{font-size:11.5px;color:var(--ink-3);margin-top:4px;line-height:1.4}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.panel>header{display:flex;align-items:baseline;justify-content:space-between;gap:10px;padding:13px 16px;border-bottom:1px solid var(--line)}
+.panel>header h3{font-size:14px;font-weight:700}
+.panel>header .sub{font-size:11.5px;color:var(--ink-3);text-align:right}
+.panel .body{padding:14px 16px 16px}
+.chart{position:relative}
+.chart svg{display:block;width:100%;height:auto;overflow:visible}
+.leg{display:flex;gap:16px;flex-wrap:wrap;font-size:12px;color:var(--ink-2);padding:0 0 10px}
+.leg span{display:inline-flex;align-items:center;gap:6px}
+.leg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.vacio{text-align:center;padding:34px 10px;color:var(--ink-3)}
+.vacio b{display:block;font-family:"Cormorant Garamond",Georgia,serif;font-size:19px;color:var(--ink-2);margin-bottom:4px}
+
+.tip{position:fixed;pointer-events:none;background:var(--surface);border:1px solid var(--line-strong);border-radius:10px;padding:9px 12px;font-size:12.5px;box-shadow:0 10px 28px -12px rgba(0,0,0,.4);z-index:60;opacity:0;transition:opacity .1s;max-width:260px}
+.tip.on{opacity:1}
+.tip b{display:block;font-size:13px;margin-bottom:5px}
+.tip .r{display:flex;align-items:center;gap:7px;justify-content:space-between}
+.tip .r i{width:9px;height:9px;border-radius:2px;flex:none}
+.tip .r span{color:var(--ink-3)}
+.tip .r em{font-style:normal;font-weight:700;font-variant-numeric:tabular-nums}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{border-bottom:1px solid var(--line);padding:7px 9px;text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+thead th{font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);font-weight:700;background:var(--surface-2)}
+tbody tr:hover td{background:var(--surface-2)}
+.tw{overflow-x:auto}
+
+.carga{margin-top:12px}
+.bloques{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0}
+.bloques .bl:nth-child(n+4){border-top:1px solid var(--line)}
+@media(max-width:1000px){.bloques{grid-template-columns:1fr}}
+.bl{border-right:1px solid var(--line);min-width:0}
+.bl:last-child{border-right:0}
+@media(max-width:1000px){.bl{border-right:0;border-bottom:1px solid var(--line)}}
+.bl>header{padding:11px 15px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.bl>header b{display:block;font-size:13.5px}
+.bl>header i{font-style:normal;font-size:11.5px;color:var(--ink-3)}
+.bl.syso>header{background:var(--accent-soft)}
+.bl.rrhh>header{background:var(--warn-soft)}
+.bl.enf>header{background:var(--crit-soft)}
+.campos{display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:14px 15px}
+@media(max-width:560px){.campos{grid-template-columns:1fr}}
+.cm{display:flex;flex-direction:column;gap:3px;min-width:0}
+.cm>span{font-size:11.5px;color:var(--ink-2);font-weight:600;line-height:1.25}
+.cm>span i{font-style:normal;display:block;font-size:10.5px;color:var(--ink-3);font-weight:400}
+.cm.sub>span{color:var(--ink-3);font-weight:500;padding-left:8px}
+.cm input{padding:6px 9px;font-size:13.5px;font-variant-numeric:tabular-nums;border:1px solid var(--line);border-radius:7px;background:var(--surface);width:100%}
+.cm input:focus{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent-soft)}
+.mesbar{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;padding:14px 16px;border-bottom:1px solid var(--line)}
+.fld{display:flex;flex-direction:column;gap:5px}
+.fld label{font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.fld select,.fld input{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:600;padding:3px 9px;border-radius:999px;background:var(--surface-3);color:var(--ink-2)}
+.chip.ok{background:var(--ok-soft);color:var(--ok)}
+.chip.falta{background:var(--crit-soft);color:var(--crit)}
+.pie{margin-top:36px;padding-top:16px;border-top:1px solid var(--line);font-size:12px;color:var(--ink-3);line-height:1.6}
+.oculto{display:none!important}
+@media print{
+  body{background:#fff}
+  .btns,.sim,.carga,.noprint{display:none!important}
+  .wrap{max-width:none;padding:0}
+  .panel,.kpi,.slc,.hero{box-shadow:none;break-inside:avoid}
+  .g2{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+  .g5{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="top">
+    <div class="brand">
+      <div class="mk"><svg viewBox="0 0 64 64" aria-label="CAT · Calidad Ante Todo">
+        <circle cx="32" cy="14" r="9" fill="#F6D901"/><circle cx="15" cy="40" r="9" fill="#1E9E4A"/>
+        <circle cx="49" cy="40" r="9" fill="#D64533"/><circle cx="32" cy="42" r="10" fill="#124334"/>
+      </svg></div>
+      <div>
+        <div class="k">CAT · Calidad Ante Todo — Pilar Seguridad</div>
+        <h1>Tablero de incidencias · CDSA</h1>
+        <div class="m">Centro de Distribución San Antonio · Jefatura de SySO · Christian Monges</div>
+      </div>
+    </div>
+    <div class="btns">
+      <div class="fld"><label for="selSitio">Sitio</label>
+        <select id="selSitio"><option value="cdsa">CD San Antonio</option><option value="itaugua">CD Itauguá</option></select></div>
+      <div class="fld"><label for="selAnio">Año</label>
+        <select id="selAnio"><option value="2026">2026</option><option value="2025">2025</option></select></div>
+      <button class="btn" id="btnEjemplo">Ver con datos de ejemplo</button>
+      <button class="btn" id="btnTabla">Ver la tabla</button>
+      <button class="btn" id="btnCsv">Descargar CSV</button>
+      <button class="btn" id="btnImp">Imprimir</button>
+      <button class="btn primary" id="btnGuardar">Guardar una copia</button>
+    </div>
+  </div>
+
+  <div class="sim">
+    <div><b>Esto es un simulacro.</b> Así se vería la pestaña de incidencias en el perfil de Christian
+    antes de tocar el aplicativo. Los datos de SySO son los reales de la planilla
+    <i>DASHBOARD SSOMA 2025-2026 CDSA</i> (enero a agosto). Lo de Recursos Humanos y Enfermería está
+    en blanco porque todavía no se carga: apretá <b>“Ver con datos de ejemplo”</b> para ver cómo queda
+    el tablero completo. Los números de ejemplo <b>no son del CD</b>.</div>
+  </div>
+
+  <div class="hero">
+    <div>
+      <div class="hk">Días sin accidentes</div>
+      <div class="hv num" id="hDias">—</div>
+      <div class="hm" id="hUlt">Sin fecha del último accidente</div>
+    </div>
+    <div class="hst">
+      <div><div class="v num" id="hAcc">—</div><div class="k">Accidentes del año</div></div>
+      <div><div class="v num" id="hInc">—</div><div class="k">Incidentes del año</div></div>
+      <div><div class="v num" id="hDot">—</div><div class="k">Dotación</div></div>
+      <div><div class="v num" id="hHH">—</div><div class="k">Horas hombre</div></div>
+    </div>
+  </div>
+
+  <div class="g g4" id="kpis"></div>
+
+  <h2 class="sec">Semáforo de lesiones <small id="semSub">lo que carga Enfermería · acumulado del año</small></h2>
+  <div class="g g5" id="semaforo"></div>
+
+  <h2 class="sec">Cómo viene el año <small>un gráfico por medida: nunca dos escalas en el mismo eje</small></h2>
+  <div class="g g2">
+    <section class="panel"><header><h3>Accidentes e incidentes</h3><div class="sub">por mes · lo carga SySO</div></header>
+      <div class="body"><div class="chart" id="cAccInc"></div></div></section>
+    <section class="panel"><header><h3>Actos y condiciones inseguras</h3><div class="sub">lo que avisa antes de que pase</div></header>
+      <div class="body"><div class="chart" id="cActos"></div></div></section>
+    <section class="panel"><header><h3>Índice de frecuencia</h3><div class="sub">accidentes × 1.000.000 ÷ horas hombre</div></header>
+      <div class="body"><div class="chart" id="cIF"></div></div></section>
+    <section class="panel"><header><h3>Índice de severidad</h3><div class="sub">días perdidos × 1.000.000 ÷ horas hombre</div></header>
+      <div class="body"><div class="chart" id="cIS"></div></div></section>
+  </div>
+
+  <div class="g g2" style="margin-top:14px">
+    <section class="panel"><header><h3>Parte del cuerpo afectada</h3><div class="sub">lo carga Enfermería · acumulado</div></header>
+      <div class="body"><div class="chart" id="cCuerpo"></div></div></section>
+    <section class="panel"><header><h3>Causa del incidente</h3><div class="sub">qué lo originó · acumulado</div></header>
+      <div class="body"><div class="chart" id="cCausa"></div></div></section>
+  </div>
+  <div class="g g2" style="margin-top:14px">
+    <section class="panel"><header><h3>Pirámide de seguridad</h3><div class="sub">acumulado del año</div></header>
+      <div class="body"><div class="chart" id="cPir"></div></div></section>
+    <section class="panel"><header><h3>Programa anual</h3><div class="sub">ejecutado sobre programado</div></header>
+      <div class="body"><div class="chart" id="cProg"></div></div></section>
+  </div>
+
+  <section class="panel oculto" id="panelTabla" style="margin-top:14px">
+    <header><h3>Los números, mes por mes</h3><div class="sub">lo mismo que muestran los gráficos</div></header>
+    <div class="body tw" id="tabla"></div>
+  </section>
+
+  <h2 class="sec">Cargar los datos del mes <small>cada uno carga lo suyo · los gráficos se actualizan al instante</small></h2>
+  <section class="panel carga">
+    <div class="mesbar">
+      <div class="fld"><label for="selMes">Mes</label><select id="selMes"></select></div>
+      <div class="fld"><label for="inpUlt">Fecha del último accidente</label><input type="date" id="inpUlt"></div>
+      <div id="estado" style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding-bottom:6px"></div>
+      <div style="flex:1"></div>
+      <button class="btn sm" id="btnVaciarMes">Vaciar este mes</button>
+    </div>
+    <div class="bloques" id="bloques"></div>
+  </section>
+
+  <div class="pie">
+    <b>Cómo se calcula.</b> Horas hombre = dotación × horas por día × días trabajados.
+    Índice de frecuencia = accidentes × 1.000.000 ÷ horas hombre.
+    Índice de severidad = días perdidos × 1.000.000 ÷ horas hombre.
+    Índice de accidentabilidad = frecuencia × severidad ÷ 1.000.<br>
+    Mientras falte la dotación o los días perdidos, el índice que depende de eso se muestra con una raya:
+    no se inventa el número.<br>
+    <b>Guardar una copia</b> baja este mismo archivo con los datos adentro. Es un HTML: se abre con doble clic,
+    sin internet y sin instalar nada.
+  </div>
+</div>
+
+<div class="tip" id="tip"></div>
+
+<script id="datos" type="application/json">{"cdsa": {"2026": {"ene": {"dot": 184, "adm": 15, "ope": 169, "actos": 6, "cond": 6, "acc": 2, "accOp": 2, "accAd": 0, "accOt": 0, "inc": 0, "incOp": 0, "incAd": 0, "incOt": 0, "insP": 72, "insE": 72, "capP": 3, "capE": 3, "simP": 0, "simE": 0, "pasP": 5, "pasE": 5, "ultAcc": "2026-01-17"}, "feb": {"dot": 179, "adm": 15, "ope": 164, "actos": 3, "cond": 5, "acc": 0, "accOp": 0, "accAd": 0, "inc": 1, "incOp": 1, "incAd": 0, "insP": 72, "insE": 72, "capP": 3, "capE": 3, "simP": 0, "simE": 0, "pasP": 6, "pasE": 3}, "mar": {"dot": 179, "adm": 15, "ope": 164, "actos": 5, "cond": 4, "acc": 0, "accOp": 0, "accAd": 0, "inc": 2, "insP": 70, "insE": 70, "capP": 4, "capE": 4, "simP": 2, "simE": 0, "pasP": 2, "pasE": 2}, "abr": {"dot": 179, "adm": 15, "ope": 164, "acc": 0, "inc": 0, "capP": 7, "simP": 0}, "may": {"dot": 184, "adm": 15, "ope": 169, "acc": 0, "inc": 0}, "jun": {"dot": 184, "adm": 15, "ope": 169, "acc": 0, "inc": 0, "simP": 2}, "jul": {"dot": 184, "adm": 15, "ope": 169, "acc": 0, "inc": 0}, "ago": {"dot": 184, "adm": 15, "ope": 169, "acc": 0, "inc": 0}, "oct": {"simP": 2}}}, "itaugua": {"2026": {"ene": {"dot": 85, "adm": 5, "ope": 80, "actos": 2, "cond": 8, "acc": 5, "accOp": 5, "accAd": 0, "inc": 5, "incOp": 5, "insP": 52, "insE": 3, "capP": 12, "capE": 1, "simP": 51, "simE": 0}, "feb": {"dot": 428, "adm": 15, "ope": 413, "acc": 0, "inc": 0}, "mar": {"dot": 428, "adm": 15, "ope": 413, "acc": 0, "inc": 2}, "abr": {"dot": 428, "adm": 15, "ope": 413, "acc": 0, "inc": 0, "ultAcc": "2026-07-23"}}}}</script>
+<script id="ejemplo" type="application/json">{"cdsa": {"2026": {"ene": {"diasPerd": 0, "lesTrat": 1, "lesPA": 0, "lesInc": 0, "lesRestr": 0, "lesMort": 0, "atenc": 11, "cuCabeza": 0, "caConf": 13, "caEsp": 9, "caInex": 6, "caManip": 9, "caSuperv": 4, "caManejo": 5}, "feb": {"diasPerd": 4, "lesTrat": 14, "lesPA": 6, "lesInc": 2, "lesRestr": 1, "lesMort": 0, "atenc": 26, "cuCabeza": 5, "cuTronco": 2, "cuBrazoD": 5, "cuBrazoI": 7, "cuManoD": 4, "cuManoI": 2, "cuPiernaI": 1, "caConf": 7, "caEsp": 4, "caInex": 6, "caManip": 2, "caSuperv": 3, "caManejo": 4}, "mar": {"diasPerd": 2, "lesTrat": 11, "lesPA": 12, "lesInc": 3, "lesRestr": 6, "lesMort": 0, "atenc": 32, "cuCabeza": 13, "cuTronco": 7, "cuBrazoD": 9, "cuBrazoI": 14, "cuManoD": 5, "cuManoI": 2, "cuPiernaD": 2, "cuPiernaI": 1, "cuPieD": 1, "caConf": 8, "caEsp": 17, "caInex": 13, "caManip": 8, "caSuperv": 6, "caManejo": 2}, "abr": {"diasPerd": 0, "lesTrat": 2, "lesPA": 3, "lesInc": 0, "lesRestr": 1, "atenc": 19, "cuManoD": 2, "cuTronco": 1, "caConf": 4, "caEsp": 3}, "may": {"diasPerd": 0, "lesTrat": 1, "lesPA": 2, "atenc": 14, "cuManoI": 1, "caManip": 2}, "jun": {"diasPerd": 0, "lesTrat": 0, "lesPA": 2, "atenc": 16, "cuPiernaI": 1, "caManejo": 1}, "jul": {"diasPerd": 0, "lesTrat": 1, "lesPA": 1, "atenc": 12, "cuManoD": 1, "caConf": 2}, "ago": {"diasPerd": 0, "lesTrat": 0, "lesPA": 1, "atenc": 10, "caEsp": 1}}}, "itaugua": {"2026": {}}}</script>
+<script>
+(function(){
+"use strict";
+var MESES=['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
+var MESL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+var DIAS=[31,28,31,30,31,30,31,31,30,31,30,31];
+
+var CAMPOS={
+ syso:[['acc','Accidentes','Todo accidente con lesión'],['accOp','· operativos',''],['accAd','· administrativos',''],['accOt','· otros',''],
+   ['inc','Incidentes','Pasó algo, no hubo lesión'],['incOp','· operativos',''],['incAd','· administrativos',''],['incOt','· otros',''],
+   ['actos','Actos inseguros','Lo que hizo la persona'],['cond','Condiciones inseguras','Lo que estaba mal en el lugar'],
+   ['insP','Inspecciones programadas',''],['insE','Inspecciones ejecutadas',''],
+   ['capP','Capacitaciones programadas',''],['capE','Capacitaciones ejecutadas',''],
+   ['simP','Simulacros programados',''],['simE','Simulacros ejecutados',''],
+   ['pasP','PASST programadas','Programa anual de SST'],['pasE','PASST ejecutadas','']],
+ rrhh:[['dot','Dotación total','Gente que trabajó ese mes'],['adm','· administrativos',''],['ope','· operativos',''],
+   ['hd','Horas por día','Si se deja vacío, toma 8'],['dm','Días trabajados','Si se deja vacío, toma los del mes'],
+   ['diasPerd','Días perdidos','Días de reposo por accidente'],['diasRestr','Días con trabajo restringido','']],
+ enf:[['lesMort','Mortal',''],['lesInc','Lesión incapacitante',''],['lesRestr','Lesión con trabajo restringido',''],
+   ['lesTrat','Lesión con tratamiento médico',''],['lesPA','Lesión con primeros auxilios',''],
+   ['atenc','Atenciones de enfermería','Todas las consultas del mes']],
+ cuerpo:[['cuCabeza','Cabeza',''],['cuTronco','Tronco',''],['cuBrazoD','Brazo derecho',''],['cuBrazoI','Brazo izquierdo',''],
+   ['cuManoD','Mano derecha',''],['cuManoI','Mano izquierda',''],['cuPiernaD','Pierna derecha',''],['cuPiernaI','Pierna izquierda',''],
+   ['cuPieD','Pie derecho',''],['cuPieI','Pie izquierdo','']],
+ causa:[['caConf','Exceso de confianza',''],['caEsp','Espacio reducido',''],['caInex','Inexperiencia del trabajador',''],
+   ['caManip','Mala manipulación',''],['caSuperv','Falta de supervisión',''],['caManejo','Manejo incorrecto','']]
+};
+var BLOQ=[
+ {id:'syso',cls:'syso',t:'Seguridad y Salud Ocupacional',q:'Christian Monges · Jefatura de SySO'},
+ {id:'rrhh',cls:'rrhh',t:'Recursos Humanos',q:'Sin la dotación no hay índices'},
+ {id:'enf',cls:'enf',t:'Enfermería',q:'Tipo de lesión y atenciones'},
+ {id:'cuerpo',cls:'enf',t:'Parte del cuerpo afectada',q:'Enfermería · una por lesión'},
+ {id:'causa',cls:'enf',t:'Causa del incidente',q:'SySO con Enfermería · qué lo originó'}
+];
+var SEMLES=[
+ ['lesMort','Mortal','crit','Crítico','Cero. Cualquier caso abre investigación inmediata.'],
+ ['lesInc','Incapacitante','crit','Grave','Lesión que deja a la persona sin poder trabajar.'],
+ ['lesRestr','Trabajo restringido','warn','Atención','Puede trabajar, con tareas limitadas.'],
+ ['lesTrat','Tratamiento médico','warn','Atención','Necesitó atención médica.'],
+ ['lesPA','Primeros auxilios','ok','Bajo','Se resolvió en el CD.']
+];
+var ICO={ok:'✓',warn:'⚠',crit:'⊗'};
+
+/* --------- estado --------- */
+var BASE={}, EJEMPLO={};
+try{ BASE=JSON.parse(document.getElementById('datos').textContent)||{}; }catch(e){ BASE={}; }
+try{ EJEMPLO=JSON.parse(document.getElementById('ejemplo').textContent)||{}; }catch(e){ EJEMPLO={}; }
+var S={sitio:'cdsa', anio:'2026', mes:0, ejemplo:false, tabla:false, datos:JSON.parse(JSON.stringify(BASE))};
+
+function anioDe(){ var D=S.datos; if(!D[S.sitio]) D[S.sitio]={}; if(!D[S.sitio][S.anio]) D[S.sitio][S.anio]={}; return D[S.sitio][S.anio]; }
+function ejDe(i){ var E=EJEMPLO[S.sitio]; return (E&&E[S.anio]&&E[S.anio][MESES[i]])||null; }
+function mesDe(i){ var A=anioDe(), k=MESES[i]; if(!A[k]) A[k]={}; return A[k]; }
+function val(i,k){
+  var v=mesDe(i)[k];
+  if(v===''||v===null||v===undefined){
+    var e=S.ejemplo?ejDe(i):null;
+    if(e && e[k]!=null) return Number(e[k]);
+    return null;
+  }
+  return Number(v);
+}
+var n0=function(v){return v==null?null:Number(v)};
+function suma(k){ var t=null; for(var i=0;i<12;i++){ var v=val(i,k); if(v!=null){ t=(t||0)+v; } } return t; }
+function hh(i){ var d=val(i,'dot'); if(d==null) return null; var h=val(i,'hd')||8, m=val(i,'dm')||DIAS[i]; return d*h*m; }
+function hhAnio(){ var t=null; for(var i=0;i<12;i++){ var v=hh(i); if(v!=null) t=(t||0)+v; } return t; }
+function ifr(i){ var h=hh(i), a=val(i,'acc'); if(!h||a==null) return null; return a*1e6/h; }
+function isev(i){ var h=hh(i), d=val(i,'diasPerd'); if(!h||d==null) return null; return d*1e6/h; }
+function fmt(v,dec){ if(v==null) return '—'; return Number(v).toLocaleString('es-PY',{minimumFractionDigits:dec||0,maximumFractionDigits:dec||0}); }
+function ent(v){ return fmt(v,0); }
+function esc(t){ return String(t==null?'':t).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]}); }
+function cssv(n){ return getComputedStyle(document.documentElement).getPropertyValue(n).trim()||'#888'; }
+
+/* --------- tooltip --------- */
+var TIP=document.getElementById('tip');
+function tipOn(e,html){ TIP.innerHTML=html; TIP.classList.add('on'); tipMove(e); }
+function tipMove(e){
+  var r=TIP.getBoundingClientRect();
+  var x=e.clientX+16, y=e.clientY+16;
+  if(x+r.width>window.innerWidth-8) x=e.clientX-r.width-16;
+  if(y+r.height>window.innerHeight-8) y=e.clientY-r.height-16;
+  TIP.style.left=x+'px'; TIP.style.top=y+'px';
+}
+function tipOff(){ TIP.classList.remove('on'); }
+document.addEventListener('scroll',tipOff,true);
+
+/* --------- gráficos --------- */
+function vacio(cont,t,m){ cont.innerHTML='<div class="vacio"><b>'+esc(t)+'</b>'+esc(m)+'</div>'; }
+
+function leyenda(series){
+  if(series.length<2) return '';
+  return '<div class="leg">'+series.map(function(s){
+    return '<span><i style="background:'+s.color+'"></i>'+esc(s.n)+'</span>';
+  }).join('')+'</div>';
+}
+
+/* barras agrupadas · una escala, etiquetas directas, 2px de aire entre barras */
+function gBarras(cont,o){
+  var cats=o.cats, series=o.series;
+  var hay=series.some(function(s){return s.v.some(function(x){return x!=null})});
+  if(!hay){ vacio(cont,'Todavía sin datos','Cuando se carguen los meses, el gráfico aparece acá.'); return; }
+  var W=620,H=250,PL=42,PR=12,PT=18,PB=34;
+  var iw=W-PL-PR, ih=H-PT-PB;
+  var max=0; series.forEach(function(s){ s.v.forEach(function(x){ if(x!=null&&x>max) max=x; }); });
+  max=Math.max(max,1); var top=Math.ceil(max*1.18)||1;
+  var bw=iw/cats.length, gap=2;
+  var sw=(bw*0.68)/series.length;
+  var y=function(v){ return PT+ih-(v/top)*ih; };
+  var g='';
+  [0,.25,.5,.75,1].forEach(function(f){
+    var vy=PT+ih-f*ih, lv=Math.round(top*f);
+    g+='<line x1="'+PL+'" y1="'+vy+'" x2="'+(W-PR)+'" y2="'+vy+'" stroke="'+cssv('--line')+'" stroke-width="1"/>'
+      +'<text x="'+(PL-7)+'" y="'+(vy+4)+'" text-anchor="end" font-size="10.5" fill="'+cssv('--ink-3')+'">'+lv+'</text>';
+  });
+  cats.forEach(function(c,i){
+    var x0=PL+i*bw+(bw-sw*series.length)/2;
+    g+='<text x="'+(PL+i*bw+bw/2)+'" y="'+(H-PB+16)+'" text-anchor="middle" font-size="10.5" fill="'+cssv('--ink-3')+'">'+esc(c)+'</text>';
+    series.forEach(function(s,k){
+      var v=s.v[i]; if(v==null) return;
+      var x=x0+k*sw, w=Math.max(sw-gap,2), hgt=Math.max(ih-(y(v)-PT),v>0?3:0);
+      if(v===0){ g+='<line x1="'+x+'" y1="'+(PT+ih)+'" x2="'+(x+w)+'" y2="'+(PT+ih)+'" stroke="'+s.color+'" stroke-width="2"/>'; }
+      else{
+        g+='<rect x="'+x+'" y="'+y(v)+'" width="'+w+'" height="'+hgt+'" rx="4" ry="4" fill="'+s.color+'"/>'
+          +'<rect x="'+x+'" y="'+(y(v)+Math.min(hgt,6))+'" width="'+w+'" height="'+Math.max(hgt-6,0)+'" fill="'+s.color+'"/>';
+        if(v>=top*0.16) g+='<text x="'+(x+w/2)+'" y="'+(y(v)-5)+'" text-anchor="middle" font-size="10.5" font-weight="700" fill="'+cssv('--ink-2')+'">'+v+'</text>';
+      }
+    });
+    g+='<rect class="hit" data-i="'+i+'" x="'+(PL+i*bw)+'" y="'+PT+'" width="'+bw+'" height="'+ih+'" fill="transparent"/>';
+  });
+  g+='<line x1="'+PL+'" y1="'+(PT+ih)+'" x2="'+(W-PR)+'" y2="'+(PT+ih)+'" stroke="'+cssv('--line-strong')+'" stroke-width="1"/>';
+  cont.innerHTML=leyenda(series)+'<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.alt||'')+'">'+g+'</svg>';
+  hover(cont,cats,series,o.dec||0,o.unidad||'');
+}
+
+/* línea de una sola medida */
+function gLinea(cont,o){
+  var cats=o.cats, s=o.serie;
+  var hay=s.v.some(function(x){return x!=null});
+  if(!hay){ vacio(cont,o.tVacio||'Todavía sin datos',o.mVacio||'Falta el dato que alimenta este índice.'); return; }
+  var W=620,H=250,PL=48,PR=14,PT=18,PB=34;
+  var iw=W-PL-PR, ih=H-PT-PB;
+  var max=0; s.v.forEach(function(x){ if(x!=null&&x>max) max=x; });
+  var top=max>0?max*1.25:1;
+  var x=function(i){ return PL+(cats.length>1? i*(iw/(cats.length-1)) : iw/2); };
+  var y=function(v){ return PT+ih-(v/top)*ih; };
+  var g='';
+  [0,.25,.5,.75,1].forEach(function(f){
+    var vy=PT+ih-f*ih;
+    g+='<line x1="'+PL+'" y1="'+vy+'" x2="'+(W-PR)+'" y2="'+vy+'" stroke="'+cssv('--line')+'" stroke-width="1"/>'
+      +'<text x="'+(PL-7)+'" y="'+(vy+4)+'" text-anchor="end" font-size="10.5" fill="'+cssv('--ink-3')+'">'+fmt(top*f,1)+'</text>';
+  });
+  cats.forEach(function(c,i){ g+='<text x="'+x(i)+'" y="'+(H-PB+16)+'" text-anchor="middle" font-size="10.5" fill="'+cssv('--ink-3')+'">'+esc(c)+'</text>'; });
+  var d='',prev=false;
+  s.v.forEach(function(v,i){ if(v==null){ prev=false; return; } d+=(prev?'L':'M')+x(i)+' '+y(v)+' '; prev=true; });
+  g+='<path d="'+d+'" fill="none" stroke="'+s.color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>';
+  s.v.forEach(function(v,i){ if(v==null) return;
+    g+='<circle cx="'+x(i)+'" cy="'+y(v)+'" r="4.5" fill="'+s.color+'" stroke="'+cssv('--surface')+'" stroke-width="2"/>'; });
+  var ult=-1; s.v.forEach(function(v,i){ if(v!=null) ult=i; });
+  if(ult>=0) g+='<text x="'+x(ult)+'" y="'+(y(s.v[ult])-11)+'" text-anchor="middle" font-size="11" font-weight="700" fill="'+cssv('--ink-2')+'">'+fmt(s.v[ult],1)+'</text>';
+  cats.forEach(function(c,i){ g+='<rect class="hit" data-i="'+i+'" x="'+(x(i)-iw/(cats.length*2))+'" y="'+PT+'" width="'+(iw/cats.length)+'" height="'+ih+'" fill="transparent"/>'; });
+  g+='<line x1="'+PL+'" y1="'+(PT+ih)+'" x2="'+(W-PR)+'" y2="'+(PT+ih)+'" stroke="'+cssv('--line-strong')+'" stroke-width="1"/>';
+  cont.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="'+esc(o.alt||'')+'">'+g+'</svg>';
+  hover(cont,cats,[s],1,'');
+}
+
+/* barras horizontales, escala secuencial */
+function gRanking(cont,rows,nota){
+  var hay=rows.some(function(r){return r.v!=null});
+  if(!hay){ vacio(cont,'Todavía sin datos',nota||'Falta cargar los datos.'); return; }
+  var max=0; rows.forEach(function(r){ if(r.v>max) max=r.v; }); max=Math.max(max,1);
+  var h='';
+  rows.forEach(function(r,i){
+    var pct=Math.round((r.v||0)/max*100);
+    h+='<div style="display:grid;gap:5px;margin-bottom:11px">'
+      +'<div style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;font-size:12.5px">'
+      +'<b style="font-weight:600">'+esc(r.n)+'</b>'
+      +'<span class="mono" style="font-weight:600">'+ent(r.v||0)+(r.m?' <span style="color:var(--ink-3);font-weight:400">'+esc(r.m)+'</span>':'')+'</span></div>'
+      +'<div style="height:10px;background:var(--surface-3);border-radius:0 5px 5px 0">'
+      +'<div style="height:100%;width:'+pct+'%;min-width:3px;border-radius:0 4px 4px 0;background:'+(r.color||cssv('--seq-4'))+'"></div></div></div>';
+  });
+  cont.innerHTML=h;
+}
+
+function hover(cont,cats,series,dec,unidad){
+  var svg=cont.querySelector('svg'); if(!svg) return;
+  Array.prototype.forEach.call(svg.querySelectorAll('.hit'),function(r){
+    r.style.cursor='default';
+    r.addEventListener('mouseenter',function(e){
+      var i=Number(r.dataset.i);
+      var html='<b>'+esc(cats[i])+'</b>';
+      series.forEach(function(s){
+        var v=s.v[i];
+        html+='<div class="r"><span><i style="background:'+s.color+';display:inline-block"></i> '+esc(s.n)+'</span><em>'+(v==null?'—':fmt(v,dec))+(unidad&&v!=null?' '+unidad:'')+'</em></div>';
+      });
+      tipOn(e,html);
+    });
+    r.addEventListener('mousemove',tipMove);
+    r.addEventListener('mouseleave',tipOff);
+  });
+}
+
+/* --------- render --------- */
+function diasSinAcc(){
+  var A=anioDe(), f=null;
+  for(var i=11;i>=0;i--){ var m=A[MESES[i]]; if(m&&m.ultAcc){ f=m.ultAcc; break; } }
+  if(!f && S.ejemplo) for(var j=11;j>=0;j--){ var e2=ejDe(j); if(e2&&e2.ultAcc){ f=e2.ultAcc; break; } }
+  if(!f) return {d:null,f:null};
+  var d=Math.floor((Date.now()-new Date(f+'T12:00:00').getTime())/86400000);
+  return {d:d<0?0:d,f:f};
+}
+function fechaLarga(f){ if(!f) return ''; var p=f.split('-'); return p[2]+'/'+p[1]+'/'+p[0]; }
+
+function render(){
+  var mesActual=S.mes;
+  var da=diasSinAcc();
+  document.getElementById('hDias').textContent=da.d==null?'—':ent(da.d);
+  document.getElementById('hUlt').textContent=da.f?('Último accidente: '+fechaLarga(da.f)):'Sin fecha del último accidente';
+  document.getElementById('hAcc').textContent=fmt(suma('acc'));
+  document.getElementById('hInc').textContent=fmt(suma('inc'));
+  var dotU=null; for(var i=11;i>=0;i--){ if(val(i,'dot')!=null){ dotU=val(i,'dot'); break; } }
+  document.getElementById('hDot').textContent=fmt(dotU);
+  document.getElementById('hHH').textContent=fmt(hhAnio());
+
+  var accA=suma('acc'), incA=suma('inc'), hA=hhAnio(), dpA=suma('diasPerd');
+  var IF=(hA&&accA!=null)?accA*1e6/hA:null;
+  var IS=(hA&&dpA!=null)?dpA*1e6/hA:null;
+  var IA=(IF!=null&&IS!=null)?IF*IS/1000:null;
+  var k=[
+    {k:'Accidentes del año',v:fmt(accA),m:'con lesión',cls:accA?'mal':(accA===0?'bien':'falta')},
+    {k:'Incidentes del año',v:fmt(incA),m:'sin lesión, pero pasó',cls:'', },
+    {k:'Actos inseguros',v:fmt(suma('actos')),m:'lo que hizo la persona',cls:''},
+    {k:'Condiciones inseguras',v:fmt(suma('cond')),m:'lo que estaba mal en el lugar',cls:''},
+    {k:'Índice de frecuencia',v:IF==null?'—':fmt(IF,1),m:IF==null?'falta la dotación':'acumulado del año',cls:IF==null?'falta':''},
+    {k:'Índice de severidad',v:IS==null?'—':fmt(IS,1),m:IS==null?'faltan los días perdidos':'acumulado del año',cls:IS==null?'falta':''},
+    {k:'Índice de accidentabilidad',v:IA==null?'—':fmt(IA,2),m:'frecuencia × severidad ÷ 1.000',cls:IA==null?'falta':''},
+    {k:'Atenciones de enfermería',v:fmt(suma('atenc')),m:'consultas del año',cls:suma('atenc')==null?'falta':''}
+  ];
+  document.getElementById('kpis').innerHTML=k.map(function(x){
+    return '<div class="kpi '+x.cls+'"><div class="k">'+esc(x.k)+'</div><div class="v">'+x.v+'</div><div class="m">'+esc(x.m)+'</div></div>';
+  }).join('');
+
+  document.getElementById('semaforo').innerHTML=SEMLES.map(function(s){
+    var v=suma(s[0]);
+    var cero=(v==null||v===0);
+    return '<div class="slc '+s[2]+(cero?' cero':'')+'">'
+      +'<span class="sst">'+ICO[s[2]]+' '+esc(s[3])+'</span>'
+      +'<div class="sv">'+(v==null?'—':v)+'</div>'
+      +'<div class="sl">'+esc(s[1])+'</div><div class="sd">'+esc(s[4])+'</div></div>';
+  }).join('');
+
+  var cats=MESES.map(function(m){return m;});
+  gBarras(document.getElementById('cAccInc'),{cats:cats,alt:'Accidentes e incidentes por mes',
+    series:[{n:'Accidentes',color:cssv('--v2'),v:MESES.map(function(_,i){return val(i,'acc')})},
+            {n:'Incidentes',color:cssv('--v1'),v:MESES.map(function(_,i){return val(i,'inc')})}]});
+  gBarras(document.getElementById('cActos'),{cats:cats,alt:'Actos y condiciones inseguras por mes',
+    series:[{n:'Actos inseguros',color:cssv('--v4'),v:MESES.map(function(_,i){return val(i,'actos')})},
+            {n:'Condiciones inseguras',color:cssv('--v3'),v:MESES.map(function(_,i){return val(i,'cond')})}]});
+  gLinea(document.getElementById('cIF'),{cats:cats,alt:'Índice de frecuencia por mes',
+    serie:{n:'Índice de frecuencia',color:cssv('--v2'),v:MESES.map(function(_,i){return ifr(i)})},
+    tVacio:'Falta la dotación',mVacio:'Recursos Humanos tiene que cargar la dotación del mes.'});
+  gLinea(document.getElementById('cIS'),{cats:cats,alt:'Índice de severidad por mes',
+    serie:{n:'Índice de severidad',color:cssv('--v1'),v:MESES.map(function(_,i){return isev(i)})},
+    tVacio:'Faltan los días perdidos',mVacio:'Recursos Humanos tiene que cargar los días de reposo.'});
+
+  var pir=[
+    {n:'Mortal',v:suma('lesMort')||0,color:cssv('--seq-5')},
+    {n:'Incapacitante',v:suma('lesInc')||0,color:cssv('--seq-5')},
+    {n:'Trabajo restringido',v:suma('lesRestr')||0,color:cssv('--seq-4')},
+    {n:'Tratamiento médico',v:suma('lesTrat')||0,color:cssv('--seq-4')},
+    {n:'Primeros auxilios',v:suma('lesPA')||0,color:cssv('--seq-3')},
+    {n:'Incidentes (sin lesión)',v:suma('inc')||0,color:cssv('--seq-2')},
+    {n:'Actos y condiciones inseguras',v:(suma('actos')||0)+(suma('cond')||0),color:cssv('--seq-1')}
+  ];
+  var hayPir=pir.some(function(r){return r.v>0});
+  gRanking(document.getElementById('cPir'),hayPir?pir:[{n:'',v:null}],'Cuando haya lesiones cargadas, la pirámide aparece acá.');
+
+  var prog=[['Inspecciones','insP','insE'],['Capacitaciones','capP','capE'],['Simulacros','simP','simE'],['PASST','pasP','pasE']]
+    .map(function(p){
+      var P=suma(p[1]), E=suma(p[2]);
+      var pct=(P&&E!=null)?Math.round(E/P*100):null;
+      return {n:p[0],v:E==null?null:E,m:P?('de '+P+(pct!=null?' · '+pct+'%':'')):'sin programar',
+        color:pct==null?cssv('--seq-2'):(pct>=90?cssv('--ok'):(pct>=70?cssv('--warn'):cssv('--crit')))};
+    });
+  gRanking(document.getElementById('cProg'),prog,'Cargá lo programado y lo ejecutado del mes.');
+
+  var SEQ=[cssv('--seq-5'),cssv('--seq-4'),cssv('--seq-4'),cssv('--seq-3'),cssv('--seq-3'),cssv('--seq-2')];
+  function rank(campos,cont,nota){
+    var rows=campos.map(function(c){ return {n:c[1],v:suma(c[0])||0}; })
+      .filter(function(r){ return r.v>0; })
+      .sort(function(a,b){ return b.v-a.v; });
+    rows.forEach(function(r,i){ r.color=SEQ[Math.min(i,SEQ.length-1)]; });
+    gRanking(document.getElementById(cont), rows.length?rows:[{n:'',v:null}], nota);
+  }
+  rank(CAMPOS.cuerpo,'cCuerpo','Enfermería carga qué parte del cuerpo se lastimó.');
+  rank(CAMPOS.causa,'cCausa','Cargá la causa de cada incidente para ver dónde se repite.');
+
+  tablaHTML();
+  bloquesHTML(mesActual);
+  estadoHTML(mesActual);
+}
+
+function tablaHTML(){
+  var filas=[['Accidentes','acc'],['· operativos','accOp'],['· administrativos','accAd'],['Incidentes','inc'],
+    ['Actos inseguros','actos'],['Condiciones inseguras','cond'],['Dotación','dot'],['Días perdidos','diasPerd'],
+    ['Lesión incapacitante','lesInc'],['Tratamiento médico','lesTrat'],['Primeros auxilios','lesPA'],['Atenciones','atenc']];
+  var h='<table><thead><tr><th>Medida</th>'+MESES.map(function(m){return '<th>'+m+'</th>'}).join('')+'<th>Año</th></tr></thead><tbody>';
+  filas.forEach(function(f){
+    h+='<tr><td>'+esc(f[0])+'</td>';
+    for(var i=0;i<12;i++){ var v=val(i,f[1]); h+='<td class="mono">'+(v==null?'—':v)+'</td>'; }
+    h+='<td class="mono"><b>'+fmt(suma(f[1]))+'</b></td></tr>';
+  });
+  h+='<tr><td>Horas hombre</td>';
+  for(var i=0;i<12;i++){ var v=hh(i); h+='<td class="mono">'+(v==null?'—':ent(v))+'</td>'; }
+  h+='<td class="mono"><b>'+fmt(hhAnio())+'</b></td></tr>';
+  h+='<tr><td>Índice de frecuencia</td>';
+  for(var j=0;j<12;j++){ var f2=ifr(j); h+='<td class="mono">'+(f2==null?'—':fmt(f2,1))+'</td>'; }
+  h+='<td class="mono">—</td></tr>';
+  h+='</tbody></table>';
+  document.getElementById('tabla').innerHTML=h;
+}
+
+function bloquesHTML(mi){
+  var m=mesDe(mi);
+  document.getElementById('bloques').innerHTML=BLOQ.map(function(b){
+    return '<div class="bl '+b.cls+'"><header><b>'+esc(b.t)+'</b><i>'+esc(b.q)+'</i></header><div class="campos">'
+      + CAMPOS[b.id].map(function(c){
+          var v=m[c[0]];
+          var sub=c[1].charAt(0)==='·';
+          return '<label class="cm'+(sub?' sub':'')+'"><span>'+esc(c[1])+(c[2]?'<i>'+esc(c[2])+'</i>':'')+'</span>'
+            +'<input type="number" min="0" step="1" data-campo="'+c[0]+'" value="'+(v==null?'':esc(v))+'" placeholder="—"></label>';
+        }).join('')
+      + '</div></div>';
+  }).join('');
+  document.getElementById('inpUlt').value=m.ultAcc||'';
+}
+
+function estadoHTML(mi){
+  var m=mesDe(mi), out=[];
+  BLOQ.forEach(function(b){
+    var hay=CAMPOS[b.id].some(function(c){ return m[c[0]]!=null && m[c[0]]!==''; });
+    out.push('<span class="chip '+(hay?'ok':'falta')+'">'+(hay?'✓':'⚠')+' '+esc(b.t.split(' ')[0])+(hay?' cargado':' sin cargar')+'</span>');
+  });
+  document.getElementById('estado').innerHTML=out.join('');
+}
+
+/* --------- eventos --------- */
+document.getElementById('selMes').innerHTML=MESL.map(function(m,i){return '<option value="'+i+'">'+m+'</option>'}).join('');
+document.getElementById('selMes').value=String(S.mes);
+document.getElementById('selMes').addEventListener('change',function(){ S.mes=Number(this.value); render(); });
+document.getElementById('selAnio').addEventListener('change',function(){ S.anio=this.value; render(); });
+document.getElementById('selSitio').addEventListener('change',function(){ S.sitio=this.value; render(); });
+document.getElementById('inpUlt').addEventListener('change',function(){ mesDe(S.mes).ultAcc=this.value||''; render(); });
+document.getElementById('bloques').addEventListener('input',function(e){
+  var t=e.target; if(!t.dataset||!t.dataset.campo) return;
+  var v=t.value.trim();
+  mesDe(S.mes)[t.dataset.campo]= v===''? '' : Number(v);
+  var act=document.activeElement, sel=[act&&act.dataset?act.dataset.campo:null, act?act.selectionStart:null];
+  render();
+  if(sel[0]){ var n=document.querySelector('[data-campo="'+sel[0]+'"]'); if(n){ n.focus(); try{n.setSelectionRange(sel[1],sel[1])}catch(err){} } }
+});
+document.getElementById('btnVaciarMes').addEventListener('click',function(){
+  anioDe()[MESES[S.mes]]={}; render();
+});
+document.getElementById('btnEjemplo').addEventListener('click',function(){
+  S.ejemplo=!S.ejemplo;
+  this.textContent=S.ejemplo?'Volver a los datos reales':'Ver con datos de ejemplo';
+  this.classList.toggle('primary',S.ejemplo);
+  document.getElementById('semSub').textContent=S.ejemplo
+    ? 'CON DATOS DE EJEMPLO · no son del CD'
+    : 'lo que carga Enfermería · acumulado del año';
+  render();
+});
+document.getElementById('btnTabla').addEventListener('click',function(){
+  S.tabla=!S.tabla;
+  document.getElementById('panelTabla').classList.toggle('oculto',!S.tabla);
+  this.textContent=S.tabla?'Ocultar la tabla':'Ver la tabla';
+});
+document.getElementById('btnImp').addEventListener('click',function(){ window.print(); });
+document.getElementById('btnCsv').addEventListener('click',function(){
+  var cols=['acc','accOp','accAd','accOt','inc','incOp','incAd','incOt','actos','cond','insP','insE','capP','capE','simP','simE','pasP','pasE','dot','adm','ope','hd','dm','diasPerd','diasRestr','lesMort','lesInc','lesRestr','lesTrat','lesPA','atenc'];
+  var l=['mes;'+cols.join(';')+';horasHombre;indiceFrecuencia;indiceSeveridad'];
+  for(var i=0;i<12;i++){
+    var r=[MESES[i]];
+    cols.forEach(function(c){ var v=val(i,c); r.push(v==null?'':v); });
+    var h=hh(i), f=ifr(i), s=isev(i);
+    r.push(h==null?'':h, f==null?'':f.toFixed(2), s==null?'':s.toFixed(2));
+    l.push(r.join(';'));
+  }
+  bajar('Indicadores Pilar Seguridad CDSA '+S.anio+'.csv','﻿'+l.join('\n'),'text/csv;charset=utf-8');
+});
+document.getElementById('btnGuardar').addEventListener('click',function(){
+  var doc=document.documentElement.cloneNode(true);
+  var d=doc.querySelector('#datos');
+  if(d) d.textContent=JSON.stringify(S.datos);
+  var tip=doc.querySelector('#tip'); if(tip) tip.className='tip';
+  bajar('Tablero Pilar Seguridad CDSA.html','<!doctype html>\n'+doc.outerHTML,'text/html;charset=utf-8');
+});
+function bajar(nombre,txt,tipo){
+  var a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([txt],{type:tipo}));
+  a.download=nombre; document.body.appendChild(a); a.click();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },400);
+}
+window.addEventListener('resize',function(){ clearTimeout(window.__rt); window.__rt=setTimeout(render,180); });
+render();
+})();
+</script>
+</body>
+</html>
