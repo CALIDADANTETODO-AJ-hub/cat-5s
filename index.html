@@ -1239,7 +1239,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
+  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'ol',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[]},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
 
@@ -1372,6 +1372,7 @@ async function conectar(){
   sub('docSector','docSector','ds'); sub('segAud','segAud','sa'); sub('segAcc','segAcc','sc');
   db.doc('config/pilarDiag').onSnapshot(s=>{state.diagCfg=s.exists?s.data():null;render()},()=>{});
   db.doc('config/docReq').onSnapshot(s=>{state.docReqCfg=s.exists?s.data():null;render()},()=>{});
+  db.doc('config/segChk').onSnapshot(s=>{state.segChkCfg=s.exists?s.data():null;render()},()=>{});
   sub('claves','claves','cv');
   sub(COL.cl,'checklists','cl');sub(COL.au,'auditorias','au');sub(COL.ha,'hallazgos','ha');sub(COL.bu,'buenas','bu');sub(COL.ev,'evidencias','ev');
 }
@@ -2374,6 +2375,35 @@ document.addEventListener('click',async e=>{
 });
 document.addEventListener('change',e=>{
   const t=e.target;
+  if(t.id==='trabSin'){ state.aud.trab=state.aud.trab||{}; state.aud.trab.sin=!!t.checked; render(); return }
+  if(t.dataset&&t.dataset.cko!=null){
+    const R=chkResp(t.dataset.ckb); R[t.dataset.cko]=R[t.dataset.cko]||{};
+    R[t.dataset.cko].obs=t.value; return }
+  if(t.dataset&&t.dataset.olo!=null){
+    state.aud.olObs=state.aud.olObs||{}; state.aud.olObs[t.dataset.olo]=t.value; return }
+  if(t.id==='olHora'){ state.aud.hora=t.value; return }
+  if(t.id==='olSup'){ state.aud.sup=t.value; return }
+  if(t.dataset&&(t.dataset.lbt!=null||t.dataset.lbc!=null)){
+    const id=t.dataset.lbt!=null?t.dataset.lbt:t.dataset.lbc;
+    const x=(state.aud.libres||[]).find(y=>y.id===id);
+    if(x){ if(t.dataset.lbt!=null)x.t=t.value; else x.crit=t.value }
+    return }
+  if(t.dataset){
+    const mp={pnm:'nm',ppu:'pu',pre:'re',pok:'ok'};
+    for(const k in mp){ if(t.dataset[k]!=null){
+      const p=(state.aud.pers||[]).find(y=>y.id===t.dataset[k]); if(p)p[mp[k]]=t.value; return } }
+  }
+  if(t.id&&t.id.indexOf('trab')===0){
+    state.aud.trab=state.aud.trab||{};
+    const mt={trabDesc:'desc',trabQuien:'quien',trabEmp:'emp',trabTipo:'tipo',trabNro:'nro',
+              trabDesde:'desde',trabHasta:'hasta'};
+    if(mt[t.id]){ state.aud.trab[mt[t.id]]=t.value; return }
+  }
+  if(state.segChkEd&&t.dataset){
+    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item'};
+    for(const k in ms){ if(t.dataset[k]!=null){
+      const r=state.segChkEd.items.find(x=>x.id===t.dataset[k]); if(r)r[ms[k]]=t.value; return } }
+  }
   if(t.dataset&&t.dataset.uf!=null&&state.uf){state.uf[t.dataset.uf]=t.value;if(t.dataset.uf==='sitioId')state.uf.sectorId='';render();return}
   if(t.id==='bfUsuario'){state.bf.usuario=t.value;render();return}
 });
@@ -2382,6 +2412,35 @@ document.addEventListener('input',e=>{const t=e.target;
     state.aud.resp[t.dataset.ho]=state.aud.resp[t.dataset.ho]||{};
     state.aud.resp[t.dataset.ho].obs=t.value; return }
   if(t.dataset&&t.dataset.dqo!=null){ docTocar(t.dataset.dqs,t.dataset.dqo,'obs',t.value); return }
+  if(t.dataset&&t.dataset.cko!=null){
+    const R=chkResp(t.dataset.ckb); R[t.dataset.cko]=R[t.dataset.cko]||{};
+    R[t.dataset.cko].obs=t.value; return }
+  if(t.dataset&&t.dataset.olo!=null){
+    state.aud.olObs=state.aud.olObs||{}; state.aud.olObs[t.dataset.olo]=t.value; return }
+  if(t.id==='olHora'){ state.aud.hora=t.value; return }
+  if(t.id==='olSup'){ state.aud.sup=t.value; return }
+  if(t.dataset&&(t.dataset.lbt!=null||t.dataset.lbc!=null)){
+    const id=t.dataset.lbt!=null?t.dataset.lbt:t.dataset.lbc;
+    const x=(state.aud.libres||[]).find(y=>y.id===id);
+    if(x){ if(t.dataset.lbt!=null)x.t=t.value; else x.crit=t.value }
+    return }
+  if(t.dataset){
+    const mp={pnm:'nm',ppu:'pu',pre:'re',pok:'ok'};
+    for(const k in mp){ if(t.dataset[k]!=null){
+      const p=(state.aud.pers||[]).find(y=>y.id===t.dataset[k]); if(p)p[mp[k]]=t.value; return } }
+  }
+  if(t.id&&t.id.indexOf('trab')===0){
+    state.aud.trab=state.aud.trab||{};
+    const mt={trabDesc:'desc',trabQuien:'quien',trabEmp:'emp',trabTipo:'tipo',trabNro:'nro',
+              trabDesde:'desde',trabHasta:'hasta'};
+    if(mt[t.id]){ state.aud.trab[mt[t.id]]=t.value; return }
+  }
+  if(state.segChkEd&&t.dataset){
+    const ms={skt:'t',skc:'crit',ske:'ev',ska:'alcance',ski:'item'};
+    for(const k in ms){ if(t.dataset[k]!=null){
+      const r=state.segChkEd.items.find(x=>x.id===t.dataset[k]); if(r)r[ms[k]]=t.value; return } }
+  }
+
   if(state.docReqEd&&t.dataset){
     const m={dqt:'t',dqq:'quien',dqit:'item'};
     for(const k in m){ if(t.dataset[k]!=null){
@@ -4432,17 +4491,21 @@ function vAudInt(){
   const p=pilarDe(AUD_PILAR)||{nombre:'Seguridad',num:1};
   return `<div class="head"><div>
     <h1>Auditoría interna</h1>
-    <p>La que hace el encargado del pilar sobre su propio sector: los documentos que el sector tiene que
-       tener, cómo está el orden y la limpieza, y los riesgos de la hipermatriz. Hoy la usa
+    <p>La que hace el encargado del pilar sobre su propio sector, sector por sector:
+       <b>orden y limpieza</b>, <b>permiso de trabajo</b>, <b>EPP</b> y <b>apto de trabajo</b>, más los
+       riesgos de la hipermatriz y los documentos que hay que tener. Hoy la usa
        ${esc(p.lider||'el encargado del pilar Seguridad')}.</p></div></div>`
     +audPilarHTML(p);
 }
 
 /* ================= vista: Auditar · auditoría interna del sector ================= */
 const puedeAud=()=>esAdmin()||['sitio','jefe','sector'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
-const AUD_SUBS=[['docs','Documentos que debe tener'],['ol','Orden y limpieza'],['hip','Riesgos del sector'],
+/* el orden es el que pidió Calidad: primero lo que se mira en el piso, después el respaldo */
+const AUD_SUBS=[['ol','Orden y limpieza'],['permiso','Permiso de trabajo'],['epp','EPP'],
+ ['apto','Apto de trabajo'],['hip','Riesgos del sector'],['docs','Documentos que debe tener'],
  ['acc','Acciones abiertas'],['hechas','Auditorías hechas']];
-const AUDTIPO_L={doc:'Documentos',ol:'Orden y limpieza',hip:'Riesgos del sector'};
+const AUDTIPO_L={doc:'Documentos',ol:'Orden y limpieza',hip:'Riesgos del sector',
+ permiso:'Permiso de trabajo',epp:'EPP',apto:'Apto de trabajo'};
 
 function audPilarHTML(p){
   const A=state.aud, secs=sectoresVista();
@@ -4454,8 +4517,10 @@ function audPilarHTML(p){
   <div class="audhead">
     <div><div class="k">Auditoría interna</div>
       <h3>Lo que le audito a mi propio sector</h3>
-      <p>Los documentos que el sector tiene que tener, cómo está el orden y la limpieza, y los riesgos
-         de la hipermatriz. Lo que no cumple genera su acción con el plazo que le pone la criticidad.</p></div>
+      <p>Se hace <b>sector por sector</b>: orden y limpieza, permiso de trabajo, EPP y apto de trabajo.
+         Atrás quedan los riesgos de la hipermatriz y los documentos que el sector tiene que tener.
+         En cada bloque podés anotar <b>lo que vayas viendo</b>, aunque no esté en la lista, y lo que no
+         cumple genera su acción con el plazo que le pone la criticidad.</p></div>
     <div class="audsel">
       <div class="field"><label for="audSec">Sector</label>
         <select id="audSec"><option value="">Elegí el sector…</option>
@@ -4469,6 +4534,7 @@ function audPilarHTML(p){
   </div>
   ${A.sub==='docs'?audDocsHTML(sec,ed)
    :A.sub==='ol'?audOlHTML(sec,ed)
+   :(A.sub==='permiso'||A.sub==='epp'||A.sub==='apto')?audChkHTML(A.sub,sec,ed)
    :A.sub==='hip'?audHipHTML(sec,ed)
    :A.sub==='hechas'?audHechasHTML(sec)
    :audAccHTML(sec,ed)}`;
@@ -4507,7 +4573,7 @@ function audDocsHTML(sec,ed){
       </div></div>`}).join('');
   const kpi=(g,t)=>`<div class="kpi ${g.pct==null?'':(g.pct>=90?'tintok':(g.no?'tint':''))}"><div class="k">${t}</div>
     <div class="v">${g.pct==null?'—':n1(g.pct)+'<small>%</small>'}</div>
-    <div class="m">${g.pct==null?'todavía sin verificar':g.tiene+' de '+g.base+(g.na?' · '+g.na+' no aplican':'')+(g.sin?' · '+g.sin+' sin verificar':'')}</div></div>`;
+    <div class="m">${g.pct==null?'todavía sin verificar':g.tiene+' de '+g.base+(g.na?' · '+g.na+(g.na===1?' no aplica':' no aplican'):'')+(g.sin?' · '+g.sin+' sin verificar':'')}</div></div>`;
   if(state.docReqEd)return docReqEditorHTML();
   return `
   <div class="grid g4" style="margin-bottom:16px">
@@ -4580,6 +4646,8 @@ function audOlHTML(sec,ed){
   const cls=pct>=90?'ok':(pct>=75?'warn':'crit');
   const hist=(state.segAud||[]).filter(x=>x.tipo==='ol'&&(!sec||x.sectorId===sec))
     .sort((a,b)=>String(b.fecha||'').localeCompare(String(a.fecha||''))).slice(0,6);
+  const libres=(A.libres||[]).filter(x=>x.b==='ol');
+  const conTexto=libres.filter(x=>String(x.t||'').trim());
   return `
   <div class="olbar">
     <div class="field" style="min-width:270px"><label for="olForm">Formato</label>
@@ -4594,16 +4662,45 @@ function audOlHTML(sec,ed){
     </div>
     ${ed?`<button class="btn primary" id="btnOlGuardar"${sec?'':' disabled'}>Guardar la verificación</button>`:''}
   </div>
+  <div class="dqg" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px;background:var(--surface);
+       border:1px solid var(--line);border-radius:12px;padding:13px 15px">
+    <div><div class="dgk">Hora de la recorrida</div>
+      <input type="time" id="olHora" value="${esc(A.hora||'')}"${ed?'':' disabled'}></div>
+    <div><div class="dgk">Supervisor del sector</div>
+      <input id="olSup" value="${esc(A.sup||'')}" placeholder="Quién acompañó la recorrida"${ed?'':' disabled'}></div>
+    <div><div class="dgk">Quién verifica</div>
+      <p style="padding-top:7px">${esc(state.auditor||(state.sesion&&state.sesion.nombre)||'—')}</p></div>
+  </div>
   <section class="panel"><header><h3>${esc(f.n||'')}</h3>
-    <div class="sub">${f.items.length} puntos · los pesos suman 100 %</div></header>
+    <div class="sub">${f.items.length} puntos · los pesos suman 100 % · el formato real de SySO</div></header>
     <div class="body">${f.items.map((it,i)=>{const v=A.ol[i];
       return `<div class="olit"><div class="oln">${i+1}</div>
-        <div class="olc"><div class="olt">${esc(it.t)}</div><div class="olp">Peso ${it.p} %</div></div>
+        <div class="olc"><div class="olt">${esc(it.t)}</div><div class="olp">Peso ${it.p} %</div>
+          ${(v===0||v===0.5)?`<div class="hipobs" style="margin-top:9px">
+            <label>¿Qué viste y dónde? Esto es lo que va a la acción</label>
+            <input data-olo="${i}" value="${esc((A.olObs||{})[i]||'')}"
+              placeholder="Ej.: dos pallets rotos frente al rack 12">
+            <div class="hipplz">${v===0?'⊗':'⚠'} Se abre una acción con plazo de
+              <b>${v===0?HIPNIV.importante.plazo:HIPNIV.moderado.plazo}</b></div></div>`:''}
+        </div>
         <div class="dgopt">
           <button class="si" data-olv="1" data-oli="${i}" aria-pressed="${v===1}">Cumple</button>
           <button class="med" data-olv="0.5" data-oli="${i}" aria-pressed="${v===0.5}">Parcial</button>
           <button class="no" data-olv="0" data-oli="${i}" aria-pressed="${v===0}">No cumple</button>
         </div></div>`}).join('')}</div></section>
+  <section class="panel" style="margin-top:16px"><header><h3>Lo que vi y no está en el formato</h3>
+    <div class="sub">para anotar lo que aparezca en la recorrida · cada una genera su acción</div></header>
+    <div class="body">
+      ${libres.length?libres.map(x=>`<div class="dqedit"><div class="g">
+        <div><div class="dgk">Qué viste y dónde</div>
+          <input data-lbt="${esc(x.id)}" value="${esc(x.t||'')}" placeholder="Ej.: derrame de aceite en el pasillo de carga"></div>
+        <div><div class="dgk">Criticidad</div><select data-lbc="${esc(x.id)}">
+          ${Object.keys(HIPNIV).map(k=>`<option value="${k}"${x.crit===k?' selected':''}>${HIPNIV[k].l} · ${HIPNIV[k].plazo}</option>`).join('')}
+        </select></div>
+        <div><button class="btn sm ghost" data-lbdel="${esc(x.id)}">Sacar</button></div>
+      </div></div>`).join(''):'<div class="soft2" style="margin-bottom:10px">Nada anotado todavía.</div>'}
+      ${ed?'<button class="btn sm" data-lbadd="ol">+ Agregar lo que estoy viendo</button>':''}
+    </div></section>
   <section class="panel" style="margin-top:16px"><header><h3>Las últimas verificaciones</h3>
     <div class="sub">${hist.length?'las '+hist.length+' más recientes · están todas en Auditorías hechas':'todavía ninguna'}</div></header>
     <div class="body">${hist.length?`<div class="tw"><table class="lst"><thead><tr><th>Fecha</th><th>Sector</th>
@@ -4613,6 +4710,305 @@ function audOlHTML(sec,ed){
         <td>${esc(h.formato||'')}</td><td>${esc(h.por||'')}</td>
         <td class="n" style="color:${c}"><b>${h.pct} %</b></td></tr>`}).join('')}
     </tbody></table></div>`:'<div class="empty">Cuando guardes la primera, aparece acá.</div>'}</div></section>`;
+}
+
+
+
+/* ---------- guardar el orden y la limpieza ----------
+   Además del porcentaje queda la observación de cada punto que no cumple, la hora, el
+   supervisor que acompañó y lo que se haya anotado fuera del formato. Lo que no cumple
+   abre su acción: no cumple = Importante (48 h), parcial = Moderado (7 días).             */
+async function guardarOl(){
+  const A=state.aud, sec=A.sec;
+  if(!sec){toast('Elegí el sector arriba');return}
+  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  const f=OLFORM[A.olf]||{items:[],n:''};
+  let tot=0,obt=0,marc=0;
+  f.items.forEach((it,i)=>{tot+=it.p;const v=A.ol[i];if(v!=null){obt+=it.p*v;marc++}});
+  const libres=(A.libres||[]).filter(x=>x.b==='ol'&&String(x.t||'').trim());
+  if(!marc&&!libres.length){toast('Marcá al menos un punto o anotá lo que viste');return}
+  const fecha=($('#audFecha')&&$('#audFecha').value)||hoyIso();
+  const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
+  const aid=uid('ol-');   /* se genera antes: cada acción queda atada a esta verificación */
+  const obs=A.olObs||{};
+  const mal=[]; f.items.forEach((it,i)=>{const v=A.ol[i]; if(v===0||v===0.5)mal.push({i:i,it:it,v:v})});
+  const accs=[];
+  mal.forEach(m=>{
+    const niv=m.v===0?'importante':'moderado', N=HIPNIV[niv], id=uid('ac-');
+    accs.push({id:id,auditId:aid,sitioId:state.sitioSel,sectorId:sec,rowId:'ol'+m.i,bloque:'ol',
+      puesto:'Orden y limpieza · punto '+(m.i+1),peligro:m.it.t,niv:niv,cuerpo:'',
+      accion:'Corregir lo observado y volver a verificar con el mismo formato',
+      indicador:'Nueva verificación de orden y limpieza del sector',
+      falta:(m.v===0?'No cumple':'Cumple sólo en parte')+' · peso '+m.it.p+' %',obs:obs[m.i]||'',
+      fecha:fecha,limite:masDiasIso(fecha,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
+      creado:new Date().toISOString()})});
+  libres.forEach(x=>{
+    const N=HIPNIV[x.crit]||HIPNIV.importante, id=uid('ac-');
+    accs.push({id:id,auditId:aid,sitioId:state.sitioSel,sectorId:sec,rowId:x.id,bloque:'ol',
+      puesto:'Orden y limpieza · visto en la recorrida',peligro:x.t,niv:x.crit,cuerpo:'',
+      accion:'Corregir lo observado y volver a verificar en la próxima recorrida',
+      indicador:'Nueva recorrida del sector',
+      falta:'Observado en la recorrida, fuera del formato',obs:'',
+      fecha:fecha,limite:masDiasIso(fecha,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
+      creado:new Date().toISOString()})});
+  for(let i=0;i<accs.length;i++){ if(!await guardarDoc('segAcc/'+accs[i].id,accs[i]))return }
+  const ok=await guardarDoc('segAud/'+aid,{id:aid,tipo:'ol',sitioId:state.sitioSel,sectorId:sec,
+    formato:f.n,formatoId:A.olf,fecha:fecha,hora:A.hora||'',supervisor:A.sup||'',por:por,
+    pct:tot?Math.round(obt/tot*100):0,puntos:f.items.length,marcados:marc,desvios:mal.length+libres.length,
+    detalle:f.items.map((it,i)=>({t:it.t,p:it.p,v:A.ol[i]==null?null:A.ol[i],obs:obs[i]||''})),
+    libres:libres.map(x=>({t:x.t,crit:x.crit})),
+    creado:new Date().toISOString()});
+  if(!ok)return;
+  state.aud.ol={}; state.aud.olObs={};
+  state.aud.libres=(state.aud.libres||[]).filter(x=>x.b!=='ol');
+  toast(accs.length?('Guardado · '+accs.length+(accs.length===1?' acción generada':' acciones generadas'))
+    :'Guardado · queda la constancia, sin desvíos');
+  render();
+}
+
+/* ---------- guardar un bloque de la auditoría interna ----------
+   Queda registro siempre: aunque no haya desvíos, aunque el sector no tenga trabajos de alto
+   riesgo. Cada desvío y cada cosa anotada en la recorrida abre su acción con el plazo que le
+   pone la criticidad, igual que en la hipermatriz.                                          */
+async function guardarChk(b){
+  const A=state.aud, sec=A.sec;
+  if(!sec){toast('Elegí el sector arriba');return}
+  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  const g=chkPuntaje(b,sec), B=SEGBLOQ[b]||{t:b};
+  const libres=(A.libres||[]).filter(x=>x.b===b&&String(x.t||'').trim());
+  const sinTrab=b==='permiso'&&A.trab&&A.trab.sin;
+  const pers=b==='apto'?(A.pers||[]).filter(p=>String(p.nm||'').trim()):[];
+  if(!g.marc&&!libres.length&&!sinTrab&&!pers.length){
+    toast('Marcá al menos un punto o anotá lo que viste');return}
+  const f=($('#audFecha')&&$('#audFecha').value)||hoyIso();
+  const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
+  const aid=uid('sg-');   /* se genera antes: cada acción queda atada a esta auditoría */
+  const accs=[];
+  g.mal.forEach(r=>{
+    const v=g.R[r.id]||{}, N=HIPNIV[r.crit]||HIPNIV.moderado, id=uid('ac-');
+    accs.push({id:id,auditId:aid,sitioId:state.sitioSel,sectorId:sec,rowId:r.id,bloque:b,
+      puesto:B.t,peligro:r.t,niv:r.crit,cuerpo:'',
+      accion:'Corregir lo observado y volver a verificar en la próxima recorrida',
+      indicador:r.ev||'Nueva recorrida del sector',
+      falta:(v.v==='parcial'?'Cumple sólo en parte':'No cumple'),obs:v.obs||'',
+      fecha:f,limite:masDiasIso(f,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
+      creado:new Date().toISOString()})});
+  libres.forEach(x=>{
+    const N=HIPNIV[x.crit]||HIPNIV.importante, id=uid('ac-');
+    accs.push({id:id,auditId:aid,sitioId:state.sitioSel,sectorId:sec,rowId:x.id,bloque:b,
+      puesto:B.t+' · visto en la recorrida',peligro:x.t,niv:x.crit,cuerpo:'',
+      accion:'Corregir lo observado y volver a verificar en la próxima recorrida',
+      indicador:'Nueva recorrida del sector',
+      falta:'Observado en la recorrida, fuera de la lista',obs:'',
+      fecha:f,limite:masDiasIso(f,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
+      creado:new Date().toISOString()})});
+  for(let i=0;i<accs.length;i++){ if(!await guardarDoc('segAcc/'+accs[i].id,accs[i]))return }
+  const doc={id:aid,tipo:b,sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
+    puntos:g.L.length,marcados:g.marc,noAplica:g.na,
+    desvios:g.mal.length+libres.length,pct:g.pct,
+    detalle:g.L.filter(r=>g.R[r.id]&&g.R[r.id].v).map(r=>{const v=g.R[r.id];
+      return {id:r.id,t:r.t,crit:r.crit,ev:r.ev||'',v:v.v,obs:v.obs||''}}),
+    libres:libres.map(x=>({t:x.t,crit:x.crit})),
+    creado:new Date().toISOString()};
+  if(b==='permiso')doc.trabajo=sinTrab?{sin:true}:Object.assign({sin:false},A.trab||{});
+  if(b==='apto')doc.personas=pers.map(p=>({nm:p.nm,pu:p.pu||'',re:p.re||'',ok:p.ok||'si'}));
+  if(!await guardarDoc('segAud/'+aid,doc))return;
+  state.aud.chk[b]={};
+  state.aud.libres=(state.aud.libres||[]).filter(x=>x.b!==b);
+  if(b==='permiso')state.aud.trab={};
+  if(b==='apto')state.aud.pers=[];
+  toast(accs.length?('Guardado · '+accs.length+(accs.length===1?' acción generada':' acciones generadas'))
+    :'Guardado · queda la constancia, sin desvíos');
+  render();
+}
+
+/* ---------- 2b. permiso de trabajo · EPP · apto de trabajo ----------
+   Los tres usan el mismo motor: una lista de puntos que Calidad edita, cuatro respuestas
+   posibles, observación obligatoria cuando no cumple, y un espacio abierto para anotar lo
+   que el encargado vaya viendo y no esté en la lista. Lo que no cumple genera su acción
+   con el plazo que le pone la criticidad del punto.                                        */
+function audChkHTML(b,sec,ed){
+  if(state.segChkEd)return segChkEditorHTML();
+  const B=SEGBLOQ[b]||{t:b,d:''}, A=state.aud;
+  if(!sec)return `<div class="empty" style="padding:40px;text-align:center">
+    <b>${esc(B.t)}.</b> ${esc(B.d)}<br><br>Elegí el sector en el selector de arriba para empezar.</div>`;
+  const g=chkPuntaje(b,sec);
+  const libres=(A.libres||[]).filter(x=>x.b===b);
+  const conTexto=libres.filter(x=>String(x.t||'').trim());
+  const cls=g.pct==null?'':(g.pct>=90?'ok':(g.pct>=75?'warn':'crit'));
+  const sinTrab=b==='permiso'&&A.trab&&A.trab.sin;
+  const hist=(state.segAud||[]).filter(x=>x.tipo===b&&x.sectorId===sec)
+    .sort((x,y)=>String(y.fecha||'').localeCompare(String(x.fecha||''))).slice(0,5);
+  const hayQueGuardar=g.marc||conTexto.length||sinTrab||(b==='apto'&&(A.pers||[]).length);
+  return `
+  <div class="olbar">
+    <div class="olres"><div class="lbl">Cumplimiento</div>
+      <div class="pv ${cls}">${g.pct==null?'—':g.pct+' %'}</div></div>
+    <div style="flex:1;min-width:220px">
+      <div class="barra"><i style="width:${g.pct||0}%;background:${g.pct==null?'var(--surface-3)'
+        :(g.pct>=90?'var(--ok)':(g.pct>=75?'var(--warn)':'var(--crit)'))}"></i></div>
+      <div class="olm">${g.marc?('Marcados '+g.marc+' de '+g.L.length+(g.na?' · '+g.na+(g.na===1?' no aplica':' no aplican'):'')
+        +(g.mal.length?' · '+g.mal.length+' con desvío':' · sin desvíos')):'Todavía sin marcar'}${
+        conTexto.length?' · '+conTexto.length+(conTexto.length===1?' observación anotada':' observaciones anotadas'):''}</div></div>
+    ${ed&&hayQueGuardar?`<button class="btn primary" data-ckg="${b}">Cerrar y guardar${
+      g.mal.length+conTexto.length?' · '+(g.mal.length+conTexto.length)+(g.mal.length+conTexto.length===1?' acción':' acciones'):''}</button>`:''}
+  </div>
+
+  ${b==='permiso'?audTrabHTML(ed,sinTrab):''}
+
+  ${sinTrab?`<div class="soft2" style="margin-bottom:16px">Marcaste que <b>hoy no hay trabajos de alto riesgo</b>
+     en ${esc(nombreSector(sec))}. Guardá igual: queda la constancia de que se recorrió el sector y no había
+     trabajos que auditar. Si aparece uno, destildá la casilla y verificá los puntos.</div>`:`
+  <section class="panel"><header><h3>${esc(B.t)}</h3>
+    <div class="sub">${g.L.length} ${g.L.length===1?'punto':'puntos'} · ${esc(B.d)}</div></header>
+    <div class="body">${g.L.length?g.L.map((r,i)=>{
+      const v=g.R[r.id]||{}, N=HIPNIV[r.crit]||HIPNIV.moderado, C=v.v?CHKV[v.v]:null;
+      return `<div class="dqi ${C?C.cls:''}">
+        <div class="dqt"><div><div class="dqn">${i+1}. ${esc(r.t)}</div>
+          <div class="dqm">Se mira en: ${esc(r.ev||'observación directa')}${
+            r.item?' · sale del ítem '+esc(r.item)+' del diagnóstico del Jefe de SSO':''}${
+            r.alcance&&r.alcance!=='todos'?' · sólo para este sector':''}</div></div>
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
+            <span class="dgch ${N.cls}">${N.l}</span>
+            ${C?`<span class="dgch ${C.cls}">${C.cls==='ok'?'✓':(C.cls==='crit'?'⊗':(C.cls==='warn'?'⚠':'—'))} ${C.l}</span>`:''}
+          </div></div>
+        ${ed?`<div class="dgopt" style="margin-top:9px">
+          <button class="si" data-ckv="cumple" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='cumple'}">Cumple</button>
+          <button class="med" data-ckv="parcial" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='parcial'}">Parcial</button>
+          <button class="no" data-ckv="no" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='no'}">No cumple</button>
+          <button class="na" data-ckv="na" data-cki="${esc(r.id)}" data-ckb="${b}" aria-pressed="${v.v==='na'}">No aplica</button>
+        </div>`:''}
+        ${(v.v==='no'||v.v==='parcial')?`<div class="hipobs">
+          <label>¿Qué viste y dónde? Esto es lo que va a la acción</label>
+          <input data-cko="${esc(r.id)}" data-ckb="${b}" value="${esc(v.obs||'')}"
+            placeholder="${esc(CHKPH[b]||'Escribí lo que viste, con el lugar exacto')}">
+          <div class="hipplz">${N.cls==='crit'?'⊗':'⚠'} Como este punto es <b>${N.l}</b>, la acción vence
+            ${N.dias===0?'<b>hoy mismo y se detiene la tarea</b>':'en <b>'+N.plazo+'</b>'} · se verifica con: ${esc(r.ev||'nueva recorrida')}</div>
+        </div>`:''}
+      </div>`}).join(''):`<div class="empty">Calidad todavía no dejó ningún punto en esta lista para este sector.
+        ${esAdmin()?'Tocá <b>✎ Editar la lista</b> abajo para armarla.':''}</div>`}</div></section>`}
+
+  ${b==='apto'?audPersHTML(ed):''}
+
+  <section class="panel" style="margin-top:16px"><header><h3>Lo que vi y no está en la lista</h3>
+    <div class="sub">para anotar lo que aparezca en la recorrida · cada una genera su acción con el plazo de su criticidad</div></header>
+    <div class="body">
+      ${libres.length?libres.map(x=>`<div class="dqedit"><div class="g">
+        <div><div class="dgk">Qué viste y dónde</div>
+          <input data-lbt="${esc(x.id)}" value="${esc(x.t||'')}" placeholder="Ej.: el operador de la reach del pasillo 7 sin casco"></div>
+        <div><div class="dgk">Criticidad</div><select data-lbc="${esc(x.id)}">
+          ${Object.keys(HIPNIV).map(k=>`<option value="${k}"${x.crit===k?' selected':''}>${HIPNIV[k].l} · ${HIPNIV[k].plazo}</option>`).join('')}
+        </select></div>
+        <div><button class="btn sm ghost" data-lbdel="${esc(x.id)}">Sacar</button></div>
+      </div></div>`).join(''):'<div class="soft2" style="margin-bottom:10px">Nada anotado todavía.</div>'}
+      ${ed?`<button class="btn sm" data-lbadd="${b}">+ Agregar lo que estoy viendo</button>`:''}
+    </div></section>
+
+  <section class="panel" style="margin-top:16px"><header><h3>Las últimas de este bloque</h3>
+    <div class="sub">${hist.length?'las '+hist.length+' más recientes de '+esc(nombreSector(sec))+' · están todas en Auditorías hechas':'todavía ninguna'}</div></header>
+    <div class="body">${hist.length?`<div class="tw"><table class="lst"><thead><tr><th>Fecha</th><th>Quién</th>
+      <th class="n">Puntos</th><th class="n">Desvíos</th><th class="n">Cumplimiento</th></tr></thead><tbody>
+      ${hist.map(h=>{const c=h.pct==null?'var(--ink-3)':(h.pct>=90?'var(--ok)':(h.pct>=75?'var(--warn)':'var(--crit)'));
+        return `<tr><td>${fmtDate(h.fecha)}</td><td class="sm">${esc(h.por||'')}</td>
+        <td class="n">${h.marcados!=null?h.marcados+' de '+h.puntos:'—'}</td>
+        <td class="n">${h.desvios?'<b style="color:var(--crit)">'+h.desvios+'</b>':'0'}</td>
+        <td class="n" style="color:${c}"><b>${h.pct==null?'—':h.pct+' %'}</b>
+          <div class="sm"><a href="#" data-seginf="${esc(h.id)}">ver el informe</a></div></td></tr>`}).join('')}
+    </tbody></table></div>`:'<div class="empty">Cuando cierres la primera, aparece acá con su informe firmable.</div>'}</div></section>
+
+  ${ed&&esAdmin()?`<div class="dgsave" style="margin-top:14px">
+    <button class="btn" data-ckedit="${b}">✎ Editar la lista</button>
+    <span class="sub">La lista es una propuesta de Calidad. Revisala con ${esc((pilarDe(AUD_PILAR)||{}).lider||'el encargado del pilar')}
+      y dejá sólo lo que corresponde.</span></div>`:''}`;
+}
+const CHKPH={permiso:'Ej.: el soldador de la puerta 34 empezó sin el permiso firmado',
+ epp:'Ej.: dos operadores del pasillo 7 sin protector auditivo',
+ apto:'Ej.: el chofer de la tercerizada no tiene el apto cargado'};
+
+/* el trabajo concreto que se está mirando cuando se audita el permiso */
+function audTrabHTML(ed,sinTrab){
+  const T=state.aud.trab||{};
+  return `<section class="panel" style="margin-bottom:16px"><header><h3>El trabajo que estoy mirando</h3>
+    <div class="sub">el permiso se audita contra un trabajo concreto · si no hay ninguno, marcalo igual y queda la constancia</div></header>
+    <div class="body">
+      <label style="display:flex;gap:9px;align-items:center;font-size:13px;margin-bottom:${sinTrab?'0':'13px'}">
+        <input type="checkbox" id="trabSin"${sinTrab?' checked':''}${ed?'':' disabled'}>
+        <span>Hoy no hay trabajos de alto riesgo en el sector</span></label>
+      ${sinTrab?'':`<div class="dqg" style="grid-template-columns:1fr 1fr 1fr">
+        <div style="grid-column:1/-1"><div class="dgk">Qué trabajo es</div>
+          <input id="trabDesc" value="${esc(T.desc||'')}" placeholder="Ej.: cambio de luminaria del pasillo 4"${ed?'':' disabled'}></div>
+        <div><div class="dgk">Quién lo hace</div>
+          <input id="trabQuien" value="${esc(T.quien||'')}" placeholder="Nombre y apellido"${ed?'':' disabled'}></div>
+        <div><div class="dgk">Empresa</div>
+          <input id="trabEmp" value="${esc(T.emp||'')}" placeholder="Del CD o empresa tercerizada"${ed?'':' disabled'}></div>
+        <div><div class="dgk">Tipo de trabajo</div><select id="trabTipo"${ed?'':' disabled'}>
+          ${TRABTIPOS.map(([k,l])=>`<option value="${k}"${(T.tipo||'')===k?' selected':''}>${esc(l)}</option>`).join('')}</select></div>
+        <div><div class="dgk">Nº de permiso</div>
+          <input id="trabNro" value="${esc(T.nro||'')}" placeholder="El que figura en el papel"${ed?'':' disabled'}></div>
+        <div><div class="dgk">Autorizado desde</div><input type="time" id="trabDesde" value="${esc(T.desde||'')}"${ed?'':' disabled'}></div>
+        <div><div class="dgk">Autorizado hasta</div><input type="time" id="trabHasta" value="${esc(T.hasta||'')}"${ed?'':' disabled'}></div>
+      </div>`}
+    </div></section>`;
+}
+
+/* a quién se le miró el apto: es lo que después se presenta en una fiscalización */
+function audPersHTML(ed){
+  const L=state.aud.pers||[];
+  return `<section class="panel" style="margin-top:16px"><header><h3>A quién le miré el apto</h3>
+    <div class="sub">opcional · deja constancia nominal de la verificación, que es lo que pide una fiscalización</div></header>
+    <div class="body">
+      ${L.length?L.map(p=>`<div class="dqedit"><div class="g">
+        <div><div class="dgk">Nombre y apellido</div><input data-pnm="${esc(p.id)}" value="${esc(p.nm||'')}"></div>
+        <div><div class="dgk">Puesto o tarea que hace</div><input data-ppu="${esc(p.id)}" value="${esc(p.pu||'')}"></div>
+        <div><button class="btn sm ghost" data-pdel="${esc(p.id)}">Sacar</button></div>
+      </div><div class="g" style="margin-top:10px">
+        <div><div class="dgk">Qué apto le miré</div>
+          <input data-pre="${esc(p.id)}" value="${esc(p.re||'')}" placeholder="Ej.: apto médico ocupacional, habilitación de reach"></div>
+        <div><div class="dgk">¿Está vigente?</div><select data-pok="${esc(p.id)}">
+          <option value="si"${p.ok==='si'?' selected':''}>Sí, vigente</option>
+          <option value="vence"${p.ok==='vence'?' selected':''}>Vence dentro de 30 días</option>
+          <option value="no"${p.ok==='no'?' selected':''}>No lo tiene o está vencido</option></select></div>
+        <div></div>
+      </div></div>`).join(''):'<div class="soft2" style="margin-bottom:10px">Todavía no anotaste a nadie.</div>'}
+      ${ed?'<button class="btn sm" id="btnPersAdd">+ Agregar una persona</button>':''}
+    </div></section>`;
+}
+
+/* ---------- el editor: acá Calidad decide qué corresponde y qué no ---------- */
+function segChkEditorHTML(){
+  const E=state.segChkEd, b=E.b, B=SEGBLOQ[b]||{t:b};
+  const L=E.items.filter(r=>r.b===b);
+  const secs=sectoresVista();
+  return `
+  <div class="dgaviso"><b>Acá decidís qué corresponde y qué no.</b> Esta es la lista de
+    <b>${esc(B.t)}</b> que el aplicativo le va a pedir al sector. La armé con el diagnóstico de 40 ítems
+    del Jefe de SSO, con la hipermatriz y con los requisitos del apto por trabajo — <b>es una propuesta</b>.
+    Cambiá el texto, cambiá la criticidad (que es la que fija el plazo de la acción), sacá lo que no
+    corresponda y agregá lo que falte. Si un punto vale sólo para un sector, elegilo en <b>Alcance</b>.
+    Cuando guardes, es lo que ven todos.</div>
+  <section class="panel" style="margin-bottom:16px"><header><h3>${esc(B.t)}</h3>
+    <div class="sub">${L.length} ${L.length===1?'punto':'puntos'}</div></header>
+    <div class="body">${L.map(r=>`<div class="dqedit">
+      <div class="g">
+        <div><div class="dgk">Qué se verifica</div><input data-skt="${esc(r.id)}" value="${esc(r.t||'')}"></div>
+        <div><div class="dgk">Criticidad · fija el plazo</div><select data-skc="${esc(r.id)}">
+          ${Object.keys(HIPNIV).map(k=>`<option value="${k}"${r.crit===k?' selected':''}>${HIPNIV[k].l} · ${HIPNIV[k].plazo}</option>`).join('')}
+        </select></div>
+        <div><button class="btn sm ghost" data-skdel="${esc(r.id)}">Sacar</button></div>
+      </div>
+      <div class="g" style="margin-top:10px">
+        <div><div class="dgk">Dónde se mira · la evidencia</div><input data-ske="${esc(r.id)}" value="${esc(r.ev||'')}"></div>
+        <div><div class="dgk">Alcance</div><select data-ska="${esc(r.id)}">
+          <option value="todos"${(!r.alcance||r.alcance==='todos')?' selected':''}>Todos los sectores</option>
+          ${secs.map(x=>`<option value="${esc(x.id)}"${r.alcance===x.id?' selected':''}>Sólo ${esc(x.nombre)}</option>`).join('')}
+        </select></div>
+        <div><div class="dgk">Ítem del diagnóstico</div><input data-ski="${esc(r.id)}" value="${esc(r.item||'')}" placeholder="Ej.: C2"></div>
+      </div></div>`).join('')||'<div class="empty">Ninguno todavía.</div>'}
+      <button class="btn sm" data-skadd="${b}">+ Agregar un punto</button></div></section>
+  <div class="dgsave"><button class="btn primary" id="btnSegChkGuardar">Guardar la lista</button>
+    <button class="btn ghost" id="btnSegChkCancelar">Cancelar</button>
+    <button class="btn ghost" id="btnSegChkBase">Volver a la propuesta original</button>
+    <span class="sub">${E.items.length} puntos en total, contando los otros bloques.</span></div>`;
 }
 
 /* ---------- 3. riesgos del sector · hipermatriz ---------- */
@@ -4632,7 +5028,7 @@ function audHipHTML(sec,ed){
       <div class="pv ${cls}">${pct==null?'—':pct+' %'}</div></div>
     <div style="flex:1;min-width:220px">
       <div class="barra"><i style="width:${pct||0}%;background:${pct==null?'var(--surface-3)':(pct>=90?'var(--ok)':(pct>=75?'var(--warn)':'var(--crit)'))}"></i></div>
-      <div class="olm">${marc?('Marcados '+marc+' de '+L.length+(na?' · '+na+' no aplican':'')+(mal.length?' · '+mal.length+' con desvío':' · sin desvíos')):'Todavía sin marcar'}</div></div>
+      <div class="olm">${marc?('Marcados '+marc+' de '+L.length+(na?' · '+na+(na===1?' no aplica':' no aplican'):'')+(mal.length?' · '+mal.length+' con desvío':' · sin desvíos')):'Todavía sin marcar'}</div></div>
     ${urg?`<span class="dgch crit" style="font-size:12.5px;padding:5px 11px">⊗ ${urg} de acción inmediata</span>`:''}
     ${ed&&marc?`<button class="btn primary" id="btnHipCerrar">Cerrar la auditoría${mal.length?' y generar '+mal.length+(mal.length===1?' acción':' acciones'):''}</button>`:''}
   </div>
@@ -4680,7 +5076,9 @@ function vSegInf(){
   const sec=a.sectorId==='_cd'?'Todo el Centro de Distribución':(nombreSector(a.sectorId)||a.sectorId);
   const sit=sitioCat(a.sitioId||state.sitioSel);
   const tit=AUDTIPO_L[a.tipo]||a.tipo;
-  const acc=(state.segAcc||[]).filter(x=>x.sectorId===a.sectorId&&x.fecha===a.fecha);
+  /* las acciones de ESTA auditoría · las viejas de la hipermatriz no guardaban el vínculo */
+  const acc=(state.segAcc||[]).filter(x=>x.auditId?x.auditId===a.id
+    :(x.sectorId===a.sectorId&&x.fecha===a.fecha&&!x.bloque));
   const col=a.pct==null?'var(--ink-3)':(a.pct>=90?'var(--ok)':(a.pct>=75?'var(--warn)':'var(--crit)'));
   const des=a.tipo==='doc'?(a.no||0):(a.desvios||0);
   /* para firmar, el registro se presenta con los mismos nombres que usa el informe 5S */
@@ -4706,6 +5104,10 @@ function vSegInf(){
         ${a.formato?`Instrumento: ${esc(a.formato)}<br>`:''}
         ${a.tipo==='hip'?'Instrumento: hipermatriz de riesgo y salud ocupacional del sector<br>':''}
         ${a.tipo==='doc'?'Instrumento: lista de documentos que el sector debe tener<br>':''}
+        ${a.tipo==='permiso'?'Instrumento: verificación del permiso de trabajo del sector<br>':''}
+        ${a.tipo==='epp'?'Instrumento: verificación de los EPP del sector<br>':''}
+        ${a.tipo==='apto'?'Instrumento: verificación del apto de trabajo del personal del sector<br>':''}
+        ${(a.hora||a.supervisor)?`${a.hora?'Hora de la recorrida: '+esc(a.hora):''}${a.supervisor?(a.hora?' · ':'')+'Acompañó: '+esc(a.supervisor):''}<br>`:''}
         Registro: ${esc(a.id)}</div></div>
       <img src="${LOGO}" alt="Calidad Ante Todo">
     </div>
@@ -4720,7 +5122,7 @@ function vSegInf(){
     <h3>Detalle de lo verificado</h3>
     ${segInfDetalle(a)}
 
-    ${a.tipo==='hip'&&acc.length?`<h3>Acciones que genera esta auditoría</h3>
+    ${(a.tipo==='hip'||CHK_TIPOS.indexOf(a.tipo)>=0||a.tipo==='ol')&&acc.length?`<h3>Acciones que genera esta auditoría</h3>
       <div class="tw"><table><thead><tr><th>Riesgo</th><th>Qué faltaba</th><th>Acción preventiva</th>
         <th>Vence</th><th>Se verifica con</th></tr></thead><tbody>
         ${acc.map(x=>{const N=HIPNIV[x.niv]||HIPNIV.moderado;
@@ -4729,7 +5131,7 @@ function vSegInf(){
             <td>${esc(x.accion||'')}</td><td><b>${fmtDate(x.limite)}</b><br><span style="color:var(--ink-3);font-size:12px">${esc(N.plazo)}</span></td>
             <td style="color:var(--ink-3)">${esc(x.indicador||'')}</td></tr>`}).join('')}
       </tbody></table></div>`:''}
-    ${a.tipo==='hip'&&!des?`<div class="soft2" style="margin-top:14px">En esta auditoría <b>no se registraron desvíos</b>: todos los puntos verificados cumplen y tienen su elemento. No se generaron acciones.</div>`:''}
+    ${(a.tipo==='hip'||CHK_TIPOS.indexOf(a.tipo)>=0||a.tipo==='ol')&&!des?`<div class="soft2" style="margin-top:14px">En esta verificación <b>no se registraron desvíos</b>: todo lo que se miró cumple. No se generaron acciones.</div>`:''}
 
     ${a.firmaObs?`<h3>Observaciones</h3><p style="font-size:13.5px;color:var(--ink-2)">${esc(a.firmaObs)}</p>`:''}
 
@@ -4747,14 +5149,20 @@ function vSegInf(){
 }
 function segInfDetalle(a){
   const D=a.detalle||[];
+  if(CHK_TIPOS.indexOf(a.tipo)>=0)return chkDetTabla(a,'badge');
   if(!D.length)return '<div class="soft2">Este registro se guardó sin el detalle punto por punto.</div>';
   if(a.tipo==='ol')return `<div class="tw"><table><thead><tr><th class="r" style="width:64px">Peso</th>
-    <th>Punto verificado</th><th class="r" style="width:110px">Resultado</th></tr></thead><tbody>
+    <th>Punto verificado</th><th class="r" style="width:110px">Resultado</th><th style="width:26%">Qué se vio</th></tr></thead><tbody>
     ${D.map(x=>`<tr><td class="r">${x.p} %</td><td>${esc(x.t)}</td>
       <td class="r">${x.v==null?'<span class="badge">Sin marcar</span>'
         :(x.v===1?'<span class="badge ok">Cumple</span>'
-        :(x.v===0.5?'<span class="badge warn">Parcial</span>':'<span class="badge crit">No cumple</span>'))}</td></tr>`).join('')}
-  </tbody></table></div>`;
+        :(x.v===0.5?'<span class="badge warn">Parcial</span>':'<span class="badge crit">No cumple</span>'))}</td>
+      <td style="color:var(--ink-3)">${esc(x.obs||'')||'—'}</td></tr>`).join('')}
+  </tbody></table></div>
+  ${(a.libres||[]).length?`<h3>Lo que se vio y no estaba en el formato</h3>
+    <div class="tw"><table><thead><tr><th>Qué se vio</th><th style="width:120px">Criticidad</th></tr></thead>
+    <tbody>${a.libres.map(x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado;
+      return `<tr><td>${esc(x.t)}</td><td><span class="badge ${N.cls}">${N.l}</span></td></tr>`}).join('')}</tbody></table></div>`:''}`;
   if(a.tipo==='doc')return `<div class="tw"><table><thead><tr><th>Documento</th><th style="width:90px">Alcance</th>
     <th class="r" style="width:110px">Estado</th><th style="width:92px">Vence</th><th style="width:24%">Observación</th></tr></thead><tbody>
     ${D.map(x=>`<tr><td>${esc(x.t)}</td><td style="color:var(--ink-3)">${x.alcance==='cd'?'Del CD':'Del sector'}</td>
@@ -4776,6 +5184,44 @@ function segInfDetalle(a){
   </tbody></table></div>`;
 }
 
+
+/* el detalle de un bloque nuevo, que sirve igual para la tabla desplegable y para el informe */
+function chkDetTabla(a,cl){
+  const D=a.detalle||[], LB=a.libres||[];
+  const fila=x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado, C=CHKV[x.v]||{l:x.v,cls:''};
+    return `<tr><td>${esc(x.t)}</td><td><span class="${cl} ${N.cls}">${N.l}</span></td>
+      <td><span class="${cl} ${C.cls}">${C.cls==='ok'?'✓ ':(C.cls==='crit'?'⊗ ':(C.cls==='warn'?'⚠ ':''))}${C.l}</span></td>
+      <td class="sm" style="color:var(--ink-3)">${esc(x.obs||'')||'—'}</td>
+      <td class="sm" style="color:var(--ink-3)">${esc(x.ev||'')}</td></tr>`};
+  const tabla=D.length?`<div class="tw"><table class="lst"><thead><tr><th>Punto verificado</th>
+    <th style="width:92px">Criticidad</th><th style="width:108px">Resultado</th>
+    <th style="width:22%">Qué se vio</th><th style="width:18%">Dónde se miró</th></tr></thead><tbody>
+    ${D.map(fila).join('')}</tbody></table></div>`
+    :'<div class="soft2">Esta verificación se guardó sin puntos marcados.</div>';
+  const trab=a.tipo==='permiso'&&a.trabajo?(a.trabajo.sin
+    ? '<div class="soft2" style="margin-bottom:10px"><b>En la recorrida no había trabajos de alto riesgo</b> en el sector.</div>'
+    : `<div class="soft2" style="margin-bottom:10px"><b>Trabajo auditado:</b> ${esc(a.trabajo.desc||'—')}
+       ${a.trabajo.quien?' · lo hace '+esc(a.trabajo.quien):''}${a.trabajo.emp?' ('+esc(a.trabajo.emp)+')':''}
+       ${a.trabajo.tipo?' · '+esc((TRABTIPOS.find(x=>x[0]===a.trabajo.tipo)||['',''])[1]):''}
+       ${a.trabajo.nro?' · permiso Nº '+esc(a.trabajo.nro):''}
+       ${(a.trabajo.desde||a.trabajo.hasta)?' · autorizado de '+esc(a.trabajo.desde||'—')+' a '+esc(a.trabajo.hasta||'—'):''}</div>`):'';
+  const pers=(a.tipo==='apto'&&(a.personas||[]).length)?`<h4 style="margin:14px 0 7px;font-size:13px">A quién se le miró el apto</h4>
+    <div class="tw"><table class="lst"><thead><tr><th>Nombre</th><th>Puesto o tarea</th><th>Qué apto</th>
+      <th style="width:120px">Estado</th></tr></thead><tbody>
+      ${a.personas.map(p=>`<tr><td>${esc(p.nm)}</td><td class="sm">${esc(p.pu||'')}</td>
+        <td class="sm">${esc(p.re||'')}</td>
+        <td><span class="${cl} ${p.ok==='si'?'ok':(p.ok==='vence'?'warn':'crit')}">${
+          p.ok==='si'?'✓ Vigente':(p.ok==='vence'?'⚠ Vence en 30 días':'⊗ No lo tiene o vencido')}</span></td></tr>`).join('')}
+    </tbody></table></div>`:'';
+  const lib=LB.length?`<h4 style="margin:14px 0 7px;font-size:13px">Lo que se vio y no estaba en la lista</h4>
+    <div class="tw"><table class="lst"><thead><tr><th>Qué se vio</th><th style="width:120px">Criticidad</th>
+    </tr></thead><tbody>${LB.map(x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado;
+      return `<tr><td>${esc(x.t)}</td><td><span class="${cl} ${N.cls}">${N.l}</span></td></tr>`}).join('')}
+    </tbody></table></div>`:'';
+  return trab+tabla+pers+lib;
+}
+const CHK_TIPOS=['permiso','epp','apto'];
+
 /* ---------- 5. auditorías hechas: el registro de todo lo que se auditó ---------- */
 function audHechasHTML(sec){
   const L=(state.segAud||[]).filter(a=>!sec||a.sectorId===sec||(a.sectorId==='_cd'&&a.tipo==='doc'))
@@ -4789,9 +5235,11 @@ function audHechasHTML(sec){
     <div class="kpi"><div class="k">De riesgos</div><div class="v">${porTipo('hip')}</div>
       <div class="m">con la hipermatriz del sector</div></div>
     <div class="kpi"><div class="k">De orden y limpieza</div><div class="v">${porTipo('ol')}</div>
-      <div class="m">con los formatos de SySO</div></div>
-    <div class="kpi"><div class="k">De documentos</div><div class="v">${porTipo('doc')}</div>
-      <div class="m">verificaciones de lo que hay que tener</div></div>
+      <div class="m">con los formatos reales de SySO</div></div>
+    <div class="kpi"><div class="k">De permiso, EPP y apto</div>
+      <div class="v">${porTipo('permiso')+porTipo('epp')+porTipo('apto')}</div>
+      <div class="m">${porTipo('permiso')} de permiso · ${porTipo('epp')} de EPP · ${porTipo('apto')} de apto
+        · ${porTipo('doc')} de documentos</div></div>
   </div>
   <section class="panel"><header><h3>Todo lo que se auditó</h3>
     <div class="sub">${ult?'la última, el '+fmtDate(ult.fecha):'todavía no hay ninguna'} · tocá una fila para ver el detalle</div></header>
@@ -4816,14 +5264,24 @@ function audHechasHTML(sec){
 }
 function audDetalleHTML(a){
   const D=a.detalle||[];
+  if(CHK_TIPOS.indexOf(a.tipo)>=0)return '<div class="hdet">'+chkDetTabla(a,'dgch')+'</div>';
   if(!D.length)return '<div class="hdet"><span class="sm">Esta auditoría se guardó sin el detalle punto por punto.</span></div>';
-  if(a.tipo==='ol')return `<div class="hdet"><div class="tw"><table class="lst"><thead><tr>
-    <th class="n">Peso</th><th>Punto verificado</th><th>Resultado</th></tr></thead><tbody>
+  if(a.tipo==='ol')return `<div class="hdet">
+    ${(a.hora||a.supervisor)?`<div class="soft2" style="margin-bottom:10px">${a.hora?'Recorrida de las <b>'+esc(a.hora)+'</b>':''}${
+      a.supervisor?(a.hora?' · ':'')+'acompañó <b>'+esc(a.supervisor)+'</b>':''}</div>`:''}
+    <div class="tw"><table class="lst"><thead><tr>
+    <th class="n">Peso</th><th>Punto verificado</th><th>Resultado</th><th style="width:26%">Qué se vio</th></tr></thead><tbody>
     ${D.map(x=>`<tr><td class="n">${x.p} %</td><td>${esc(x.t)}</td>
       <td>${x.v==null?'<span class="dgch">Sin marcar</span>'
         :(x.v===1?'<span class="dgch ok">✓ Cumple</span>'
-        :(x.v===0.5?'<span class="dgch warn">⚠ Parcial</span>':'<span class="dgch crit">⊗ No cumple</span>'))}</td></tr>`).join('')}
-  </tbody></table></div></div>`;
+        :(x.v===0.5?'<span class="dgch warn">⚠ Parcial</span>':'<span class="dgch crit">⊗ No cumple</span>'))}</td>
+      <td class="sm" style="color:var(--ink-3)">${esc(x.obs||'')||'—'}</td></tr>`).join('')}
+  </tbody></table></div>
+  ${(a.libres||[]).length?`<h4 style="margin:14px 0 7px;font-size:13px">Lo que se vio y no estaba en el formato</h4>
+    <div class="tw"><table class="lst"><thead><tr><th>Qué se vio</th><th style="width:120px">Criticidad</th></tr></thead>
+    <tbody>${a.libres.map(x=>{const N=HIPNIV[x.crit]||HIPNIV.moderado;
+      return `<tr><td>${esc(x.t)}</td><td><span class="dgch ${N.cls}">${N.l}</span></td></tr>`}).join('')}</tbody></table></div>`:''}
+  </div>`;
   if(a.tipo==='doc')return `<div class="hdet"><div class="tw"><table class="lst"><thead><tr>
     <th>Documento</th><th>Alcance</th><th>Estado</th><th>Vence</th><th>Observación</th></tr></thead><tbody>
     ${D.map(x=>`<tr><td>${esc(x.t)}</td><td class="sm">${x.alcance==='cd'?'Del CD':'Del sector'}</td>
@@ -7420,6 +7878,45 @@ function docTocar(sec,id,campo,valor){
 }
 const docSucio=sec=>!!(state.docEd&&state.docEd.key===docSecKey(sec)&&Object.keys(state.docEd.resp||{}).length);
 const reqsDe=alc=>docReqCfg().filter(r=>r.alcance===alc);
+
+/* ================= lo que el encargado del pilar verifica en el piso =================
+   Calidad y Christian definieron que la auditoría interna es esto: orden y limpieza,
+   permiso de trabajo, EPP y apto de trabajo. Se hace sector por sector y en cada bloque
+   queda lugar para anotar lo que vaya viendo, aunque no esté en la lista.
+   Las tres listas nuevas son una PROPUESTA armada con el diagnóstico de 40 ítems del
+   Jefe de SSO (la columna "ítem" dice de cuál sale cada punto), con la hipermatriz del CD
+   y con los requisitos del módulo de apto por trabajo. Calidad las edita desde el
+   aplicativo: cambia el texto, cambia la criticidad, saca lo que no corresponda y puede
+   dejar un punto que valga sólo para un sector.                                          */
+const SEGBLOQ={
+ ol:{t:'Orden y limpieza',ic:'\u{1F9F9}',d:'El formato real del sector con sus pesos. De acá sale el porcentaje de cumplimiento.'},
+ permiso:{t:'Permiso de trabajo',ic:'\u{1F4CB}',d:'El trabajo que se está haciendo en el sector: si tiene permiso, si está vigente y si se cumple lo que el permiso exige.'},
+ epp:{t:'EPP',ic:'\u{1F9BA}',d:'Si el sector tiene los EPP que pide cada puesto, si se entregaron contra firma y si se están usando.'},
+ apto:{t:'Apto de trabajo',ic:'\u{1FA7A}',d:'Si la gente que está trabajando hoy tiene su apto vigente para la tarea que hace.'}
+};
+const SEGCHK_COLS=['id','b','t','crit','ev','item','alcance'];
+const SEGCHK_BASE=[["p1","permiso","El trabajo tiene permiso escrito, emitido antes de empezar y firmado por SySO","critico","El permiso del día, firmado","D1","todos"],["p2","permiso","El permiso dice qué trabajo es, en qué lugar exacto, con qué fecha y en qué horario","importante","Cuerpo del permiso","D1","todos"],["p3","permiso","El trabajo se está haciendo dentro del horario que el permiso autoriza","critico","La hora del permiso contra la hora de la recorrida","D1","todos"],["p4","permiso","Las personas que están trabajando son las que el permiso autoriza","critico","Nombres y cédulas del permiso","D1","todos"],["p5","permiso","Cada persona del trabajo tiene su apto de trabajo vigente para esa tarea","critico","Aptos cargados en Apto por trabajo","G1","todos"],["p6","permiso","El análisis de riesgo de la tarea está hecho y firmado por los que la ejecutan","importante","ART o ATS adjunto al permiso","A5","todos"],["p7","permiso","Los EPP que exige el permiso están puestos y en condiciones","critico","Observación directa","C3","todos"],["p8","permiso","Trabajo en caliente: extintor a mano, material combustible retirado y vigía de fuego","critico","Observación directa y permiso específico","B3","todos"],["p9","permiso","Trabajo en altura: arnés con doble cabo anclado a punto fijo, escalera o plataforma en condiciones","critico","Observación directa","D5","todos"],["p10","permiso","Trabajo eléctrico: bloqueo y etiquetado (LOTO) aplicado y ausencia de tensión verificada","critico","Tarjeta y candado colocados","D3","todos"],["p11","permiso","El área del trabajo está delimitada y señalizada, sin paso de gente ni de producto","importante","Observación directa","B1","todos"],["p12","permiso","Empresa tercerizada: presentó seguro, IPS y la documentación de su personal antes de entrar","importante","Carpeta del contratista en portería","A7","todos"],["p13","permiso","Al terminar se cierra el permiso, el área queda limpia y se firma el cierre","importante","Permiso cerrado y firmado","D1","todos"],["e1","epp","El sector tiene el listado de EPP por puesto, actualizado y a la vista","importante","Matriz de EPP del sector","C1","todos"],["e2","epp","Cada persona del sector tiene entregados los EPP que pide su puesto","critico","Planilla de entrega","C2","todos"],["e3","epp","La entrega está registrada y firmada por quien la recibió","importante","Planilla de entrega firmada","C2","todos"],["e4","epp","En la recorrida, todos usan el EPP que corresponde a la tarea","critico","Observación directa","C3","todos"],["e5","epp","Los EPP están en buen estado: sin roturas, sin vencer y limpios","critico","Observación directa","C4","todos"],["e6","epp","Hay stock de reposición en el sector o está claro a quién se le pide","moderado","Control de stock","C4","todos"],["e7","epp","Los EPP de frío para entrar a cámara están completos, en su lugar asignado y en condiciones","importante","Observación directa · punto 9 del formato de pasillos","C4","todos"],["e8","epp","Los terceros que trabajan en el sector usan sus propios EPP y cumplen la misma exigencia","critico","Observación directa","C3","todos"],["e9","epp","La señalización de EPP obligatorio está puesta en los accesos del sector","moderado","Observación directa","B1","todos"],["e10","epp","La gente del sector recibió capacitación este año en uso, cuidado y cambio de EPP","moderado","Registro de capacitación","C5","todos"],["a1","apto","Todas las personas que trabajan hoy en el sector tienen apto médico ocupacional vigente","critico","Módulo Apto por trabajo","G1","todos"],["a2","apto","Nadie está haciendo una tarea que su apto le restringe","critico","Ficha médica con restricciones","G1","todos"],["a3","apto","Los que operan equipos (reach, zorra, montacargas) tienen su habilitación vigente","critico","Habilitación del operador por tipo de equipo","D5","todos"],["a4","apto","Los que hacen trabajo en altura tienen el apto específico de altura vigente","critico","Apto de altura y curso vigente","G1","todos"],["a5","apto","Los que hacen trabajo eléctrico o en caliente tienen su habilitación vigente","critico","Curso y habilitación","D3","todos"],["a6","apto","Los que manipulan alimentos tienen carnet de salud vigente","importante","Carnet de salud municipal","G1","todos"],["a7","apto","El esquema de vacunación (tétanos y hepatitis B) está al día","moderado","Registro de salud","G2","todos"],["a8","apto","Los tercerizados presentaron el apto de su personal antes de entrar al sector","critico","Carpeta del contratista","G1","todos"],["a9","apto","Los aptos que vencen dentro de 30 días están avisados a RRHH y a enfermería","moderado","Vencimientos del módulo Apto","G1","todos"]].map(r=>{const o={};SEGCHK_COLS.forEach((c,i)=>o[c]=r[i]);return o});
+const segChkCfg=()=>(state.segChkCfg&&Array.isArray(state.segChkCfg.items)&&state.segChkCfg.items.length)
+  ?state.segChkCfg.items:SEGCHK_BASE;
+/* un punto vale para el sector si es de todos o si Calidad lo dejó sólo para ese sector */
+const segChkDe=(b,sec)=>segChkCfg().filter(r=>r.b===b&&(!r.alcance||r.alcance==='todos'||r.alcance===sec));
+const chkResp=b=>(state.aud.chk[b]||(state.aud.chk[b]={}));
+const CHKV={cumple:{l:'Cumple',cls:'ok',v:1},parcial:{l:'Parcial',cls:'warn',v:0.5},
+ no:{l:'No cumple',cls:'crit',v:0},na:{l:'No aplica',cls:'',v:null}};
+/* los trabajos de alto riesgo que pueden aparecer en un sector del CD */
+const TRABTIPOS=[['','Trabajo común, sin riesgo especial'],['altura','En altura'],
+ ['caliente','En caliente o soldadura'],['electrico','Eléctrico'],['confinado','Espacio confinado'],
+ ['izaje','Izaje o carga suspendida'],['quimico','Con productos químicos'],['excavacion','Excavación']];
+function chkPuntaje(b,sec){
+  const L=segChkDe(b,sec), R=chkResp(b);
+  const marc=L.filter(r=>R[r.id]&&R[r.id].v);
+  const na=marc.filter(r=>R[r.id].v==='na').length, base=marc.length-na;
+  let pts=0; marc.forEach(r=>{const c=CHKV[R[r.id].v]; if(c&&c.v!=null)pts+=c.v});
+  const mal=marc.filter(r=>R[r.id].v==='no'||R[r.id].v==='parcial');
+  return {L:L,R:R,marc:marc.length,na:na,base:base,mal:mal,
+          pct:base?Math.round(pts/base*100):null};
+}
+
 function docEstado(sec,r){
   const v=(docReqResp(sec)[r.id]||{}).v;
   if(v)return v;
@@ -7812,6 +8309,49 @@ document.addEventListener('click',async e=>{
     state.aud.ol[i]=state.aud.ol[i]===v?null:v;
     if(state.aud.ol[i]==null)delete state.aud.ol[i];
     render();return}
+  /* --- los bloques nuevos: permiso de trabajo, EPP y apto de trabajo --- */
+  const ckb=t.closest('[data-ckv]');
+  if(ckb){
+    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    const b=ckb.dataset.ckb, id=ckb.dataset.cki, v=ckb.dataset.ckv, R=chkResp(b);
+    R[id]=R[id]||{};
+    R[id].v=R[id].v===v?'':v;
+    if(!R[id].v&&!R[id].obs)delete R[id];
+    render();return}
+  const ckg=t.closest('[data-ckg]');
+  if(ckg){ guardarChk(ckg.dataset.ckg); return }
+  const lba=t.closest('[data-lbadd]');
+  if(lba){ state.aud.libres=state.aud.libres||[];
+    state.aud.libres.push({id:uid('lb-'),b:lba.dataset.lbadd,t:'',crit:'importante'});
+    render();return}
+  const lbd=t.closest('[data-lbdel]');
+  if(lbd){ state.aud.libres=(state.aud.libres||[]).filter(x=>x.id!==lbd.dataset.lbdel); render();return}
+  if(t.id==='btnPersAdd'){ state.aud.pers=state.aud.pers||[];
+    state.aud.pers.push({id:uid('pe-'),nm:'',pu:'',re:'',ok:'si'}); render();return}
+  const pdl=t.closest('[data-pdel]');
+  if(pdl){ state.aud.pers=(state.aud.pers||[]).filter(x=>x.id!==pdl.dataset.pdel); render();return}
+  /* el editor de las listas: sólo Calidad */
+  const cke=t.closest('[data-ckedit]');
+  if(cke){ if(!esAdmin()){toast('La lista la edita Calidad');return}
+    state.segChkEd={b:cke.dataset.ckedit,items:JSON.parse(JSON.stringify(segChkCfg()))};
+    window.scrollTo(0,0); render();return}
+  const ska=t.closest('[data-skadd]');
+  if(ska&&state.segChkEd){
+    state.segChkEd.items.push({id:uid('sk-'),b:ska.dataset.skadd,t:'',crit:'importante',ev:'',item:'',alcance:'todos'});
+    render();return}
+  const skd=t.closest('[data-skdel]');
+  if(skd&&state.segChkEd){
+    state.segChkEd.items=state.segChkEd.items.filter(x=>x.id!==skd.dataset.skdel); render();return}
+  if(t.id==='btnSegChkCancelar'){ state.segChkEd=null; render();return}
+  if(t.id==='btnSegChkBase'){
+    state.segChkEd={b:(state.segChkEd||{}).b||'permiso',items:JSON.parse(JSON.stringify(SEGCHK_BASE))};
+    render();return}
+  if(t.id==='btnSegChkGuardar'){
+    const L=(state.segChkEd&&state.segChkEd.items||[]).filter(r=>String(r.t||'').trim());
+    guardarDoc('config/segChk',{items:L,actualizado:new Date().toISOString(),
+      actualizadoPor:(state.sesion&&state.sesion.nombre)||'—'})
+      .then(ok=>{if(ok){state.segChkEd=null;toast('Lista guardada · '+L.length+' puntos');render()}});
+    return}
   const hb=t.closest('[data-hv],[data-ht]');
   if(hb){
     const id=hb.dataset.hi; state.aud.resp[id]=state.aud.resp[id]||{};
@@ -8487,22 +9027,7 @@ document.addEventListener('click',async e=>{
         pct:gS?gS.pct:gCD.pct,detalle:det,creado:new Date().toISOString()});
     }).then(ok=>{if(ok){state.docEd=null;toast('Guardado · queda la constancia de la verificación');render()}});
     return}
-  if(t.id==='btnOlGuardar'){
-    const A=state.aud, sec=A.sec;
-    if(!sec){toast('Elegí el sector');return}
-    const f=OLFORM[A.olf]||{items:[]};
-    let tot=0,obt=0,marc=0;
-    f.items.forEach((it,i)=>{tot+=it.p;const v=A.ol[i];if(v!=null){obt+=it.p*v;marc++}});
-    if(!marc){toast('Marcá al menos un punto');return}
-    const id=uid('ol-');
-    guardarDoc('segAud/'+id,{id:id,tipo:'ol',sitioId:state.sitioSel,sectorId:sec,formato:f.n,formatoId:A.olf,
-      fecha:($('#audFecha')&&$('#audFecha').value)||hoyIso(),
-      por:state.auditor||(state.sesion&&state.sesion.nombre)||'—',
-      pct:tot?Math.round(obt/tot*100):0,puntos:f.items.length,marcados:marc,
-      detalle:f.items.map((it,i)=>({t:it.t,p:it.p,v:A.ol[i]==null?null:A.ol[i]})),
-      creado:new Date().toISOString()})
-      .then(ok=>{if(ok){state.aud.ol={};toast('Verificación guardada');render()}});
-    return}
+  if(t.id==='btnOlGuardar'){ guardarOl(); return}
   if(t.id==='btnHipCerrar'){
     const A=state.aud, sec=A.sec, L=hipDe(sec);
     const f=($('#audFecha')&&$('#audFecha').value)||hoyIso();
@@ -8909,6 +9434,5 @@ document.addEventListener('submit',e=>{
 },true);
 conectar();
 </script>
-
 
 </body></html>
