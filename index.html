@@ -478,6 +478,10 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .dqedit .g{display:grid;grid-template-columns:2fr 1fr auto;gap:10px;align-items:end}
 @media (max-width:760px){.dqedit .g{grid-template-columns:1fr}}
 .dqedit input,.dqedit select{width:100%;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:12.5px;background:var(--surface);color:var(--ink)}
+.audnota{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  background:var(--accent-soft);color:var(--ink-2);border-radius:12px;padding:12px 16px;margin-bottom:16px;
+  font-size:13px;line-height:1.55}
+.audnota b{color:var(--accent-2)}
 .dgaviso{border-left:3px solid var(--hazard,#DFA33C);background:var(--warn-soft);border-radius:10px;padding:13px 15px;margin-bottom:16px;font-size:13px;line-height:1.55;color:var(--ink-2)}
 .dgb{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;background:var(--surface)}
 .dgbh{display:flex;gap:12px;align-items:center;justify-content:space-between;padding:11px 14px;background:var(--surface-2);border-bottom:1px solid var(--line)}
@@ -1231,7 +1235,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
+  pallets:[],pilarDocs:[],pilarInd:[],diag:[],diagCfg:null,diagEd:null,audK:null,docSector:[],segAud:[],segAcc:[],docEd:null,docReqCfg:null,docReqEd:null,aud:{sub:'docs',sec:'',resp:{},ol:{},olf:''},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
 
@@ -1632,9 +1636,9 @@ const ROLES=[
 ];
 const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
 const PERM={
-  jefe:['manual','piso','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
-  sector:['manual','piso','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
-  sitio:['manual','piso','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares','etiquetas'],
+  jefe:['manual','piso','audgen','audsec','audint','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
+  sector:['manual','piso','audsec','audint','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares'],
+  sitio:['manual','piso','audgen','audsec','audint','rotacion','auditorias','informe','evolucion','hallazgos','buenas','copa','layouts','pilares','etiquetas'],
   planta:['manual','etiquetas','pilares'],
   rrhh:['manual','pilares'],
   enfermeria:['manual','pilares'],
@@ -2460,7 +2464,7 @@ function render(){
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={manual:vManual,informe:vInforme,copa:vCopa,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,carga:vCarga,expedientes:vExpedientes,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={manual:vManual,informe:vInforme,copa:vCopa,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,expedientes:vExpedientes,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
@@ -2617,7 +2621,7 @@ function lineHTML(pts){
 function modulosHTML(R){
   const ic=(bg,col,path)=>`<span class="ic" style="background:${bg};color:${col}"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg></span>`;
   const mods=[
-    {v:'piso',t:'Auditar',bg:'var(--coral-soft)',c:'var(--coral)',p:'<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/><path d="M9.5 8.6l2 2 3.5-4"/>'},
+    {v:'audgen',t:'Auditoría general',bg:'var(--coral-soft)',c:'var(--coral)',p:'<rect x="6" y="2" width="12" height="20" rx="3"/><path d="M10 18h4"/><path d="M9.5 8.6l2 2 3.5-4"/>'},
     {v:'hallazgos',t:'Plan de acción',bg:'var(--crit-soft)',c:'var(--crit)',p:'<path d="M12 3l9 17H3z"/><path d="M12 9v5M12 17v.5"/>',n:R.ab.length},
     {v:'validar',t:'Por validar',bg:'var(--warn-soft)',c:'var(--warn)',p:'<path d="M3 8.4l3 3 7-7.4"/><path d="M20 11v8a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h10"/>',n:pendientes().length},
     {v:'expedientes',t:'Auditorías realizadas',bg:'var(--surface-3)',c:'var(--ink-2)',p:'<path d="M3 7v12a2 2 0 002 2h14a2 2 0 002-2V9h-9L11 7z"/><path d="M3 7V5a2 2 0 012-2h4l2 2"/>'},
@@ -3095,7 +3099,7 @@ function vTablero(){
     <tbody>${R.auds.slice(0,8).map(a=>{const v=nivel(a.pct);return `<tr class="clickable" data-audit="${esc(a.id)}">
       <td class="mono num">${fmtDate(a.fecha)}</td><td>${esc(a.sectorNombre)}<br><span style="color:var(--ink-3);font-size:11.5px">${esc(a.sitioNombre||'')}</span></td>
       <td><span class="badge">${a.zona==='apoyo'?'Apoyo':'Operativa'}</span></td><td>${esc(a.auditor||'—')}</td>
-      <td><span class="badge${a.tipoAuditoria==='importada'?'':' a'}">${a.tipoAuditoria==='importada'?'Importada':(a.tipoAuditoria==='auto'?'Autoauditoría':'Oficial')}</span></td>
+      <td><span class="badge${a.tipoAuditoria==='importada'?'':' a'}">${a.tipoAuditoria==='importada'?'Importada':(tipoAud(a)==='interna'?'Sectorial':'General')}</span></td>
       <td class="r num">${a.fallas||0}</td><td class="r"><span class="badge ${v.k} dot">${n1(a.pct)}%</span></td></tr>`}).join('')}</tbody></table></div>`
     :'<div class="empty"><b>Todavía no hay auditorías cargadas</b>Cargá una auditoría para que el tablero tenga datos.</div>'}
   </section>`;
@@ -4396,6 +4400,36 @@ function manualConDocs(html,pid){
     });
     return raiz.innerHTML;
   }catch(e){return html}
+}
+
+/* ================= las tres auditorías, tal como las nombró Calidad =================
+   Auditoría general   · la hace Calidad sobre cualquier sector (la "externa" de siempre)
+   Auditoría sectorial · la hacen los líderes entre ellos, por rotación (la "interna" de siempre)
+   Auditoría interna   · la hace el encargado del pilar sobre su propio sector: los documentos
+                         que tiene que tener, el orden y la limpieza y los riesgos de la hipermatriz  */
+const AUDTIPOS={
+ audgen:{tipo:'externa',t:'Auditoría general',d:'La que hace Calidad sobre cualquier sector del CD. Es la auditoría oficial: la que cuenta como externa en el puntaje del pilar.'},
+ audsec:{tipo:'interna',t:'Auditoría sectorial',d:'La que hacen los líderes entre ellos, por rotación. Cada semana le toca a uno auditar el sector de otro.'}
+};
+function vAudTipo(k){
+  const C=AUDTIPOS[k];
+  if(!state.wiz)state.wiz={step:0,sectorId:'',checklistId:'',tipo:C.tipo,fecha:todayISO(),idx:0,resp:{}};
+  /* al entrar desde el menú se fija el tipo; si ya estaba auditando, no se le pisa el trabajo */
+  if(state.audK!==k){ state.audK=k; if(state.wiz.step===0)state.wiz.tipo=C.tipo; }
+  const h=vPiso().replace('<h1>Auditar</h1>','<h1>'+esc(C.t)+'</h1>');
+  return `<div class="audnota"><div><b>${esc(C.t)}.</b> ${esc(C.d)}</div>
+    ${k==='audsec'?'<button class="btn sm" data-go="rotacion">Ver a quién le toca esta semana</button>':''}</div>`+h;
+}
+const vAudGen=()=>vAudTipo('audgen');
+const vAudSec=()=>vAudTipo('audsec');
+function vAudInt(){
+  const p=pilarDe(AUD_PILAR)||{nombre:'Seguridad',num:1};
+  return `<div class="head"><div>
+    <h1>Auditoría interna</h1>
+    <p>La que hace el encargado del pilar sobre su propio sector: los documentos que el sector tiene que
+       tener, cómo está el orden y la limpieza, y los riesgos de la hipermatriz. Hoy la usa
+       ${esc(p.lider||'el encargado del pilar Seguridad')}.</p></div></div>`
+    +audPilarHTML(p);
 }
 
 /* ================= vista: Auditar · auditoría interna del sector ================= */
@@ -6292,12 +6326,13 @@ function vPiso(){
     state.auditorias.filter(a=>tipoAud(a)==='interna').forEach(a=>{hechas[quincenaDe(a.fecha)+'|'+a.sectorId]=a});
     return `${avisoDb()}<div class="piso">
       <h1>Auditar</h1>
-      <div class="sub">Elegí el tipo de auditoría. Después los ítems se presentan uno por uno: Cumple o No cumple.</div>
+      <div class="sub">Elegí el tipo de auditoría. Después los ítems se presentan uno por uno: Cumple o No cumple.
+        <br><span style="color:var(--ink-3)">La <b>auditoría interna</b> —la del encargado del pilar sobre su propio sector— está aparte, en el menú de la izquierda.</span></div>
       <div class="audtabs">
         <button class="audtab${w.tipo==='interna'?' on':''}" data-wtipo="interna">
-          <b>Auditoría interna</b><span>Cruzada entre jefes · rota todas las semanas</span></button>
+          <b>Auditoría sectorial</b><span>Cruzada entre jefes · rota todas las semanas</span></button>
         ${esAdmin()?`<button class="audtab${w.tipo!=='interna'?' on':''}" data-wtipo="externa">
-          <b>Auditoría externa</b><span>La hace Calidad · es la que puntúa oficialmente</span></button>`:''}
+          <b>Auditoría general</b><span>La hace Calidad · es la que puntúa oficialmente</span></button>`:''}
       </div>
       <div class="grid g2" style="margin:16px 0">
         <div class="field"><label for="wFecha">Fecha de la auditoría</label><input id="wFecha" type="date" value="${esc(w.fecha)}"></div>
@@ -6938,7 +6973,7 @@ document.addEventListener('keydown',e=>{
 
 
 /* ================= menú por sitio ================= */
-const NAVITEMS={"manual": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M6.2 6.1a1.9 1.9 0 113.1 1.5c-.7.5-1.3.8-1.3 1.6\"/><path d=\"M8 11.7v.2\"/></svg>", "l": "Cómo se usa", "badge": ""}, "resumen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 13.5h12\"/><path d=\"M4 13.5V8M7.3 13.5V4M10.6 13.5V6.5M14 13.5V2.5\"/></svg>", "l": "Resumen ejecutivo", "badge": ""}, "impacto": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M8 4.6v6.8M6.3 6.2h3.4M6.3 9.8h3.4\"/></svg>", "l": "Impacto monetario", "badge": ""}, "piso": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"3.5\" y=\"1.5\" width=\"9\" height=\"13\" rx=\"2\"/><path d=\"M6.5 12h3\"/><path d=\"M6 5.8l1.4 1.4 2.6-2.9\"/></svg>", "l": "Auditar", "badge": ""}, "rotacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011 -1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Rotación de auditorías", "badge": ""}, "tablero": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"1.5\" width=\"5\" height=\"6\" rx=\"1\"/><rect x=\"9.5\" y=\"1.5\" width=\"5\" height=\"9\" rx=\"1\"/><rect x=\"1.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"2\" rx=\"1\"/></svg>", "l": "Tablero", "badge": ""}, "evolucion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 12.5l3.5-4 3 2.5 5.5-6.5\"/><path d=\"M10.5 4.5H14v3.5\"/></svg>", "l": "Evolución por sector", "badge": ""}, "validar": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 8.4l3 3 7-7.4\"/><path d=\"M13.5 8v5.5a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1H10\"/></svg>", "l": "Por validar", "badge": "badgeVal"}, "expedientes": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z\"/><path d=\"M1.5 4.5V3a1 1 0 011-1h3L7 3.5\"/></svg>", "l": "Auditorías realizadas", "badge": ""}, "auditorias": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3.5h12M2 8h12M2 12.5h12\"/></svg>", "l": "Histórico y puntajes", "badge": ""}, "hallazgos": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8L14.5 13.5h-13z\"/><path d=\"M8 6v3.5M8 11.4v.2\"/></svg>", "l": "Plan de acción", "badge": "badgeHall"}, "buenas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8l1.9 4h4.3l-3.4 2.8 1.3 4.3L8 10.4l-4.1 2.5 1.3-4.3L1.8 5.8h4.3z\"/></svg>", "l": "Buenas prácticas", "badge": ""}, "copa": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M4.5 2h7v3.5a3.5 3.5 0 01-7 0z\"/><path d=\"M4.5 3H2.6v1.1A2.4 2.4 0 004.8 6.5M11.5 3h1.9v1.1a2.4 2.4 0 01-2.2 2.4\"/><path d=\"M8 9v2.5M5.6 14h4.8l-.5-2.5H6.1z\"/></svg>", "l": "Reconocimiento y copa", "badge": ""}, "layouts": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4l4.5-2 4 2 4.5-2v10l-4.5 2-4-2-4.5 2z\"/><path d=\"M6 2v10M10 4v10\"/></svg>", "l": "Layouts y semáforo 5S", "badge": ""}, "pantalla": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"2.5\" width=\"13\" height=\"9\" rx=\"1\"/><path d=\"M5.5 14h5\"/></svg>", "l": "Pantalla del CD", "badge": ""}, "pilares": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3h12\"/><path d=\"M3.5 3v9M8 3v9M12.5 3v9\"/><path d=\"M1.5 12h13v2h-13z\"/></svg>", "l": "Los 6 pilares", "badge": ""}, "checklists": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 4h2.5M2 8h2.5M2 12h2.5M7 4h7M7 8h7M7 12h7\"/></svg>", "l": "Checklists", "badge": ""}, "sectores": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 14.5V7l4-2.5V14.5M5.5 14.5V2.5l4 2V14.5M9.5 14.5V6l5 2.5v6z\"/></svg>", "l": "Sitios y sectores", "badge": ""}};
+const NAVITEMS={"audgen":{"svg":"<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M5.3 8.2l1.9 1.9 3.5-4\"/></svg>","l":"Auditoría general","badge":""},"audsec":{"svg":"<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011-1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>","l":"Auditoría sectorial","badge":""},"audint":{"svg":"<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 5.2V3.4a1.4 1.4 0 011.4-1.4h7.2A1.4 1.4 0 0113 3.4v9.2a1.4 1.4 0 01-1.4 1.4H4.4A1.4 1.4 0 013 12.6V10.8\"/><path d=\"M1.6 8h6.8M6.6 6.2L8.4 8l-1.8 1.8\"/></svg>","l":"Auditoría interna","badge":""},"manual": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M6.2 6.1a1.9 1.9 0 113.1 1.5c-.7.5-1.3.8-1.3 1.6\"/><path d=\"M8 11.7v.2\"/></svg>", "l": "Cómo se usa", "badge": ""}, "resumen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 13.5h12\"/><path d=\"M4 13.5V8M7.3 13.5V4M10.6 13.5V6.5M14 13.5V2.5\"/></svg>", "l": "Resumen ejecutivo", "badge": ""}, "impacto": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M8 4.6v6.8M6.3 6.2h3.4M6.3 9.8h3.4\"/></svg>", "l": "Impacto monetario", "badge": ""}, "piso": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"3.5\" y=\"1.5\" width=\"9\" height=\"13\" rx=\"2\"/><path d=\"M6.5 12h3\"/><path d=\"M6 5.8l1.4 1.4 2.6-2.9\"/></svg>", "l": "Auditar", "badge": ""}, "rotacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011 -1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Rotación de auditorías", "badge": ""}, "tablero": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"1.5\" width=\"5\" height=\"6\" rx=\"1\"/><rect x=\"9.5\" y=\"1.5\" width=\"5\" height=\"9\" rx=\"1\"/><rect x=\"1.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"2\" rx=\"1\"/></svg>", "l": "Tablero", "badge": ""}, "evolucion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 12.5l3.5-4 3 2.5 5.5-6.5\"/><path d=\"M10.5 4.5H14v3.5\"/></svg>", "l": "Evolución por sector", "badge": ""}, "validar": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 8.4l3 3 7-7.4\"/><path d=\"M13.5 8v5.5a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1H10\"/></svg>", "l": "Por validar", "badge": "badgeVal"}, "expedientes": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z\"/><path d=\"M1.5 4.5V3a1 1 0 011-1h3L7 3.5\"/></svg>", "l": "Auditorías realizadas", "badge": ""}, "auditorias": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3.5h12M2 8h12M2 12.5h12\"/></svg>", "l": "Histórico y puntajes", "badge": ""}, "hallazgos": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8L14.5 13.5h-13z\"/><path d=\"M8 6v3.5M8 11.4v.2\"/></svg>", "l": "Plan de acción", "badge": "badgeHall"}, "buenas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8l1.9 4h4.3l-3.4 2.8 1.3 4.3L8 10.4l-4.1 2.5 1.3-4.3L1.8 5.8h4.3z\"/></svg>", "l": "Buenas prácticas", "badge": ""}, "copa": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M4.5 2h7v3.5a3.5 3.5 0 01-7 0z\"/><path d=\"M4.5 3H2.6v1.1A2.4 2.4 0 004.8 6.5M11.5 3h1.9v1.1a2.4 2.4 0 01-2.2 2.4\"/><path d=\"M8 9v2.5M5.6 14h4.8l-.5-2.5H6.1z\"/></svg>", "l": "Reconocimiento y copa", "badge": ""}, "layouts": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4l4.5-2 4 2 4.5-2v10l-4.5 2-4-2-4.5 2z\"/><path d=\"M6 2v10M10 4v10\"/></svg>", "l": "Layouts y semáforo 5S", "badge": ""}, "pantalla": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"2.5\" width=\"13\" height=\"9\" rx=\"1\"/><path d=\"M5.5 14h5\"/></svg>", "l": "Pantalla del CD", "badge": ""}, "pilares": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3h12\"/><path d=\"M3.5 3v9M8 3v9M12.5 3v9\"/><path d=\"M1.5 12h13v2h-13z\"/></svg>", "l": "Los 6 pilares", "badge": ""}, "checklists": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 4h2.5M2 8h2.5M2 12h2.5M7 4h7M7 8h7M7 12h7\"/></svg>", "l": "Checklists", "badge": ""}, "sectores": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 14.5V7l4-2.5V14.5M5.5 14.5V2.5l4 2V14.5M9.5 14.5V6l5 2.5v6z\"/></svg>", "l": "Sitios y sectores", "badge": ""}};
 NAVITEMS.ahorro={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12.5 6 7l3 2.5L14 3.5"/><path d="M10 3.5h4v4"/></svg>',l:'Ahorro y sectores'};
 NAVITEMS.gerencia={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="1.5"/><path d="M4.5 9.5l2.5-2.5 2 2 2.5-3.5"/></svg>',l:'Resumen general',badge:''};
 NAVITEMS.etiquetas={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M4 5v6M6.5 5v6M9 5v6M11.5 5v6"/></svg>',l:'Etiqueta de pallet',badge:''};
@@ -6957,7 +6992,7 @@ const SITIOS_CAT=[
   {id:'ind-arrocera',grupo:'industria',nombre:'Arrocera',corto:'Arrocera',ciudad:''},
   {id:'ind-yerbatera',grupo:'industria',nombre:'Yerbatera',corto:'Yerbatera',ciudad:''}
 ];
-const MENU5S=[['Dirección',['resumen','ahorro','impacto']],['Operación',['piso','rotacion','tablero','evolucion','validar','expedientes','auditorias','hallazgos','buenas']],['Gestión visual',['copa','pantalla','layouts']]];
+const MENU5S=[['Dirección',['resumen','ahorro','impacto']],['Operación',['audgen','audsec','audint','rotacion','tablero','evolucion','validar','expedientes','auditorias','hallazgos','buenas']],['Gestión visual',['copa','pantalla','layouts']]];
 function sitiosMenu(){
   const extra=state.sitios.filter(x=>!SITIOS_CAT.some(c=>c.id===x.id)).map(x=>({id:x.id,grupo:x.grupo||'cd',padre:x.padre||'',nombre:x.nombre,corto:x.nombre,ciudad:x.ciudad||''}));
   return SITIOS_CAT.concat(extra);
@@ -7491,7 +7526,7 @@ function vPilarDetalle(){
   const c=pilCfg(),p=pilarDe(state.pil.id),adm=esAdmin();
   if(state.pil.tab==='inc'&&!veInd())state.pil.tab='ind';
   if(state.pil.tab==='diag'&&p.id!==DIAG_PILAR)state.pil.tab='ind';
-  if(state.pil.tab==='aud'&&p.id!==AUD_PILAR)state.pil.tab='ind';
+  if(state.pil.tab==='aud')state.pil.tab='ind';  /* la auditoría interna ahora vive en el menú */
   const per=state.pil.per||new Date(Date.now()-new Date().getTimezoneOffset()*6e4).toISOString().slice(0,7);
   const secs=sectoresVista().sort((a,b)=>a.nombre.localeCompare(b.nombre));
   const pond=pondPilarCD(p,per,secs),nv=nivel(pond.v);
@@ -7504,7 +7539,7 @@ function vPilarDetalle(){
     <div class="eyebrow2">${esc(sitioActual().corto)}</div><h1 style="margin-top:6px">P${p.num} · ${esc(p.nombre)}</h1>
     <p>${esc(p.lema||'')}${p.estado?' · <span class="badge warn">'+esc(p.estado)+'</span>':''}</p></div>
     <div class="headbtns">${state.pil.tab==='manual'?'':pilHead()}</div></div>
-  <div class="ptabs" role="tablist"><button role="tab" data-ptab="ind" aria-selected="${state.pil.tab!=='manual'&&state.pil.tab!=='docs'&&state.pil.tab!=='inc'&&state.pil.tab!=='form'}">Indicadores y sub-auditorías</button><button role="tab" data-ptab="manual" aria-selected="${state.pil.tab==='manual'||state.pil.tab==='form'}">Manual del pilar</button>${veInd()?`<button role="tab" data-ptab="inc" aria-selected="${state.pil.tab==='inc'}">Incidencias y accidentes${(()=>{const hoy=new Date().getMonth(),D=indAnio(p.id,anioInd());const t=D.filter((d,m)=>m<=hoy&&BLOQIND.some(b=>faltaBloque(d,b.id).length)).length;return t?` <span class="badge crit">${t}</span>`:''})()}</button>`:''}${p.id===AUD_PILAR?`<button role="tab" data-ptab="aud" aria-selected="${state.pil.tab==='aud'}">Auditar${(()=>{const n=(state.segAcc||[]).filter(x=>x.estado==='abierta').length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}${p.id===DIAG_PILAR?`<button role="tab" data-ptab="diag" aria-selected="${state.pil.tab==='diag'}">Diagnóstico y KPI${(()=>{const n=diagAbiertos(p.id).length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}<button role="tab" data-ptab="docs" aria-selected="${state.pil.tab==='docs'}">Documentos${(()=>{const f=marcadoresManual(manualDe(p.id).html).filter(x=>!docsAqui(p.id,x.texto,x.k).length).length;return f?` <span class="badge crit">${f}</span>`:''})()}</button></div>
+  <div class="ptabs" role="tablist"><button role="tab" data-ptab="ind" aria-selected="${state.pil.tab!=='manual'&&state.pil.tab!=='docs'&&state.pil.tab!=='inc'&&state.pil.tab!=='form'}">Indicadores y sub-auditorías</button><button role="tab" data-ptab="manual" aria-selected="${state.pil.tab==='manual'||state.pil.tab==='form'}">Manual del pilar</button>${veInd()?`<button role="tab" data-ptab="inc" aria-selected="${state.pil.tab==='inc'}">Incidencias y accidentes${(()=>{const hoy=new Date().getMonth(),D=indAnio(p.id,anioInd());const t=D.filter((d,m)=>m<=hoy&&BLOQIND.some(b=>faltaBloque(d,b.id).length)).length;return t?` <span class="badge crit">${t}</span>`:''})()}</button>`:''}${p.id===DIAG_PILAR?`<button role="tab" data-ptab="diag" aria-selected="${state.pil.tab==='diag'}">Diagnóstico y KPI${(()=>{const n=diagAbiertos(p.id).length;return n?` <span class="badge crit">${n}</span>`:''})()}</button>`:''}<button role="tab" data-ptab="docs" aria-selected="${state.pil.tab==='docs'}">Documentos${(()=>{const f=marcadoresManual(manualDe(p.id).html).filter(x=>!docsAqui(p.id,x.texto,x.k).length).length;return f?` <span class="badge crit">${f}</span>`:''})()}</button></div>
   ${state.pil.tab==='form'?formHTML(state.pil.form):state.pil.tab==='aud'?audPilarHTML(p):state.pil.tab==='diag'?diagPilarHTML(p):state.pil.tab==='inc'?indPilarHTML(p):state.pil.tab==='docs'?docsPilarHTML(p):state.pil.tab==='manual'?manualHTML(p):`${panelIndOtroPilar(p.id)}<div class="grid g4" style="margin-bottom:16px">
     <div class="kpi ${pond.v==null?'':(nv.k==='ok'?'tintok':(nv.k==='crit'?'tint':''))}"><div class="k">Ponderado del pilar · ${esc(fmtMes(per))}</div><div class="v">${pond.v==null?'—':n1(pond.v)+'<small>%</small>'}</div><div class="m">${pond.v==null?'Sin sub-auditorías con dato':`<span class="badge ${nv.k} dot">${nv.l}</span>`}</div></div>
     <div class="kpi"><div class="k">Cobertura de pesos</div><div class="v">${pond.cobertura}<small> / ${sumPeso}</small></div><div class="m">Peso de las sub-auditorías que ya tienen dato${sumPeso!==100?` · <span style="color:var(--crit);font-weight:600">los pesos suman ${sumPeso}, deben sumar 100</span>`:''}</div></div>
