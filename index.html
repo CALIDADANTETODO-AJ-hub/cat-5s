@@ -633,6 +633,11 @@ table.dgt td.dgn{text-align:right;font-variant-numeric:tabular-nums;white-space:
 .zona.crit{background:rgba(220,38,38,.36);border-color:rgba(185,28,28,.92)}
 .zona.na{background:rgba(120,130,140,.13);border-color:rgba(120,130,140,.5);border-style:dashed}
 .zona.off{background:transparent!important;border-color:rgba(148,163,184,.4)!important;border-style:dotted!important}
+/* el sector que se está auditando, remarcado sobre su plano */
+.zaud{position:absolute;border:2.5px solid #0f172a;border-radius:4px;background:rgba(15,23,42,.08);
+  box-shadow:0 0 0 2px rgba(255,255,255,.55);pointer-events:none;z-index:3}
+.planaud summary{cursor:pointer;font-size:13.5px;padding:11px 15px}
+.planaud[open] summary{border-bottom:1px solid var(--line)}
 .zona:hover,.zona.sel{box-shadow:0 0 0 2px #0f172a inset;z-index:4}
 .zona.sel{background:rgba(15,23,42,.10)}
 .zona b{position:absolute;left:2px;top:2px;font-size:9.5px;line-height:1.2;font-weight:700;color:#0f172a;background:rgba(255,255,255,.86);border-radius:3px;padding:1px 4px;max-width:97%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;pointer-events:none}
@@ -1097,7 +1102,7 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
     <button class="railclose" id="btnMenuCerrar">✕ Cerrar menú</button>
     <div class="brand">
       <div class="mark"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHMAAAB4CAYAAADBhM0lAABXaklEQVR42u29d5xdV3U2/Ky19zm3TO/SqHerWC6SKy4StrEtN1xmwAEMNsaGBOKEkEC+N2E0QBJCgAQIvMgO3dgw425ZQm6S3GTZclPvklVmRtPbbeecvdf3xzl3NCOr2NhAnDfXv/uTRp6Ze85eZ6+91rOe9SzC/4CXCIgIAgC//vXKypKSoFib/Z91nCCm4Fc5Onaj5+V+HUuUdvX3B2tjsfHPeMr1Lr30A+0AIA0NTI2N9v2+DvT+NmIDA41CBHnqoeUziA99tCDe9bl4/EBJSXFvPB7PgqgPmUw3EokSQEahuyuJVLY825cp6okVVT7a2Y67Plx367p165Y48+ff7v+vMf9EhiQKd9OTj337h5WVfX9eUtCGpNoDl7dC627DCETEIyIoIRiRhAR+lfJRTClvDCydjtb2mt6eroJLr6r/zEsidYqo2fyvMf+YhmxqUlRfb+67+74J40e1frmyatPnlPu4LYgdkpjxWFmfrAJgAbIuGAyhAJYC2PCOxUoRslIaeMFM58D+c/rS/oxbL77qz+6ThgbG4sVCRPJ+Wxf9frvglSsbNC2sD5be++8zK6u3P107aucoV68K4qpF6yAA+xosLox44UFqCRABM4GIwSwgq4gkC6X3O8rpkAlj/ZJULtn82CNLfkBX3/6XDQADeN8ZU72fLrahoYFvvrnRPNTUNKOisvPpsTUvjU7En/ITaHV0oCFCEAogLLAkABmAAxAbgCwsAQQGQBBiwGooUaR1j4XTGoBKz7n6yk8/cdtn/3r/7NmbVXPz5veVQen9ZEgAOO+M8RPjscHnxlS9Nro4/pSJqRblGg2YOAJnAKIsAIYYQd5TkgCQ0IggAwuCEMAEsFGwNgnftTLgzQ76um+kA+2Ft1x+7a13izQxUf375gzl98uFLlgAbmxstNbkzh9T1TK6MPaMF1NtSvkKZBRAWShYKCEo44JtArAOYAkQBRIHJAwWQEHAArAINBk4koNjBimptqmS5DodczNfCd1svX0/PfDvJ2PapqYm5TqZL8TdLdZx9muCDyYLcBaicuENWQKZAGQZLASGgMgAlANRAAJAFmDL4EADxgEToIwDV1IcT7wYVFX0zfrdAz/5MRHQ1FTH/2vM9zrooUZbWND/3dqKznkObRMNn5UAogIYZWEICITgCyNgAlQaID/cWELhOQlELjbcbJYFhgUBC4QIjgCFupvKCjfDVb2nv9+CIH4/XawjuZklBYcQk16wcQEi2DADiQIACnceEEWvdOxQITxIITCQod8iEJtix91kS8t7pj3c/PO59fXNVkT4f435Hr8SaiCbjO2Hi34o68AIICDY0C5DhiQRSPQ+RqY64k1kAbIQEojkyKWDUpQcKGWdKQcgzc3N74tz8799nhkhPcF99913khPffHEu1yox5SuBCiNUEjDnt6dESAHBWnucnTnyFX5vtLcFcK1BTGXEVXQrgFVVVZvof3fme2lUp8fVsVSCYCFkAeUBxJHBMXS8EQQUIe9vOz+jI/4uHmKxNIH6Kv73zHxXOxHUJE2qqalpBKBhAt+KGFFMsCQQJggIInQU93miAggNew9Pt8MHwpAPdtJg7Y0A3puawuuSkR/6v272OC7VAm9N1GNcrGNURGIDIS2wVr9LKOTIh+CwQS0TDASwIwGy+vrD1xXhw/a/U8T732JnrlzZoKWpSRE12oaGlXrp43fdfd9jS74PEFatAouAklzUF6RNJ7MCWRYSC6EAJBTmjBJGsvI2VpfIht9vNIAw8LEUBVIEkGjYXBwsJS4AdHTMFoHQ0vt+fMGLzz208JcrXi+g0LCycmWDPh5i9f8MnBfWI4F8KeuJh5pPSyYPNlSMca/p6XH393dS3Quv7Xu5rm6znjOn2Vu77G8fOnnWmmts7mXDsMqyHyYjw85MiAbAIATHNisJYF2QVRAnAwOCWBcKBoQAPpWbrv6PqJ375n/kQ9d9ugkAnnh0yefG1iZ/5NtD6OvBLi9T9b2D20/56U1/e2pKBNTcXMf19X/a8pn+0xhRqLm5nokaDQCsWPbzj8ckfWlpwdaPVla9okXt9gpK5o7d3Ttnxamnnjpx9uzFfQBR1lZRv1cqDruI2Ry0YQgLDMmwXDO0FR338wlWNKAMiAGxDBIFRYCIIJAypLM1xqJob3RWFoLavmLNLltevNpUFcWm5NJnfD/u7P3i6seWfIfos/8JNJumpjpVVzdLli8/yyG/Yurl15y1SUToj1VO+6Mbs6mpSRGRAWBWP3L/6YmCg18srtzxsSJ3K1zzJly914J7nUCyiMVHJVR6VjER9QEQ3y/7r8HByVcXFb0GV1qhjUYgBhQBBEIGREF4dhwnRiEQiCws2QgC1FASRrGsHRMEk7ivv2Bja19qffgTY42DPUUxtY2Tais5CGy84E2bmDR6oi9n/uDl1f+2sDc9/tuXXF6/JoqIc7+77/mO8O/0P29nNjU1qcmTn+T58+v9++5bOnl8UcfXi/Qr9dXVO3VAm4Kku5Mc6zECxQYEOJ1+VY04Pf09NwD4rqxs0L/rLl/X2TmmrSAxvoq4RQg+UXT2KY4BYkCUCQ113LPFQsEDgwBDYMNgMjAkyJhCSeVmUCpbtPzmm2/OAoCTysWKSlJSFD8oGmkoMQxqYVZ9Fthpx44ff12889Rr1z797fv7c9O/u21XdsOl13+gfeXKBr1gQaP5Y9mT/hguFWgeKiUtu/83Z5cV7fnN1LG7Jmj7jMS43YpopZweMAzEKvhK4LOyA96VtG/vuWuz3vQPl45p654//3b/ifvu/Ic5s7Z+PencGzhBmyYFwDLExAFxovplDkLBMa9JQQAhGAqrm8q68Kwg55RI2pws+1ouHuzNTZk6ONjcXVfXZFc/uOSrU8ZtXVxU3BQwWrXi0I+LcWHZwGdjbFCuBGfhYNd8DA5U7xzoHnPZohuv25Vfgz+Gq/1DR1xEREJUb5Y+/JPb1j793ccmVjy3ZubYpRNc1Rywu5eMyijj9MNjAx8OBEko40AHMXaxPpg6ru9shbbr5s+/3d/Y1OTm4rU/fPPgmLUZb54Euirw4MKwATtpQKdh2SIgDTnOc2rBsIhBSIUwHjzAiSFlJwftA2dz92DZPyxaVN9RVwcQkWjuvcVxNkBTP5NJAjYWnbMEbTUSAVShHZAC86IZU3qPTB29Zuro6o0rn3nsrr974BcPVBCRrGxo0O9bY4o0sAjw618vLVu14q6/G11xcMnE2qcX1Y66V2LqJetYT2sRgHMQ5cGCQqxVZcHKg7JZJHWHErPOJOLdtzz+0D212Z4n5corr+zpTFd8z6cFTl/mZO1hFKxyYBUg2oOoDAhBBLkzZOgdwuqIYHVDBIKCJSDQjIzU+BlzhnPgUM0LV17z2R8sW/a9GFGzWXr3jy+oqu6rdpN7DZAmhg+CDXNQsiAyUCAoCsilHlXCu6jAecLWVj8xbsKYbf9aPerA6qampaMWNjYGS5bc5vwhAYc/yC9euXKlXrhwYfBw8z1zyys6H6sq3Tu2VL9k47GtItSrGAJXAMcIAIZlQjAUkQo4qn8E5CBlKwNfbtRbt8349CUfvuWnTU0N7piSKaUZeF8vdHddNKbm1UkFsTcM2T5HkQdtBDoII1UDgo3YBUIWJAQSgnD470oIlghZMynozy7Se9qnv9aWG/MhJ/tKf319o9fU9JOqCZV9T4ytWXlKYeJJ65oskxAEFiIcsRfC8JnIgAAoQ7DQ8ElLFlVmwDtPd/XNb+vqqfj6pVd/8kd/SLfL770hG/TChQuDBx9cWVpRtv/OMdXPjy2LP+IXuZs4Jv3KAUd8HIOABPn/8um+iMBaE35pAsScDm2DtX5lRd8/P9p814L6+kavpG9X78WX3nr7QGrKHT1953Aqc5aTM7XGwLESPaJEBkwBHBhoEWgLsBBgFYzVsKzFo6IglTkzGOyr0wcPTFvX11Zzycevvrpz8uRaefyhh2pHFw8+WVO96RTXfckok2H2nDA3lbdWYfIgog+GFQVNOUq6+3RxYqkdVf70qNrSgz9cteLOf/n10l+XEZEcCVe+F6/39Bc2NTWpK6/8vLnv7rsnVJe+8tj4Sa+fUaRXBUXU5WgzCE0m9AU2FrooDgOREIEJlySfZhAETDZ0mWqAHJeKYGrOvfRDtz264Ma/6F73yJLk+VfdtvmqRZ/YZM3YCUxjxmlXk6V+Y3XK+kywYAnrWlaEIZZZfFLikWs9O5k9/0IeSH2QD3VM+OKmpafcftNXLxr8bVOduuSSfw1uvvG8X08at++CROxxL6laHCcgaBODJQPhI9gkITqP8FkRsHB47luAKUOauySmB2y8qPwCP60u/sjlf9587Y3XphsaGnj16tXy387N5hnhyx/8xSeqyg4sqa58KlGQfM3EAk+x8aHhg4QQkIZlASgAiYAlJFfJsNQw74BYGAILy4SsVJt09oPqYMcZuzv6S7951XU337VxY5M7Z069Bwg98+hPr48nD/1NcWnb2cWlbSDpgEYODudA4kHEhW9LkfWKYe0odHdXDWa9yl8MZJKrP3TNrc3S0MD8tUb729/+Z+HoZOFflBbv+OeK8lW2ILZFK+mDFkBZgSELS0cD6CUE/sFwCFB+DLCMQGfhQWBVFVLBRC+dPcNtb5+yrieY+qFRow4O7t5dZodjvn9yYx425M8+Mbrq4C/LS5ajJP66iRtRARii0mAJz6zQYjby8AyhY98HSWRQYYhykJIS25c9lQfTF6HjUMWXL7725m+FpOXZlE99nlh69zUFBf1Vntf3GUeZBEsagEcAw9gCQ7qCJCh5Jj1Q8/0P3fChHQCwfdn3YtMX3ZH71a+WFU+saP3PcbU7P5FwVwdxtVWT7QdpG+K5JgQc5LgLSiEvyWpYURAVICALSwkoaGS9Ct/zP+TseXPOi+dd/YVz3sszlN6bM7IxWPHAzz9eU33wV+WlD5ui2HqKecSuKBg3PXQ2DkFtRkfUHBPa9hjwm5CArQMlAgIjR4yM0nZw4EyTHrzS6c9V/mOQK//h+Vde2XPkzz744IMnv/76h7c1NpJ37IfwNmf+/Dt9ALj/l69Xj6p44YmamvVziwuWBQW6VTuBDwMNT4ccXBXEoSAQ9o4B+0rIniYFA4alsOhNMCAQHCsQMFLBNNvacQF7csbv2vuS3/jQ1R9/AXj3tM53Zcx899XvHvzpuaWFhx4dN25VWUw/LQljWQdxKM7AILwBw+ERzWKj6DJ0TCI8orI4ojJJEtIhAbB1EIiLQPvwUYHB7EmBT+foXfvLNgxkC/6/kpJK3sepx29eeHNWVl6osWC13dRcpwFgM4BZAGbXwRzZS/LIA03nlBT0n1foHvz8qKqN4x211hZKN8eRBlnA5xgy2kDYg2MYiii6bjmKJ2GQdWGIEOgcRBlQ4MIRgkYOKtCwTPAcQtqO9UH1zobNo7/5wWvu+HsRcERp+uMbM4SqFpvHH7zzpqqq3p+XFa+yxfGXKME9pIY4OCo8R8jkHVBkJhOVq2hEJfFoz3nIHMCQW45oVzDsICsVxvPmqnR2FgI7CR1d7pODqYKGlzd+9KXGRpjDp+9IRGr5o3fPLyrMzvJ6+66qKstdP6piD2LOS1C8y7J4TEJRUiOwxBAGLExYi4vOy6Pzi0KOLiAQNlF0HpXnyABWA6wgKgfDhFxulmlpv1B6/blbU37BJy+//BOvNjU1qd/3DKXfL2qtU/X1zeaBB34xvba8ZVt18fO2pOg1iksLOdaBkIGBBWwSwh4kojyyjDwPT4CHH8EGGAZaC2ARQBQgiNucLZfBTK0ITtWdXaOR9QrfTFtkWKXvMqbAisRYUc6S2FMSCeeDZPpGja/NuIo3wcE2xLnbKPFJbI5Z+ZGzpMOBKig0ngDExyOKDSvFHW1pKXp0RYePtLhI2ZNMzl6hduyuve/iq26vf+WVO/Xv21r4jo3Z0NDAixcDK5ovLXWKX1oxpubFebWxZ8XRbaxgYINY9DTnQOJE56IZYcjf9/KGdgUAthZEeTQHsOwisEXWShkDRbBGwdXlMKYYkEREgO6CtV0gSoFVb6BUN5F4TEYTxA3PQg7Alt+aekTe5t3EKRwZVEwMJDFYNQDfcWUwNd+0dy7ifZ1jTrum7lPr85vlD55nLl6wQHVtv4ozxS+umjJh7/yi2Is2iUOKkEOIXytYDmEuhkFIO35vMiARO+Lp5+i8ZQHYGmjkyJE+calTHNUpLPsDTW9al3dbTTuty2+Kw21wuQ0ag0oZZjaamAxIeQBbiOW3ICmhEUMu7rthiYg4sGQhbEBWQ5EByCdFOcRiDns2ueDDV37u0WvrZg8As+id5qD8Ts/JhY2NQWvtxmvGTWybX6Ae80pUqzLEMKQREGDYh7AfLXYInx3PGb1D1P4wWE6ApwQBAZbC/I5EQ8EhGMVWPBbKOEK9jqFOJ6Bux8eADpBlAyYRFVZWlBeBAGHbghpBPsnzavPo1LvrlM8z6g0RArawUGBDcCnFcfflYPKEHTML4wf/lajeLPg90Dl6J+51wQJwx+CkmtriQ09PrF0+pUyeIScQzjgOWCxYTAi4EMBWQRkHwn5IjXxLpHqYFfD7vGyEGpEMY7EP7/qyDAiBRIXPLAF51rphCTFb2KFAh0BhgAKOHsb3vmIlFH6uJRewDCUWGhaEsKViUGqCrt4r9YHW6Q1Oydx/7ujokHcSDNHbdxHCRGRXL/2/L4+f/Mb8hPNbUyY9SgWMjGOhrQJZgmUDwwIIgyS84DzUNdyQwyke78Uihb8rekJAQ/QQsmEUTATY/G4jiUwl4XaMAF0SBQJHAdt7b0wSgSggYIIYF9o4YcpCPgwYOVaSwnTatacue96l30gAwQjxjffEzYYUSLIPP/xfXy6vbJ0XlzVBoaSVBAqGo4NXbLROHC0gIGxglA3hu7AMHNZDJMwfISMd2siv6IRvEgaBwTb8TBEa2pFAeG5D+YDKQVQOxB6IfQBBiPmSGZYcEcB+1E32h6kjsxDYhrCgkhBVEoSsCCUMRwxpd4cZN3ofP/PgD77VJKKABnrPdmYealq69Gejygpato+uerqgwn2FXJMiq8LqB1k9zF1FoTzy4DNB5DDJiiL4TkZ8H4XAe/5fJczXQvcsJzxHj58qDMPCMSzN+BO8lIQeyyIWPrIqCyKJUDEFy4KMFvjZkySVuZq2tY97ctGiz1/ydnfniavfzc0MwMRs+v+MK+otKqaWQCOtA7IgCvMlSxx2IcMCNsrS2IZRYJAIuTacBVhgwFG7euh2GBKWlISHcL13Ur99u4Y5/G1/Os5y1FkYsQMZEBcWHhSHIIMYhURgkXD2iOIXJOleMOqd/P4TGrMZzWHAodUMzyUx2pqEZVJesbJKELh9MGygJAZYC4iBJQ1jrBX2RbOjjAAWWgBLRBydZQSmAEQhvzUs+qrI9UZn2ftPI+K4LyNOGItxJjyKREPZREREE7C44IBg4RjXKdQOO8n31JhAHeqaoHKkGw6lqi/xcU6MYtWI8T5RdEhIDCuJg0RgLcMogk++JaeGjRmPnrSIUiDt+GRNp425A1AYIG0NEQ03lyBsCuCh9jqSPxgZ4k/ysgwIS1g4IANFFgQHYgmBEHKSMMafhKw5zenqm4F0Sn27AeDm5joCTgwi0NsB0vNfP/rgf32vsJBni7RSeVnLByuLnkNSbTPKQkQ0wAlJ52q10Bl08FBifcYWpp148dmZTBaabEt5CdfG1V4UJ7fBVVvFQYpECExe6JoFQy5YWMLuvP9BxgxUWDtSQQKAAascAoEwFZtBb7TKqjnU3XsSunrHLevsKfjeAy1Tnm3+m3Mz7zoAyhtSRNw7f/uNprgTe+Wm6/72nyMCM5oe+cmFFe6bv5xS2za+uGQLVDyH9GAF2vafjlx69qfPXvSJnwIKBw5sO3X/ocGc0z+no0hvL97X+fj40oKO39aO3lAdc9Ybh3oVox+K/aH8UCJCc3iE/s8xJkhDbEgwIw1kjWt9mcqC09HSXo0Uqpa3daon66/7wndfe/KevyvN5L54YEdnS65swqqLb67/4olAeDp2SiRYvvzuokODA4s2tjx5Lzk+KhKT2keVT/z3T11TfxfR2K7/+q/niibVbP98eXn7OCuD1gZJdPVUvXDZtbfd84tl//7JrO3+6sGWzj43Bp1IsBQVVHzntiu+9sun7v7VhILqAy+Wl7wyqrz4VaPokHJ5ECEQo4dVWoYTJo8Gpcmw+DlftQjLx0IjHTgNj6HzeHf4ncdYCHpLwCTHdWVyQmfH0bUZuEgH4ySHs2jPwfF9BuPv6TUlP75m0Z+tV8rBC7+5+y9zuzf8k//GmsL9+1ox5uIPmzPrPz6reNasHZAGyvfmvC1j1tXVqebmZvPE2semv7H7uY2v73sYRmXIkRJdWTwao8vHddUUTlr6icu+cjsR5Yb/7P0r/+tLrb3bv7zlwEuVOWqHBAwlDkBpVJRVoNSZs2d0+VnXFmWSfZXFba+PqXi9pDD2uC3kVtbiwJAJ2wasDk1A+eagsGMLZCCgaGEsAlKwygIiUEaDLIMobMS1IiIcxrshhsvMEhXeCAiIIxTJRgl36OLDJuwwJ2YRMAwsCQIFsA1Tp3xRXUUlOjt0HslRlpgjrpOBAwHZUtuSvhC7+s57vn1g1N999JpPvLh5xTMfpUxbw+DWN6r7Nm8u79u8Gclsv81KEJScerZbeulVPz39pts+vbIhhFTftjFXrlypV61aZWefV/v9Ta2r/2Jbx+pAuaxhHWv9wLqI68rkeFS6U/aPGTP9ocqy6qVsY9w72H7Wge5Ni9/YuwrGzYgQCyMAWx0iK5K2bMv11KoFmFI7659KbKmpdPZ8Ynzt0xOL1DMSg3AgBKN8iChoo8DkhWSvqOUdHJWijAZAsEPgt4GwtVYpG5gCkqBYlCrQrHWY55KFn+23ijxLLATOMFGatAW0cRBWLAOIIpho+xIAZRlkdZgfso3+9EOwXAhsVbS/GQINgj8MOrQjljmsz1oYuHbAv4C3Hbhk88LL/m72mt/e+48VmfTXtj/+CLK7tyDRPxiUcEy5NiBPKxzihNTe+Ak7+pIPzp14+tmbGxoauPEokqr6GCBBsG7dusrXDqz4VEvHJlFaVJhFWmaX2SIrbelt0jPYOq6X9n+htH/MFyaOmYm9h3Zh85svwBakBNonEpcw5MhiEDBbJ2U3HVxBxaXx/xM7+Zya7ldrX6qqOOWhZOEGGOlg2DgAEwoWkj+M7KUjYCEAQUFIw5IHES2EYmttEgGVqKw/iQcykxHYAvT2ep3WxttYYkSUFdcJ5hSX5Jh5ENa2osDZbQrdAyAeDFX1rAMxALMACIYwYKLQUWthGDoMAZKNh5RqlQPEADbsYslXiigCKyiCuoQkJLRRgELVg5htL+x4Too2vvT9T7zw4M9MVVebrXaglVKabYiSOcYinssG3NLmpPYduAnAV66qrVWNR2kPP2ZqMm/evL4V639iszJAil0xgQNmBWsDgAIiRyiQjOzv3hLs79il97a8DmMCUskMoCwFEvLJSVR4spEJk2XyWRXngi37X2Ljx//ii/XfaHjmd4v7CuK1FVp1iSJLJAxAw5AF2AtdWqBB1gWQjdyogeGk5GwxicxS6fTJaO+o2Jj2ir+T9so7i8uKqbWbXq2vv+pg/p6WNd970WB/rsBD94XJgjmfLk30lQSFWxGPb4e2bTbGaWYZhLIGgIYFw6gARvtg8cNT23J4XwCsJQhiEDZgCXm6hiLwI6qwhEKMEZRPBooIWjR5gREknZrX/Ic/Fs/2uKWZjCpRYCWGfGJ4HHodQgDXIerdvR3OrGljAWCgpUXeVp7Z3NzMK1eupPuW//Srg9mepACGhJSGwNogfNKiA8OKIdbaASvkpAOWUhBSEONCIRY+o6LDwrDkwHBhrAKzqIzfI6lsx1//7qXmFdn2fV1ZM6YirnZAUybEMEkjIAGxP4QokQ0gZCHK2pxfbVKZc5zW7lrr0ajHPH98848GbrqnuX4k3U+GxVBENz6Vp/4sX/7gDxRSZ3X1jfszgznjx4/bd2oBPR8UqYPM1MNkBIpcGLGwHEH0hqDggK0BIwBUBj65oaiiESgosPajZt58aUhF568CxMKxHiiw8KgMaVvQZbVzwI35E7SfEwWXBD580rCsoKwHJR5cTbrt4G5J9rV/5JXnHv+Peed9aF2+8HE8Y1J9fb1hVrir6Z//qi9zUJGjxdgMNIc818Nx4RD6GhZ1KQBLDMa6IE6AJACQjvxMeKZBfDARmBzyvKwFpYq8gb67XMRLM34ZimJJsjYFsgxFFsbxAKPBJgZmH4EehAcHsKfyYPZcbu+ene3uLb350us/9pvw8j+JlSsb9PbttdTS4qrNm/fa+fNb5XAZb7SaPRu2qgp24cJr9wLYC+C3ty0R52P6ro9VFVf/DMm1cNUbNoYsO+JBkcDaCH4LdBQcuSDEIE4Wgc7BCJsYJZlNQGJCZhaGxeKWwlooEQNwIDoR+Biv+/v1j65duGjNC48/DDYZEAphTQCtGYEYaGuhRWARIJEb8HV7u5vIZC4BsK558WINwDumMRsaGqixsVGeWvPI/I07lweZoM1axyehGHwTgNmElCxhSORGQzlQA7KxkNvCDIMAiiwUHFjORfyfMBQ0yAFwIQxWlICrin8amEMXKrfwclEEEmhXVFiuMgyyAi0+jPEgFLMBTqP9B8/b15+e0TQQxO685vqP7Vy3bonT3j6OH3pov124cIg/8xYezSuv4Ej1ELewtZUW3U65O4GfP/bwnZN6Eu5Hxo2unMH6DZ+x01EwUOKCAoWYDWBdA2MtjK8kMMXieeNhZKLK5A6iOLkbCYS6QhKGvWGxIOpFMTDImDgMRtkBO4qMTm7ZvvyxO8zBTpCxNnBEhTFxAI7O3lDHUaEosGpw2w7EZx86TUT0qsWLrUSElqMas7a2VQGwnX2t89PUX+pTv0cUc8UARGGPRehw+DA0FCHYVhDpukZdUqJCEjD5+Xp9mDuSQCxs3C3k7o7+1y77eP13lj36o3QifvJVA9ldEOc1k1T9rAKPyI/BUT4EOQRchAHvVNM9+CGns2vM/3fZDbfck4+8589f6A8L4Eq++MV/KvSy+lMvr30j3teXivAPa+aeOlNNnjp+3YTZo9d87hPX+UTUExlVAZvUFdfc1vDIA3e/SF3xe2tLnJKShC9K9pJrGXGrIcqHTwoBFxsbq1Epbyod6jgVqa7KVcVFfQsYa8QpetGKTaswIQl1bg2AwLpw4MKY0aY/OCu27VBi41Tn1KRt3/p33Ru32DJHK5AXoUQCLQKIQqAAjwXaddi0tCBob72EHSeQIHhLKjLCmC0to42I0D0rfvzBzoFOQLMioSGC43C2nAzLp1gizkWUZnFUxQ9LWBFFMqpEMxhsFdhqmTBpQmzNmpUT93/3R3e+/rGFhUUFF91RWz1zTI5eQ6F60yi3i6wYJiQxGEzy+nML3d0Hqr90zQ233LNyZUO8o2O2v3DhwkBESp9/ZuNnHnnkdxOuvuKz17W19lQACTebVVCqJHz4INi5vRW7du1DyRqV3bJ2Y99P73qk4ZyzT2+ZefLYR1euXEkbN85258ypX970s5+dhJqT7udxuXNj8T7rBB1sLSTnJG1vMJbJnKnaWqs7BuyYwY7B2Lfqrv/sj594+OHL0F+yXLukHGdbEKN2gqTAAhgoEJUgna002r3Q3bW79sXLrvrqOa81TVjf+tJjsfhg2jg6Bos0LOmwqG8AJQo26joLWJFKp4zu69JbX1x1/vYBt0etX7Nj0R135I6bZ/7nb7+2b2PL8nEp2muFFYd0it8PVhOyUbgOgH2Q+HAliSCbsPNnXsBjSubsKktO+bOLz7jspSVLmkqm1w78JBnrvG5UVSu5BWtBaDMSlNh05hznzZZZLxTLOZcMFD3qdXTMlk2bNsnnP7942mMPrXh81co14zds2In+fh+K4zDwAiIIQYX70loIDIisFhOQiI/JU8Zj0qTRD9z6mfqfnHHOjGUAsG7dOmf+/Pn+4w/cO7OkfOcbVdUrUOZsZ9fWqAE7E/t7JiGXnrh0x69Oqrv5Fwuzndu2jfG8ztrW/mz73oO7pkyoyN1VXtk6uSCxHUm3C5AMrBQhl6tEr5mOA+3Fq/qz4784U5d8fu/vfnPL4JPLZTQKSCxgeQABKZAouIbAYmGURVYBTC5yAxm/+LLLncSHrvhiqy74UXV1tZ0/f77/lp2Zx2LXr19fs2L9zyTr9wvFKTy431Ux6nDIlCczWwTQ2vBLm5625SUbpsyZcO7aux/7jy9//Ir6bwG4YfnDv6zL9VR+QXeVjRtVjYnMjjrUXfjC7kOJy269dX5aGoQXY7H+WmOj193hfHvDG3vG797dlovHi5TSCSXCUOToMEUInTwzQcQBwNBKCROwe2e7aTnYfl1b26EP/OZXKxpOP+ukJ6dPn7Arakja8tAjP76vsOLDN7LfgZ5OOtCXG/VKNlPUcNn1n37j9c0r5mz+aPPfH/zd8j87uH4bYhMq5LRz5v64teLyczZ3PjhVcgU3xxMDFWT8grhbOtjbhYcqJp23h3O29iS/91tda5+6uOvJZ4MJktAkaQRDXuwwcJkv6yoJa7+uVsh2diLZP9i/6ON1OTlCg4iGU0MWLwafteDkz7x+4Hff2NK6qpTiOYIVEjjvyph5ng7IgMRAkYL4CqRceH5gXS9BNYWzqKxw3EuTJk17Y+qE2d+YP+X8fQDw9KO/vkM54vS9Wfyjq2+/Op1v5BWRKZ/65N/+40svbv6k78UCrRLaApHR8tyiiFsb9aoAOiqCM5gsrHgQ8QOIrydOrum59ba6JXNPm37XjBkT9khDA/3q3CmJ2nh8dqlx6c0DiT3X33Rpe+e2DTMP7tm0OLV3b515YyP1vrgRdjBrg+IE1543H7G5J22LlZQ9XjHh1Ef71Shv+vwpq/e/tG+hHdw6zms/+LGePXsv7H3jtVj/q2v9UTE4ZDMwlO9S4SE2j7IhXJlvd2QwgiAw2bETVc0Nn1x92m2fXXBkVYtG0CgXNgb3P7Pkoxv3rrx326EXAu1Ck+VhuOO7ITJHxsz/NU8SkSR0UAjrpyQWD6imZgrYm7BmYvXpP5s7sdrs3te+tu7y2zblA5X6+npz8M1D5337O3ffvGrVK7ekBqxRKqlgo0YkCUBMISIzIg2jIUOG1BEfSuX5j8p4fkrNPW1Sz023XHu56w6+/tBD++2dd45klq9f9tA9mQN7b+zZ8DL6XlqH0p4BUxx3VI6z8KGRysGo6gpVMfVkFE+bjkHHwUBv34HqkqKxkmpB57bN6N1xAMUDvq0ksE8pZGIWFi6UcYd5L4woDOQJNpZEunSh1Nbd0l96xbXzZsydsXs4tDe0TVdFf/Z0H0pncv0RDT/UNQ8B7t/PnBRVCkLfEZGuSEIyMAKA+mGcDMgNKA1jdxzcKgmn45ys3XdOZfGlKHJrPilNTVvvnNzD9fPr/bUrN45a/tgLH3h29YsfGxwgo1WCQwJgnuMatboP9T+oIyogYd8LM8OKAVkHJDHlaBVs3bK37MGmpV/+9nf+/vtbtgyufeCBXxSP78j2z7ttujR/fd0Nby7/3Y2Zl5+VeH+HqXJJJ+IxZU0OGhkQM+KxAiUdPXagZZ10PL9WAmeQ4vH42L2D2UAjgAumclezE/PZeICQCyMKQgINE7IDBdH6yOGQM29gBQoGB0zMmFJ0d50HYPeCBQuGjDnEztvcEY59UBy7zDNpgIQkgtXeu2o/DQlHDDUSkcByJiRQI8kUgzL6kN/RszNYuXrd05df9Ge/rEczynbfZgEgZ/RNGzfu+GZHR4dWSpSIR6AchHJRWmSGcFXkObM4vCOHeIDRvYmoiDWodRDAbN6y48O/vnfp2V/60kcy4pkJ88rKLLCAimPupwdf32DH9vYG40jpmHHgiwtLMbDEEPcLoLwYxBEuSOZUpZvWY8iqypS1o1Gsq1ShLuUixdahrGJkXEZACiwOlFHRpolWWuQthTWJ2iJdIpjUoDjwMsekWjZvahYAMNYsyJh+WA5CAOBdklvzPj9PN7ZDUncKJDEomwCbArB1hhh+gZ+louQYXTVq3DqBBTZB/fCHCwgAPf/yM/Ls8y+bmFspkPhQh8WwnqKIsjDceMMrGCrfJBpGGCywlIMlH6zi3NUZyNaNe/6Ptbbq+o/e8mozoIjIrz6p6u7KSVXIWJ8ypGAACHmwysInFzkmWBWArUBsACMEXxzklHBWZ5Flg4zKgNiHa1RYiSGBsgHC/vAwBTHR/BXkGY0RHdVE96QBSLqbTKontN2qVcfmzaazqZS1BsR/eFFGGcGuyy84gUQTwcGE2gnnPPLII8kmzMrX7+Txx5+Zm06J0lxAR9eMfbuR98iWNOLQa2gnLq++sc3c9ZPHvtTQ0MCTe3oEAPyCQic+ajSyYVhy+JqjamlY3bHDOqsjPdwIBZKhgrkM0U5l5Hl0AoJzWGhVRPDSadggwyckQVvrc9goE51v+EOy5KJyUsTE44jYbCxJcXEZtFZbrr766sz3zyp3Vq9ebR55ZPWtRO71vqdsKOZ9pCApDeM0nugpGrlrRSxCJXCFdI5KDhxou7SxsdHe+cor4X4uLNroF5YZG4txhM+N+NT8DrLHKxgPyQDgsIc6JtPhKEsVpSlBNgvyZfCExjQSRE8cv0c8UznOe+QuCWF8BRZXeRkgUVj8EwDy3NrnBICsfPa5Xb4vCQqjMzq6MekdRtkjr5VJw89Ctm/b2wcA27ZtEwCYd9aCTVRYHiBewOCoMyzfvn+Cdk0aTgIfQaLN599y4mWWPGeBEHg+sjb4AAAsmD1bjm3MwIsaSyPJbLIA7B/W1Q5bWwKDwORwHFWV41sAoKy1TADgieUrB/r6eoWUDHGEjm6kExmVjsp4j1JTxDhG27fuiGCrBQCADbt3JwuKShVrZwQ3ieSdfDwdXvYR3/d2JI9DeTcikO9lEVg7MSpZHq/XxBxuXXvbH/RuWN50RC4a0i0dHYOO6djw750/f94HjMmX8OVddF0c8ZkQWGvBHFaDRAxSg30jfsLzfcPW5lgxTFSveIvd6Oh+57ArDo+RI/3T2/In0e9mIlhjEFhTCgB1s2Yde2cePg7oGIy4d3EuHvmO3I3ke07yTVoEWGvgsDOCLLZ9+84tYjlUr/xDDBiUfAnBgGMuAGD16s2y7rbbnPknndSl0wM/LUjEIdaMkB19u48OvVsPFoE3xARWatQJz0xmF4AbQl4wEQuO3+32O/obNpIotBH0xoAEIT5js+hq318DAD09PQQAZ5wx7yTmqPdLohvLD/eitxKoTvyoR1pEkMNuVgBFFoUFh53CvNGjjYg4nvCC7EAGoWTFcGnFYTvvGIaTI8iY79jAQ+ezhWYFZlYnNKZSTgQU2Igd8G5bBI7TknckJ1YITAIrnnGTjJ6+rs8DoFmLZjEAlJcXbSkrLyBjcsj3Nshb+K1vw5NQdG/D+kRDkpYFGLDiy+yTphkAuO22MqbGRrtuzYpTPT97Si6dFkcpJpGju9Sj/ONbwr4j/uFtDQnIZxtCYMcFK737bRjTBVEo3Sn5kUp/oDNTRgTmh7cGMdFgagDZbGoNAKn1ag3QwGPGjHsxle7dRo7lQAJLpKIYn4eBBG/naIhAAwRDua1YASuBLzlRSYcqSks2AMDsWIxFhKpKRweZnras2CyIWUaQi/5ILxGBERG3sAAJsT+PYFg+pjEdFSOCCsPlPO3hD8/bj4LuEAUhB9Q32IXe/t6ztm/fHisre9JeeOEqvvXWDw9UVJY+HypWslgjEa9mOFz3DrzF0LcrEDkQEWG2FE+q/skTJqwAgDt+8IMcEUmwZ+cp8cEeV5mcsVYOD23445kSTARfAEomJXCiQ/1oO7Mhb0yn0HNUDGJttCMZf9hOLB46VwlhJMlsuT/TFRSUxm7Z1bLpb+rrm811112nAOCqq67YV11dTp6fFqUZxkaCUfQOrlPCdroh4D//NQjG5GTu7CmZP//rj7wEAD9f+uC8JevWVQ7uPXDVwM5tXKB5KFj7o/bBUFhE8AG4pSVkE4nYsMzpiJ25IJwxIhL837hTAFgSsvLug58T7BChYQB8RBQWCkDKqk271pqU6bzjgQd+UXHHHX/pNTQ08IIzz/rVxEmjdgl5RGQtsYzoin57Bj1cOwy7o6JKjs3JmDHl+tyzT9nKTIea6uqUZcsz+1qvRVfbZaa11SpifSy5tT+07xIRITfGg37QXTR6zLoImrXHdLOlJWXpuJMAWYIiHWUQ9Ee4VAzptloYKBfUPrDVGtVVrQtVnQihvLzcmXvmhN0LFp5+35QptSqXy1qmw3zetx/JIpqb6YNIoBiA2EA5lksqYv/5yU9fc9kNN9Sp+uZme8ui618u6D/0lcFN6xMxLxCAoJiHrvWP+jIibiLOnkjHxLnzNwPA8DaFIWPmd2tSF3NBvAzGKlhhELnRk3usjEmOwG+HwVRHdEATeKjUE57HI6G4wxU8DeEAPg9i18ENME52LBGke263AYDPfu4jX1m48MwVBUVaWyuB4hhMEO1QsW/ZpTQiXgxhOCUEJoIRD6L8ACqnJ02u2fu7ZT/7AhFlm2bNEmlooNdWLa2XfftrerZtNQWuw2FEeeTvH37yy4ilOqzaIKGgRiSqgbx6fNQ+wxJ6CToCjMi3OFiy8CGgRBxlY0ZrMeYtG/EtjHbXKBTHy6yFA6t8WBMAZMTCD+VzLUXgi4TUSgBESnEYiJCVwybJx8H5gnEooEzR9AIT6RrYESmDiANYFxYW7EDvat0mxe6Ez27ct/G7zT9p7l337Lrxe/Zvr77hxhsv7+7tXv7kijcuHei1QSweYytpDvFzFbnv8JPyvSLWWkARVBBGv4ESkAokm+vSc0+e0vaxT13b8KmbL1a1tbVTX4nHd8+fP99fP/3n/3To2ZcLdJCzAp9IOfCFwUfE4uHzGRrHV6EEHAugJWRAWKa8IAuYDRRC/VoIiWUFY8TCGhma+0kAKcUc5mBECjC+ARcWwq2owJFs9qMakzSorLiQtfVyymYhniFCXMVjxZRIFrLLCWgVi3DcAIExGBwcRM7PQNgXUtawo7QAIfdGnFB3jgJYDqJdosK+ETrcoHMYIyVYK2DFYBbKej3BwZ7NFS+vX/Z3jY2NX7nggjPIcRyzYMECtXr16ss+ffPX/nHfm21f27lzP5SOC3NMmDQRZUIykFDY70ERHiqELBsBwxqTUeIN2gvPO6PzIzdcseHyD597NxHZ9S896+85uPvWjauXf/LN5uaqzI6tGK2JAxuunyKOIM+3ullLKoRACNH+i4oWQrAqDbAgsCTGs8bCVcZxKasd6JICFStKQKmweUk8D5m+fkg6A/I9FOe0T0YjXlAGaOXhKEnYkDEXLmw0DQ0NHBf3sSATf2pKzRkXpTJdKCkqQVG8NojHSw/48J5M6AJyY0kBGIEXUC6XEaqkK7L+QFX3wEHtcZ9u69wrPqWME1cKyBGGEnwVRYECgp9f62EOW4ZROkL3rVzoA91bjKvLvty08mdtFy288j8AvCki9OCDD1Zce+2CX37rW79Jl5brv9+6ubUim/HJhho/AYFBpBlWGTDDGB/M0KR8YvbVpPGVOO3085+96dM3fr2np9N+6yffKvjVQ03j5p55/ubtL658LbfhtR/1vLxGxooHNgFEMyLwdqQBh4AHilx4qKDis8AnQtwqJHyCgSODMLYvXqCKTpqqTVkVnJpqv3LsGPJMdrlJqEMxJ0HwAUlnpMjIBdoLJnft36elb9DZv+tNTJk+Fbag8FUAsA0NTMPOTDoiKWUisnfd88O5vdnWjyWSCRlTWdt9+ikfvDuJ8QNVVTRwtHN547595TXjEvG1LzxxWm+q9dK2zn1f6PP3Yl/bFog7YCyJIsQhoqNzJADBD3ehOCNxmxBNHioNhew6BZuJmdOmLFAzak//4tXnfebflyy5zTn55E/pAwcOFNbX13dsemPX+U8++cri555Zm9iz983ZhHixtQqpwSxcNwnWQDypkcv1o7A49uaZ82dvnz/v5H/96Mcvf4WIep944omSst2701uSycrzJo47u+/VdX+/5/7m00q6D3GSPDYAfIqGdAw9gfYtlRdEglVCgEcCKBfaaiAj0ltURM70aYhNmdY39tS5v5CqmsfL55/8Wg+yPL1g3IEj1/V1kYJpnZ0lezevn2p62q/YsXXbWSqZyI09beZnHn3ylQNH9mjSW1GGYwsIfW/ZF2LA1KGvuwe7pbywnO5YdMcIQPyJ5++/YsC0Lti1b/Otbf0bSzsGD1hyhG2ko0dDmnZqaGsK4QikKYLfyYFvAyiywr5j5074oBpfcsbf1F9623eHcuSGBt3Y2BiISDyRiGf/+jNfrTI6+bHOru6xBUUFFz333Ev3Jgpicvrpp1BZVcFrX/vq55+Lx2OZXC7su1m2bFls0aJFuaamJnVmZem/5Xbv+uuN9/wG5a0HpZR8ynAAjxQ4YsYfrr/at8TIlsNYQAvB9RhQSRwIAqOmT1LF55zfUzxt1hszF1z0iYLKyhHGW3Lbbc7C2bNHBDXT7xi5rqRCmUZrzNG87NHj+IaGBsbs0AWfVVhO+/dvsi0t26SxcfWxBmzRkiW3acybh+kDLbJwYdimvWHHS+Ne3776F9v3v7Fwf/d6E8R6SXSWBQyNJGBVJBcz0pg03IGJBhTBIge2EMnEzfQx5+ra8sl/e8H0q37x4otPpR+Nv5Stm1Wn6ufUv0WPPZmMI53OHjXZXLdkiZp/++1BlMIVbF3W/Fj7669euO+hR4IKL8NlJmAyBr7SYdsAbChLPlQ/sEPQtUQBkLCFYYACgosE2nMIii86X5dfcmFH4cTJH552+oUvAKHIvzc4WubU13snykjWLVniDLiuWnjzzbl8unk0gf53lEC++Oozs9I2UzQ4mLOxwhhPGTN3z94D2ydeNP+CdUPRlYCW3LlEt7S0SGPUe9/8+E+/tL9ny7+t37caxu0RIxkiDifSKpvHgUcak/K1VVDIpMuzRAxErGfHFM1UY+Pzd46umvXXdVd8fGn+Guvq6lTZxWV8jnuOWrNmjbnzzjv9efNucwDg81eOVhOBYBUabWNj1J0nEtu+evW/927Z8IHU66/M7VjzrK2hLJPyEYiFEhfKxEBCsJEiCg15kyOMiVAXj4XhKwcHgWDmjR/Rhaef8V/ZMWP+cc6cs9qbmho0sNnkxYF37Dgwrsymavs6+2x2cJAzmX4kEhrxqkJbUlrFFZNmvUZ0eGhANB7ZvK0qrojQ4sWLacbpM6rmTpmb2tuz8ezWnh11Xam2adl05jxSgZPJZaG1g3Qq01peWjnaTTpvuFS5bExywmCCytdcedmHVzY1NbmbNm0K8ontg8/eu+C1Lavv2t+3drJx2mFZmCUWhn3D/QUJRvqQIzXeQ2ltk1KmQI1ShbFqb0LtlOcmjDppf3li9HcvmLdo/cj7yc+xHvnas2HDTOzffUewf/+56d27Tt639nlQxyFbqsCOBPBgYFT4ILHl8LJYYMER+c9CWYG2ChkFGAYKAgMLgaFCtCkVjLn+Chq/4KLGF7MD36+/pH5EtXvTS89eHuxt+avsvjfnewNd5YOtbSgYNPBzWShNQDIBqqpEKuZurJw6uSM5buxPTr706l+LH+SzIBx5HNJb3eUSffvtt/uPPHn35YOm/d/3te6c0ZHZgZTtwECqD0I5SyywVhDTCfa8wMYSxVzAo1BdVIuasgkv1hbPvOmqBR/b0dBwoW5sXB3k2fJPvfHQjBfXr9i6veUZQWwAloQQBUAYlqsN8bKiWiNo2MjhiO8aqlN6At+lQl2DssR4VBZO8kni95Qkk8tPGjdVH9qfev7aa2/eu27JEmfebbcFbzx6/5XIZL6c6TiUSHd3nYS2tmTfpo3gthZT7ihSYVYPtpSnecGSDPE4CaGqCASwbKEtwfUZaZcgDBR7BoFS2O9rb/pNH3Xp9Dk/O+XSG2+RhgZetQD8QmtZxQenTlnIb7bfZvbuX9i37jUEe/ZADXRZh3yQBRwrUDbs0BzUCraslKmiAvFZczBp9rzNfkX10plXXv0VCc9DOmo02yAN3Bg9wQ8+++t5O/ase+Rgz4banvTeAI5Hoi2EiKGE8hyhkATBZGz47AZ+zpYlRzvlevb+CRVn/u1nbviL3+ZlaBqaGtyvfeRr3k8e/s8vbdn3wjdbM88SxTNsbXHELpDDJbD8wuX357DO9rB7UIW7RAwYCmTJGA/Q5KiigiIkYoUoSI5FoTvxwOTyGVeOtaMztvXAvd3PrT69oLUFmb4OpAd6oXJZU6AVuSLsIMRoh5ebh+row/FRys/9YighOAEQqBDwiBugw7It/eAlXHLZRRv264FLq/ahc3dZGdXX13svrrjnsarc4KKdv30I6Q1bbDzwJKaJi2DJiI+Mw0MD7ygSS/TBNmtF0gS4lePV+KtvgD/rpJtPueyKX4LIDj8/Ke9ao2FjCS/Z9o0dBzd+YV/3RifQ7Ybig0pEwxoNYhVyAyLoCWKQN6koCfVaTdZor0hNqjoLFcnJi/+y/muNUT+E1DXVcXN9s/lB09eXbWtbelmf2W99SoSNqWSHkKXD9QgaJoqYX9Bo0YXyI2FCEcEoLxBrrBAknabg7JlXxacXzfvmbHfydzvXr9vQes8vK6s7Wqx2oHwmYkUkEFiJiJ4Uju7QVo5KNhviSIFhSUXzM20kCWCRs7ADE6bIlI/82Rv90yZf/oEPXNoetQgGG5c/8tf+1g3f2vJAc1DQ0aUr4loZFgQQxD0DZYGsVhHsZ4fxbkNCQQw5pAybdrdUkmeek5tx5eV70zG37vRLrtyKxeEO1dEIelm66oGZvnQ/vHnX2ml7u9bDxnJinUCFT6AZGq5NpIa00qOBhoAFrHUh7IBVoJDotrvbnjZeWf/iH977dfrzj/5DY21trS5Dmb3ygQsqKior703lTv5Qz8E+4kSohJnX6smvogyPvKOqxnBmAUdsAYnOUrEMQJEQKQahgFIosITiWMFr08+/oGPVf3xrf6wgXmN7LUQpZnFgJRKe4EjZaxiDfITrksNUW85/frSLQ0VPAKzRzSxTL7lMuTNm//kHzrmg/YWm7yTmzZ+f3fLCC3P8l9d+Z9dvH5CiTCpWlHBgjReyBsCw0CASODY8c4UFh3XFDEgAnwDHYTU2yKD72VW6q4BmF53/wftXNa88s2N2R0ZEiBcsAC9evJhytvdHezvfmLajbY2HggERJ0OhlGgMLG4EEhNIbPQ20bNjQZyFYg9sCWQSgNWsYsY52LM1ODS4u+HO+/7jzNtvv93v6enhT173hS6xzotTas9Spe54hm9FgaGGZ00kR7DvhndwHT5PIWGXcThvJAAoC0IKoJRI3OWugcFDRShdJxISmdgKlGiAXAi5odCEOGCj4BiGawDXCkBH5+scTog5AsdD8WTDgj7P2JJZJys1btLzhnM71y1Z4pxb/zcZiNChN9Y0H3jgfqnuPmSryYNrUnBsDvHAh2sNAuUj4/rhAAGVV/sKHy5tBY4IrGhoHyiwOdRKynY++bjf9uqa6sLSwU/V19dbNDczL1zYGJx9yZwPdA7uW/DalmeNKhTXJ4+sMFgY2hJgXYR9HXrYgoZuTiJRCnA/WA2ArIaYIngCSDLDb/avtfu7N91z36OPTmtpaZGmpiZ11YIbdrEpOqe8qGqHqzXISjSY3Y4gSZ2IXWzZQjjM7fIIW1iVIXGdOKcH0l1nnn/J7vBqfQsx0ZwuwMLHcMH9UHAJ8DnCdej4rAi2BEUGRvkwChI4cSmbOWewYNLEz80665KuR1tazO8evHfcG0vvXdq5Zs0MdWgf4nGrPJuGEQvDGpYciIRuXVtEjEMVNTxpWFIwzPBZhXIVFCClcghiHhdZT/e9sLbC27n7n3t6pITq6w2LiO4ebPuHXa2vwDrZSJfOicTno/IW2WhagR0aOiN5N0eASCwEsuFFlRQFVnEYMQxngNr6N04a5K3LTjtzxq3ZbDbe1FRHiXjxrgmjZ5SowAWJxciE5Ehax9Fp4mEOqgBxwpliFNI/SGKcSWVMeVXVtCdW338FEUlgPSEKe0EsJLoHH5YsLIUNO74CAj4+q254M5IBQYkCeda6tbVKjR69dcr8czdIQwPPnj2barT7WGzfgctT618LimJCfmBC5iPH4EPDU6GhBBraMGLGwDUWjg3BCYp0ISwZkATwNZBVDE8ISUWUPNBiMuvWFrU+ffe3ly1bFuNnXn/m9M5M2yX7e7ZYJwHFlqFEhRPTIRDiyIh5xWaO+gijqQQIsUgySRDiAOUAyUFZF44tBgJFqWCfn1L7p6pSFNx0002pwlPP02ufWtuV0OXLa0onkFgjwioE4g/vruP0jNBQ0MGRhA2ThCrUCCBkxSGGF/jprGM6Nj7xxPjCZNGYrOcLUYhWhh9BQ9fPAigb1RWPYM2NYNVBQORDOIDHGq5JQDKQgqnToMeMvVdECIsXS2vhqTo2mBm958mnTLFJKfGzYI7DSigWrESgrIGSEFQzRAiIYAhRJ3VEpbFhnhvOMCAoceGaGHTOoDBG3L3ldcnsf/PT08ZVVnNnz95PHWjbYZQmMjaIEmM7bHjwO6mmR5OAmGFsqNEuYGjXVTv2bLV9/T3zV65cqde+3i2NjY22pKL0wbKSGgRBlFweyW4/LiWGw9/P4c4Ky04MkIGVtNXGUZzVKjhkWn1ryzUlE2JEgBwpiQaAD7H6+C2F5hPRgIGwiQdCYmMx1sUlvYnKMSuIQhb5HVfOzPUe3JfNdbSrAqUBraO2PDkGq/bEK8uCyB1LCGgoEAb6Ta61Jci1dt7GrHOfG0i3alKWSAmM2Ci/kiGq5YmZ1vl8jCKpk1BlzMKE7peJBzJd3J/p/tAHF14UNNY1+gDAfoITbplhcoftwvyYixOzSQkKIMDAhPp1BBhPmQI9Ss2aeIEdWzOt+RvLV7addumlr/cO9m5yC5PMEhglAhY1NMBGhg84PcG62mE7RwnDWoguKWEuLmybdtZZm5rq6hQBsm3tijO9rkOlTm+vSQgoiOaqhCmhPQ5F+lifG1ZrnKiO6qvQugUSIH1gn871dJZze+dBY2QQlg0ChDtzJFNWTtDXMXwEOEVMAgkrChyOwrBkKOX3GR+D8WdeXnYJCFLXVKcuP+e6h01WdifjRVrEWLxDL0BEMJZBzNBKEGSMGVM0W505tW7vqadcft4nr7rjlt/ceusZ25587Eel8KebbBo+swLoiFt6Z80D+R/lcFgEfNeBKi3TDSJcNWsWAUB/R+dZyksVOumUdU042jhMOX5f6moUQdtwrQ0zrDEoIoLt7sLAoRbDmVxKBTYX5nhDhGca8d8J+x2PaQQbek8WYddS70CXFyss3AcAszbNEiJt405xTJECRWOnwpSD39bahqM0FBgOvEGYqTVz1axRZz9062VfmTT10OQ9W+7+zdLW5Y89f/C+ps8NPvl0daJvAKIUBZRX3DxSaZpOSJ/kaJ6FRPweC0GgGXAcaSS2eS6V4wdpb2AALgGahhXf6Wh8qbff5WEjCkz+LFXWQBsfyGVz2sv5sNaMiCJH9tfjhK72eBEnrIHlAEyKvMAPWOL9QF7azdpcdvDemOt8uT/n27A0wkOGOh5nnCLAj9mD+I6pLJiuxhTOve+WD/9D3foVT/xlz8Ynv9K9atXo3m3rbaGfsyVWKccVSsfCneEEBpaHf8bbY8MfmQILhcGU1keMhwwCMp4BKYVAbBRYDYvSRwi+2CFKy7EfovwQ2PD3KKugwAD55AU+tKjJWmsXoTh1hLfKsDRZDp8mx3W0JMc8A5hDbR7jW2hWlJOcCwBlZaMJEPQPdm5lRbASCOCMGM99vKUNPYYPkUDIxmlc2SmD46s/8Ocvrlj26UM73/irnod+Nbr44EF/VEI7RMQ60MipfHplo1QKh4OuEWe2nLBzRoZVeCyFLYEjWQccV46LAIfHLR9GnY9opSDgRArweZkGEwVe2kYtV0yqP5PG+Mqq67iosBianQhO42HT2oNwlld+CNrwNrwjbo+FwPDByIUiuqKiNwBrQdYla9hUlBWVDPS2nwYA8XitfmxV002FRRW3pnMZEDuKho1olBNoD9k85yZgO7pgPJersp8sumBRR65j/9d6nnhyUklbR1AYizmBJXgcDp8zIMS8BJSJwxBHLp1wdCGLYxnTwHDIlHBMFCkEDJszgFhq3hyqtqCwdEOOKK3BrG2oLCJwwOKARUf3+VZNwmNSZpUfrW2+ATqDwPEQWDFlsXLIQOoX7KhkTnMSSjTIUDRfJKIoSjSfi+SY5+PQhPeo9Y9ER3lonv+pIBaSdIoU2YLWORNmPAsAr7zSkh1dO3V5xs+M9f1cSMUkHkEaOd79WQJympFhTcotyZWUVf98/RNLJ2PHTlW8c58pJFdZIYgNhfNtdA8q35aAI/pC32aSYIfVdSwsmAQqF0BSvoBZ8gEQYomxRZU1MV/IEhRcw1DR0LmoFjkMIjzx+akNw0LBEoXqXSQwCkgD4pRWiJso6uVEvOhXlaXjBYaDocHZ0awIEgVl9TEHmo5sHFQh7Ac9TPwh7FWxJghKC0aRkopfjh07q+tnKxvijY2N9kDn7rN1AmMz3mDArFis4O12aqsweBGrXJSXjM4W1IxJO4PZ2bH2jpqiwR7REBJByFYfZiV51y39oSqnAPC1hLq6g2kEXb1Oq7UFC6KtzY67I1le7eUKizlNgCYBwx7O3o88muT4fH/HqBCKpKhQjjC1ymgFnlBLyTHjMhxTxQfGVE0lL2VJKRXOv4yUKAUxWMQjZEaOE8makecNBWENkgxAHpTEVCHVmvG1Mx4FgIKq2VZEKOv1FA1muxRrGRHWvJ0Yz7FAzAPixqVCm0hzwAO5TH+qu7tNyPVgbBAVBoaLQ9h33cIsRCFYQIAhC2bLlEoF0tc/cWD16g9SY6NIU52ac+6FL/GoUfvMuFqVIrE+5xBQMNTm8nY0Kd7C/IOEHKRI9N/xISaR1LnqirZxZ8z7Ps8ae/o3HS5YXlUxgYwnJpSSCwd2GmhYODj+mM3hTAAbDmqjvGIJARIEpbFaLk+MXXrVuVetbWpqUpuaN1kikq27Xu/vTx8CKRuJFdJhVh6Of7eWQhxVCUHljFeYMVmTiM/2HKJBhwBWUZMgHQHRvbt+U4KAh+anMqxYxLQgaN1H3bu3fgSAbEKdamho4Fht9b+MOnNeMBBYS5EohZFwZia9g4dKAHgUVqocsfApCI+ZnDGlE6fYypMmPVZYXd3K06dPz40qn/DmKVPOY5OOBWydoZu24YDrYTvvxP0/VgwAA2sJhISYTIJK3El2Ss3JXxMR6unp4QULgBXPr5iTLIh/s7PvgIWKoJy3yJke++Ux4LkEqw06M53IZruY3DjHq2qCtLhDJaQjN6MQhg/T/D1eEQAeVU4AwLqiBvZstU5vV/1Ty5fP3tzcbBobG+3+8tr7MGGyiU8+SedyMVHsREDKYcj0bX8qD3WCAcTw2UFnPEE1513IserRvwUAbmpqUpSVb5ap8T+cOW5ezGYpUEJgBGDKgigVtRAcG/SGOFG/Y75wTXBUHIHvmNFVc9X4mpOfuuaSG19tWNmgpk8PqZhtPZsWpv2O2YKcCAIKf46PaPI5wekVGPKDjE27/oS2bGqWLi/+TWLiRGvixRrCYYOG/L5cxGPdbWhMgKBsiA8bx5BO90tmy2anJpe7tL652axbssR54cEHc3rc2KvKLlhgUroC1rAcHosMvBOtULYMkIOAFFxxkc3BjLroQuWNHf/Dmedd/WRTU5Pi+vp6e+VFH3/zhktu//yoosn/Oa54tkZKe44QGB5AHojyBWmMyJHCtVEQ6x4exkYCiIbxHRtDsUyvndcyqnzCT776VeGrimpp4YJG88TLjy7oHmz7mzdbNgUcZwppIOEszQi7jmTAjwPlgaAtw1FCh/p3W4/7/rXDZuMlE2Y8FJt52kC/zQak/LAUAoGKTCAwUXnpyF8v0ZQhOeG+BAmUGLAwSGIQUUgkSLW/tibwWnZ/+5UV9390/u23+x876yx1xoIrnqg4+fT7a6+5hvZBPF87IAqnF/nKhmCXMFgoHF0MQJhhOdQZDN/h/+fAgrVGm5/16dQ5XHjynB+cce3HPo/Fi6m+vt4yAGloaOCGlRfqW+sWf2FC2Rk/nzHqHNcOqkBBhxwUIXDEjxlqUouq4ZKnIIoXjsOABnIxozKFwUXzrnBGJ8d8++oL639be9UStXv3k1YgzqHuN39xsGv9hBx1sSXLBCfSgfcPG/KYkYoMTWYT1gACTqUP2L7svnNSuc5/O/XDN36k5JJLX1ZzT3bas9lcYMQ4okQLha6KCMrirR7ghFJbUb7HjIAFTB4MWRAS0F4cEhgUeIN86IVnSPX2/MuSJUuS09au9Vc2NOigoPhLvODsL4667ppYh6eMTlOQCLQIEQIOotqwHZobKlGLg7IGOlIC8xWBlMZgf84vOvssJ375xetP//Rf/WVTXZ3C4sXh1GMAWL16taz6+acwe3Y1T5vx4ZeguCLn2VP7ert9EoEQkzBROPYigETvfFsfwQ9zxMARMxi346vmqLNmX6pK3THP9x1MffkLX/hS0LWxiz75yX8NTl4w+Yu7D718w572lwwnfWWB6AkP66Th34eJ55IcgY7k3TFANiSUaZ3glkNdfmlZ1ZxbPvupzqmq9sfJCZOuNFxUkUrnOJ0eIN/kQFqFHNg8z2boeTkSmTle4BUxHEAQciBRbVezggNNHW3tJjmqqnziKTP23zy4ZcPlZVNw2vXX95x+1QVbTp428wMVFTUTUz2DnO5NkQqMTRBIUwCjBDlWADE0LLQE0Bzi1QErmzaw7ezaigs/6Iz94OUb3NG1N/7wl7/pnL2pDkQLj5KpNoARMb2bnlqyO4P2SRu2rEXH4H54SBlWBuL4QjAUtt6RSCDEiJP4WkoTtWrmpLNQVTDue6Wx2icvu+C6pcBhlenla39Zt699c9MLm5b6NuZrwzkiMqD8eRsJDRPybIZhHZBypOyMCaepGwIpF77PkqAquuCUK1HijP2/1154059vffjRrx/Y/trp8VTnRXrnDqdvyxbWQRD2Rg5rys1DmIdJZHKc/DYSEyVAoCGiQ7eJkIURMNm+whIz6aN/1ufNPOlbZ1/04X/bvmxZbPqiRbkf/fpHk8+oGbOQtmyf2rp562dp+7ZS5+D+wLFpYoYwEuQQRKwPC4ssgfpZg0orVfGYyRi/4AIMjq7+wWnXf+IvEbIzjj3XBI2wTU1NqhnN8DOFF08cX3tOwtbc1tK9a35W+pK9/R3IBn0w4kVhv0a8qAhxpxQ1VeNQ5FS2lpeMuX3RmTc8Opwdv2oV7IrXVxTs2LTye1sOrjJQWSLWBHJCfh0NjUE77P5oeICQZ+cRRoQOBIAVrBg4cUu53CF57rXHzAfmXP653z3/q323n5tsXE3/ELy6etkvKyed9InWrbtMMXwFsrBDKQsdMV3zxIEIhfTASJI0FwLgYUsskqLYHurx2558rjJu9HgA6N+/34oIrVq1at8ZCxf+BABaNr76q31r1vxXdv/ec8yB/ZCOLtj+DNI25DWpZAxUXIzyUeNQWDtuY3Lc+GepuuLR0y6+dPnwjr3jNtvmJ6c2o3k3gN0Afv3cG0/NEJWrajnUMjMIclf39/dYAiGZSDIrd39lTfXdlRVVqn13155FZ15/oGFlg57dMVuIyIT0TJIV166AyyWvVRdPW5TrzyDjdwfsKB0OUMvXPyNGe6QeMqJALSO17kBAYAUOM8QaBH4WSmkKTJd+9pWH/CkT5/7LTW3Tbvzbpp9duvPQ4J9n+rwznWTJ9HhnrxWH2IMaqUMYwYd5VucxUyIdEdlg4YhA2wCwAqs1DGkMpI0xo8fGqufNR1BStgEIB7FFROWgqalJbfrhD6l2zumbQXTuxheePo86e69Df++07kMtFiLsixWnsJAKyitfi9WMLp55wcVfonDS+hDH+Wid08c8IBoaGnj24tmE5mbkm1zezutEo3QfefYX5+048Nq9h1Kbx+4/tF10gqywsFA4AYUo6vm3w3bpUS4zJJJFp9wQ2QxQVkNZLdksgtNrFvofGPWhBR9YdP3LT3/nWy/7Sx+YX9Gyy3gxR2XIDXk4UYAxQhf9OMaUcIYbmDWU8eFIAMNKug1sKlHI1fPnU8m8M/eWzjz1pinnL3xWROhokkENDQ28uLFR3q6cUFNTk6oDQMdZ22OOXGxsbLRoHGbY2bMJADZt2kSH5fnDUuzsSPN006ZNcjxDNjQ06KvP/+Rzr+9ae9Gm3S99oyT22vXtqc2qq7cdUDmjY8Qi4Xl8WBQDI7QDhpRpo6CJo04sASMQC1E+rM6RDZicEk6mC1LTAbwMndMQL5I5RDhZT8wRkWxezTMaEzk8EIseLW0sNAjWWCjWkg6M7Y1pVTBnjqo98yxxZ0/77uhLb2ysJOo/Vutdfn0bhxlpVX5dh5Z2wWEt2fp6ezwjvodp9Dt7Dd+5T7++9Kw9LVv+uvXQ7uvbB7fq7vQ+GJ21ymW2ElY4Qob5yFIRgcOpeaAwCJKoRslRPkyCTKCCUydeRXMrL7ihNjn1scEXHn+19+HmOeVtBw2xowwcqCHQfRjfSQCCE45KFhNOwI44rZZUxNG1NusDWSfGySnTkTjttKD69Pn361G1/z55/jlr346H+kO8/iSj1hsaGnjz7M3UHLnvx9fdf/b+9q1/1dq1+7r2vj1OZ//+gBxDSjkKTLASREokEbVEGBwl+MPLSUPhEonVcHiUe/rOf/ncb6etW7H6Q7pl54otS75jxqS6lGsZJG5E+ghdtmGJgjFAiz3cJiCAIhc+GFkDY41STnEZeOIYJObO8itnznqg/KRZ/1E5a/6LCJN2xuLFcqwd+T/OmMM7z7D4sDDRspfvW9Tb2/b97sG9U9o6d+JA117kbDYgZYkdKCgDgQnriByiQGKHO+FomhAg5OXs7NrLM3MmXHL+mNQE2P0b1uz86X+4tQMtpMBkJX6YRUERaE6hrDmrACwMZRSsIUkFsP2xBBdPGEe5mjEorB33yrj5p7GtqPiHGeddtGzIiACosdH+qdZT/ymNmW8hbJAG3ty8mRadccOydY+sW5WbOuH81uJJn5o09tBH+9IdurO7FS0dbyJASqADo5QBFCmJBCPC8rtEqlsGhkBZ9gVFuhDWnHzapWf9atV3/3V9QTJ+Jvf7JnC08uiwli4Rw9ooVDHa2jQkUFoNQiFWU0OFE6eomrHjMHralNWZyrJfzl1U99Oh07whfCCP1tD7/9TOPNpObRy2KE+uu//0bDr9xYw3WDmY7rm0N92GbNCD/lQXulOdyARZWBhY8mHJC8AWFFLcOZdT9pypi2jWqHOvmtAz/k05tG391ju/h+pUm3KEIYELA4hnrPGYlcRi5DOhsLgMRZXjYWrKgfG1cMbUtsTLy39YMW7yitq5814JsRXw4oZQOvJPuRP/Wxszn0c1o5mPTImWP/XQDLeAxnh28CM9PR2SCbI39Kc7C3r6uiWwOVcnoAazvTDiwfM99PfngoUnL9ITCqZcMiE5ratry+v3bbjnF5MLUh2SUDFSSMAtLkDp6NEY1Bo5rdK106exirlr3crabYXVNQ/Hx9fu2tjd1rVw/sLO/C5snr2Z3kmq9v+0MUcatoFXrVrAqxasso1HuLHnX3++urqyOBaLu3b79o01A7mBT/YNdFEmmxLSar4ldTZl1ddPURP+9Zy6Kv9X33119lgHq2I2WywxF8micvaBlrKSkvv8eGxrzYzpjyQrK7mgpGZ/pBsw9FrZ0KAXLF5sj5ao/3d6/f/yv7Ltc+D8gwAAAABJRU5ErkJggg==" alt="Calidad Ante Todo"></div>
-      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver">versión 59</span></div>
+      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver">versión 61</span></div>
     </div>
     <div id="navdyn"></div>
     <div class="railfoot" id="railfoot"></div>
@@ -1122,6 +1127,8 @@ const uid=p=>(p||'')+Date.now().toString(36)+Math.random().toString(36).slice(2,
 const iso=d=>new Date(d.getTime()-d.getTimezoneOffset()*6e4).toISOString().slice(0,10);
 const todayISO=()=>iso(new Date());
 const addDaysISO=n=>{const d=new Date();d.setDate(d.getDate()+n);return iso(d)};
+/* la misma cuenta pero partiendo de una fecha dada, no de hoy */
+const masDias=(base,n)=>{const d=new Date(String(base).slice(0,10)+'T12:00:00');if(isNaN(d.getTime()))return addDaysISO(n);d.setDate(d.getDate()+n);return iso(d)};
 const fmtDate=d=>{if(!d)return '—';const p=String(d).slice(0,10).split('-');return p.length===3?`${p[2]}/${p[1]}/${p[0]}`:d};
 const MESES=['ene','feb','mar','abr','may','jun','jul','ago','set','oct','nov','dic'];
 const fmtMes=k=>{const[y,m]=k.split('-');return `${MESES[+m-1]} ${y.slice(2)}`};
@@ -3841,6 +3848,8 @@ async function guardarEditAud(){
    con permiso lo edita, y cada cambio queda anotado con qué se tocó, cómo estaba,
    cómo quedó, quién lo hizo y cuándo. El historial viaja dentro del propio hallazgo. */
 const HCAMPO={responsable:'Responsable',fechaLimite:'Fecha límite',estado:'Estado',
+ tipoSolucion:'Tipo de solución',fechaPrev:'Fecha de la preventiva',revisarEl:'Fecha de revisión de Calidad',
+ seMantuvo:'Resultado de la revisión',revObs:'Observación de la revisión',
  area:'Área que lo resuelve',descripcion:'Descripción',accionCorrectiva:'Acción correctiva',
  accionPreventiva:'Acción preventiva',causaRaiz:'Causa raíz',fechaSolicitud:'Fecha de la solicitud'};
 function anotarCambio(d,campo,antes,despues){
@@ -3878,6 +3887,153 @@ function historialHTML(h){
   </tbody></table></div>`;
 }
 
+
+/* ---------- correctiva o preventiva ----------
+   Correctiva: arregla lo que ya pasó. Se cierra con la acción escrita y la foto.
+   Preventiva: cambia algo para que no vuelva a pasar —un procedimiento, una
+   capacitación, una señalización, un cambio de layout—. Esa no se puede dar por buena
+   el mismo día: recién se sabe si sirvió cuando pasa el tiempo y no se repite.
+   Por eso lleva DOS fechas, que son de dos personas distintas:
+     · "queda puesta el"  · la pone el responsable: cuándo la medida está implementada.
+     · "Calidad revisa el" · la pone la auditora general: cuándo vuelve a mirar si se mantuvo.
+   El veredicto lo pone sólo Calidad. Si no se mantuvo, el hallazgo se reabre y suma
+   reincidencia, porque la preventiva no sirvió y hay que buscar otra. */
+const TIPOSOL=[
+ {v:'correctiva',l:'Correctiva',cls:'',
+  d:'Arregla lo que ya pasó. Se cierra con la acción escrita y la foto de la corrección.'},
+ {v:'preventiva',l:'Preventiva',cls:'a',
+  d:'Cambia algo para que no vuelva a pasar. Lleva fecha de implementación y una revisión de Calidad más adelante.'},
+ {v:'ambas',l:'Las dos',cls:'a',
+  d:'Se corrige lo que pasó y además se cambia lo que lo causaba. Lleva las dos acciones y la revisión.'}];
+/* cuánto después vuelve a mirar Calidad, según la gravedad del hallazgo */
+const REV_DIAS={critico:30,mayor:60,menor:90};
+const solDe=h=>String(h&&h.tipoSolucion||'');
+const llevaPrev=h=>['preventiva','ambas'].indexOf(solDe(h))>=0;
+const solLabel=h=>(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).l||'';
+const revSugerida=h=>addDaysISO(REV_DIAS[(h&&h.severidad)||'menor']||90);
+/* quién pone el veredicto: la auditora general */
+const puedeRevisar=()=>esAdmin();
+function estadoRev(h){
+  if(!llevaPrev(h))return null;
+  if(h.seMantuvo==='si')return {k:'ok',l:'Revisada · se mantuvo'};
+  if(h.seMantuvo==='no')return {k:'crit',l:'No se mantuvo'};
+  if(!h.revisarEl)return {k:'warn',l:'Falta la fecha de revisión de Calidad'};
+  if(String(h.revisarEl)<todayISO())return {k:'crit',l:'Revisión vencida · era el '+fmtDate(h.revisarEl)};
+  return {k:'',l:'Calidad revisa el '+fmtDate(h.revisarEl)};
+}
+const revPendiente=h=>llevaPrev(h)&&!h.seMantuvo;
+const revVencida=h=>revPendiente(h)&&h.revisarEl&&String(h.revisarEl)<todayISO();
+/* el bloque de seguimiento de la preventiva */
+function revHTML(h){
+  if(!llevaPrev(h))return '';
+  const e=estadoRev(h), yo=puedeRevisar();
+  return `<div class="field" style="border:1px solid var(--line);border-radius:10px;padding:11px 13px;background:var(--surface-2)">
+    <label style="margin-bottom:7px">Seguimiento de la preventiva · <span class="badge ${e.k}">${esc(e.l)}</span></label>
+    <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px">
+      <div><div class="dgk">La medida queda puesta el</div>
+        <input type="date" data-f="fechaPrev" value="${esc(h.fechaPrev||'')}">
+        <div class="sm" style="color:var(--ink-3);margin-top:3px">la pone el responsable del sector</div></div>
+      <div><div class="dgk">Calidad revisa el</div>
+        ${yo?`<input type="date" data-f="revisarEl" value="${esc(h.revisarEl||'')}">
+          ${h.revisarEl?'':`<button class="btn sm ghost" data-revsug="${esc(h.id)}" style="margin-top:5px">Poner ${fmtDate(revSugerida(h))}</button>`}`
+          :`<p style="padding-top:6px">${h.revisarEl?fmtDate(h.revisarEl):'—'}</p>`}
+        <div class="sm" style="color:var(--ink-3);margin-top:3px">${yo?'cuándo vas a volver a mirar si se mantuvo':'la pone Calidad'}</div></div>
+    </div>
+    ${(()=>{const e=escalada(h);return e?`<div class="soft2" style="margin-top:9px;border-left:3px solid var(--${e.k==='crit'?'crit':(e.k==='ok'?'ok':(e.k==='warn'?'warn':'line-strong'))})">
+      <b>${esc(e.l)}</b><br>${esc(e.d)}</div>`:''})()}
+    ${h.seMantuvo?`<div class="soft2" style="margin-top:10px">
+        <b>${h.seMantuvo==='si'?'Se mantuvo':'No se mantuvo'}</b>${h.revisadoEl?' · revisado el '+fmtDate(String(h.revisadoEl).slice(0,10)):''}${h.revisadoPor?' · '+esc(h.revisadoPor):''}
+        ${h.revObs?'<br>'+esc(h.revObs):''}
+        ${yo?`<br><button class="btn ghost sm" data-rev="" data-revh="${esc(h.id)}" style="margin-top:6px">Deshacer la revisión</button>`:''}</div>`
+      :(yo?`<div style="margin-top:10px">
+        <div class="dgk">Qué encontraste al revisar</div>
+        <input data-f="revObs" value="${esc(h.revObs||'')}" placeholder="Ej.: el procedimiento se sigue cumpliendo en los dos turnos">
+        <div class="dgopt" style="margin-top:8px">
+          <button class="si" data-rev="si" data-revh="${esc(h.id)}">✓ Se mantuvo</button>
+          <button class="no" data-rev="no" data-revh="${esc(h.id)}">✕ No se mantuvo</button>
+        </div>
+        <div class="sm" style="color:var(--ink-3);margin-top:6px">Si no se mantuvo, el hallazgo se
+          reabre solo y suma una reincidencia: esa preventiva no sirvió y hay que buscar otra.</div>
+      </div>`:`<div class="soft2" style="margin-top:10px">El veredicto lo pone <b>Calidad</b> el día que revisa.</div>`)}
+  </div>`;
+}
+
+
+/* ---------- la escalera del seguimiento ----------
+   Cada revisión de Calidad queda guardada en h.revisiones, con fecha y resultado, así se
+   puede probar la secuencia: se revisó, no se mantuvo, se capacitó, se volvió a revisar,
+   volvió a fallar. Recién ahí corresponde la amonestación. El orden importa: una
+   amonestación sin capacitación previa no se sostiene delante de nadie. */
+const revisionesDe=h=>(h&&h.revisiones)||[];
+const fallasTrasCapacitar=h=>revisionesDe(h)
+  .filter(r=>h.capFecha&&String(r.f).slice(0,10)>String(h.capFecha)&&r.r==='no').length;
+function escalada(h){
+  if(!llevaPrev(h))return null;
+  const revs=revisionesDe(h), ult=revs[revs.length-1];
+  if(h.amoFecha)return {p:'amonestado',k:'crit',l:'Amonestación registrada',
+    d:'Quedó el registro completo: se revisó, no se mantuvo, se capacitó, volvió a fallar y se amonestó.'};
+  if(fallasTrasCapacitar(h))return {p:'amonestar',k:'crit',l:'Corresponde amonestar',
+    d:'Ya se había capacitado al sector y aun así volvió a fallar. Registrá la amonestación con su evidencia.'};
+  if(h.capFecha&&!h.seMantuvo)return {p:'esperando',k:'warn',l:'Capacitado · falta volver a revisar',
+    d:'Se capacitó al sector el '+fmtDate(h.capFecha)+'. Poné la nueva fecha de revisión y volvé a mirar.'};
+  if(h.seMantuvo==='no')return {p:'capacitar',k:'crit',l:'No se mantuvo · corresponde capacitar',
+    d:'La medida no se sostuvo. Antes de cualquier sanción va la capacitación al sector, con su evidencia.'};
+  if(h.seMantuvo==='si')return {p:'ok',k:'ok',l:'Se mantuvo',
+    d:'La preventiva funcionó'+(h.capFecha?' después de la capacitación.':'.')};
+  return {p:'revision',k:'',l:'Falta la revisión de Calidad',
+    d:'Cuando llegue la fecha, Calidad dice si la medida se mantuvo o no.'};
+}
+/* las fotos de un tipo, con su botón para agregar */
+function tiraEv(h,tipo,titulo,color){
+  const L=evidenciasHall(h.id).filter(x=>x.tipo===tipo&&x.esImagen&&x.data);
+  return `<div style="margin-top:8px"><div class="dgk">${titulo}</div>
+    <div class="wfotos">${L.map(x=>`<figure><img src="${x.data}" alt="${esc(titulo)}" data-lb="${esc(x.id)}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid ${color};cursor:zoom-in"></figure>`).join('')
+      ||'<span class="sm" style="color:var(--ink-3)">sin evidencia todavía</span>'}
+      <label class="btn ghost sm" style="cursor:pointer">＋ foto
+        <input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" data-tipo="${tipo}" style="display:none"></label>
+    </div></div>`;
+}
+/* el bloque de capacitación y el de amonestación */
+function escaleraHTML(h){
+  const e=escalada(h); if(!e)return '';
+  const revs=revisionesDe(h);
+  const verCap=['capacitar','esperando','amonestar','amonestado'].indexOf(e.p)>=0||!!h.capFecha;
+  const verAmo=['amonestar','amonestado'].indexOf(e.p)>=0||!!h.amoFecha;
+  return `
+  ${revs.length?`<div class="field"><label>Lo que pasó en cada revisión</label>
+    <div class="tw"><table class="lst"><thead><tr><th style="width:120px">Fecha</th>
+      <th style="width:150px">Resultado</th><th style="width:140px">Quién revisó</th><th>Qué encontró</th>
+      </tr></thead><tbody>${revs.slice().reverse().map(r=>`<tr>
+      <td class="sm">${fmtDate(String(r.f).slice(0,10))}</td>
+      <td><span class="badge ${r.r==='si'?'ok':'crit'}">${r.r==='si'?'Se mantuvo':'No se mantuvo'}</span></td>
+      <td class="sm">${esc(r.por||'—')}</td><td class="sm">${esc(r.obs||'')||'—'}</td></tr>`).join('')}
+    </tbody></table></div></div>`:''}
+  ${verCap?`<div class="field" style="border:1px solid ${e.p==='capacitar'?'var(--crit)':'var(--line)'};border-radius:10px;padding:11px 13px;background:var(--surface-2)">
+    <label style="margin-bottom:7px">Capacitación al sector${h.capFecha?' · hecha el '+fmtDate(h.capFecha):' · pendiente'}</label>
+    <div class="sm" style="color:var(--ink-3);margin-bottom:8px">Antes de sancionar a nadie se capacita. Esto es lo que después prueba que el sector fue informado.</div>
+    <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px">
+      <div><div class="dgk">Fecha de la capacitación</div><input type="date" data-f="capFecha" value="${esc(h.capFecha||'')}"></div>
+      <div><div class="dgk">Quién capacitó</div><input data-f="capQuien" value="${esc(h.capQuien||'')}" placeholder="Nombre"></div>
+      <div><div class="dgk">Tema</div><input data-f="capTema" value="${esc(h.capTema||'')}" placeholder="Ej.: estiba segura de pallets en rack"></div>
+      <div><div class="dgk">A quiénes</div><input data-f="capA" value="${esc(h.capA||'')}" placeholder="Ej.: los 9 del turno tarde"></div>
+      <div style="grid-column:1/-1"><div class="dgk">Observación</div>
+        <input data-f="capObs" value="${esc(h.capObs||'')}" placeholder="Cómo se dio, qué material se usó"></div>
+    </div>
+    ${tiraEv(h,'capacitacion','Evidencia de la capacitación · lista de firmas, fotos','var(--ink-3)')}
+  </div>`:''}
+  ${verAmo?`<div class="field" style="border:1px solid var(--crit);border-radius:10px;padding:11px 13px;background:var(--surface-2)">
+    <label style="margin-bottom:7px">Amonestación${h.amoFecha?' · registrada el '+fmtDate(h.amoFecha):' · corresponde'}</label>
+    <div class="sm" style="color:var(--ink-3);margin-bottom:8px">Se capacitó y aun así volvió a fallar. Registrala con su evidencia; el circuito de personal lo lleva Recursos Humanos.</div>
+    <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px">
+      <div><div class="dgk">Fecha</div><input type="date" data-f="amoFecha" value="${esc(h.amoFecha||'')}"></div>
+      <div><div class="dgk">A quién</div><input data-f="amoA" value="${esc(h.amoA||'')}" placeholder="Nombre o puesto"></div>
+      <div><div class="dgk">Quién la emite</div><input data-f="amoQuien" value="${esc(h.amoQuien||'')}" placeholder="Jefatura o RRHH"></div>
+      <div><div class="dgk">Observación</div><input data-f="amoObs" value="${esc(h.amoObs||'')}" placeholder="Qué se le observó"></div>
+    </div>
+    ${tiraEv(h,'amonestacion','Evidencia de la amonestación','var(--crit)')}
+  </div>`:''}`;
+}
+
 function vHallazgos(){
   let hs=state.hallazgos.slice();
   if(state.fh.sector!=='all')hs=hs.filter(h=>h.sectorId===state.fh.sector);
@@ -3886,6 +4042,10 @@ function vHallazgos(){
   else if(state.fh.estado==='vencidos')hs=hs.filter(vencido);
   else if(state.fh.estado==='reincidentes')hs=hs.filter(h=>abierto(h)&&(h.reincidencia||1)>=2);
   else if(state.fh.estado==='criticos')hs=hs.filter(h=>abierto(h)&&h.severidad==='critico');
+  else if(state.fh.estado==='revisar')hs=hs.filter(revPendiente);
+  else if(state.fh.estado==='revisarhoy')hs=hs.filter(h=>revPendiente(h)&&h.revisarEl&&String(h.revisarEl)<=todayISO());
+  else if(state.fh.estado==='preventivas')hs=hs.filter(llevaPrev);
+  else if(state.fh.estado==='sintipo')hs=hs.filter(h=>abierto(h)&&!solDe(h));
   else if(state.fh.estado!=='all')hs=hs.filter(h=>h.estado===state.fh.estado);
   const ord={critico:0,mayor:1,menor:2};
   hs.sort((a,b)=>{
@@ -3908,6 +4068,9 @@ function vHallazgos(){
     <div class="kpi"><div class="k">Sin responsable</div><div class="v">${sinResp}</div>
       <div class="m">${sinResp?'<span class="badge warn dot">Asignar</span>':'<span>Todos asignados</span>'}</div></div>
     <div class="kpi"><div class="k">Cierre en plazo</div><div class="v">${enPlazo==null?'—':n0(enPlazo)}<small>%</small></div></div>
+    <div class="kpi${tot.filter(revVencida).length?' alert':''}"><div class="k">Preventivas por revisar</div>
+      <div class="v">${tot.filter(revPendiente).length}</div>
+      <div class="m">${tot.filter(revVencida).length?'<span class="badge crit dot">'+tot.filter(revVencida).length+' con la fecha pasada</span>':'<span>ninguna atrasada</span>'}</div></div>
   </div>
   <div class="filters">
     <div class="field"><label for="hSector">Sector</label><select id="hSector">
@@ -3917,7 +4080,7 @@ function vHallazgos(){
       <option value="all"${state.fh.area==='all'?' selected':''}>Todas las áreas</option>
       ${AREAS.map(a=>`<option value="${a.v}"${state.fh.area===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
     <div class="field"><label for="hEstado">Filtro</label><select id="hEstado">
-      ${[['pendientes','Sin cerrar'],['criticos','Solo críticos'],['vencidos','Solo vencidos'],['reincidentes','Solo reincidentes'],['abierto','Abiertos'],['proceso','En proceso'],['cerrado','Cerrados'],['all','Todos']]
+      ${[['pendientes','Sin cerrar'],['criticos','Solo críticos'],['vencidos','Solo vencidos'],['reincidentes','Solo reincidentes'],['preventivas','Con preventiva'],['revisar','Preventivas por revisar'],['revisarhoy','Me toca revisar ya'],['sintipo','Sin clasificar'],['abierto','Abiertos'],['proceso','En proceso'],['cerrado','Cerrados'],['all','Todos']]
         .map(([v,l])=>`<option value="${v}"${state.fh.estado===v?' selected':''}>${l}</option>`).join('')}</select></div>
   </div>
   <section class="panel">${hs.length?`<div class="tw"><table>
@@ -3934,17 +4097,28 @@ function vHallazgos(){
         ${h.sinFoto?' <span class="badge warn">registro sin foto</span>':''}
         ${h.accionCorrectiva?`<br><span style="font-size:12.5px"><b style="color:var(--ok)">Acción:</b> ${esc(h.accionCorrectiva)}</span>`:(abierto(h)?' <span class="badge warn">sin acción correctiva</span>':'')}
         ${(h.area||'sector')!=='sector'?`<br><span class="badge a">Derivado a ${esc((AREAS.find(a=>a.v===h.area)||{}).l||h.area)}${h.fechaSolicitud?' · solicitud '+fmtDate(h.fechaSolicitud):''}</span>${!h.fechaSolicitud&&abierto(h)?' <span class="badge warn">falta fecha de solicitud</span>':''}`:''}
+        ${solDe(h)?`<br><span class="badge ${(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).cls||''}">Solución ${esc(solLabel(h).toLowerCase())}</span>${
+          (()=>{const e=estadoRev(h);return e?` <span class="badge ${e.k}">${esc(e.l)}</span>`:''})()}`
+          :(abierto(h)?'<br><span class="badge warn">falta decir si es correctiva o preventiva</span>':'')}
+        ${h.accionPreventiva?`<br><span style="font-size:12.5px"><b style="color:var(--ink-2)">Preventiva:</b> ${esc(h.accionPreventiva)}</span>`:''}
         ${rc>=2?`<br><span class="badge crit">Reincidencia ×${rc}</span>${rc>=2&&!h.causaRaiz?' <span class="badge warn">falta causa raíz</span>':''}`:''}
         ${evidenciasHall(h.id).length?`<br>${evidenciasHall(h.id).filter(x=>x.esImagen&&x.data).map(x=>`<img src="${x.data}" alt="${esc(x.nombre)}" data-lb="${esc(x.id)}" title="${x.tipo==='correccion'?'Foto de corrección':'Foto del hallazgo'}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid ${x.tipo==='correccion'?'var(--ok)':'var(--line)'};cursor:zoom-in;margin:6px 5px 0 0">`).join('')}`:''}
         ${evidenciasHall(h.id).some(x=>x.tipo==='correccion')?'<br><span class="badge ok dot">Foto de corrección cargada</span>':(h.estado==='cerrado'&&!h.sinFoto?'<br><span class="badge warn">cerrado sin foto de corrección</span>':'')}
         <br><button class="btn ghost sm" data-exp="${esc(h.id)}" style="margin-top:4px;padding:2px 6px">${state.openHab==='h:'+h.id?'Ocultar':'Acción correctiva y causa raíz'}</button>
         ${h.sinFoto?' <span class="badge warn">sin foto por protocolo</span>':` <label class="btn ghost sm" style="cursor:pointer;padding:2px 6px">＋ foto del hallazgo<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" style="display:none"></label> <label class="btn sm" style="cursor:pointer;padding:2px 6px;color:var(--ok)">✔ foto de corrección<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" data-tipo="correccion" style="display:none"></label>`}
         ${state.openHab==='h:'+h.id?`<div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:520px">
+          <div class="field"><label>¿Qué tipo de solución es?</label>
+            <div class="dgopt">${TIPOSOL.map(x=>`<button class="${solDe(h)===x.v?'si':''}" data-tsol="${x.v}" data-tsolh="${esc(h.id)}" aria-pressed="${solDe(h)===x.v}">${x.l}</button>`).join('')}</div>
+            <div class="sm" style="color:var(--ink-3);margin-top:5px">${esc(solDe(h)
+              ?(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).d
+              :'Elegí una: no es lo mismo tapar el pozo que sacar lo que lo abre. Un hallazgo no se cierra sin esto.')}</div></div>
           <div class="field"><label>Acción correctiva · qué se hizo o se va a hacer para corregirlo</label><textarea data-f="accionCorrectiva" style="min-height:44px" placeholder="Ej.: reparar el agujero de la pared del comedor">${esc(h.accionCorrectiva||'')}</textarea></div>
           <div class="field"><label>Área que ejecuta · si depende de otra área, acá se registra la solicitud</label><select data-f="area">${AREAS.map(a=>`<option value="${a.v}"${(h.area||'sector')===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
           ${(h.area||'sector')!=='sector'?`<div class="field"><label>Fecha de la solicitud al área</label><input type="date" data-f="fechaSolicitud" value="${esc(h.fechaSolicitud||'')}"></div>`:''}
           <div class="field"><label>Causa raíz · por qué pasó</label><textarea data-f="causaRaiz" style="min-height:44px">${esc(h.causaRaiz||'')}</textarea></div>
-          <div class="field"><label>Acción preventiva · para que no vuelva a pasar</label><textarea data-f="accionPreventiva" style="min-height:44px">${esc(h.accionPreventiva||'')}</textarea></div>
+          <div class="field"><label>Acción preventiva · qué se cambia para que no vuelva a pasar${llevaPrev(h)?'':' · opcional si la solución es sólo correctiva'}</label><textarea data-f="accionPreventiva" style="min-height:44px" placeholder="Ej.: cambiar el procedimiento de descarga y capacitar al turno tarde">${esc(h.accionPreventiva||'')}</textarea></div>
+          ${revHTML(h)}
+          ${escaleraHTML(h)}
           <div class="soft2">Para cerrar el hallazgo hace falta la acción correctiva escrita y la foto de corrección (salvo espacios personales, que van sin foto por protocolo).</div>
           <div style="margin-top:6px"><div class="dgk">Historial de cambios · qué se editó, quién y cuándo</div>
             ${historialHTML(h)}</div>
@@ -4303,6 +4477,43 @@ function barraZonas(slug){
     ${propio?'':'<span class="soft2" style="margin:0;padding:0;border:0;width:100%">Todavía no se editó este plano: se están mostrando las zonas de fábrica.</span>'}
   </div>`;
 }
+
+/* ---------- el plano del sector, dentro de la auditoría ----------
+   Los planos ya estaban en Layouts, pero ahí sirven para mirar el semáforo del CD.
+   Auditando hace falta otra cosa: ver el dibujo del sector que se tiene delante y
+   comprobar que lo que está en el piso coincide —que el pasillo esté donde dice, que
+   el extintor esté donde lo marca el plano, que no se haya agregado un rack de más—.
+   Por eso se muestra el plano con el sector remarcado y sin pintar el semáforo: acá no
+   interesa el color, interesa el dibujo. */
+function planoAudHTML(secId,abierta){
+  const sec=sectorDe(secId); if(!sec)return '';
+  const slugs=planosDeSector(sec);
+  if(!slugs.length)return '';
+  return `<details class="panel planaud"${abierta?' open':''} style="margin:14px 0">
+    <summary><b>Plano del sector</b> · ${esc(sec.nombre)} — mirá si está así en el piso</summary>
+    <div class="body">
+      <div class="soft2" style="margin-bottom:11px">El sector está remarcado sobre el plano.
+        Compará lo que ves: los pasillos y sus anchos, las salidas de emergencia, dónde va
+        cada extintor y cada BIE, la demarcación del piso y qué se guarda en cada lugar.
+        <b>Si el piso no coincide con el plano, eso es un hallazgo</b>: anotalo en el punto
+        que corresponda o en «lo que vi y no está en el formato».</div>
+      ${slugs.map(slug=>{
+        const P=PLANOS.filter(p=>p.slug===slug)[0]||{nombre:slug};
+        const z=(ZPLANO[slug]||[]).filter(x=>x.sec===secId);
+        return `<div class="laybox" style="margin-bottom:12px">
+          <div class="layimg" data-slug="${esc(slug)}">
+            <img src="${planoUrl(slug)}" data-slug="${esc(slug)}" alt="${esc(P.nombre)}" loading="lazy" onerror="planoErr(this)">
+            <span class="layfalta">No se encontró la imagen de este plano. Tiene que estar publicada junto al index.html, como <b>planos/${esc(slug)}.jpg</b>.</span>
+            ${z.map(x=>`<i class="zaud" style="left:${x.x}%;top:${x.y}%;width:${x.w}%;height:${x.h}%"></i>`).join('')}
+          </div>
+          <div class="zleg"><span><b>${esc(P.nombre)}</b></span>
+            ${z.length?`<span>${z.length} zona${z.length===1?'':'s'} de este sector remarcada${z.length===1?'':'s'}</span>`
+              :'<span>este sector todavía no tiene su zona marcada en el plano</span>'}
+            <a href="${planoUrl(slug)}" target="_blank" rel="noopener">Abrir el plano en grande</a></div>
+        </div>`}).join('')}
+    </div></details>`;
+}
+
 function vLayouts(){
   state.lay=state.lay||{plano:'all'};
   const sit=state.sitios.find(p=>p.id===state.sitioSel)||state.sitios[0];
@@ -4863,6 +5074,7 @@ function audPilarHTML(p){
     ${AUD_SUBS.map(([k,l])=>`<button role="tab" data-asub="${k}" aria-selected="${A.sub===k}">${l}${
       k==='acc'&&abiertas.length?` <span class="badge crit">${abiertas.length}</span>`:''}</button>`).join('')}
   </div>
+  ${sec?planoAudHTML(sec,false):''}
   ${A.sub==='docs'?audDocsHTML(sec,ed)
    :A.sub==='ol'?audOlHTML(sec,ed)
    :(A.sub==='permiso'||A.sub==='epp'||A.sub==='apto'||A.sub==='syso')?audChkHTML(A.sub,sec,ed)
@@ -5308,8 +5520,10 @@ function alcanceL(a,pu){
   return ' · propio de este sector';
 }
 /* las fotos de una acción: la del hallazgo y la de la corrección */
+/* cada tira de fotos muestra sólo las suyas. Las viejas se guardaron sin tipo, así que
+   las que no tienen tipo siguen contando como foto del hallazgo. */
 const fotosDe=(id,tipo)=>(state.evidencias||[]).filter(e=>e.accionId===id
-  &&(tipo==='correccion'?e.tipo==='correccion':e.tipo!=='correccion'));
+  &&(tipo==='hallazgo'?(!e.tipo||e.tipo==='hallazgo'):e.tipo===tipo));
 function accFotosHTML(a,ed){
   const H=fotosDe(a.id,'hallazgo'), C=fotosDe(a.id,'correccion');
   const tira=(L,t,btn,cls)=>`<div><div class="dgk">${t}</div><div class="wfotos">
@@ -5730,6 +5944,58 @@ function audDetalleHTML(a){
   </tbody></table></div></div>`;
 }
 
+
+/* la misma escalera que el plan de acción, para las acciones de la auditoría interna */
+function accEscaleraHTML(a,ed){
+  const e=escalada(a), yo=puedeRevisar();
+  const tira=(tipo,tit,color)=>{const L=fotosDe(a.id,tipo);
+    return `<div style="margin-top:8px"><div class="dgk">${tit}</div><div class="wfotos">
+      ${L.map(x=>`<figure><img src="${x.data}" alt="${esc(tit)}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid ${color}"></figure>`).join('')
+        ||'<span class="sm" style="color:var(--ink-3)">sin evidencia todavía</span>'}
+      ${ed&&L.length<CHK_MAXFOTO?`<label class="btn ghost sm" style="cursor:pointer">＋ foto
+        <input type="file" accept="image/*" capture="environment" data-accfoto="${esc(a.id)}" data-tipo="${tipo}" multiple hidden></label>`:''}
+    </div></div>`};
+  return `<div style="margin-top:12px;border-top:1px solid var(--line);padding-top:11px">
+    <div class="dgk">¿Qué tipo de solución es?</div>
+    <div class="dgopt" style="margin-top:5px">${TIPOSOL.map(x=>`<button class="${solDe(a)===x.v?'si':''}" data-atsol="${x.v}" data-atsolh="${esc(a.id)}" aria-pressed="${solDe(a)===x.v}">${x.l}</button>`).join('')}</div>
+    ${e?`<div class="soft2" style="margin-top:9px;border-left:3px solid var(--${e.k==='crit'?'crit':(e.k==='ok'?'ok':(e.k==='warn'?'warn':'line-strong'))})">
+      <b>${esc(e.l)}</b><br>${esc(e.d)}</div>
+    <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px;margin-top:9px">
+      <div><div class="dgk">La medida queda puesta el</div>
+        <input type="date" data-af="fechaPrev" data-ah="${esc(a.id)}" value="${esc(a.fechaPrev||'')}"></div>
+      <div><div class="dgk">Calidad revisa el</div>
+        ${yo?`<input type="date" data-af="revisarEl" data-ah="${esc(a.id)}" value="${esc(a.revisarEl||'')}">`
+          :`<p style="padding-top:6px">${a.revisarEl?fmtDate(a.revisarEl):'—'}</p>`}</div>
+    </div>
+    ${a.seMantuvo?`<div class="soft2" style="margin-top:9px"><b>${a.seMantuvo==='si'?'Se mantuvo':'No se mantuvo'}</b>${a.revisadoPor?' · '+esc(a.revisadoPor):''}${a.revObs?'<br>'+esc(a.revObs):''}
+        ${yo?`<br><button class="btn ghost sm" data-arev="" data-arevh="${esc(a.id)}" style="margin-top:6px">Deshacer la revisión</button>`:''}</div>`
+      :(yo?`<div style="margin-top:9px"><div class="dgk">Qué encontraste al revisar</div>
+        <input data-af="revObs" data-ah="${esc(a.id)}" value="${esc(a.revObs||'')}" placeholder="Ej.: se sigue cumpliendo en los dos turnos">
+        <div class="dgopt" style="margin-top:8px">
+          <button class="si" data-arev="si" data-arevh="${esc(a.id)}">✓ Se mantuvo</button>
+          <button class="no" data-arev="no" data-arevh="${esc(a.id)}">✕ No se mantuvo</button>
+        </div></div>`:'<div class="soft2" style="margin-top:9px">El veredicto lo pone <b>Calidad</b>.</div>')}
+    ${(['capacitar','esperando','amonestar','amonestado'].indexOf(e.p)>=0||a.capFecha)?`
+      <div style="margin-top:11px;border:1px solid ${e.p==='capacitar'?'var(--crit)':'var(--line)'};border-radius:10px;padding:11px 13px;background:var(--surface-2)">
+        <div class="dgk" style="margin-bottom:6px">Capacitación al sector${a.capFecha?' · hecha el '+fmtDate(a.capFecha):' · pendiente'}</div>
+        <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px">
+          <div><div class="dgk">Fecha</div><input type="date" data-af="capFecha" data-ah="${esc(a.id)}" value="${esc(a.capFecha||'')}"></div>
+          <div><div class="dgk">Quién capacitó</div><input data-af="capQuien" data-ah="${esc(a.id)}" value="${esc(a.capQuien||'')}" placeholder="Nombre"></div>
+          <div><div class="dgk">Tema</div><input data-af="capTema" data-ah="${esc(a.id)}" value="${esc(a.capTema||'')}"></div>
+          <div><div class="dgk">A quiénes</div><input data-af="capA" data-ah="${esc(a.id)}" value="${esc(a.capA||'')}"></div>
+        </div>${tira('capacitacion','Evidencia de la capacitación','var(--ink-3)')}</div>`:''}
+    ${(['amonestar','amonestado'].indexOf(e.p)>=0||a.amoFecha)?`
+      <div style="margin-top:11px;border:1px solid var(--crit);border-radius:10px;padding:11px 13px;background:var(--surface-2)">
+        <div class="dgk" style="margin-bottom:6px">Amonestación${a.amoFecha?' · registrada el '+fmtDate(a.amoFecha):' · corresponde'}</div>
+        <div class="dqg" style="grid-template-columns:1fr 1fr;gap:10px">
+          <div><div class="dgk">Fecha</div><input type="date" data-af="amoFecha" data-ah="${esc(a.id)}" value="${esc(a.amoFecha||'')}"></div>
+          <div><div class="dgk">A quién</div><input data-af="amoA" data-ah="${esc(a.id)}" value="${esc(a.amoA||'')}"></div>
+          <div><div class="dgk">Quién la emite</div><input data-af="amoQuien" data-ah="${esc(a.id)}" value="${esc(a.amoQuien||'')}"></div>
+          <div><div class="dgk">Observación</div><input data-af="amoObs" data-ah="${esc(a.id)}" value="${esc(a.amoObs||'')}"></div>
+        </div>${tira('amonestacion','Evidencia de la amonestación','var(--crit)')}</div>`:''}`:''}
+  </div>`;
+}
+
 /* ---------- 4. acciones ---------- */
 function audAccHTML(sec,ed){
   const L=(state.segAcc||[]).filter(a=>!sec||a.sectorId===sec)
@@ -5768,6 +6034,7 @@ function audAccHTML(sec,ed){
           <div><div class="dgk">Plazo por criticidad</div><p>${esc(N.plazo)} · verificación ${esc(N.ver)}</p></div>
         </div>
         ${accFotosHTML(a,ed)}
+        ${accEscaleraHTML(a,ed)}
         ${ed&&a.estado==='abierta'&&!fotosDe(a.id,'correccion').length
           ?'<div class="soft2" style="margin-top:10px">Antes de darla por verificada, subí la <b>foto de la corrección</b>: es la evidencia de que se hizo.</div>':''}
         ${ed?(a.estado==='abierta'
@@ -7478,6 +7745,7 @@ function vPiso(){
         <div class="soft2" style="margin-top:10px">Al guardar se abre el informe y ahí firman: primero vos, después el ${esc((auditadoDe(sec)||{}).rol||'líder')} del sector en conformidad.</div>
       </div>
       ${state.auditor?'':'<div class="notice" style="margin-top:14px"><div>Antes de guardar, poné tu nombre en el campo <b>Auditor</b> del menú.</div></div>'}
+      ${planoAudHTML(sec.id,false)}
       ${w.tipo!=='interna'?docsEnGeneralHTML(sec.id):''}
     </div>`;
   }
@@ -7518,6 +7786,7 @@ function vPiso(){
         : `<button class="btn primary" data-wgo="1">Siguiente →</button>`}
     </div>
     <div style="text-align:center;margin-top:14px"><button class="btn ghost sm" data-wstep="2">Terminar y ver resultado</button></div>
+    ${planoAudHTML(sec.id,false)}
   </div>`;
 }
 async function guardarWiz(){
@@ -9395,6 +9664,93 @@ document.addEventListener('click',async e=>{
     for(const e of evs)await borrarDoc(COL.ev+'/'+e.id);
     if(await borrarDoc(COL.au+'/'+id)){toast('Auditoría eliminada'+(hs.length?' con '+hs.length+' hallazgo(s)':''));state.openAudit=null;state.openExp=null;if(state.view!=='expedientes'&&state.view!=='auditorias')state.view='expedientes';render()}
     return}
+  /* lo mismo, sobre una acción de la auditoría interna del pilar */
+  const ats=t.closest('[data-atsol]');
+  if(ats){
+    const a=(state.segAcc||[]).find(x=>x.id===ats.dataset.atsolh); if(!a)return;
+    const d=Object.assign({},a); delete d.id;
+    const v=ats.dataset.atsol;
+    d.tipoSolucion=v;
+    if(['preventiva','ambas'].indexOf(v)>=0&&!d.revisarEl)d.revisarEl=addDaysISO(HIPNIV[a.niv||'moderado'].dias||30);
+    if(v==='correctiva'){d.revisarEl='';d.fechaPrev='';d.seMantuvo='';d.revObs=''}
+    if(await guardarDoc('segAcc/'+a.id,d))toast('Solución '+v);
+    return;
+  }
+  const arv=t.closest('[data-arev]');
+  if(arv){
+    const a=(state.segAcc||[]).find(x=>x.id===arv.dataset.arevh); if(!a)return;
+    if(!puedeRevisar()){toast('La revisión de la preventiva la hace Calidad');return}
+    const v=arv.dataset.arev, d=Object.assign({},a); delete d.id;
+    const yo=yoReal()||{};
+    d.seMantuvo=v;
+    if(v){
+      d.revisadoEl=new Date().toISOString(); d.revisadoPor=yo.nombre||state.auditor||'Calidad';
+      d.revisiones=((a.revisiones)||[]).concat([{f:d.revisadoEl,r:v,por:d.revisadoPor,
+        obs:String(d.revObs||'').slice(0,200)}]).slice(-20);
+      if(v==='no'){d.estado='abierta';d.limite=addDaysISO(HIPNIV[a.niv||'moderado'].dias||7)}
+    } else { d.revisadoEl=''; d.revisadoPor=''; }
+    if(await guardarDoc('segAcc/'+a.id,d))
+      toast(v==='no'?'La acción vuelve a estar abierta: la preventiva no se sostuvo'
+           :(v==='si'?'Revisión registrada: se mantuvo':'Revisión deshecha'));
+    return;
+  }
+  /* correctiva / preventiva / las dos */
+  const ts=t.closest('[data-tsol]');
+  if(ts){
+    const h=state.hallazgos.find(x=>x.id===ts.dataset.tsolh); if(!h)return;
+    const d=Object.assign({},h); delete d.id;
+    const v=ts.dataset.tsol;
+    anotarCambio(d,'tipoSolucion',h.tipoSolucion,v);
+    d.tipoSolucion=v;
+    /* si pasa a llevar preventiva y Calidad todavía no puso fecha, se propone una
+       según la gravedad; queda editable, no se impone */
+    if(['preventiva','ambas'].indexOf(v)>=0&&!d.revisarEl)d.revisarEl=revSugerida(h);
+    if(v==='correctiva'){d.revisarEl='';d.fechaPrev='';d.seMantuvo='';d.revObs=''}
+    state.openHab='h:'+h.id;
+    if(await guardarDoc(COL.ha+'/'+h.id,d))toast('Solución '+v);
+    return;
+  }
+  const rs=t.closest('[data-revsug]');
+  if(rs){
+    const h=state.hallazgos.find(x=>x.id===rs.dataset.revsug); if(!h)return;
+    const d=Object.assign({},h); delete d.id;
+    const f=revSugerida(h);
+    anotarCambio(d,'revisarEl',h.revisarEl,f); d.revisarEl=f;
+    state.openHab='h:'+h.id;
+    if(await guardarDoc(COL.ha+'/'+h.id,d))toast('Revisión agendada para el '+fmtDate(f));
+    return;
+  }
+  /* el veredicto de Calidad: se mantuvo o no se mantuvo */
+  const rv=t.closest('[data-rev]');
+  if(rv){
+    const h=state.hallazgos.find(x=>x.id===rv.dataset.revh); if(!h)return;
+    if(!puedeRevisar()){toast('La revisión de la preventiva la hace Calidad, que es quien audita en general');return}
+    const v=rv.dataset.rev;
+    const d=Object.assign({},h); delete d.id;
+    const yo=yoReal()||{};
+    anotarCambio(d,'seMantuvo',h.seMantuvo,v||'(sin revisar)');
+    d.seMantuvo=v;
+    if(v){
+      d.revisadoEl=new Date().toISOString(); d.revisadoPor=yo.nombre||state.auditor||'Calidad';
+      /* queda la secuencia completa: sin ella no se puede probar que la capacitación fue antes */
+      d.revisiones=revisionesDe(h).concat([{f:d.revisadoEl,r:v,
+        por:d.revisadoPor,obs:String(d.revObs||'').slice(0,200)}]).slice(-20);
+    }
+    else { d.revisadoEl=''; d.revisadoPor=''; }
+    if(v==='no'){
+      /* la preventiva no sirvió: el hallazgo vuelve a estar abierto y suma reincidencia */
+      anotarCambio(d,'estado',h.estado,'abierto');
+      d.estado='abierto'; d.cerrado='';
+      d.reincidencia=(h.reincidencia||1)+1;
+      if(d.reincidencia>=3)d.severidad='critico';
+      d.fechaLimite=addDaysISO(SEV[d.severidad||'menor'].dias);
+    }
+    state.openHab='h:'+h.id;
+    if(await guardarDoc(COL.ha+'/'+h.id,d))
+      toast(v==='no'?'Se reabrió el hallazgo: la preventiva no se sostuvo'
+           :(v==='si'?'Revisión registrada: se mantuvo':'Revisión deshecha'));
+    return;
+  }
   const dh=t.closest('[data-del-hall]');
   if(dh){
     if(!esAdmin()){toast('El hallazgo no se elimina: es la evidencia de la auditoría. Editalo y queda el registro de lo que cambiaste.');return}
@@ -9816,6 +10172,19 @@ document.addEventListener('change',async e=>{
     }
     render();return;
   }
+  if(t.dataset&&t.dataset.af&&t.dataset.ah){
+    const a=(state.segAcc||[]).find(x=>x.id===t.dataset.ah); if(!a)return;
+    const d=Object.assign({},a); delete d.id;
+    d[t.dataset.af]=t.value;
+    if(t.dataset.af==='capFecha'&&t.value&&!a.capFecha){
+      /* se capacitó: hay que volver a mirar, la revisión queda pendiente otra vez */
+      d.seMantuvo=''; d.revObs='';
+      if(!d.revisarEl||String(d.revisarEl)<=t.value)d.revisarEl=masDias(t.value,30);
+      toast('Capacitación registrada · Calidad vuelve a revisar el '+fmtDate(d.revisarEl));
+    }
+    if(await guardarDoc('segAcc/'+a.id,d))toast('Guardado');
+    return;
+  }
   if(t.dataset&&t.dataset.accfoto!=null&&t.files&&t.files.length){
     const a=(state.segAcc||[]).find(x=>x.id===t.dataset.accfoto);
     if(!a){t.value='';return}
@@ -9938,6 +10307,13 @@ document.addEventListener('change',async e=>{
     /* queda el rastro de qué se cambió y quién lo cambió, antes de tocar el valor */
     anotarCambio(d,t.dataset.f,h[t.dataset.f],t.value);
     d[t.dataset.f]=t.value;
+    if(t.dataset.f==='capFecha'&&t.value&&!h.capFecha){
+      /* se capacitó: ahora hay que volver a mirar, así que la revisión queda pendiente otra vez */
+      d.seMantuvo=''; d.revObs='';
+      if(!d.revisarEl||String(d.revisarEl)<=t.value)d.revisarEl=masDias(t.value,30);
+      toast('Capacitación registrada · Calidad vuelve a revisar el '+fmtDate(d.revisarEl));
+      state.openHab='h:'+h.id;
+    }
     if(t.dataset.f==='area'){
       /* derivado a otra área: queda la fecha de la solicitud y pasa a "en proceso" */
       if(t.value!=='sector'){if(!d.fechaSolicitud)d.fechaSolicitud=todayISO();if(d.estado==='abierto')d.estado='proceso'}
@@ -9947,6 +10323,9 @@ document.addEventListener('change',async e=>{
     if(t.dataset.f==='estado'){
       if(t.value==='cerrado'){
         if(!String(d.accionCorrectiva||'').trim()){toast('Escribí la acción correctiva antes de cerrar: qué se hizo para corregirlo');state.openHab='h:'+h.id;render();return}
+        if(!solDe(d)){toast('Antes de cerrar, decí qué tipo de solución es: correctiva, preventiva o las dos');state.openHab='h:'+h.id;render();return}
+        if(llevaPrev(d)&&!String(d.accionPreventiva||'').trim()){toast('Marcaste solución preventiva: escribí qué se cambia para que no vuelva a pasar');state.openHab='h:'+h.id;render();return}
+        if(llevaPrev(d)&&!d.revisarEl){toast('Falta la fecha en la que Calidad va a revisar si la preventiva se mantuvo');state.openHab='h:'+h.id;render();return}
         if(!h.sinFoto&&!evidenciasHall(h.id).some(x=>x.tipo==='correccion')){toast('Falta la foto de corrección: subila con el botón "✔ foto de corrección" y después cerrá');state.openHab='h:'+h.id;render();return}
         if((h.reincidencia||1)>=2&&!String(h.causaRaiz||'').trim()){toast('Este hallazgo es reincidente: documentá la causa raíz antes de cerrarlo');state.openHab='h:'+h.id;render();return}
         d.cerrado=new Date().toISOString();
