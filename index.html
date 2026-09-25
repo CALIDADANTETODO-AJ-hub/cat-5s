@@ -498,6 +498,41 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .zhallit .zf{display:flex;gap:4px;flex-shrink:0}
 .zhallit .zf img{width:38px;height:38px;object-fit:cover;border-radius:7px;border:1px solid var(--line)}
 .layq{min-width:220px}
+.dgres{display:flex;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+.dgt{flex:1;min-width:170px;text-align:left;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;cursor:pointer;display:flex;flex-direction:column;gap:2px;
+  font:inherit;color:inherit;transition:border-color .12s}
+.dgt:hover:not(:disabled){border-color:var(--line-strong)}
+.dgt:disabled{opacity:.55;cursor:default}
+.dgt .k{font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--ink-3)}
+.dgt .v{font-size:28px;font-weight:700;line-height:1.1}
+.dgt .m{font-size:11.5px;color:var(--ink-3)}
+.dgt.ok .v{color:var(--ok)} .dgt.crit .v{color:var(--crit)} .dgt.warn .v{color:var(--warn)}
+.dgt.ok.on{border-color:var(--ok)} .dgt.crit.on{border-color:var(--crit)} .dgt.warn.on{border-color:var(--warn)}
+.dgdet{border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:13px 15px;margin-bottom:14px}
+.dgul{margin:0;padding-left:19px;font-size:13px;line-height:1.55}
+.dgul li{margin-bottom:7px}
+.dgul2{color:var(--ink-3);font-size:11.5px}
+.dgdoc{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dgdoc select{min-width:200px;flex:1}
+.dgtxt{width:100%;max-width:640px;margin-top:3px;font-weight:600}
+.dgadd{margin:0 0 10px}
+.dcat{border:1px solid var(--line);border-radius:12px;margin-bottom:10px;background:var(--surface);overflow:hidden}
+.dcat.on{border-color:var(--line-strong)}
+.dcath{display:flex;gap:12px;align-items:center;justify-content:space-between;width:100%;
+  background:var(--surface-2);border:0;border-bottom:1px solid transparent;padding:11px 14px;
+  font:inherit;color:inherit;cursor:pointer;text-align:left}
+.dcat.on .dcath{border-bottom-color:var(--line)}
+.dcath:hover{background:var(--surface-3)}
+.dcath .dcn{display:flex;flex-direction:column;gap:2px;min-width:0}
+.dcath .dcn b{font-size:14px;font-weight:600}
+.dcath .dcd{font-size:11.5px;color:var(--ink-3)}
+.dcath .dcb{display:flex;gap:7px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end}
+.dcath .dcn2{font-size:11.5px;color:var(--ink-3);font-family:IBM Plex Mono,monospace}
+.dcath .dcar{font-size:12px;color:var(--ink-3);width:12px;text-align:center}
+.dcatb{padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+@media(max-width:620px){.dcath{flex-direction:column;align-items:flex-start;gap:7px}
+  .dcath .dcb{justify-content:flex-start}}
 .infb{border:1px solid var(--line);border-radius:10px;padding:11px 13px;margin-bottom:10px;background:var(--surface-2)}
 .infb h4{margin:0 0 7px;font-size:13px}
 .infl{margin:0;padding-left:18px;font-size:12.5px;line-height:1.55}
@@ -1157,7 +1192,7 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
     <button class="railclose" id="btnMenuCerrar">✕ Cerrar menú</button>
     <div class="brand">
       <div class="mark"><img src="data:image/png;base64,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" alt="Calidad Ante Todo"></div>
-      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver">versión 71</span><span class="hoyr" id="hoyRail"></span></div>
+      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver">versión 75</span><span class="hoyr" id="hoyRail"></span></div>
     </div>
     <div id="navdyn"></div>
     <div class="railfoot" id="railfoot"></div>
@@ -1369,8 +1404,12 @@ function localDb(){
 
 /* ================= conexión ================= */
 const COL={cl:'checklists',au:'auditorias',ha:'hallazgos',bu:'buenas',ev:'evidencias',pd:'pilarDocs',pi:'pilarInd',rc:'reconocimientos',mj:'mejoras',pl:'papelera'};
-/* límite por documento de la base: dejamos margen para los metadatos */
+/* límite por documento de la base: dejamos margen para los metadatos.
+   Las fotos se comprimen hasta entrar en MAXB64. Los documentos del pilar —una política,
+   un plan de emergencia— no se pueden comprimir sin arruinarlos, así que tienen su propio
+   límite, más cerca del techo real de la base (1 MB por documento). */
 const MAXB64=180*1024;
+const MAXB64DOC=900*1024;
 
 /* ================= base compartida en la nube (Firebase / Firestore) =================
    Es la base que usan todos desde el enlace público (GitHub Pages), sin cuenta de Claude.
@@ -1786,10 +1825,12 @@ const PERM={
   jefe:['manual','cumplimiento','piso','audsec','audint','seginf','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
   sector:['manual','cumplimiento','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
   sitio:['manual','cumplimiento','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares','etiquetas'],
-  /* SySO trabaja sobre todo el CD: entra a cualquier sector para la auditoría interna,
-     pero no al expediente de las auditorías 5S, que es del sector y de Calidad. */
-  syso:['manual','cumplimiento','piso','audint','seginf','rotacion','informe','evolucion','tablero','hallazgos','buenas','copa','sanciones','layouts','pilares'],
-  sysoana:['manual','cumplimiento','audint','seginf','informe','evolucion','tablero','hallazgos','buenas','copa','sanciones','layouts','pilares'],
+  /* SySO trabaja sobre todo el CD: entra a cualquier sector para la auditoría interna.
+     El jefe de SySO y su analista ven exactamente lo mismo: la diferencia entre los dos
+     no es qué miran, es quién firma. Lo único que queda fuera de los dos es lo de
+     Calidad: la auditoría general, los expedientes 5S y la papelera. */
+  syso:['manual','cumplimiento','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','tablero','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
+  sysoana:['manual','cumplimiento','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','tablero','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
   /* el responsable de mejoras: su sector, el plan de acción de su sector y las mejoras propias */
   mejoras:['manual','cumplimiento','hallazgos','mejoras','buenas','auditorias','evolucion','copa','sanciones','layouts','pilares'],
   planta:['manual','etiquetas','pilares'],
@@ -5192,9 +5233,30 @@ document.addEventListener('click',async e=>{
 });
 document.addEventListener('change',e=>{
   const t=e.target;if(!t)return;
+  if(t.dataset&&t.dataset.dgfile!=null){
+    if(!puedeDiag()){toast('Este diagnóstico lo carga Calidad o el encargado del pilar');t.value='';return}
+    const f=t.files&&t.files[0]; const iid=t.dataset.dgfile; t.value='';
+    if(!f)return;
+    if(f.size>MAXB64DOC*0.72){toast('Ese archivo es muy pesado ('+Math.round(f.size/1024)+' KB). Guardalo más liviano o cargalo con un enlace desde Documentos');return}
+    const it=diagItems().find(x=>x.id===iid)||{};
+    toast('Subiendo el documento…');
+    const fr=new FileReader();
+    fr.onerror=()=>toast('No se pudo leer el archivo');
+    fr.onload=async()=>{
+      const id=uid('pd-');
+      const ok=await guardarDoc(COL.pd+'/'+id,{pilarId:AUD_PILAR,sitioId:state.sitioSel||'',
+        titulo:(it.bloque||'')+(it.num||'')+' · '+String(it.t||f.name).slice(0,70),
+        url:'',data:String(fr.result),nombreArchivo:f.name,
+        notas:'Adjuntado desde el diagnóstico del pilar, ítem '+(it.bloque||'')+(it.num||'')+'.',
+        marcador:'',cat:'',confidencial:false,verUsuarios:[],
+        subidoPor:(state.sesion&&state.sesion.nombre)||state.auditor||'',creado:new Date().toISOString()});
+      if(ok){diagTocar(state.pil.id,iid,'docId',id);toast('Documento adjuntado. Acordate de guardar el diagnóstico');render()}
+    };
+    fr.readAsDataURL(f);
+    return}
   if(t.id==='dcFile'&&esAdmin()){
     const f=t.files&&t.files[0];if(!f)return;
-    if(f.size>MAXB64*0.72){toast('Ese archivo es muy pesado para la base: cargalo con un enlace');t.value='';return}
+    if(f.size>MAXB64DOC*0.72){toast('Ese archivo es muy pesado para la base ('+Math.round(f.size/1024)+' KB): cargalo con un enlace, o guardalo más liviano');t.value='';return}
     const fr=new FileReader();
     fr.onload=()=>{state.pil.doc=Object.assign(leerFormDoc(),{data:String(fr.result||''),nombreArchivo:f.name});
       toast('Archivo listo: completá el nombre y guardá');render()};
@@ -5802,7 +5864,7 @@ function informeSectorHTML(sec){
 /* ---------- 1. documentos que debe tener ---------- */
 function audDocsHTML(sec,ed){
   const gCD=calcDocs('_cd','cd'), gS=sec?calcDocs(sec,'sector'):null;
-  const fila=(alc,clave)=>reqsDe(alc).map(r=>{
+  const unaFila=(clave)=>r=>{
     const e=docEstado(clave,r), E=DOCEST[e], v=docReqResp(clave)[r.id]||{};
     const dd=r.doc?docsVisibles(AUD_PILAR).filter(d=>d.id===r.doc)[0]:null;
     const dsel=v.docId?docsVisibles(AUD_PILAR).filter(d=>d.id===v.docId)[0]:dd;
@@ -5823,13 +5885,46 @@ function audDocsHTML(sec,ed){
           </select>`:`<p>${dsel?esc(dsel.titulo):'—'}</p>`}
           ${dsel?`<div class="dqlink">${dsel.tipo==='form'
             ? `<a href="#" data-form="${esc(dsel.id)}">abrir el formulario</a>`
-            : (dsel.data?`<a href="${dsel.data}" download="${esc(dsel.nombreArchivo||dsel.titulo)}">descargar</a>`:(dsel.url?`<a href="${esc(dsel.url)}" target="_blank" rel="noopener">abrir</a>`:''))}</div>`:''}
+            : (dsel.data
+               ? `<a href="${dsel.data}" target="_blank" rel="noopener">abrir</a> ·
+                  <a href="${dsel.data}" download="${esc(dsel.nombreArchivo||dsel.titulo)}">bajar para editar</a>
+                  ${esAdmin()?` · <a href="#" data-dcedit="${esc(dsel.id)}">reemplazar</a>`:''}`
+               : (dsel.url?`<a href="${esc(dsel.url)}" target="_blank" rel="noopener">abrir</a>`
+                          :'<span style="color:var(--crit)">el documento está registrado pero no tiene archivo</span>'))}</div>`
+         :(e==='tiene'?'<div class="dqlink"><span style="color:var(--warn)">dice que lo tiene, pero no hay archivo adjunto</span></div>':'')}
         </div>
         <div><div class="dgk">Vence</div>
           ${ed?`<input type="date" data-dqv="${r.id}" data-dqs="${esc(clave)}" value="${esc(v.vence||'')}">`:`<p>${v.vence?fmtDate(v.vence):'—'}</p>`}</div>
         <div style="grid-column:1/-1"><div class="dgk">Observación</div>
           ${ed?`<input data-dqo="${r.id}" data-dqs="${esc(clave)}" value="${esc(v.obs||'')}" placeholder="Dónde está, quién lo tiene, qué falta">`:`<p>${esc(v.obs||'')||'—'}</p>`}</div>
-      </div></div>`}).join('');
+      </div></div>`};
+  /* agrupado por carpeta, con el semáforo de cada una y abierta sólo la que se toca */
+  const fila=(alc,clave)=>{
+    const L=reqsDe(alc), f=unaFila(clave);
+    const abierta=state.dqcat||'';
+    return DOCCAT.map(([k,lab,des])=>{
+      const G=L.filter(r=>catDe(r)===k);
+      if(!G.length)return '';
+      const t=G.filter(r=>docEstado(clave,r)==='tiene').length;
+      const no=G.filter(r=>docEstado(clave,r)==='no').length;
+      const sin=G.filter(r=>docEstado(clave,r)==='sin').length;
+      const na=G.length-t-no-sin;
+      const base=G.length-na, pct=base?Math.round(t/base*100):null;
+      const col=pct==null?'':(pct>=90?'ok':(pct>=60?'warn':'crit'));
+      const on=abierta===k;
+      return `<div class="dcat${on?' on':''}">
+        <button class="dcath" data-dqcat="${k}" aria-expanded="${on}">
+          <span class="dcn"><b>${esc(lab)}</b><span class="dcd">${esc(des)}</span></span>
+          <span class="dcb">
+            ${no?`<span class="badge crit">${no} falta${no===1?'':'n'}</span>`:''}
+            ${sin?`<span class="badge warn">${sin} sin verificar</span>`:''}
+            <span class="badge ${col} dot">${pct==null?'—':pct+' %'}</span>
+            <span class="dcn2">${t} de ${base}</span>
+            <span class="dcar">${on?'▴':'▾'}</span></span></button>
+        ${on?`<div class="dcatb">${G.map(f).join('')}</div>`:''}
+      </div>`;
+    }).join('');
+  };
   const kpi=(g,t)=>`<div class="kpi ${g.pct==null?'':(g.pct>=90?'tintok':(g.no?'tint':''))}"><div class="k">${t}</div>
     <div class="v">${g.pct==null?'—':n1(g.pct)+'<small>%</small>'}</div>
     <div class="m">${g.pct==null?'todavía sin verificar':g.tiene+' de '+g.base+(g.na?' · '+g.na+(g.na===1?' no aplica':' no aplican'):'')+(g.sin?' · '+g.sin+' sin verificar':'')}</div></div>`;
@@ -6762,7 +6857,7 @@ function audAccHTML(sec,ed){
 }
 
 /* ================= vista: diagnóstico del sistema y KPI del manual ================= */
-const puedeDiag=()=>esAdmin()||['sitio','jefe'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
+const puedeDiag=()=>esAdmin()||['sitio','jefe','syso','sysoana'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
 function diagKpiVal(k,pid){
   const a=anioInd(),mm=new Date().getMonth(),d=indDe(pid,a,mm),c=calcInd(d,mm);
   if(k.auto==='diag'){const g=calcDiag(pid);return {v:g.pct,det:g.cum+' de '+g.base+' ítems'}}
@@ -6801,6 +6896,57 @@ function duenoPilar(pid){
     user=(state.usuarios||[]).find(u=>u.activo!==false&&String(u.nombre||'').toLowerCase().indexOf(n)===0)||null}
   return {nombre:(user&&user.nombre)||nombre,detalle:detalle,sinDueno:sinDueno,usuario:user};
 }
+/* ---------- el documento que prueba cada ítem del diagnóstico ----------
+   Decir "cumple" sin el papel no prueba nada: en una inspección lo primero que piden es
+   el documento. Por eso cada ítem puede tener el suyo adjunto, y los que dicen cumplir
+   sin adjunto quedan marcados aparte. */
+function diagDoc(pid,it){
+  const r=(diagResp(pid)[it.id])||{};
+  const id=r.docId||'';
+  if(!id)return null;
+  return docsVisibles(AUD_PILAR).find(x=>x.id===id)||null;
+}
+function diagSinDoc(pid){
+  return diagItems().filter(it=>diagEst(pid,it)==='cumple'&&!diagDoc(pid,it));
+}
+/* los tres montones: lo que cumple, lo que no, y lo que cumple pero sin papel */
+function diagMontones(pid){
+  const its=diagItems();
+  return {
+    cumple:its.filter(it=>diagEst(pid,it)==='cumple'),
+    falla:its.filter(it=>{const e=diagEst(pid,it);return e==='pend'||e==='sin'}),
+    pend:its.filter(it=>diagEst(pid,it)==='pend'),
+    sin:its.filter(it=>diagEst(pid,it)==='sin'),
+    na:its.filter(it=>diagEst(pid,it)==='na'),
+    sindoc:diagSinDoc(pid)
+  };
+}
+function diagResumenHTML(pid,g){
+  const M=diagMontones(pid), f=state.dgFiltro||'';
+  const tarjeta=(k,tit,n,det,cls)=>`<button class="dgt ${cls}${f===k?' on':''}" data-dgf="${k}"${n?'':' disabled'}>
+    <span class="k">${tit}</span><span class="v">${n}</span><span class="m">${det}</span></button>`;
+  const lista=k=>{
+    const L=k==='cumple'?M.cumple:(k==='falla'?M.falla:(k==='sindoc'?M.sindoc:[]));
+    if(!L.length)return '';
+    const conDoc=k==='cumple';
+    return `<div class="dgdet"><div class="dgk" style="margin-bottom:7px">${
+      k==='cumple'?'En qué cumple el CD':(k==='falla'?'En qué no cumple · lo que falta':'Dice que cumple, pero no está el documento')}</div>
+      <ul class="dgul">${L.map(it=>{const d=conDoc?diagDoc(pid,it):null;
+        const r=diagResp(pid)[it.id]||{};
+        return `<li><b>${it.bloque}${it.num}.</b> ${esc(it.t)}
+          ${k==='falla'?`<br><span class="dgul2">${esc((r.acc!=null?r.acc:it.acc)||'sin acción correctiva anotada')}${
+            (r.resp!=null?r.resp:it.resp)?' · '+esc(r.resp!=null?r.resp:it.resp):''}${r.plazo?' · vence '+fmtDate(r.plazo):''}</span>`:''}
+          ${d?`<br><span class="dgul2">📎 ${esc(d.titulo)}${d.data?` · <a href="${d.data}" target="_blank" rel="noopener">abrir</a>`:(d.url?` · <a href="${esc(d.url)}" target="_blank" rel="noopener">abrir</a>`:'')}</span>`:''}
+          ${k==='sindoc'?`<br><span class="dgul2" style="color:var(--warn)">falta adjuntar la evidencia: ${esc((r.ev!=null?r.ev:it.ev)||'sin indicar cuál')}</span>`:''}
+        </li>`}).join('')}</ul></div>`;
+  };
+  return `<div class="dgres">
+    ${tarjeta('cumple','En qué cumple',M.cumple.length,'de '+(g.tot-M.na.length)+' que aplican','ok')}
+    ${tarjeta('falla','En qué no cumple',M.falla.length,M.pend.length+' pendientes · '+M.sin.length+' sin evaluar','crit')}
+    ${tarjeta('sindoc','Falta adjuntar',M.sindoc.length,'dicen cumplir y no tienen el papel','warn')}
+  </div>
+  ${f?lista(f):'<div class="soft2" style="margin-bottom:14px">Tocá cualquiera de los tres para ver la lista.</div>'}`;
+}
 function quienCompletaHTML(p,g,ed){
   const D=duenoPilar(p.id);
   const quien=D.sinDueno?'el encargado del pilar':esc(D.nombre);
@@ -6832,6 +6978,7 @@ function diagPilarHTML(p){
   const kpis=DIAG_KPI.map(k=>Object.assign({k:k},diagKpiVal(k,pid)));
   return `
   ${quienCompletaHTML(p,g,ed)}
+  ${diagResumenHTML(pid,g)}
   <div class="ibar">
     <div class="isp"><b>${esc(sit.corto)}</b> · el diagnóstico es del sistema de gestión del pilar, no de un sector.
       Cambiando de sitio en el menú de la izquierda se carga el de esa planta.</div>
@@ -6869,11 +7016,14 @@ function diagPilarHTML(p){
         const col=pc==null?'var(--ink-3)':(pc>=DIAG_META?'var(--ok)':(pc>=60?'var(--warn)':'var(--crit)'));
         return `<div class="dgb"><div class="dgbh"><h4>${b}. ${esc(bn)}</h4>
           <div class="dgbm" style="color:${col}"><b>${pc==null?'—':pc+' %'}</b> · ${c} de ${base}</div></div>
+          ${(ed?`<div class="dgadd"><button class="btn sm" data-dgadd="${b}">＋ Agregar un punto a ${b}. ${esc(bn)}</button></div>`:'')}
           ${L.map(it=>{
             const r=R[it.id]||{},e=diagEst(pid,it),E=DIAG_EST[e];
             const abierto=(e==='pend'||e==='sin');
             return `<div class="dgi ${E.cls}">
-              <div class="dgit"><div><div class="dgin">${it.bloque}${it.num}. ${esc(it.t)}</div>
+              <div class="dgit"><div><div class="dgin">${ed
+                ?`${it.bloque}${it.num}. <input class="dgtxt" data-dgt="${it.id}" value="${esc(it.t)}" placeholder="Qué se verifica">`
+                :`${it.bloque}${it.num}. ${esc(it.t)}`}</div>
                 ${it.nota?`<div class="dgnota">De la planilla: ${esc(it.nota)}</div>`:''}</div>
                 <span class="dgch ${E.cls}">${E.cls==='ok'?'✓':(E.cls==='crit'?'⊗':(E.cls==='warn'?'⚠':'—'))} ${E.l}</span></div>
               <div class="dgops">${ed?`<div class="dgopt">
@@ -6883,6 +7033,22 @@ function diagPilarHTML(p){
               </div>`:''}</div>
               <div class="dggrid">
                 <div><div class="dgk">Evidencia</div>${ed?`<input data-dev="${it.id}" value="${esc(r.ev!=null?r.ev:it.ev)}" placeholder="Qué documento lo prueba">`:`<p>${esc(r.ev!=null?r.ev:it.ev)||'—'}</p>`}</div>
+                <div style="grid-column:1/-1"><div class="dgk">Documento adjunto</div>${(()=>{
+                  const d=diagDoc(pid,it), pd=puedeDiag();
+                  const enlaces=d?`<span class="dqlink">${d.data
+                      ? `<a href="${d.data}" target="_blank" rel="noopener">abrir</a> · <a href="${d.data}" download="${esc(d.nombreArchivo||d.titulo)}">bajar para editar</a>`
+                      : (d.url?`<a href="${esc(d.url)}" target="_blank" rel="noopener">abrir</a>`:'<span style="color:var(--crit)">registrado sin archivo</span>')}</span>`:'';
+                  if(!pd)return d?`<p><b>${esc(d.titulo)}</b></p>${enlaces}`:'<p style="color:var(--ink-3)">—</p>';
+                  return `<div class="dgdoc">
+                    <select data-dgdoc="${it.id}">
+                      <option value="">Sin documento adjunto</option>
+                      ${docsVisibles(AUD_PILAR).map(x=>`<option value="${esc(x.id)}"${d&&d.id===x.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}
+                    </select>
+                    <label class="btn sm" style="cursor:pointer">Adjuntar archivo
+                      <input type="file" data-dgfile="${it.id}" style="display:none"></label>
+                    ${enlaces}</div>
+                    ${!d&&e==='cumple'?'<div class="dgsug" style="color:var(--warn)">Dice que cumple y no tiene el documento. Adjuntalo o elegilo de la lista.</div>':''}`;
+                })()}</div>
                 <div><div class="dgk">Acción correctiva</div>${ed?`<input data-dac="${it.id}" value="${esc(r.acc!=null?r.acc:it.acc)}" placeholder="Qué hay que hacer">`:`<p>${esc(r.acc!=null?r.acc:it.acc)||'—'}</p>`}</div>
                 ${abierto?`<div><div class="dgk">Responsable</div>${ed?`<input data-drs="${it.id}" value="${esc(r.resp!=null?r.resp:it.resp)}" placeholder="Quién lo cierra">`:`<p>${esc(r.resp!=null?r.resp:it.resp)||'—'}</p>`}</div>
                 <div><div class="dgk">Fecha límite</div>${ed?`<input type="date" data-dpl="${it.id}" value="${esc(r.plazo||masDiasIso(hoyIso(),it.dias||60))}">`:`<p>${r.plazo?fmtDate(r.plazo):'—'}</p>`}</div>`:''}
@@ -7341,7 +7507,7 @@ function docsPilarHTML(p){
       <button class="btn primary" id="btnDcGuardar">${e&&e.id?'Guardar los cambios':'Agregar el documento'}</button>
       ${e?'<button class="btn ghost" id="btnDcCancel">Cancelar</button>':''}
     </div>
-    <div class="soft2" style="margin-top:10px">Para un PDF pesado usá el enlace: la base guarda documentos chicos (hasta ${Math.round(MAXB64/1024)} KB), no archivos escaneados completos.</div>
+    <div class="soft2" style="margin-top:10px">La base guarda el archivo adentro hasta ${Math.round(MAXB64DOC*0.72/1024)} KB, así se abre y se baja desde cualquier computadora. Si pesa más, poné el enlace a la carpeta donde vive.</div>
     </div></section>`:''}
 
   <section class="panel" style="margin-bottom:16px"><header><h3>Lo que el manual pide adjuntar</h3>
@@ -7354,15 +7520,24 @@ function docsPilarHTML(p){
       </tbody></table></div>`:'<div class="empty"><b>El manual no pide ningún adjunto todavía</b>Cuando escribas “adjuntar…” en el manual, va a aparecer acá.</div>'}
   </section>
 
-  <section class="panel"><header><h3>Documentos del pilar</h3><span class="sub">${ds.length}</span></header>
-    ${ds.length?`<div class="tw"><table><thead><tr><th style="min-width:200px">Documento</th><th style="min-width:180px">Nota</th><th style="width:110px">Acceso</th><th style="width:130px">Cargado</th><th style="width:150px"></th></tr></thead><tbody>
-      ${ds.map(d=>`<tr><td><b style="font-weight:600">${esc(d.titulo||'—')}</b>${d.marcador?`<br><span style="color:var(--ink-3);font-size:11.5px">enlazado al manual</span>`:''}</td>
+  <section class="panel"><header><h3>Documentos del pilar</h3><span class="sub">${ds.length} en ${DOCCAT.filter(([k])=>ds.some(d=>catDoc(d)===k)).length} carpeta${DOCCAT.filter(([k])=>ds.some(d=>catDoc(d)===k)).length===1?'':'s'}</span></header>
+    ${ds.length?DOCCAT.map(([k,lab,des])=>{
+      const G=ds.filter(d=>catDoc(d)===k); if(!G.length)return '';
+      const on=state.dpcat===k;
+      return `<div class="dcat${on?' on':''}" style="margin:0 14px 10px">
+        <button class="dcath" data-dpcat="${k}" aria-expanded="${on}">
+          <span class="dcn"><b>${esc(lab)}</b><span class="dcd">${esc(des)}</span></span>
+          <span class="dcb"><span class="badge dot">${G.length} documento${G.length===1?'':'s'}</span>
+            ${G.filter(d=>d.confidencial).length?`<span class="badge warn">${G.filter(d=>d.confidencial).length} confidencial</span>`:''}
+            <span class="dcar">${on?'▴':'▾'}</span></span></button>
+        ${on?`<div class="tw"><table><thead><tr><th style="min-width:200px">Documento</th><th style="min-width:180px">Nota</th><th style="width:110px">Acceso</th><th style="width:130px">Cargado</th><th style="width:150px"></th></tr></thead><tbody>
+      ${G.map(d=>`<tr><td><b style="font-weight:600">${esc(d.titulo||'—')}</b>${d.marcador?`<br><span style="color:var(--ink-3);font-size:11.5px">enlazado al manual</span>`:''}</td>
         <td style="color:var(--ink-2);font-size:12.5px">${esc(d.notas||'')}</td>
         <td>${d.confidencial?'<span class="badge warn dot">Confidencial</span>':(d.incorporado?'<span class="badge a">Del CD</span>':'<span class="badge">Todos</span>')}</td>
         <td style="font-size:12px;color:var(--ink-3)">${fmtDate(String(d.creado||'').slice(0,10))}<br>${esc(d.subidoPor||'')}</td>
         <td class="r">${d.tipo==='form'?`<button class="btn sm" data-form="${esc(d.id)}">Abrir</button> `:''}${d.url?`<a class="btn sm" href="${esc(d.url)}" target="_blank" rel="noopener">Abrir</a> `:''}${d.data?`<a class="btn sm" href="${d.data}" download="${esc(d.nombreArchivo||d.titulo||'doc')}">Bajar</a> `:''}
           ${(adm&&!d.incorporado)?`<button class="btn sm ghost" data-dcedit="${esc(d.id)}">Editar</button> ${delBtn('dc:'+d.id,`data-dcdel="${esc(d.id)}"`,'✕','Eliminar')}`:''}</td></tr>`).join('')}
-      </tbody></table></div>`:'<div class="empty"><b>Todavía no hay documentos cargados</b>Los que cargue Calidad aparecen acá y debajo del párrafo del manual que los pide.</div>'}
+      </tbody></table></div>`:''}</div>`}).join(''):'<div class="empty"><b>Todavía no hay documentos cargados</b>Los que cargue Calidad aparecen acá y debajo del párrafo del manual que los pide.</div>'}
     ${ocultos?`<div class="body" style="border-top:1px solid var(--line)"><div class="soft2" style="margin:0">Hay ${ocultos} documento${ocultos===1?'':'s'} confidencial${ocultos===1?'':'es'} de este pilar que tu usuario no puede ver.</div></div>`:''}
   </section>`;
 }
@@ -9445,8 +9620,44 @@ const DIAG_KPI=[
    el orden y la limpieza, y los riesgos de la hipermatriz.
    Tres colecciones: docSector (uno por sector), segAud (las verificaciones que se
    guardan) y segAcc (las acciones con su plazo por criticidad).                     */
-const DOCREQ_COLS=['id','t','alcance','quien','doc','item','est0'];
-const DOCREQ_BASE=[["d01","Política de Seguridad y Salud Ocupacional firmada y comunicada","cd","Jefatura de SySO + Gerencia de Calidad","","A1"],["d02","Plan anual de SSO con objetivos medibles y responsables","cd","Jefatura de SySO","","A3"],["d03","Matriz de riesgos IPER actualizada y firmada","cd","Jefatura de SySO + Responsable SySO","","A5"],["d04","Actas mensuales del Comité Interno de SSO (CIPA)","cd","CIPA","","A2"],["d05","Hojas de datos de seguridad (MSDS) de todos los químicos","cd","Jefatura de SySO + Compras","","A6"],["d06","Procedimiento de investigación de incidentes y accidentes","cd","Jefatura de SySO","","A7"],["d07","Plan de emergencia, brigada conformada y registro de simulacros","cd","Jefatura de SySO","","E1"],["d08","Inspección y mantenimiento de PCI: extintores, luces, salidas, rociadores, hidrantes y BIE","cd","Mantenimiento + SySO","","B3"],["d09","Procedimientos operativos seguros (POS) documentados","cd","Jefatura de SySO + Mantenimiento","","D1"],["d10","Procedimiento de bloqueo y etiquetado (LOTO)","cd","Mantenimiento + SySO","","D3"],["d11","Calendario anual de capacitación de seguridad y medicina laboral","cd","Jefatura de SySO + Medicina laboral","","F1"],["d12","Política y procedimiento de Autoridad para Detener el Trabajo (Stop Work Authority)","cd","Gerencia","","","tiene"],["s01","Matriz de EPP por puesto del sector","sector","Jefatura de SySO","","C1"],["s02","Entrega de EPP firmada por el personal del sector","sector","Jefe del sector","doc-epp","C2"],["s03","Entrega de uniforme firmada","sector","Recursos Humanos","doc-unif",""],["s04","Exámenes médicos del personal: preocupacional, periódico y de egreso","sector","Medicina laboral","","G1"],["s05","Control de vacunación del personal al día","sector","Medicina laboral","","G2"],["s06","Habilitación de los operadores de equipo: reach, zorra y montacargas","sector","Jefatura de SySO + Mantenimiento","","D5"],["s07","Permisos de trabajo del sector: altura, contratistas y tareas especiales","sector","Jefatura de SySO","form-permiso",""],["s08","Inducción de seguridad del personal del sector, firmada","sector","Jefatura de SySO","","F2"],["s09","Verificación de orden y limpieza del sector","sector","Jefe del sector","doc-ol-dep",""],["s10","Pictograma de EPP requerido, instalado y legible en el acceso","sector","Jefatura de SySO","","B1"],["s11","Registro de charlas de seguridad de 5 minutos","sector","Jefe del sector","","F3"],["s12","Registro de actos y condiciones inseguras del sector, con seguimiento","sector","Jefe del sector + SySO","","F5"],["d13","Mediciones de higiene ocupacional vigentes: iluminación, ruido y calidad de aire","cd","Jefatura de SySO","r-ilum",""],["d14","Habilitación municipal de prevención contra incendios (informe técnico PCI)","cd","Jefatura de SySO + Mantenimiento","r-pcimuni","B3"],["d15","Registro profesional del responsable de SySO ante el Viceministerio de Trabajo","cd","Jefatura de SySO","r-regchristian",""],["d16","Contrato de servicio médico laboral vigente","cd","Recursos Humanos","r-medico","G1"],["d17","Listado de aptitud del personal y aptos con condiciones por puesto","cd","Medicina laboral","r-aptitud","G1"],["d18","Brigada de emergencia conformada, con nómina y formación registrada","cd","Jefatura de SySO","r-brigadas","E1"],["d19","Presentaciones al MTESS y al MSPBS con acuse de mesa de entrada","cd","Jefatura de SySO","r-mtess",""],["d20","Plan de mantenimiento de maquinarias y equipos","cd","Mantenimiento","r-manteq","D1"],["d21","Programa de Seguridad y Salud Ocupacional del año en curso","cd","Jefatura de SySO","r-progsso","A3"],["d22","Cronograma del Mes de la Seguridad del año en curso","cd","Jefatura de SySO","r-messeg","F1"],["s13","Apto de trabajo del personal del sector, con el apto para trabajo pesado donde corresponde","sector","Medicina laboral","r-aptos","G1"],["s14","Riesgos del puesto identificados y comunicados al personal del sector","sector","Jefatura de SySO","r-riesgospuesto","A5"],["d23","Política de Alcohol, Drogas y Medicamentos No Autorizados, aprobada y vigente","cd","Jefatura de SySO + RRHH","","G4","tiene"],["d24","Constancia de que la política de alcohol y drogas fue comunicada al personal","cd","RRHH","","F1","tiene"],["d25","Consentimientos firmados del personal sobre la política de alcohol y drogas","cd","RRHH","","F2","no"],["d26","Planilla de registro de los controles de alcoholemia realizados","cd","Jefatura de SySO","","G4","no"],["d27","Capacitación de los operadores del equipo Alcosensor, certificada","cd","Jefatura de SySO","","F1","tiene"],["d28","Certificado de calibración vigente del equipo Alcosensor","cd","Jefatura de SySO","","G4","no"],["d29","POE de Seguridad y Prevención con el Plan de Emergencia, aprobado y distribuido","cd","Jefatura de SySO + Gerencia General","","E1","tiene"],["d30","Programa de formación de brigadas con temario y certificación del CBVP","cd","Jefatura de SySO","","E2","tiene"],["d31","Descripción del sistema PCI del CD: equipos, reservorios, motobomba y generador","cd","Jefatura de SySO","","B3","tiene"],["d32","Fichas del Sistema de Comando de Incidentes (SCI), impresas y disponibles","cd","Jefatura de SySO","","E3","tiene"],["d33","Calendario anual de actividades y mantenimientos del sistema PCI","cd","Jefatura de SySO + Mantenimiento","","B3","tiene"],["d34","Registros de los mantenimientos PCI hechos, con la frecuencia que fija el calendario","cd","Mantenimiento","","B3","no"],["d35","Registro de los simulacros de evacuación, con el tiempo medido","cd","Jefatura de SySO","","E4","no"],["d36","Registro de cada Alto de Trabajo ejercido, con foto, acción y cierre","cd","Jefatura de SySO","","A7","no"],["d37","Tarjeta de Autoridad para Detener el Trabajo entregada a cada colaborador","cd","Jefatura de SySO + RRHH","","F2","no"],["s16","Nómina de los brigadistas del sector, publicada en el sector","sector","Jefatura de SySO","","E2","no"],["s17","Plan de llamadas de emergencia publicado y legible en el sector","sector","Jefatura de SySO","","E1","no"],["s15","Plano del sector con salidas de emergencia y equipos PCI señalizados","sector","Jefatura de SySO","r-plano","B2"]].map(r=>{const o={};DOCREQ_COLS.forEach((k,i)=>o[k]=r[i]);return o});
+/* ---------- las carpetas de la documentación del pilar ----------
+   Antes era una lista larga y plana: para encontrar un permiso había que leerla entera.
+   Ahora cada documento tiene su carpeta, se ve el semáforo de cada una y se puede abrir
+   sólo la que interesa. El orden es el que usa Calidad para presentar la documentación. */
+const DOCCAT=[
+ ['pol','Políticas, normas y procedimientos','Lo que la empresa define y firma: cómo se trabaja y qué está prohibido.'],
+ ['pla','Planes y programas','El plan anual, el programa del año y los cronogramas.'],
+ ['cap','Capacitaciones y certificados','Quién fue capacitado, en qué y con qué constancia.'],
+ ['per','Permisos y habilitaciones','Lo que habilita a una persona, a un equipo o al predio.'],
+ ['emg','Emergencias y PCI','Plan de emergencia, brigadas, equipos contra incendio y simulacros.'],
+ ['sal','Salud ocupacional y controles','Exámenes, aptos, vacunación y los controles al personal.'],
+ ['rie','Riesgos, matrices y mediciones','IPER, químicos y las mediciones de higiene ocupacional.'],
+ ['epp','EPP y elementos de protección','La matriz por puesto, las entregas firmadas y la señalización.'],
+ ['reg','Inspecciones y registros','Lo que se anota día a día: actas, inspecciones y seguimientos.'],
+ ['otr','Otros','Lo que todavía no tiene carpeta asignada.']
+];
+const CATL=(()=>{const o={};DOCCAT.forEach(([k,l,d])=>o[k]={l:l,d:d});return o})();
+const catDe=r=>(r&&r.cat&&CATL[r.cat])?r.cat:'otr';
+/* para los documentos cargados en el pilar, que no traen carpeta: se deduce del título */
+const CATPAL=[
+ ['pol',['politica','política','procedimiento','norma','reglamento','poe','loto','stop work','autoridad para detener','pos ']],
+ ['cap',['capacit','certificad','curso','charla','induccion','inducción','formacion','formación','brigadist','temario','asistencia']],
+ ['per',['permiso','habilitacion','habilitación','licencia','registro profesional','mesa de entrada','mtess','mspbs','municipal']],
+ ['emg',['emergencia','brigada','pci','incendio','extintor','simulacro','evacuacion','evacuación','sci','bombero','rociador','manguera','bie']],
+ ['sal',['medic','salud','examen','apto','vacun','enfermeria','enfermería','alcohol','droga','alcosensor','audiometr','clinic']],
+ ['rie',['riesgo','iper','matriz','peligro','msds','sds','quimic','químic','medicion','medición','ruido','iluminacion','iluminación']],
+ ['epp',['epp','proteccion personal','protección personal','uniforme','casco','calzado','arnes','arnés','pictograma']],
+ ['pla',['plan anual','programa','cronograma','calendario','planificacion','planificación']],
+ ['reg',['acta','inspeccion','inspección','registro','checklist','orden y limpieza','incidente','accidente','seguimiento','cipa']]
+];
+function catDoc(d){
+  if(d&&d.cat&&CATL[d.cat])return d.cat;
+  const t=normTexto((d&&(d.titulo||''))+' '+((d&&d.notas)||''));
+  for(const [k,pal] of CATPAL){ if(pal.some(p=>t.indexOf(normTexto(p))>=0))return k }
+  return 'otr';
+}
+const DOCREQ_COLS=['id','t','alcance','quien','doc','item','est0','cat'];
+const DOCREQ_BASE=[["d01","Política de Seguridad y Salud Ocupacional firmada y comunicada","cd","Jefatura de SySO + Gerencia de Calidad","","A1","","pol"],["d02","Plan anual de SSO con objetivos medibles y responsables","cd","Jefatura de SySO","","A3","","pla"],["d03","Matriz de riesgos IPER actualizada y firmada","cd","Jefatura de SySO + Responsable SySO","","A5","","rie"],["d04","Actas mensuales del Comité Interno de SSO (CIPA)","cd","CIPA","","A2","","reg"],["d05","Hojas de datos de seguridad (MSDS) de todos los químicos","cd","Jefatura de SySO + Compras","","A6","","rie"],["d06","Procedimiento de investigación de incidentes y accidentes","cd","Jefatura de SySO","","A7","","reg"],["d07","Plan de emergencia, brigada conformada y registro de simulacros","cd","Jefatura de SySO","","E1","","emg"],["d08","Inspección y mantenimiento de PCI: extintores, luces, salidas, rociadores, hidrantes y BIE","cd","Mantenimiento + SySO","","B3","","emg"],["d09","Procedimientos operativos seguros (POS) documentados","cd","Jefatura de SySO + Mantenimiento","","D1","","pol"],["d10","Procedimiento de bloqueo y etiquetado (LOTO)","cd","Mantenimiento + SySO","","D3","","pol"],["d11","Calendario anual de capacitación de seguridad y medicina laboral","cd","Jefatura de SySO + Medicina laboral","","F1","","pla"],["d12","Política y procedimiento de Autoridad para Detener el Trabajo (Stop Work Authority)","cd","Gerencia","","","tiene","pol"],["s01","Matriz de EPP por puesto del sector","sector","Jefatura de SySO","","C1","","epp"],["s02","Entrega de EPP firmada por el personal del sector","sector","Jefe del sector","doc-epp","C2","","epp"],["s03","Entrega de uniforme firmada","sector","Recursos Humanos","doc-unif","","","epp"],["s04","Exámenes médicos del personal: preocupacional, periódico y de egreso","sector","Medicina laboral","","G1","","sal"],["s05","Control de vacunación del personal al día","sector","Medicina laboral","","G2","","sal"],["s06","Habilitación de los operadores de equipo: reach, zorra y montacargas","sector","Jefatura de SySO + Mantenimiento","","D5","","per"],["s07","Permisos de trabajo del sector: altura, contratistas y tareas especiales","sector","Jefatura de SySO","form-permiso","","","per"],["s08","Inducción de seguridad del personal del sector, firmada","sector","Jefatura de SySO","","F2","","cap"],["s09","Verificación de orden y limpieza del sector","sector","Jefe del sector","doc-ol-dep","","","reg"],["s10","Pictograma de EPP requerido, instalado y legible en el acceso","sector","Jefatura de SySO","","B1","","epp"],["s11","Registro de charlas de seguridad de 5 minutos","sector","Jefe del sector","","F3","","cap"],["s12","Registro de actos y condiciones inseguras del sector, con seguimiento","sector","Jefe del sector + SySO","","F5","","reg"],["d13","Mediciones de higiene ocupacional vigentes: iluminación, ruido y calidad de aire","cd","Jefatura de SySO","r-ilum","","","rie"],["d14","Habilitación municipal de prevención contra incendios (informe técnico PCI)","cd","Jefatura de SySO + Mantenimiento","r-pcimuni","B3","","per"],["d15","Registro profesional del responsable de SySO ante el Viceministerio de Trabajo","cd","Jefatura de SySO","r-regchristian","","","per"],["d16","Contrato de servicio médico laboral vigente","cd","Recursos Humanos","r-medico","G1","","sal"],["d17","Listado de aptitud del personal y aptos con condiciones por puesto","cd","Medicina laboral","r-aptitud","G1","","sal"],["d18","Brigada de emergencia conformada, con nómina y formación registrada","cd","Jefatura de SySO","r-brigadas","E1","","emg"],["d19","Presentaciones al MTESS y al MSPBS con acuse de mesa de entrada","cd","Jefatura de SySO","r-mtess","","","per"],["d20","Plan de mantenimiento de maquinarias y equipos","cd","Mantenimiento","r-manteq","D1","","reg"],["d21","Programa de Seguridad y Salud Ocupacional del año en curso","cd","Jefatura de SySO","r-progsso","A3","","pla"],["d22","Cronograma del Mes de la Seguridad del año en curso","cd","Jefatura de SySO","r-messeg","F1","","pla"],["s13","Apto de trabajo del personal del sector, con el apto para trabajo pesado donde corresponde","sector","Medicina laboral","r-aptos","G1","","sal"],["s14","Riesgos del puesto identificados y comunicados al personal del sector","sector","Jefatura de SySO","r-riesgospuesto","A5","","rie"],["d23","Política de Alcohol, Drogas y Medicamentos No Autorizados, aprobada y vigente","cd","Jefatura de SySO + RRHH","","G4","tiene","pol"],["d24","Constancia de que la política de alcohol y drogas fue comunicada al personal","cd","RRHH","","F1","tiene","cap"],["d25","Consentimientos firmados del personal sobre la política de alcohol y drogas","cd","RRHH","","F2","no","reg"],["d26","Planilla de registro de los controles de alcoholemia realizados","cd","Jefatura de SySO","","G4","no","sal"],["d27","Capacitación de los operadores del equipo Alcosensor, certificada","cd","Jefatura de SySO","","F1","tiene","cap"],["d28","Certificado de calibración vigente del equipo Alcosensor","cd","Jefatura de SySO","","G4","no","sal"],["d29","POE de Seguridad y Prevención con el Plan de Emergencia, aprobado y distribuido","cd","Jefatura de SySO + Gerencia General","","E1","tiene","emg"],["d30","Programa de formación de brigadas con temario y certificación del CBVP","cd","Jefatura de SySO","","E2","tiene","cap"],["d31","Descripción del sistema PCI del CD: equipos, reservorios, motobomba y generador","cd","Jefatura de SySO","","B3","tiene","emg"],["d32","Fichas del Sistema de Comando de Incidentes (SCI), impresas y disponibles","cd","Jefatura de SySO","","E3","tiene","emg"],["d33","Calendario anual de actividades y mantenimientos del sistema PCI","cd","Jefatura de SySO + Mantenimiento","","B3","tiene","emg"],["d34","Registros de los mantenimientos PCI hechos, con la frecuencia que fija el calendario","cd","Mantenimiento","","B3","no","emg"],["d35","Registro de los simulacros de evacuación, con el tiempo medido","cd","Jefatura de SySO","","E4","no","emg"],["d36","Registro de cada Alto de Trabajo ejercido, con foto, acción y cierre","cd","Jefatura de SySO","","A7","no","reg"],["d37","Tarjeta de Autoridad para Detener el Trabajo entregada a cada colaborador","cd","Jefatura de SySO + RRHH","","F2","no","cap"],["s16","Nómina de los brigadistas del sector, publicada en el sector","sector","Jefatura de SySO","","E2","no","emg"],["s17","Plan de llamadas de emergencia publicado y legible en el sector","sector","Jefatura de SySO","","E1","no","emg"],["s15","Plano del sector con salidas de emergencia y equipos PCI señalizados","sector","Jefatura de SySO","r-plano","B2","","emg"]].map(r=>{const o={};DOCREQ_COLS.forEach((k,i)=>o[k]=r[i]);return o});
 /* la lista es editable por Calidad: si hay config/docReq manda esa */
 const docReqCfg=()=>(state.docReqCfg&&Array.isArray(state.docReqCfg.items)&&state.docReqCfg.items.length)
   ?state.docReqCfg.items:DOCREQ_BASE;
@@ -9580,6 +9791,17 @@ function docEstado(sec,r){
   if(r.est0)return r.est0;
   return 'sin';
 }
+/* los que dicen "Tiene" pero no tienen archivo: es lo que se cae en una inspección */
+function docsSinArchivo(sec,alc){
+  return reqsDe(alc).filter(r=>{
+    if(docEstado(sec,r)!=='tiene')return false;
+    const v=docReqResp(sec)[r.id]||{};
+    const id=v.docId||r.doc||'';
+    if(!id)return true;
+    const d=docsVisibles(AUD_PILAR).find(x=>x.id===id);
+    return !d||!(d.data||d.url);
+  });
+}
 function calcDocs(sec,alc){
   const L=reqsDe(alc);let t=0,n=0,na=0,sin=0;
   L.forEach(r=>{const e=docEstado(sec,r);
@@ -9599,7 +9821,15 @@ const MAN_SEG_ANEXO="<div data-cat=\"prog-sso\"><h2>El programa del pilar Seguri
 const faltaAnexoSSO=pid=>String((manualDe(pid)||{}).html||'').indexOf('data-cat="prog-sso"')<0;
 const diagKey=pid=>manKey(pid);
 const diagDe=pid=>state.diag.find(x=>x.id===diagKey(pid))||{};
-const diagItems=()=>(state.diagCfg&&Array.isArray(state.diagCfg.items)&&state.diagCfg.items.length)?state.diagCfg.items:DIAG_ITEMS;
+const diagBase=()=>(state.diagCfg&&Array.isArray(state.diagCfg.items)&&state.diagCfg.items.length)?state.diagCfg.items:DIAG_ITEMS;
+/* mientras Calidad está actualizando, la lista de ítems puede tener agregados o textos
+   cambiados que todavía no se guardaron: se trabaja sobre esa copia */
+const diagItems=()=>(state.diagEd&&Array.isArray(state.diagEd.items))?state.diagEd.items:diagBase();
+function diagItemsEditables(pid){
+  if(!state.diagEd||state.diagEd.key!==diagKey(pid))state.diagEd={key:diagKey(pid),resp:{}};
+  if(!Array.isArray(state.diagEd.items))state.diagEd.items=JSON.parse(JSON.stringify(diagBase()));
+  return state.diagEd.items;
+}
 function diagResp(pid){
   const base=(diagDe(pid)||{}).resp||{};
   const ed=state.diagEd;
@@ -10431,6 +10661,23 @@ document.addEventListener('click',async e=>{
     try{await state.db.doc(COL.pl+'/'+pf.dataset.pfin).delete();toast('Borrado para siempre')}
     catch(e){toast('No se pudo borrar')}
     state.pDel=null;render();return}
+  const dga=t.closest('[data-dgadd]');
+  if(dga){
+    if(!puedeDiag()){toast('Este diagnóstico lo carga Calidad o el encargado del pilar');return}
+    const pid=state.pil.id, b=dga.dataset.dgadd;
+    const L=diagItemsEditables(pid);
+    const mios=L.filter(x=>x.bloque===b);
+    const num=mios.reduce((m,x)=>Math.max(m,Number(x.num)||0),0)+1;
+    L.push({id:b+num+'-'+Math.random().toString(36).slice(2,6),bloque:b,num:num,
+      t:'',nota:'',est0:'sin',ev:'',acc:'',resp:'',dias:60,nuevo:true});
+    toast('Punto agregado: escribí qué se verifica y guardá');
+    render();return}
+  const dgf=t.closest('[data-dgf]');
+  if(dgf){state.dgFiltro=state.dgFiltro===dgf.dataset.dgf?'':dgf.dataset.dgf;render();return}
+  const dqc=t.closest('[data-dqcat]');
+  if(dqc){state.dqcat=state.dqcat===dqc.dataset.dqcat?'':dqc.dataset.dqcat;render();return}
+  const dpc=t.closest('[data-dpcat]');
+  if(dpc){state.dpcat=state.dpcat===dpc.dataset.dpcat?'':dpc.dataset.dpcat;render();return}
   const isit=t.closest('[data-irsitio]');
   if(isit){elegirSitio(isit.dataset.irsitio);state.wiz=null;render();
     toast('Ahora estás en '+(((state.sitios||[]).find(p=>p.id===state.sitioSel)||{}).nombre||'el sitio elegido'));return}
@@ -10782,9 +11029,16 @@ document.addEventListener('click',async e=>{
     const limpio={};
     its.forEach(it=>{const r=R[it.id]||{};
       const o={v:(r.v||it.est0||'sin'),ev:(r.ev!=null?r.ev:it.ev)||'',acc:(r.acc!=null?r.acc:it.acc)||'',
-               resp:(r.resp!=null?r.resp:it.resp)||'',plazo:r.plazo||''};
+               resp:(r.resp!=null?r.resp:it.resp)||'',plazo:r.plazo||'',docId:r.docId||''};
       limpio[it.id]=o});
     const g=calcDiag(pid);
+    /* si Calidad agregó puntos o cambió textos, la lista nueva queda para todos los sitios */
+    if(state.diagEd&&Array.isArray(state.diagEd.items)){
+      const L=state.diagEd.items.filter(x=>String(x.t||'').trim()).map(x=>{
+        const o=Object.assign({},x); delete o.nuevo; return o});
+      if(L.length)guardarDoc('config/pilarDiag',{items:L,actualizado:new Date().toISOString(),
+        actualizadoPor:(state.sesion&&state.sesion.nombre)||state.auditor||'—'});
+    }
     guardarDoc('pilarDiag/'+key,{pilarId:pid,sitioId:state.sitioSel,resp:limpio,
       pct:g.pct,cumple:g.cum,pendientes:g.pen,noAplica:g.na,sinEvaluar:g.sin,total:g.tot,
       actualizado:new Date().toISOString(),actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'})
@@ -11260,6 +11514,15 @@ document.addEventListener('change',async e=>{
     }
   }
   if(t.id==='layPlano'){state.lay=state.lay||{};state.lay.plano=t.value;state.lay.sel=null;render();return}
+  if(t.dataset&&t.dataset.dgt!=null){
+    const L=diagItemsEditables(state.pil.id);
+    const it=L.find(x=>x.id===t.dataset.dgt); if(it)it.t=t.value;
+    return}
+  if(t.dataset&&t.dataset.dgdoc!=null){
+    if(!puedeDiag()){toast('Este diagnóstico lo carga Calidad o el encargado del pilar');return}
+    diagTocar(state.pil.id,t.dataset.dgdoc,'docId',t.value);
+    toast(t.value?'Documento enlazado. Acordate de guardar':'Documento desenlazado');
+    render();return}
   if(t.id==='pQ'){state.pq=t.value;
     clearTimeout(state.pqT);state.pqT=setTimeout(()=>{render();
       const x=$('#pQ');if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}},250);return}
