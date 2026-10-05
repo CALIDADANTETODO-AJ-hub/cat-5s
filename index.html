@@ -866,6 +866,25 @@ tr.lsel>td{background:#fff7ed}
 .audrol b{display:block;font-size:14px;line-height:1.3}
 .audrol span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:3px;line-height:1.45}
 .audrolx{font-size:12.5px;color:var(--ink-2);max-width:46ch;line-height:1.5}
+.cohnotas{display:grid;grid-template-columns:repeat(auto-fit,minmax(165px,1fr));gap:10px}
+.cohn{background:var(--surface-2);border:1px solid var(--line);border-radius:11px;padding:11px 13px;
+  border-top:3px solid var(--line-strong)}
+.cohn.dec{border-top-color:var(--warn)} .cohn.ver{border-top-color:var(--accent)}
+.cohn.vacia{opacity:.55}
+.cohn .k{display:block;font-size:11px;color:var(--ink-3);line-height:1.3;min-height:28px}
+.cohn b{display:block;font-size:27px;font-weight:800;line-height:1.1;margin:4px 0 2px;font-variant-numeric:tabular-nums}
+.cohn .q{display:block;font-size:11.5px;color:var(--ink-2)}
+.cohn .t{display:inline-block;margin-top:6px;font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-3)}
+.cohbr{margin-top:12px;border-radius:12px;padding:12px 15px;border:1px solid var(--line)}
+.cohbr.bien{background:var(--ok-soft);border-color:var(--ok)}
+.cohbr.med{background:var(--warn-soft);border-color:var(--warn)}
+.cohbr.mal{background:var(--crit-soft);border-color:var(--crit);border-width:2px}
+.cohbr b{display:block;font-size:19px;line-height:1.2}
+.cohbr span{display:block;font-size:12.5px;color:var(--ink-2);margin-top:5px;line-height:1.5}
+tr.temchoca td{background:var(--crit-soft)}
+.tm{display:inline-block;font-size:11px;color:var(--ink-3);margin-left:4px;vertical-align:middle}
+.tm.no-mir{font-size:10.5px;font-style:italic}
 .cohp{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:12px 14px;margin-bottom:10px}
 .cohp:last-child{margin-bottom:0}
 .cohh{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -1431,7 +1450,7 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
     <button class="railclose" id="btnMenuCerrar">✕ Cerrar menú</button>
     <div class="brand">
       <div class="mark"><img src="data:image/png;base64,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" alt="Calidad Ante Todo"></div>
-      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver" id="verLbl">versión 95</span><span class="hoyr" id="hoyRail"></span></div>
+      <div><b>CAT</b><span>Calidad Ante Todo</span><span class="ver" id="verLbl">versión 105</span><span class="hoyr" id="hoyRail"></span></div>
     </div>
     <div id="navdyn"></div>
     <div class="railfoot" id="railfoot"></div>
@@ -1485,7 +1504,12 @@ const REGLAS_DEF={
   tarjMin:2,     /* tarjetas que el sector tiene que levantar por mes */
   exigeInterna:true,   /* el sector tiene que haberse auditado a sí mismo ese mes */
   exigeInd:true,       /* los indicadores del mes tienen que estar cargados */
-  fotoObliga:true      /* no se avanza en la auditoría sin foto de lo que no cumple */
+  fotoObliga:true,     /* no se avanza en la auditoría sin foto de lo que no cumple */
+  /* el puntaje del reconocimiento · como lo definió Calidad el 05/10 */
+  pesoAud:80,    /* cuánto pesa la auditoría en el puntaje del podio */
+  pesoMej:20,    /* cuánto pesa la mejora continua */
+  castigo:10,    /* puntos enteros que se restan si quedó una acción vencida */
+  mejMeta:2      /* mejoras implementadas por mes para llegar al 100 % de mejora continua */
 };
 const reglas=()=>Object.assign({},REGLAS_DEF,state.reglas||{});
 /* VERDE y ROJO siguen existiendo porque los usa media app; ahora salen de las reglas */
@@ -1628,7 +1652,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],reco:[],mejoras:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,orgCfg:null,orgEd:null,orgNivel:'cd',orgSec:'',docReqCfg:null,docReqEd:null,puertasCfg:null,pciCfg:null,reglas:null,ap:null,apSec:null,tarjetas:[],tj:null,calendario:null,cal:null,cohSec:null,aud:{sub:'syso',rol:'',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[],
+  pallets:[],pilarDocs:[],pilarInd:[],reco:[],mejoras:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,orgCfg:null,orgEd:null,orgNivel:'cd',orgSec:'',docReqCfg:null,docReqEd:null,puertasCfg:null,pciCfg:null,reglas:null,ap:null,apSec:null,tarjetas:[],tj:null,calendario:null,cal:null,cohSec:null,coh:null,aud:{sub:'syso',rol:'',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[],
     pu:{},puObs:{},puHora:'',puTurno:'Mañana',pci:{},pciObs:{}},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{tj:false,pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,rc:false,mj:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false,pl:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
@@ -2038,6 +2062,128 @@ function coherenciaSector(sec){
     pct:comp?Math.round((1-disc/comp)*1000)/10:null,
     peor:todas.slice().sort((x,y)=>x.c.pct-y.c.pct)[0]};
 }
+/* ================= las tres auditorías, comparadas por la nota =================
+   La comparación que no necesita que las listas se parezcan: las tres miraron el mismo
+   sector el mismo mes. Si una da 100 y otra 72, alguien está mirando distinto, y no hace
+   falta saber qué pregunta cada una para verlo.
+   La BRECHA es cuánto más optimista fue quien se audita a sí mismo. Una brecha chica y
+   estable es un sector que se conoce; una brecha grande y repetida es un sector que se
+   mira con buenos ojos —o que no sabe qué está mirando—.                                */
+function tresAuditorias(sec,a,m){
+  const g=auditoriasPuntaje().filter(x=>x.sectorId===sec&&enMes(x.fecha,a,m)&&x.pct!=null)
+    .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0]||null;
+  const i=internasPuntaje().filter(x=>x.sectorId===sec&&enMes(x.fecha,a,m)&&x.pct!=null)
+    .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0]||null;
+  const pil=(state.segAud||[]).filter(x=>x.sectorId===sec&&enMes(x.fecha,a,m)&&x.pct!=null
+      &&['syso','ol','permiso','epp','apto'].indexOf(x.tipo)>=0);
+  const pI=pil.filter(x=>rolDeSegAud(x)==='interna');
+  const pE=pil.filter(x=>rolDeSegAud(x)==='externa');
+  const prom=L=>L.length?Math.round(L.reduce((n,x)=>n+x.pct,0)/L.length*10)/10:null;
+  const notas=[
+    {k:'sec', l:'Sectorial · la cruzada entre jefes', a:i,  pct:i?i.pct:null, quien:i?(i.auditor||'—'):'',  declara:true},
+    {k:'pil', l:'De pilar · interna',                 a:pI[0]||null, pct:prom(pI), quien:pI.length?(pI[0].por||'—'):'', declara:true, n:pI.length},
+    {k:'pex', l:'De pilar · externa',                 a:pE[0]||null, pct:prom(pE), quien:pE.length?(pE[0].por||'—'):'', declara:false, n:pE.length},
+    {k:'gen', l:'General · la de Calidad',            a:g,  pct:g?g.pct:null,  quien:g?(g.auditor||'—'):'',  declara:false}
+  ];
+  const con=notas.filter(x=>x.pct!=null);
+  const dec=con.filter(x=>x.declara), ver=con.filter(x=>!x.declara);
+  const pD=dec.length?Math.round(dec.reduce((n,x)=>n+x.pct,0)/dec.length*10)/10:null;
+  const pV=ver.length?Math.round(ver.reduce((n,x)=>n+x.pct,0)/ver.length*10)/10:null;
+  const max=con.length?Math.max.apply(null,con.map(x=>x.pct)):null;
+  const min=con.length?Math.min.apply(null,con.map(x=>x.pct)):null;
+  return {notas:notas,con:con.length,
+    brecha:(pD!=null&&pV!=null)?Math.round((pD-pV)*10)/10:null,
+    declaran:pD,verifican:pV,rango:(max!=null&&min!=null)?Math.round((max-min)*10)/10:null,
+    max:max,min:min};
+}
+
+/* ================= las tres auditorías, comparadas por tema =================
+   Ocho temas que las tres listas miran, aunque los pregunten distinto.
+   Del lado del pilar el tema es exacto: cada punto ya trae el ítem del diagnóstico del
+   que sale, y de ahí sale el tema sin adivinar nada.
+   Del lado de 5S no hay esa columna, así que el tema se deduce de las palabras del punto.
+   Eso es APROXIMADO y la pantalla lo dice: sirve para saber dónde mirar, no para poner
+   una nota. El día que las checklists 5S tengan su columna de tema, esto pasa a ser
+   exacto sin tocar nada más.                                                            */
+const TEMAS=[
+ {k:'pci',  l:'Equipos contra incendio', ic:'\u{1F9EF}', diag:['B3'],
+  pal:['extintor','bie','boca de incendio','pulsador','rociador','pci','incendio','manguera','hidrante']},
+ {k:'evac', l:'Salidas y evacuación',    ic:'\u{1F6AA}', diag:['B2','B7'],
+  pal:['salida de emergencia','salidas de emergencia','evacuacion','evacuación','via de salida','punto de encuentro','puerta de emergencia']},
+ {k:'senal',l:'Señalización',            ic:'\u{1F6A7}', diag:['B1'],
+  pal:['senalizacion','señalizacion','señalización','cartel','demarcacion','demarcación','rotulo','rótulo','identificad']},
+ {k:'epp',  l:'EPP y protección',        ic:'\u{1F9BA}', diag:['C1','C2','C3','C4','C5'],
+  pal:['epp','proteccion personal','protección personal','uniforme','casco','guante','chaleco','calzado','arnes','arnés']},
+ {k:'elec', l:'Instalación eléctrica',   ic:'\u{26A1}',  diag:['B4'],
+  pal:['tablero','electric','eléctric','cable','enchufe','zapatilla','disyuntor']},
+ {k:'orden',l:'Orden y limpieza',        ic:'\u{1F9F9}', diag:['B5'],
+  pal:['orden','limpi','despejad','obstruc','sucied','polvo','telas de arana','tela de araña','libre de material','necesario']},
+ {k:'equip',l:'Equipos y racks',         ic:'\u{1F69C}', diag:['D2','D4','D5'],
+  pal:['rack','estanter','montacarga','reach','zorra','maquina','máquina','equipo','pallet','estiba','herramienta']},
+ {k:'resid',l:'Residuos',                ic:'\u{267B}',  diag:['G5'],
+  pal:['residuo','basur','tacho','segregac','reciclad','desecho']}
+];
+const normT=t=>String(t||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function temaDeTexto(t){
+  const n=normT(t);
+  for(const T of TEMAS){ if(T.pal.some(p=>n.indexOf(normT(p))>=0))return T.k }
+  return '';
+}
+function temaDeDiag(code){
+  const T=TEMAS.find(x=>x.diag.indexOf(String(code||'').trim())>=0);
+  return T?T.k:'';
+}
+/* el veredicto de una auditoría sobre un tema: cumple si todos sus puntos de ese tema
+   cumplen; no cumple si alguno falla; vacío si esa auditoría no miró nada de ese tema */
+function temasDe5S(a){
+  if(!a||!a.respuestas)return {};
+  const cl=state.checklists.find(c=>c.id===a.checklistId); if(!cl)return {};
+  const out={};
+  (cl.secciones||[]).forEach(sec=>(sec.items||[]).forEach(it=>{
+    const r=a.respuestas[it.id]; if(!r||r.v==null||r.v==='na')return;
+    const k=temaDeTexto(it.texto); if(!k)return;
+    out[k]=out[k]||{ok:0,mal:0,puntos:[]};
+    if(esFalla(cl,r.v)){out[k].mal++;out[k].puntos.push(it.texto)}else out[k].ok++;
+  }));
+  return out;
+}
+function temasDePilar(L){
+  const out={};
+  L.forEach(a=>{
+    (a.detalle||[]).forEach(d=>{
+      if(!d.v||d.v==='na')return;
+      const base=segChkCfg().find(x=>x.id===d.id)||{};
+      const k=temaDeDiag(base.item)||temaDeTexto(d.t); if(!k)return;
+      out[k]=out[k]||{ok:0,mal:0,puntos:[]};
+      if(CHK_FALLA(d.v)){out[k].mal++;out[k].puntos.push(d.t)}else out[k].ok++;
+    });
+  });
+  return out;
+}
+function comparaTemas(sec,a,m){
+  const T=tresAuditorias(sec,a,m);
+  const pil=(state.segAud||[]).filter(x=>x.sectorId===sec&&enMes(x.fecha,a,m)&&Array.isArray(x.detalle));
+  const col=[
+    {k:'sec',l:'Sectorial', t:temasDe5S(T.notas[0].a)},
+    {k:'pil',l:'Pilar · interna', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='interna'))},
+    {k:'pex',l:'Pilar · externa', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='externa'))},
+    {k:'gen',l:'General', t:temasDe5S(T.notas[3].a)}
+  ];
+  const filas=TEMAS.map(TT=>{
+    const celdas=col.map(c=>{
+      const v=c.t[TT.k];
+      return {k:c.k,l:c.l,miro:!!v,ok:v?v.mal===0:null,mal:v?v.mal:0,puntos:v?v.puntos:[]};
+    });
+    const vistos=celdas.filter(x=>x.miro);
+    const dicenOk=vistos.filter(x=>x.ok), dicenMal=vistos.filter(x=>!x.ok);
+    return {T:TT,celdas:celdas,vistos:vistos.length,
+      choca:dicenOk.length>0&&dicenMal.length>0,
+      nadie:vistos.length===0};
+  });
+  return {filas:filas.filter(f=>!f.nadie),col:col,
+    choques:filas.filter(f=>f.choca).length,
+    sinMirar:filas.filter(f=>f.nadie).length};
+}
 /* el texto de los puntos donde no coincidieron, para el informe y el plan de acción */
 function textoItem(clId,itemId){
   const cl=state.checklists.find(c=>c.id===clId);
@@ -2193,6 +2339,42 @@ function ultimaPorSector(auds){
 const abierto=h=>h.estado!=='cerrado';
 const vencido=h=>abierto(h)&&h.fechaLimite&&String(h.fechaLimite)<todayISO();
 const cerradoEnPlazo=h=>h.estado==='cerrado'&&h.fechaLimite&&h.cerrado&&String(h.cerrado).slice(0,10)<=String(h.fechaLimite);
+/* ---------- la mejora continua que puntúa ----------
+   Calidad decidió que cuente la mejora **implementada**, no la anotada: si alcanzara
+   con cargarla, se cargan diez el último día del mes y no cambia nada en el piso.
+   Una mejora se marca como implementada cuando está hecha y tiene su foto de después. */
+const mejImpl=m=>!!(m&&m.implementada);
+const fechaImpl=m=>String((m&&(m.implEl||m.fecha))||'').slice(0,10);
+function mejorasImplementadas(secId,a,m){
+  return (state.mejoras||[]).filter(x=>x.sectorId===secId&&mejImpl(x)&&enMes(fechaImpl(x),a,m));
+}
+/* ---------- ¿la acción sirvió? ----------
+   Cerrar no es lo mismo que resolver. Después de cerrar hay que volver a mirar y
+   decir si lo que se hizo funcionó. Si no funcionó, hay que escribir por qué: eso
+   es lo que evita que el mismo hallazgo vuelva dentro de dos meses. */
+const EFEC={si:{l:'Fue efectiva',k:'ok'},no:{l:'No fue efectiva',k:'crit'}};
+const efecDe=h=>(h&&h.efectivo)||'';
+const faltaEfec=h=>h&&h.estado==='cerrado'&&!efecDe(h);
+const noEfectiva=h=>efecDe(h)==='no';
+function efecHTML(h){
+  if(h.estado!=='cerrado')return `<div class="soft2">Cuando el hallazgo se cierre, acá aparece la
+    pregunta de si la acción fue efectiva.</div>`;
+  const v=efecDe(h);
+  return `<div class="field"><label>¿Fue efectiva la acción?</label>
+    <div class="dgopt">
+      <button class="si" data-efec="si" data-efech="${esc(h.id)}" aria-pressed="${v==='si'}">Sí, fue efectiva</button>
+      <button class="no" data-efec="no" data-efech="${esc(h.id)}" aria-pressed="${v==='no'}">No fue efectiva</button>
+    </div>
+    <div class="sm" style="color:var(--ink-3);margin-top:5px">${v==='si'
+      ? esc('Verificada el '+fmtDate(String(h.efectivoEl||'').slice(0,10))+(h.efectivoPor?' por '+h.efectivoPor:''))
+      : (v==='no'
+        ? 'Escribí abajo por qué no funcionó. Mientras no esté escrito, el hallazgo cuenta como no resuelto.'
+        : 'Se contesta después de cerrar, cuando ya se pudo ver si el problema volvió o no.')}</div></div>
+  ${v==='no'?`<div class="field"><label>¿Por qué no fue efectiva?</label>
+    <textarea data-f="efecPorQue" style="min-height:44px" placeholder="Ej.: se demarcó el piso pero la demarcación se borró en dos semanas por el paso de autoelevadores">${esc(h.efecPorQue||'')}</textarea>
+    <div class="sm" style="color:var(--ink-3);margin-top:5px">Con esto se abre una acción nueva: lo que
+      se hizo no alcanzó, así que hay que hacer otra cosa.</div></div>`:''}`;
+}
 function hallazgosSitio(){
   const L=sectoresQueVeo();
   let h=state.hallazgos;
@@ -2227,24 +2409,57 @@ const ROLES=[
 ];
 const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
 const PERM={
-  /* la auditoría general la hace sólo Calidad: no va en el menú de nadie más */
-  jefe:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','piso','audsec','audint','seginf','rotacion','expedientes','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
-  sector:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
-  sitio:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares','etiquetas'],
-  /* SySO trabaja sobre todo el CD: entra a cualquier sector para la auditoría interna.
-     El jefe de SySO y su analista ven exactamente lo mismo: la diferencia entre los dos
-     no es qué miran, es quién firma. Lo único que queda fuera de los dos es lo de
-     Calidad: la auditoría general, los expedientes 5S y la papelera. */
-  syso:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','tablero','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
-  sysoana:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','piso','audsec','audint','seginf','rotacion','auditorias','informe','evolucion','tablero','hallazgos','mejoras','buenas','copa','sanciones','layouts','pilares'],
-  /* el responsable de mejoras: su sector, el plan de acción de su sector y las mejoras propias */
-  mejoras:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','hallazgos','mejoras','buenas','auditorias','evolucion','copa','sanciones','layouts','pilares'],
-  planta:['manual','etiquetas','pilares','tarjetas'],
-  rrhh:['manual','pilares','tarjetas','sanciones'],
-  enfermeria:['manual','pilares','tarjetas','sanciones'],
-  gerencia:['manual','cumplimiento','aprobacion','coherencia','calendario','tarjetas','gerencia','resumen','impacto','ahorro','tablero','evolucion','auditorias','expedientes','hallazgos','mejoras','buenas','copa','sanciones','pantalla','layouts','rotacion','pilares','informe','etiquetas'],
+  /* Cada perfil ve lo suyo y nada más. Calidad (admin) es el único que ve todo:
+     es quien administra el programa. Los demás entran y encuentran su pantalla,
+     no un menú de cosas que no les corresponden.
+       · jefe y referente de sector: su sector — cómo viene, qué le falta para
+         aprobar, la auditoría sectorial que le toca hacer, sus tarjetas y su
+         plan de acción.
+       · SySO (Christian y Rubén): el pilar Seguridad y nada más. La auditoría
+         interna, sus documentos, sus acciones y las tarjetas que levanta.
+       · Gerencia: los números del CD y la lectura de lo que cargan los demás.
+       · RRHH, Enfermería y Planta: sólo lo que ellos cargan. */
+
+  /* --- el sector --- */
+  jefe:['manual','cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','audsec','calendario'],
+  sector:['manual','cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','audsec','calendario'],
+  sitio:['manual','cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','audsec','calendario','etiquetas'],
+
+  /* --- SySO: el pilar Seguridad y lo que se trabaja ahí ---
+     Christian firma y Rubén carga: ven exactamente lo mismo. Fuera del pilar no
+     les aparece nada del 5S, porque el 5S no es de ellos. */
+  syso:['manual','pilares','calendario','tarjetas','hallazgos','coherencia'],
+  sysoana:['manual','pilares','calendario','tarjetas','hallazgos','coherencia'],
+
+  /* --- el responsable de mejoras: el plan de acción de su sector --- */
+  mejoras:['manual','cumplimiento','hallazgos','mejoras','copa'],
+
+  /* --- los que sólo cargan un dato --- */
+  planta:['manual','etiquetas','tarjetas'],
+  rrhh:['manual','pilares','tarjetas'],
+  enfermeria:['manual','pilares','tarjetas'],
+
+  /* --- Gerencia: mira, no carga --- */
+  /* Gerencia ve lo mismo que el sector, más la tendencia mensual. Y la auditoría
+     interna de los pilares, que se habilita por pilar y no por esta lista. */
+  gerencia:['manual','cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','audsec','calendario','tendencia'],
+
+  /* --- Calidad: administra el programa, ve todo --- */
   admin:null
 };
+
+/* a dónde entra cada perfil cuando abre la aplicación */
+const HOME={jefe:'cumplimiento',sector:'cumplimiento',sitio:'cumplimiento',
+  syso:'audint',sysoana:'audint',gerencia:'tendencia',mejoras:'hallazgos',
+  rrhh:'pilares',enfermeria:'pilares',planta:'etiquetas',admin:'tablero'};
+function vistaInicial(){
+  const r=(state.sesion&&state.sesion.rol)||'admin';
+  const h=HOME[r];
+  if(h&&puede(h))return h;
+  if(puede('tablero'))return 'tablero';
+  const l=PERM[r];
+  return (l&&l.length)?l[0]:'manual';
+}
 /* "Ver como": Calidad se pone en los zapatos de otro usuario para revisar qué ve.
    No pide clave porque no hace falta: quien ya entró como administrador puede
    cambiar cualquier cosa igual. La bitácora sigue registrando a la persona real. */
@@ -2442,6 +2657,9 @@ function latidoTablet(){
 const restringidoASitio=()=>!!(state.sesion&&(state.sesion.rol==='sitio'||state.sesion.rol==='sector'||state.sesion.rol==='jefe'||state.sesion.rol==='planta')&&state.sesion.sitioId);
 function puede(v){
   if(!v)return true;
+  /* la auditoría interna no la habilita el rol sino el pilar: el que lleva un pilar
+     entra a la suya, sea jefe, referente o lo que sea. Si no lleva ninguno, no la ve. */
+  if(v==='audint'||v==='seginf')return pilaresQueVe().length>0;
   const lista=PERM[state.sesion?state.sesion.rol:'admin'];
   return !lista||lista.indexOf(v)>=0;
 }
@@ -2852,7 +3070,9 @@ function vUsuarios(){
   const f=state.uf||{rol:'sitio',sitioId:state.sitioSel||'p-cd',sectorId:''};state.uf=f;
   const secs=todosSectores().filter(s=>s.sitioId===f.sitioId);
   return `${avisoDb()}
-  <div class="head"><div><h1>Usuarios</h1><p>Cada persona entra con su usuario y su clave. El rol define qué ve; el sitio y el sector, de qué parte. Todo lo que cada uno hace queda en la <b>Bitácora</b>.</p></div>
+  <div class="head"><div><h1>Usuarios</h1><p>Cada persona entra con su usuario y su clave. El rol define qué ve; el sitio y el sector, de qué parte.
+    El <b>pilar que lleva</b> es el que le habilita su <b>auditoría interna</b>: la del pilar Seguridad la lleva SySO,
+    y el resto se asigna acá. Todo lo que cada uno hace queda en la <b>Bitácora</b>.</p></div>
     <div class="headbtns"><button class="btn" data-go="bitacora">Ver bitácora</button></div></div>
   ${actividadHTML()}
   <div class="grid g4" style="margin-bottom:16px">${ROLES.map(r=>`<div class="card"><h4 style="font-size:15px">${esc(r.l)}</h4><p>${esc(r.d)}</p><div class="m" style="margin-top:6px;color:var(--ink-3);font-size:12px">${us.filter(u=>u.rol===r.v).length+(r.v==='admin'?1:0)} usuario${(us.filter(u=>u.rol===r.v).length+(r.v==='admin'?1:0))===1?'':'s'}${r.v==='admin'?' (incluye "admin")':''}</div></div>`).join('')}</div>
@@ -2882,12 +3102,16 @@ function vUsuarios(){
     <div><button class="btn primary" type="submit">Crear usuario</button></div>
   </form></div></section>
   <section class="panel"><header><h3>Usuarios cargados</h3><div class="sub">${us.length} además del administrador "admin"</div></header>
-  ${us.length?`<div class="tw"><table><thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Sitio / sector</th><th>Estado</th><th>Último ingreso</th><th>Reiniciar clave</th><th></th></tr></thead>
+  ${us.length?`<div class="tw"><table><thead><tr><th>Nombre</th><th>Usuario</th><th>Rol</th><th>Pilar que lleva</th><th>Sitio / sector</th><th>Estado</th><th>Último ingreso</th><th>Reiniciar clave</th><th></th></tr></thead>
   <tbody>${us.map(u=>{const st=sitioCat(u.sitioId||'');const sec=u.sectorId?sectorDe(u.sectorId):null;
     const ult=state.bitacora.filter(b=>b.usuario===u.id&&b.accion==='ingresó').sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)))[0];
     return `<tr data-urow="${esc(u.id)}"><td><b>${esc(u.nombre)}</b></td><td class="mono">${esc(u.id)}</td><td><select data-urol="${esc(u.id)}" style="max-width:200px;border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:12.5px;background:var(--surface);color:var(--ink)">
       ${ROLES.filter(r=>r.v!=='admin'||u.rol==='admin').map(r=>`<option value="${r.v}"${u.rol===r.v?' selected':''}>${esc(r.l)}</option>`).join('')}
     </select></td>
+    <td>${u.rol==='admin'||u.rol==='gerencia'?'<span style="color:var(--ink-3)">todos</span>':`<select data-upil="${esc(u.id)}" style="max-width:190px;border:1px solid var(--line);border-radius:8px;padding:5px 7px;font-size:12.5px;background:var(--surface);color:var(--ink)">
+      <option value="">— ninguno —</option>
+      ${(pilCfg().pilares||[]).map(q=>`<option value="${esc(q.id)}"${(Array.isArray(u.pilares)&&u.pilares[0]===q.id)?' selected':''}>P${q.num} · ${esc(q.nombre)}</option>`).join('')}
+    </select>`}</td>
     <td>${u.rol==='admin'||u.rol==='gerencia'?'<span style="color:var(--ink-3)">todos</span>':esc(st.corto||u.sitioId||'—')+(sec?' · '+esc(sec.nombre):'')+(u.jefeId?' · '+esc(nombreJefe(u.jefeId)):'')}</td>
     <td>${u.activo===false?'<span class="badge crit">desactivado</span>':(u.debeCambiar?'<span class="badge warn">clave inicial</span>':'<span class="badge ok dot">activo</span>')}</td>
     <td style="font-size:12px;color:var(--ink-3)">${ult?fmtDate(String(ult.fecha).slice(0,10))+' '+String(ult.fecha).slice(11,16):'nunca'}</td>
@@ -3083,6 +3307,15 @@ document.addEventListener('change',e=>{
     for(const k in ms){ if(t.dataset[k]!=null){
       const r=state.segChkEd.items.find(x=>x.id===t.dataset[k]); if(r)r[ms[k]]=t.value; return } }
   }
+  if(t.dataset&&t.dataset.upil!=null&&esAdmin()){
+    const u=usuarioDe(t.dataset.upil); if(!u)return;
+    const pid=t.value, q=pilarDe(pid)||{};
+    const d=Object.assign({},u,{pilares:pid?[pid]:[],actualizado:new Date().toISOString()});
+    delete d.id;
+    guardarDoc('usuarios/'+u.id,d).then(ok=>{if(ok)toast(pid
+      ?(u.nombre+' lleva ahora el pilar '+(q.nombre||pid))
+      :(u.nombre+' ya no lleva ningún pilar'));render()});
+    return}
   if(t.dataset&&t.dataset.urol!=null&&esAdmin()){
     const u=usuarioDe(t.dataset.urol); if(!u)return;
     const rol=t.value, d=Object.assign({},u,{rol:rol,actualizado:new Date().toISOString()});
@@ -3247,11 +3480,13 @@ function render(){
     }else if(hay.length){state._sitioOk=true}
   }
   sumarCapitulosManual();
-  if(!puede(state.view))state.view=puede('tablero')?'tablero':'manual';
+  if(!state.view||!puede(state.view))state.view=vistaInicial();
   if(state.loaded.est&&state.sesion&&state.sesion.rol==='admin'&&!state.sitiosOk){state.sitiosOk=true;asegurarSitios()}
   if(restringidoASitio()&&state.f.sitio!==state.sesion.sitioId){state.f.sitio=state.sesion.sitioId;state.sitioSel=state.sesion.sitioId}
   const nd=$('#navdyn');if(nd)nd.innerHTML=navHTML();
-  $$('.nav').forEach(b=>{b.hidden=!puede(b.dataset.view);b.setAttribute('aria-current',String(b.dataset.view===state.view))});
+  $$('.nav').forEach(b=>{b.hidden=!puede(b.dataset.view);
+    b.setAttribute('aria-current',String(b.dataset.view===state.view
+      &&(b.dataset.audpil==null||b.dataset.audpil===audPilar())))});
   $$('.nav[data-sitio]').forEach(b=>{if(b.dataset.sitio!==state.sitioSel)b.setAttribute('aria-current','false')});
   $$('.nav[data-pilnav]').forEach(b=>b.setAttribute('aria-current',String(state.view==='pilares'&&(state.pil.id||'')===b.dataset.pilnav&&b.dataset.sitio===state.sitioSel)));
   $$('.navfold').forEach(f=>{const body=$('[data-foldbody="'+f.dataset.fold+'"]');const any=body&&$$('.nav',body).some(b=>!b.hidden);f.hidden=!any;if(body&&!any)body.hidden=true});
@@ -3273,7 +3508,7 @@ function render(){
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={manual:vManual,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={tendencia:vTendencia,manual:vManual,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
@@ -3551,6 +3786,123 @@ function llavesSector(secId,a,m){
   return {gen:gen,sec:sec,coh:C,pct:gen?gen.pct:null,llaves:L,faltan:faltan,
     aprobado:faltan.length===0};
 }
+/* ================= tendencia mensual por sector =================
+   Lo que pidió Gerencia: una sola pantalla que diga, sector por sector, si va bien o
+   va mal. No es el puntaje del mes —ese ya está en otras pantallas— sino hacia dónde
+   va: se mira la nota de los últimos meses y se compara con la anterior.
+     va bien     · subió respecto del mes pasado y llega a la meta
+     se mantiene · se movió poco y sigue en meta
+     ojo         · bajó, o está entre el rojo y la meta
+     va mal      · está debajo del rojo, o viene bajando dos meses seguidos
+   Sin dos meses cargados no se puede hablar de tendencia y la pantalla lo dice. */
+const TEND_MESES=6;
+const TEND={
+  bien:{l:'Va bien',k:'ok',o:0},
+  mant:{l:'Se mantiene',k:'',o:1},
+  ojo:{l:'Ojo',k:'warn',o:2},
+  mal:{l:'Va mal',k:'crit',o:3},
+  sin:{l:'Sin datos',k:'',o:4}
+};
+function mesesAtras(n){
+  const out=[], d=new Date(); d.setDate(1);
+  for(let i=0;i<n;i++){out.unshift({a:d.getFullYear(),m:d.getMonth()});d.setMonth(d.getMonth()-1)}
+  return out;
+}
+function tendenciaSector(secId){
+  const R=reglas(), meta=Number(R.metaMes)||80, rojo=Number(R.rojo)||60;
+  const serie=mesesAtras(TEND_MESES).map(function(p){
+    const L=llavesSector(secId,p.a,p.m);
+    return {a:p.a,m:p.m,pct:L.pct,aprobado:L.aprobado};
+  });
+  const con=serie.filter(x=>x.pct!=null);
+  const ult=con.length?con[con.length-1]:null;
+  const prev=con.length>1?con[con.length-2]:null;
+  const ante=con.length>2?con[con.length-3]:null;
+  const delta=(ult&&prev)?Math.round((ult.pct-prev.pct)*10)/10:null;
+  const delta2=(prev&&ante)?Math.round((prev.pct-ante.pct)*10)/10:null;
+  let k='sin';
+  if(ult!=null){
+    if(ult.pct<rojo)k='mal';
+    else if(delta!=null&&delta<0&&delta2!=null&&delta2<0)k='mal';
+    else if(delta!=null&&delta>0&&ult.pct>=meta)k='bien';
+    else if(delta==null)k=ult.pct>=meta?'bien':'ojo';
+    else if(delta<0)k='ojo';
+    else if(ult.pct>=meta)k='mant';
+    else k='ojo';
+  }
+  const prom=con.length?Math.round(con.reduce((t,x)=>t+x.pct,0)/con.length*10)/10:null;
+  return {serie:serie,con:con,ult:ult,prev:prev,delta:delta,k:k,t:TEND[k],prom:prom,meta:meta,rojo:rojo};
+}
+function barrasTend(T){
+  const max=100;
+  return '<div style="display:flex;gap:3px;align-items:flex-end;height:38px">'+
+    T.serie.map(function(x){
+      const h=x.pct==null?3:Math.max(4,Math.round(x.pct/max*36));
+      const col=x.pct==null?'var(--line)':(x.pct>=T.meta?'var(--ok)':(x.pct<T.rojo?'var(--crit)':'var(--warn)'));
+      return '<div title="'+esc(MESESL[x.m]+' '+x.a+(x.pct==null?' · sin auditoría':' · '+n1(x.pct)+' %'))+'" '+
+        'style="width:11px;height:'+h+'px;background:'+col+';border-radius:3px 3px 0 0"></div>'}).join('')+
+  '</div>';
+}
+function vTendencia(){
+  const secs=sectoresVista();
+  const filas=secs.map(function(sc){return {sc:sc,T:tendenciaSector(sc.id)}})
+    .sort(function(x,y){return x.T.t.o-y.T.t.o
+      ||((y.T.ult?y.T.ult.pct:-1)-(x.T.ult?x.T.ult.pct:-1))});
+  const cuenta=function(k){return filas.filter(function(f){return f.T.k===k}).length};
+  const M=mesesAtras(TEND_MESES);
+  return avisoDb()+`
+  <div class="head"><div><h1>Tendencia mensual de sectores</h1>
+    <p>Hacia dónde va cada sector, no cuánto sacó. Se compara la nota del mes con la del mes
+      anterior y se mira la nota contra la meta (<b>${n1(reglas().metaMes)} %</b>) y el rojo
+      (<b>${n1(reglas().rojo)} %</b>). Los últimos ${TEND_MESES} meses, mes por mes.</p></div>
+    <div class="headbtns"><button class="btn" id="btnTendImp">Imprimir</button></div></div>
+
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi ${cuenta('bien')?'tintok':''}"><div class="k">Van bien</div><div class="v">${cuenta('bien')}</div>
+      <div class="m"><span>subieron y llegan a la meta</span></div></div>
+    <div class="kpi"><div class="k">Se mantienen</div><div class="v">${cuenta('mant')}</div>
+      <div class="m"><span>en meta, sin moverse</span></div></div>
+    <div class="kpi ${cuenta('ojo')?'tint':''}"><div class="k">Ojo</div><div class="v">${cuenta('ojo')}</div>
+      <div class="m"><span>bajaron o están debajo de la meta</span></div></div>
+    <div class="kpi ${cuenta('mal')?'alert':''}"><div class="k">Van mal</div><div class="v">${cuenta('mal')}</div>
+      <div class="m"><span>debajo del rojo o dos meses seguidos en baja</span></div></div>
+  </div>
+
+  <section class="panel"><header><h3>Sector por sector</h3>
+    <span class="sub">ordenados por cómo vienen · primero los que van bien</span></header>
+    <div class="tw"><table class="lst"><thead><tr>
+      <th style="min-width:190px">Sector</th>
+      <th style="width:120px">Cómo viene</th>
+      <th class="r" style="width:88px">Último mes</th>
+      <th class="r" style="width:92px">Cambio</th>
+      <th class="r" style="width:92px">Promedio</th>
+      <th style="width:110px">Últimos ${TEND_MESES}</th>
+      ${M.map(x=>`<th class="r" style="width:62px">${esc(MESESL[x.m].slice(0,3))}</th>`).join('')}
+    </tr></thead><tbody>
+    ${filas.map(function(f){const T=f.T;
+      return `<tr>
+        <td><b>${esc(f.sc.nombre)}</b><br><span style="color:var(--ink-3);font-size:11.5px">${
+          (f.sc.zona||'operativa')==='apoyo'?'Apoyo':'Operativa'}</span></td>
+        <td><span class="badge ${T.t.k} dot">${T.t.l}</span></td>
+        <td class="r">${T.ult==null?'<span style="color:var(--ink-3)">—</span>'
+          :`<b>${n1(T.ult.pct)} %</b>`}</td>
+        <td class="r">${T.delta==null?'<span style="color:var(--ink-3)">—</span>':deltaHTML(T.delta)}</td>
+        <td class="r">${T.prom==null?'<span style="color:var(--ink-3)">—</span>':n1(T.prom)+' %'}</td>
+        <td>${barrasTend(T)}</td>
+        ${T.serie.map(x=>`<td class="r" style="font-size:12px;color:${x.pct==null?'var(--ink-3)'
+          :(x.pct>=T.meta?'var(--ok)':(x.pct<T.rojo?'var(--crit)':'var(--warn)'))}">${
+          x.pct==null?'—':n1(x.pct)}</td>`).join('')}
+      </tr>`}).join('')}
+    </tbody></table></div>
+    <div class="body" style="padding-top:0"><div class="soft2">
+      <b>Va bien</b>: subió respecto del mes anterior y llega a la meta.
+      <b>Se mantiene</b>: está en meta y se movió poco.
+      <b>Ojo</b>: bajó, o quedó entre el rojo y la meta.
+      <b>Va mal</b>: está debajo del rojo, o viene bajando dos meses seguidos.
+      Un sector sin auditoría en el mes queda en blanco: no se inventa el número.</div></div>
+  </section>`;
+}
+
 /* ---------- el trimestre ----------
    Promedio de los tres meses, pero con piso: 95 + 95 + 50 da 80 de promedio y no es un
    trimestre aprobado. Ningún mes puede caer debajo del piso, y los tres tienen que
@@ -5005,6 +5357,11 @@ function vHallazgos(){
         ${rc>=2?`<br><span class="badge crit">Reincidencia ×${rc}</span>${rc>=2&&!h.causaRaiz?' <span class="badge warn">falta causa raíz</span>':''}`:''}
         ${evidenciasHall(h.id).length?`<br>${evidenciasHall(h.id).filter(x=>x.esImagen&&x.data).map(x=>`<img src="${x.data}" alt="${esc(x.nombre)}" data-lb="${esc(x.id)}" title="${x.tipo==='correccion'?'Foto de corrección':'Foto del hallazgo'}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid ${x.tipo==='correccion'?'var(--ok)':'var(--line)'};cursor:zoom-in;margin:6px 5px 0 0">`).join('')}`:''}
         ${evidenciasHall(h.id).some(x=>x.tipo==='correccion')?'<br><span class="badge ok dot">Foto de corrección cargada</span>':(h.estado==='cerrado'&&!h.sinFoto?'<br><span class="badge warn">cerrado sin foto de corrección</span>':'')}
+        ${h.estado==='cerrado'?(efecDe(h)
+          ?`<br><span class="badge ${EFEC[efecDe(h)].k} dot">${EFEC[efecDe(h)].l}</span>${
+            noEfectiva(h)&&String(h.efecPorQue||'').trim()?`<br><span style="font-size:12.5px"><b style="color:var(--crit)">Por qué no:</b> ${esc(h.efecPorQue)}</span>`:''}${
+            noEfectiva(h)&&!String(h.efecPorQue||'').trim()?' <span class="badge warn">falta decir por qué</span>':''}`
+          :'<br><span class="badge warn">falta verificar si fue efectiva</span>'):''}
         <br><button class="btn ghost sm" data-exp="${esc(h.id)}" style="margin-top:4px;padding:2px 6px">${state.openHab==='h:'+h.id?'Ocultar':'Acción correctiva y causa raíz'}</button>
         ${h.sinFoto?' <span class="badge warn">sin foto por protocolo</span>':` <label class="btn ghost sm" style="cursor:pointer;padding:2px 6px">＋ foto del hallazgo<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" style="display:none"></label> <label class="btn sm" style="cursor:pointer;padding:2px 6px;color:var(--ok)">✔ foto de corrección<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" data-tipo="correccion" style="display:none"></label>`}
         ${state.openHab==='h:'+h.id?`<div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:520px">
@@ -5018,6 +5375,7 @@ function vHallazgos(){
           ${(h.area||'sector')!=='sector'?`<div class="field"><label>Fecha de la solicitud al área</label><input type="date" data-f="fechaSolicitud" value="${esc(h.fechaSolicitud||'')}"></div>`:''}
           <div class="field"><label>Causa raíz · por qué pasó</label><textarea data-f="causaRaiz" style="min-height:44px">${esc(h.causaRaiz||'')}</textarea></div>
           <div class="field"><label>Acción preventiva · qué se cambia para que no vuelva a pasar${llevaPrev(h)?'':' · opcional si la solución es sólo correctiva'}</label><textarea data-f="accionPreventiva" style="min-height:44px" placeholder="Ej.: cambiar el procedimiento de descarga y capacitar al turno tarde">${esc(h.accionPreventiva||'')}</textarea></div>
+          ${efecHTML(h)}
           ${revHTML(h)}
           ${escaleraHTML(h)}
           <div class="soft2">Para cerrar el hallazgo hace falta la acción correctiva escrita y la foto de corrección (salvo espacios personales, que van sin foto por protocolo).</div>
@@ -5235,17 +5593,25 @@ function vMejoras(){
   const mes=todayISO().slice(0,7);
   const delMes=L.filter(m=>String(m.fecha||'').slice(0,7)===mes);
   const conFoto=L.filter(m=>fotosMejora(m.id).length);
+  const hoyD=new Date();
+  const implMes=L.filter(m=>mejImpl(m)&&enMes(fechaImpl(m),hoyD.getFullYear(),hoyD.getMonth()));
+  const metaMej=recoCfg().mejMeta;
   const secDef=state.mj.sector!=='all'?state.mj.sector:(mia||(secs[0]||{}).id||'');
   return `${avisoDb()}
-  <div class="head"><div><h1>Mejoras del sector</h1>
+  <div class="head"><div><h1>Mejora continua</h1>
     <p>Lo que el sector arregló <b>por su cuenta</b>, sin que hubiera auditoría de por medio.
-       Acá no hay hallazgo previo ni nadie que lo haya marcado: el sector vio algo, lo
-       resolvió y lo deja registrado. No cambia el puntaje 5S —ese sale sólo de las
-       auditorías— pero <b>cuenta para el reconocimiento</b>, así lo que se hace entre
-       auditoría y auditoría no queda invisible.</p></div></div>
+       No cambia el puntaje 5S —ese sale sólo de las auditorías— pero es el
+       <b>${n1(recoCfg().pesoMej)} % del puntaje del reconocimiento</b>.
+       Cuentan las mejoras <b>marcadas como implementadas</b>, no las anotadas: la meta
+       del mes es <b>${metaMej}</b>. Para marcarla hace falta la <b>foto de después</b>,
+       que es lo que la vuelve demostrable.</p></div></div>
   <div class="grid g4" style="margin-bottom:16px">
-    <div class="kpi ${delMes.length?'tintok':''}"><div class="k">Mejoras este mes</div><div class="v">${delMes.length}</div></div>
-    <div class="kpi"><div class="k">En total</div><div class="v">${L.length}</div></div>
+    <div class="kpi ${implMes.length>=metaMej?'tintok':(implMes.length?'':'tint')}"><div class="k">Implementadas este mes</div>
+      <div class="v">${implMes.length}<small> de ${metaMej}</small></div>
+      <div class="m"><span>${implMes.length>=metaMej?'llega al 100 % de mejora continua'
+        :'son las que cuentan para el reconocimiento'}</span></div></div>
+    <div class="kpi"><div class="k">Anotadas este mes</div><div class="v">${delMes.length}</div>
+      <div class="m"><span>${delMes.length-implMes.length>0?(delMes.length-implMes.length)+' sin marcar como implementadas':'todas marcadas'}</span></div></div>
     <div class="kpi"><div class="k">Con foto</div><div class="v">${conFoto.length}</div>
       <div class="m">${L.length?'de '+L.length:'todavía ninguna'}</div></div>
     <div class="kpi"><div class="k">Sectores que registraron</div>
@@ -5288,8 +5654,13 @@ function vMejoras(){
       return `<div class="sacc lista" style="margin-bottom:10px">
         <div class="dqt"><div><div class="dqn">${esc(m.accion||'')}</div>
           <div class="dqm">${esc(nombreSector(m.sectorId)||m.sectorId||'')}${m.quien?' · '+esc(m.quien):''}</div></div>
-          <div style="display:flex;gap:7px;align-items:center">
+          <div style="display:flex;gap:7px;align-items:center;flex-wrap:wrap">
             <span class="dgch ok">${fmtDate(m.fecha)}</span>
+            <span class="dgch ${mejImpl(m)?'ok':'warn'}">${mejImpl(m)
+              ?'✓ Implementada'+(m.implEl?' el '+fmtDate(String(m.implEl).slice(0,10)):'')
+              :'Anotada · todavía no cuenta'}</span>
+            ${ed?`<button class="btn sm ${mejImpl(m)?'ghost':''}" data-mjimpl="${esc(m.id)}" data-mjv="${mejImpl(m)?'0':'1'}">${
+              mejImpl(m)?'Volver a anotada':'Marcar implementada'}</button>`:''}
             ${esAdmin()?delBtn('mj:'+m.id,`data-del-mejora="${esc(m.id)}"`,'✕','Quitar'):''}
           </div></div>
         ${m.situacion?`<div style="margin-top:6px"><div class="dgk">Cómo estaba antes</div>
@@ -5893,7 +6264,7 @@ document.addEventListener('change',e=>{
     fr.onerror=()=>toast('No se pudo leer el archivo');
     fr.onload=async()=>{
       const id=uid('pd-');
-      const ok=await guardarDoc(COL.pd+'/'+id,{pilarId:AUD_PILAR,sitioId:state.sitioSel||'',
+      const ok=await guardarDoc(COL.pd+'/'+id,{pilarId:audPilar(),sitioId:state.sitioSel||'',
         titulo:(it.bloque||'')+(it.num||'')+' · '+String(it.t||f.name).slice(0,70),
         url:'',data:String(fr.result),nombreArchivo:f.name,
         notas:'Adjuntado desde el diagnóstico del pilar, ítem '+(it.bloque||'')+(it.num||'')+'.',
@@ -5915,12 +6286,12 @@ document.addEventListener('change',e=>{
     if(f.size>MAXB64DOC*0.72){
       toast('Ese archivo es muy pesado para la base ('+Math.round(f.size/1024)+' KB): guardalo más liviano o cargalo con un enlace');
       t.value='';return}
-    const base=docsPilar(AUD_PILAR).find(x=>x.id===id)||{};
+    const base=docsPilar(audPilar()).find(x=>x.id===id)||{};
     const destino=REF_ARCH[id]||id;
     const fr=new FileReader();
     fr.onload=async()=>{
       const ok=await guardarDoc('pilarDocs/'+destino,{
-        id:destino,pilarId:AUD_PILAR,titulo:base.titulo||destino,
+        id:destino,pilarId:audPilar(),titulo:base.titulo||destino,
         notas:base.vig?('Vigencia '+base.vig):'',
         cat:base.cat||'',quien:base.quien||'',
         data:String(fr.result||''),nombreArchivo:f.name,
@@ -5947,6 +6318,9 @@ document.addEventListener('change',e=>{
   if(t.id==='tjfSec'){state.tj=Object.assign({},state.tj,{sector:t.value});render();return}
   if(t.id==='tjfTipo'){state.tj=Object.assign({},state.tj,{tipo:t.value});render();return}
   if(t.id==='tjfEst'){state.tj=Object.assign({},state.tj,{estado:t.value});render();return}
+  if(t.id==='audPil'){
+    state.aud=Object.assign({},state.aud||{},{pilar:t.value,sec:'',sub:null,chk:{},libres:[]});
+    render();return}
   if(t.id==='calAnio'){state.cal=Object.assign({},state.cal,{anio:Number(t.value)});render();return}
   if(t.id==='calMes'){state.cal=Object.assign({},state.cal,{mes:Number(t.value)});render();return}
   if(t.dataset.cald!=null&&esAdmin()){
@@ -5963,6 +6337,9 @@ document.addEventListener('change',e=>{
       N.fotos=(N.fotos||[]).concat([d]);render()})
       .catch(e=>toast('No se pudo usar esa imagen: '+(e&&e.message||'')));
     t.value='';return}
+  if(t.id==='cohSel'){state.coh=Object.assign({},state.coh,{sec:t.value});render();return}
+  if(t.id==='cohAnio'){state.coh=Object.assign({},state.coh,{anio:Number(t.value)});render();return}
+  if(t.id==='cohMes'){state.coh=Object.assign({},state.coh,{mes:Number(t.value)});render();return}
   if(t.id==='apVista'){state.ap=Object.assign({},state.ap,{vista:t.value});render();return}
   if(t.id==='apAnio'){state.ap=Object.assign({},state.ap,{anio:Number(t.value)});render();return}
   if(t.id==='apMes'){state.ap=Object.assign({},state.ap,{mes:Number(t.value)});render();return}
@@ -6388,9 +6765,11 @@ function vAudTipo(k){
   /* la auditoría general es de Calidad: si entra otro, no se le muestra */
   if(k==='audgen'&&!esAdmin())return `<div class="head"><div><h1>Auditoría general</h1>
     <p>La auditoría general la hace Calidad. Vos tenés la <b>auditoría sectorial</b> —la que hacés
-       sobre el sector de otro por rotación— y la <b>auditoría interna</b> de tu propio sector.</p></div>
+       sobre el sector de otro por rotación— y la <b>auditoría de tu propio sector</b>.
+       La auditoría interna del pilar Seguridad la carga SySO; lo que salga de ahí te llega
+       como hallazgo y como tarjeta.</p></div>
     <div class="headbtns"><button class="btn" data-go="audsec">Ir a la auditoría sectorial</button>
-      <button class="btn ghost" data-go="audint">Ir a la auditoría interna</button></div></div>`;
+      ${puede('audint')?`<button class="btn ghost" data-go="audint">Ir a la auditoría interna</button>`:''}</div></div>`;
   if(!state.wiz)state.wiz={step:0,sectorId:'',checklistId:'',tipo:C.tipo,fecha:todayISO(),idx:0,resp:{}};
   /* al entrar desde el menú se fija el tipo; si ya estaba auditando, no se le pisa el trabajo */
   if(state.audK!==k){ state.audK=k; if(state.wiz.step===0)state.wiz.tipo=C.tipo; }
@@ -6408,18 +6787,22 @@ function vAudExt(){
   return vAudInt();
 }
 function vAudInt(){
-  const p=pilarDe(AUD_PILAR)||{nombre:'Seguridad',num:1};
+  const p=pilarDe(audPilar())||{nombre:'Seguridad',num:1};
   return `<div class="head"><div>
-    <h1>Auditoría interna</h1>
-    <p>La que hace el encargado del pilar sobre su propio sector, sector por sector:
-       <b>salud y seguridad ocupacional</b>, <b>orden y limpieza</b>, <b>permiso de trabajo</b>,
-       <b>EPP</b> y <b>apto de trabajo</b>, más los riesgos de la hipermatriz y los documentos que hay
-       que tener. Hoy la usa ${esc(p.lider||'el encargado del pilar Seguridad')}.</p></div></div>`
+    <h1>Auditoría interna · ${esc(p.nombre||'')}</h1>
+    <p>${esPilSeg()
+      ?`La que hace el encargado del pilar sobre el sector, sector por sector:
+        <b>salud y seguridad ocupacional</b>, <b>orden y limpieza</b>, <b>permiso de trabajo</b>,
+        <b>EPP</b> y <b>apto de trabajo</b>, más los riesgos de la hipermatriz y los documentos que hay
+        que tener.`
+      :`La que hace el encargado del pilar ${esc(p.nombre||'')} sobre el sector, sector por sector,
+        con la lista propia del pilar y los documentos que el sector tiene que tener para este pilar.`}
+       Hoy la lleva ${esc(p.lider||'el encargado del pilar')}.</p></div></div>`
     +audPilarHTML(p);
 }
 
 /* ================= vista: Auditar · auditoría interna del sector ================= */
-const puedeAud=()=>esAdmin()||['sitio','jefe','sector','syso','sysoana'].indexOf((state.sesion&&state.sesion.rol)||'')>=0;
+const puedeAud=()=>puedeAudPilar();
 /* ---------- quién carga la corrección y quién la da por buena ----------
    Regla de Calidad: el sector carga, Calidad cierra. El jefe mira y hace seguimiento,
    no carga: si el mismo que fue auditado declara que está corregido, la auditoría no
@@ -6445,10 +6828,18 @@ const CAMPOS_CORRECCION=['accionCorrectiva','accionPreventiva','causaRaiz','tipo
 /* el jefe de SySO firma sus informes y cierra las acciones; el analista carga, no cierra */
 const esAnalista=()=>!!(state.sesion&&state.sesion.rol==='sysoana');
 /* el orden es el que pidió Calidad: primero lo que se mira en el piso, después el respaldo */
-const AUD_SUBS=[['syso','Salud y seguridad'],['ol','Orden y limpieza'],['puertas','Puertas de emergencia'],
+const AUD_SUBS_SEG=[['syso','Salud y seguridad'],['ol','Orden y limpieza'],['puertas','Puertas de emergencia'],
  ['pci','Sistema PCI'],['permiso','Permiso de trabajo'],
  ['epp','EPP'],['apto','Apto de trabajo'],['hip','Riesgos del sector'],['docs','Documentos que debe tener'],
  ['acc','Acciones abiertas'],['hechas','Auditorías hechas'],['informe','Informe del sector']];
+/* los pilares que todavía no tienen su recorrida armada arrancan con lo mínimo:
+   su lista propia, sus documentos, las acciones que quedaron y el informe del sector */
+const audSubs=pid=>(pid||audPilar())===PIL_SEG?AUD_SUBS_SEG
+  :[['chk','La lista del pilar'],['docs','Documentos que debe tener'],
+    ['acc','Acciones abiertas'],['hechas','Auditorías hechas'],['informe','Informe del sector']];
+/* el bloque de checklist de un pilar que no es Seguridad */
+const pilBloq=pid=>'p:'+(pid||audPilar());
+const AUD_SUBS=AUD_SUBS_SEG;
 /* ---------- quién está auditando ----------
    La misma lista, recorrida por dos personas distintas en momentos distintos. El campo
    `rol` es lo único que las separa, y es lo que después permite compararlas.
@@ -6463,6 +6854,7 @@ const rolAudDef=()=>esAdmin()?'externa':'interna';
 const rolAud=()=>{const A=state.aud;if(!A.rol)A.rol=rolAudDef();return A.rol};
 const esAudExterna=()=>rolAud()==='externa';
 const rolDeSegAud=a=>(a&&a.rol)||'interna';   /* lo viejo no tiene campo: era todo interna */
+const pilarDeSegAud=a=>(a&&a.pilarId)||PIL_SEG;  /* lo viejo tampoco: era todo del pilar Seguridad */
 const AUDTIPO_L={doc:'Documentos',ol:'Orden y limpieza',hip:'Riesgos del sector',
  permiso:'Permiso de trabajo',epp:'EPP',apto:'Apto de trabajo',syso:'Salud y seguridad ocupacional',
  puertas:'Puertas de emergencia',pci:'Sistema PCI'};
@@ -6563,7 +6955,7 @@ function docsEnGeneralHTML(sec){
         <b>auditoría interna</b> del pilar Seguridad. Lo que marques acá lo ve también SySO, y lo que
         marca SySO lo ves acá: es una sola lista para todo el CD.</div>
       ${L.map(r=>{const e=docEstado(sec,r),E=DOCEST[e];
-        const d=r.doc?docsVisibles(AUD_PILAR).filter(x=>x.id===r.doc)[0]:null;
+        const d=r.doc?docsVisibles(audPilar()).filter(x=>x.id===r.doc)[0]:null;
         return `<div class="dqi ${E.cls}" style="margin-bottom:6px">
           <div class="dqt"><div><div class="dqn">¿El sector tiene: ${esc(r.t)}?</div>
             <div class="sm" style="color:var(--ink-3)">Lo tiene que tener ${esc(r.quien||'el sector')}${
@@ -6577,22 +6969,33 @@ function docsEnGeneralHTML(sec){
 
 function audPilarHTML(p){
   const A=state.aud, secs=sectoresVista();
+  const P0=pilarDe(audPilar())||{nombre:'Seguridad',num:1};
+  /* al cambiar de pilar, la pestaña que estaba abierta puede no existir en el nuevo */
+  if(!audSubs().some(x=>x[0]===A.sub))A.sub=audSubs()[0][0];
   if(!A.sec&&secs.length&&state.sesion&&state.sesion.sectorId)A.sec=state.sesion.sectorId;
   const sec=A.sec, secN=sec?nombreSector(sec):'';
   const ed=puedeAud();
   const abiertas=(state.segAcc||[]).filter(x=>x.estado==='abierta'&&(!sec||x.sectorId===sec));
   return `
   <div class="audhead">
-    <div><div class="k">Auditoría interna</div>
-      <h3>${esAdmin()||['syso','sysoana'].indexOf((state.sesion&&state.sesion.rol)||'')>=0
-        ?'Lo que audito en cualquier sector del CD'
-        :'Lo que le audito a mi propio sector'}</h3>
-      <p>Se hace <b>sector por sector</b>: salud y seguridad ocupacional, orden y limpieza, permiso de
-         trabajo, EPP y apto de trabajo. Atrás quedan los riesgos de la hipermatriz y los documentos que
-         el sector tiene que tener. En cada bloque podés anotar <b>lo que vayas viendo</b>, aunque no esté
+    <div><div class="k">Auditoría interna · pilar ${esc(P0.nombre||'')}</div>
+      <h3>${puedeAud()?'Lo que audito en cada sector del CD'
+        :'Lo auditado en cada sector del CD'}</h3>
+      <p>${esPilSeg()
+        ?`Se hace <b>sector por sector</b>: salud y seguridad ocupacional, orden y limpieza, permiso de
+          trabajo, EPP y apto de trabajo. Atrás quedan los riesgos de la hipermatriz y los documentos que
+          el sector tiene que tener.`
+        :`Se hace <b>sector por sector</b> con la lista propia del pilar ${esc(P0.nombre||'')} y los
+          documentos que el sector tiene que tener para este pilar.`}
+         En cada bloque podés anotar <b>lo que vayas viendo</b>, aunque no esté
          en la lista; lo que no cumple pide <b>foto del hallazgo</b> y <b>acción correctiva</b>, y se
-         cierra con la <b>foto de la corrección</b>.</p></div>
+         cierra con la <b>foto de la corrección</b>.</p>
+      <p class="sub" style="margin:6px 0 0">Encargado: <b>${esc(P0.lider||'sin asignar')}</b>${
+        puedeAud()?'':' · vos lo estás mirando, no lo cargás'}</p></div>
     <div class="audsel">
+      ${pilaresQueVe().length>1?`<div class="field" style="min-width:210px"><label for="audPil">Pilar</label>
+        <select id="audPil">${pilaresQueVe().map(id=>{const q=pilarDe(id)||{};
+          return `<option value="${esc(id)}"${audPilar()===id?' selected':''}>P${q.num} · ${esc(q.nombre||id)}</option>`}).join('')}</select></div>`:''}
       ${esAdmin()?`<div class="field" style="min-width:230px"><label for="audRol">Quién audita</label>
         <select id="audRol">${Object.keys(AUDROL).map(k=>`<option value="${k}"${rolAud()===k?' selected':''}>${esc(AUDROL[k].l)}</option>`).join('')}</select>
         </div>`:''}
@@ -6605,11 +7008,11 @@ function audPilarHTML(p){
   ${esAdmin()?`<div class="audrol ${AUDROL[rolAud()].cls}">
     <div><b>${esc(AUDROL[rolAud()].l)}</b><span>${esc(AUDROL[rolAud()].c)}</span></div>
     ${esAudExterna()?`<div class="audrolx">Estás recorriendo con <b>la misma lista</b> que usa
-      ${esc((pilarDe(AUD_PILAR)||{}).lider||'el encargado del pilar')}. Lo que marques distinto de lo que
+      ${esc((pilarDe(audPilar())||{}).lider||'el encargado del pilar')}. Lo que marques distinto de lo que
       marcó él aparece en <b>Coherencia entre auditorías</b>.</div>`:''}
   </div>`:''}
   <div class="ptabs sub" role="tablist">
-    ${AUD_SUBS.map(([k,l])=>`<button role="tab" data-asub="${k}" aria-selected="${A.sub===k}">${l}${
+    ${audSubs().map(([k,l])=>`<button role="tab" data-asub="${k}" aria-selected="${A.sub===k}">${l}${
       k==='acc'&&abiertas.length?` <span class="badge crit">${abiertas.length}</span>`:''}</button>`).join('')}
   </div>
   ${sec?planoAudHTML(sec,false):''}
@@ -6617,6 +7020,7 @@ function audPilarHTML(p){
    :A.sub==='ol'?audOlHTML(sec,ed)
    :A.sub==='puertas'?audPuertasHTML(ed)
    :A.sub==='pci'?audPciHTML(ed)
+   :A.sub==='chk'?audChkHTML(pilBloq(),sec,ed)
    :(A.sub==='permiso'||A.sub==='epp'||A.sub==='apto'||A.sub==='syso')?audChkHTML(A.sub,sec,ed)
    :A.sub==='hip'?audHipHTML(sec,ed)
    :A.sub==='informe'?informeSectorHTML(sec)
@@ -6645,7 +7049,7 @@ function informeDatos(sec){
       desv:a?(a.desvios!=null?a.desvios:(a.no||0)):null,
       marc:a?(a.marcados||0):0, puntos:a?(a.puntos||0):0};
   });
-  const hechas=(state.segAud||[]).filter(x=>x.sectorId===sec).length;
+  const hechas=(state.segAud||[]).filter(x=>x.sectorId===sec&&pilarDeSegAud(x)===audPilar()).length;
   const acc=(state.segAcc||[]).filter(x=>x.sectorId===sec);
   const ab=acc.filter(x=>x.estado==='abierta');
   const venc=ab.filter(x=>x.vence&&String(x.vence)<todayISO());
@@ -6843,8 +7247,8 @@ function audDocsHTML(sec,ed){
   const gCD=calcDocs('_cd','cd'), gS=sec?calcDocs(sec,'sector'):null;
   const unaFila=(clave)=>r=>{
     const e=docEstado(clave,r), E=DOCEST[e], v=docReqResp(clave)[r.id]||{};
-    const dd=r.doc?docsVisibles(AUD_PILAR).filter(d=>d.id===r.doc)[0]:null;
-    const dsel=v.docId?docsVisibles(AUD_PILAR).filter(d=>d.id===v.docId)[0]:dd;
+    const dd=r.doc?docsVisibles(audPilar()).filter(d=>d.id===r.doc)[0]:null;
+    const dsel=v.docId?docsVisibles(audPilar()).filter(d=>d.id===v.docId)[0]:dd;
     return `<div class="dqi ${E.cls}">
       <div class="dqt"><div><div class="dqn">${esc(r.t)}</div>
         <div class="dqm">Lo emite ${esc(r.quien)}${r.item?` · ítem ${r.item} del diagnóstico`:''}</div></div>
@@ -6858,7 +7262,7 @@ function audDocsHTML(sec,ed){
         <div><div class="dgk">Documento en el aplicativo</div>
           ${ed?`<select data-dqd="${r.id}" data-dqs="${esc(clave)}">
             <option value="">Ninguno todavía</option>
-            ${docsVisibles(AUD_PILAR).map(d=>`<option value="${esc(d.id)}"${dsel&&dsel.id===d.id?' selected':''}>${esc(d.titulo)}</option>`).join('')}
+            ${docsVisibles(audPilar()).map(d=>`<option value="${esc(d.id)}"${dsel&&dsel.id===d.id?' selected':''}>${esc(d.titulo)}</option>`).join('')}
           </select>`:`<p>${dsel?esc(dsel.titulo):'—'}</p>`}
           ${dsel?`<div class="dqlink">${dsel.tipo==='form'
             ? `<a href="#" data-form="${esc(dsel.id)}">abrir el formulario</a>`
@@ -6913,7 +7317,7 @@ function audDocsHTML(sec,ed){
     <div class="kpi ${gCD.no+(gS?gS.no:0)?'tint':'tintok'}"><div class="k">Faltan</div>
       <div class="v">${gCD.no+(gS?gS.no:0)}</div><div class="m">documentos marcados como que no están</div></div>
     <div class="kpi"><div class="k">Cargados en el pilar</div>
-      <div class="v">${docsVisibles(AUD_PILAR).length}</div><div class="m">archivos y formatos disponibles</div></div>
+      <div class="v">${docsVisibles(audPilar()).length}</div><div class="m">archivos y formatos disponibles</div></div>
   </div>
   <section class="panel" style="margin-bottom:16px"><header><h3>Del Centro de Distribución</h3>
     <div class="sub">uno solo para todo el CD · ${reqsDe('cd').length} documentos</div></header>
@@ -6948,7 +7352,7 @@ function docReqEditorHTML(){
     <span class="sub">${L.length} documentos en total.</span></div>`;
 }
 function filaEditor(r){
-  const docs=docsVisibles(AUD_PILAR);
+  const docs=docsVisibles(audPilar());
   return `<div class="dqedit"><div class="g">
     <div><div class="dgk">Qué documento</div><input data-dqt="${esc(r.id)}" value="${esc(r.t)}"></div>
     <div><div class="dgk">Quién lo emite</div><input data-dqq="${esc(r.id)}" value="${esc(r.quien||'')}"></div>
@@ -7247,7 +7651,7 @@ function audPciHTML(ed){
 /* ---------- guardar la verificación del PCI ---------- */
 async function guardarPci(){
   const A=state.aud, R=pciResp(), OB=pciObs();
-  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
   const fecha=A.fecha||hoyIso();
   const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
   let ok=0,no=0,na=0,marc=0; const mal=[];
@@ -7282,7 +7686,7 @@ async function guardarPci(){
 /* ---------- guardar el control de puertas ---------- */
 async function guardarPuertas(){
   const A=state.aud, R=puertasResp(), OB=puertasObs(), L=puertasLista();
-  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
   const fecha=A.fecha||hoyIso();
   const por=state.auditor||(state.sesion&&state.sesion.nombre)||'—';
   let si=0,no=0,na=0,marc=0;
@@ -7341,7 +7745,7 @@ async function guardarPuertasCfg(L){
 async function guardarOl(){
   const A=state.aud, sec=A.sec;
   if(!sec){toast('Elegí el sector arriba');return}
-  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
   const f=OLFORM[A.olf]||{items:[],n:''};
   let tot=0,obt=0,marc=0;
   f.items.forEach((it,i)=>{tot+=it.p;const v=A.ol[i];if(v!=null){obt+=it.p*v;marc++}});
@@ -7372,7 +7776,7 @@ async function guardarOl(){
       fecha:fecha,limite:masDiasIso(fecha,N.dias),estado:'abierta',por:por,verifPor:'',verifEl:'',
       creado:new Date().toISOString()})});
   for(let i=0;i<accs.length;i++){ if(!await guardarDoc('segAcc/'+accs[i].id,accs[i]))return }
-  const ok=await guardarDoc('segAud/'+aid,{id:aid,tipo:'ol',rol:rolAud(),sitioId:state.sitioSel,sectorId:sec,
+  const ok=await guardarDoc('segAud/'+aid,{id:aid,tipo:'ol',pilarId:audPilar(),rol:rolAud(),sitioId:state.sitioSel,sectorId:sec,
     formato:f.n,formatoId:A.olf,fecha:fecha,hora:A.hora||'',supervisor:A.sup||'',por:por,
     pct:tot?Math.round(obt/tot*100):0,puntos:f.items.length,marcados:marc,desvios:mal.length+libres.length,
     detalle:f.items.map((it,i)=>({t:it.t,p:it.p,v:A.ol[i]==null?null:A.ol[i],obs:obs[i]||''})),
@@ -7393,7 +7797,7 @@ async function guardarOl(){
 async function guardarChk(b){
   const A=state.aud, sec=A.sec;
   if(!sec){toast('Elegí el sector arriba');return}
-  if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+  if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
   const g=chkPuntaje(b,sec), B=SEGBLOQ[b]||{t:b};
   const libres=(A.libres||[]).filter(x=>x.b===b&&String(x.t||'').trim());
   const sinTrab=b==='permiso'&&A.trab&&A.trab.sin;
@@ -7439,7 +7843,7 @@ async function guardarChk(b){
         tipo:'hallazgo',subidoPor:por,creado:new Date().toISOString()});
     }
   }
-  const doc={id:aid,tipo:b,rol:rolAud(),sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
+  const doc={id:aid,tipo:b,pilarId:audPilar(),rol:rolAud(),sitioId:state.sitioSel,sectorId:sec,fecha:f,por:por,
     puntos:g.L.length,marcados:g.marc,noAplica:g.na,
     desvios:g.mal.length+libres.length,pct:g.pct,
     detalle:g.L.filter(r=>g.R[r.id]&&g.R[r.id].v).map(r=>{const v=g.R[r.id];
@@ -7466,7 +7870,7 @@ async function guardarChk(b){
    con el plazo que le pone la criticidad del punto.                                        */
 function audChkHTML(b,sec,ed){
   if(state.segChkEd)return segChkEditorHTML();
-  const B=SEGBLOQ[b]||{t:b,d:''}, A=state.aud;
+  const B=bloqDe(b), A=state.aud;
   if(!sec)return `<div class="empty" style="padding:40px;text-align:center">
     <b>${esc(B.t)}.</b> ${esc(B.d)}<br><br>Elegí el sector en el selector de arriba para empezar.</div>`;
   const g=chkPuntaje(b,sec);
@@ -7580,7 +7984,7 @@ function audChkHTML(b,sec,ed){
 
   ${ed&&esAdmin()?`<div class="dgsave" style="margin-top:14px">
     <button class="btn" data-ckedit="${b}">✎ Editar la lista</button>
-    <span class="sub">La lista es una propuesta de Calidad. Revisala con ${esc((pilarDe(AUD_PILAR)||{}).lider||'el encargado del pilar')}
+    <span class="sub">La lista es una propuesta de Calidad. Revisala con ${esc((pilarDe(audPilar())||{}).lider||'el encargado del pilar')}
       y dejá sólo lo que corresponde.</span></div>`:''}`;
 }
 const CHK_MAXFOTO=3;
@@ -8244,7 +8648,7 @@ function diagSugeridos(pid,it){
   const vistos={};
   const pal=txt.split(' ').filter(w=>w.length>4&&!vistos[w]&&(vistos[w]=true));
   if(pal.length<2)return [];
-  return docsVisibles(AUD_PILAR).map(d=>{
+  return docsVisibles(audPilar()).map(d=>{
     const t=' '+normTexto((d.titulo||'')+' '+(d.notas||''))+' ';
     let n=0;pal.forEach(w=>{if(t.indexOf(' '+w)>=0)n++});
     return {d:d,n:n}}).filter(x=>x.n>=2).sort((a,b)=>b.n-a.n).slice(0,3).map(x=>x.d);
@@ -8314,7 +8718,7 @@ function docEnlaceHTML(d,conVer){
    Lo que se adjunte a mano sigue mandando por encima de las dos. */
 const DIAGDOC={"A1": ["r-manualprl", "r-regchristian", "r-regruben", "r-regdiego", "r-mtess", "r-docmin", "r-mspbs"], "A2": ["r-cipa", "r-cipalist", "r-cipanota"], "A3": ["r-planprev", "r-progsso"], "A5": ["r-iper", "r-matriz", "r-riesgospuesto"], "B2": ["r-plano", "pd-puertas-2026"], "B3": ["pd-pci-municipal", "r-pcimuni", "r-res601", "r-cappci", "r-infpci", "pd-pci-sistema-1", "pd-pci-sistema-2", "pd-pci-sistema-3", "pd-calendario-pci"], "B5": ["pd-iluminacion", "pd-aire", "r-ilum", "r-aire"], "C2": ["doc-epp", "doc-unif"], "D1": ["pd-reach-manual", "pd-reach-sst", "pd-reach-linde", "form-permiso"], "D4": ["pd-mantenimiento-2024", "r-manteq"], "D6": ["pd-ruido", "r-ruido"], "E1": ["r-planemer", "pd-brigadas-nomina", "pd-plan-emergencias"], "E2": ["pd-brigadas-formacion", "r-brigadas", "r-brigalist"], "E5": ["r-cappa", "r-infpa"], "F1": ["r-messeg", "r-cappci", "r-cappa", "pd-alcohol-charla", "pd-alcosensor-christian", "pd-alcosensor-ruben"], "F2": ["pd-fleteros", "r-firmas"], "F3": ["pd-reach-charla"], "G1": ["r-medico", "r-chequeo", "r-aptitud", "r-aptos"], "E3": ["pd-sci-fichas"], "G4": ["pd-alcohol-politica"], "A7": ["pd-stopwork"]};
 function docsItemPilar(it){
-  const L=docsVisibles(AUD_PILAR),out=[],vis={};
+  const L=docsVisibles(audPilar()),out=[],vis={};
   const sumar=(id,q)=>{
     if(!id||vis[id])return;
     const d=L.find(x=>x.id===id);
@@ -8330,7 +8734,7 @@ function docsItemPilar(it){
 /* los papeles que este ítem pide y el CD todavía no tiene */
 function faltaItemPilar(it){
   if(typeof docReqCfg!=='function')return [];
-  const L=docsVisibles(AUD_PILAR);
+  const L=docsVisibles(audPilar());
   return docReqCfg().filter(q=>{
     if(!q||q.item!==it.id)return false;
     if(q.doc&&L.some(d=>d.id===q.doc))return false;
@@ -8340,8 +8744,8 @@ function faltaItemPilar(it){
 function diagDoc(pid,it){
   const r=(diagResp(pid)[it.id])||{};
   const id=r.docId||'';
-  if(id)return docsVisibles(AUD_PILAR).find(x=>x.id===id)||null;
-  if(pid!==AUD_PILAR)return null;
+  if(id)return docsVisibles(audPilar()).find(x=>x.id===id)||null;
+  if(pid!==audPilar())return null;
   const L=docsItemPilar(it);
   return L.length?L[0].d:null;
 }
@@ -8350,7 +8754,7 @@ function diagSinDoc(pid){
 }
 /* cuántos de los 40 ítems tienen papel y cuántos papeles hay en total */
 function diagPapeles(pid){
-  if(pid!==AUD_PILAR)return null;
+  if(pid!==audPilar())return null;
   const its=diagItems(); let con=0; const todos={};
   its.forEach(it=>{const L=docsItemPilar(it); if(L.length){con++;L.forEach(x=>todos[x.d.id]=1)}});
   return {items:its.length,con:con,docs:Object.keys(todos).length};
@@ -8497,7 +8901,7 @@ function diagPilarHTML(p){
                   return `${enlace}${dbib}<details class="dgadj"><summary>Adjuntar otro documento a este ítem</summary><div class="dgdoc">
                     <select data-dgdoc="${it.id}">
                       <option value="">Sin documento adjunto</option>
-                      ${docsVisibles(AUD_PILAR).map(x=>`<option value="${esc(x.id)}"${d&&d.id===x.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}
+                      ${docsVisibles(audPilar()).map(x=>`<option value="${esc(x.id)}"${d&&d.id===x.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}
                     </select>
                     <label class="btn sm" style="cursor:pointer">Adjuntar archivo
                       <input type="file" data-dgfile="${it.id}" style="display:none"></label></div>
@@ -9088,6 +9492,32 @@ function vPantalla(){
    Un sector puede estar en amarillo y ser el mejor del mes si subió 20 puntos
    y cerró todo. Por eso la copa suma las tres y no solo el puntaje. */
 const CIERRE_TOPE=10;
+/* ================= el puntaje del reconocimiento =================
+   Lo definió Calidad en el pizarrón del 05/10:
+       auditoría 80 %  +  mejora continua 20 %  −  10 si quedó una acción vencida
+   La auditoría es la nota de la última auditoría del sector. La mejora continua se
+   mide contra una meta de mejoras implementadas por mes (la fija Calidad en Reglas).
+   El descuento es de diez puntos enteros, no un 10 % del puntaje: un sector que sacó
+   100 y dejó una acción vencida queda en 90. */
+const RECO_DEF={pesoAud:80,pesoMej:20,castigo:10,mejMeta:2};
+function recoCfg(){const R=reglas();return {
+  pesoAud:Number(R.pesoAud)||RECO_DEF.pesoAud,
+  pesoMej:Number(R.pesoMej)||RECO_DEF.pesoMej,
+  castigo:R.castigo==null?RECO_DEF.castigo:Number(R.castigo),
+  mejMeta:Number(R.mejMeta)||RECO_DEF.mejMeta}}
+function recoDe(secId,pct,a,m){
+  const C=recoCfg();
+  const hoy=new Date();
+  if(a==null){a=hoy.getFullYear();m=hoy.getMonth()}
+  const impl=mejorasImplementadas(secId,a,m);
+  const pctMej=Math.min(100,Math.round(impl.length/Math.max(1,C.mejMeta)*1000)/10);
+  const venc=(state.hallazgos||[]).filter(h=>h.sectorId===secId&&vencido(h));
+  const castigo=venc.length?C.castigo:0;
+  const base=pct==null?null:Math.round((pct*C.pesoAud/100+pctMej*C.pesoMej/100)*10)/10;
+  const total=base==null?null:Math.round(Math.max(0,base-castigo)*10)/10;
+  return {pctAud:pct,pctMej:pctMej,impl:impl.length,meta:C.mejMeta,
+          venc:venc.length,castigo:castigo,base:base,total:total,cfg:C};
+}
 function copa(){
   const secs=sectoresPuntaje();                  /* el ranking es público: entran todos */
   const ext=auditoriasPuntaje();                 /* externas validadas, más nueva primero */
@@ -9103,10 +9533,11 @@ function copa(){
     const enPlazo=cerrados.filter(cerradoEnPlazo).length;
     const cierre=Math.min(CIERRE_TOPE,enPlazo);
     const buenas=state.buenas.filter(b=>b.sectorId===sec.id).length;
-    const puntos=pct==null?null:Math.round((pct+(avance||0)+cierre)*10)/10;
+    const R=recoDe(sec.id,pct);
+    const puntos=R.total;
     /* racha: rondas seguidas en verde, de la más nueva hacia atrás */
     let racha=0;for(const a of suyas){if(a.pct!=null&&a.pct>=VERDE)racha++;else break}
-    return{sec,ult,prev,pct,pctPrev,avance,abiertos,cerradas:cerrados.length,enPlazo,cierre,buenas,puntos,racha,rondas:suyas.length};
+    return{sec,ult,prev,pct,pctPrev,avance,abiertos,cerradas:cerrados.length,enPlazo,cierre,buenas,puntos,racha,rondas:suyas.length,reco:R};
   });
   const clasificados=filas.filter(f=>f.puntos!=null).sort((a,b)=>b.puntos-a.puntos||b.pct-a.pct);
   clasificados.forEach((f,i)=>{f.pos=i+1});
@@ -9148,7 +9579,11 @@ function vCopa(){
     la copa y el podio se publican en la pantalla del CD, así que no son confidenciales. El resto de los datos de cada sector
     sí queda reservado a su gente.</div></div>`:''}
   <div class="head"><div><h1>Reconocimiento y copa</h1>
-    <p>El lado que felicita. La copa no premia solo al que está mejor: suma el puntaje, lo que avanzó y lo que cerró, así un sector que venía mal y se puso las pilas también puede ganar.</p></div>
+    <p>El puntaje del podio es <b>${n1(recoCfg().pesoAud)} % la auditoría</b> y
+      <b>${n1(recoCfg().pesoMej)} % la mejora continua</b>, menos <b>${n1(recoCfg().castigo)} puntos</b>
+      si el sector dejó una acción vencida sin cerrar. La mejora continua se mide contra
+      <b>${recoCfg().mejMeta} mejora${recoCfg().mejMeta===1?'':'s'} implementada${recoCfg().mejMeta===1?'':'s'} por mes</b>:
+      cuentan las que están hechas, no las anotadas.</p></div>
     <button class="btn primary" id="btnTv">Abrir modo pantalla</button></div>
 
   <section class="trofeo">
@@ -10181,7 +10616,7 @@ async function sumarCapitulosManual(){
   if(state._capsOk)return; 
   if(!state.loaded||!state.loaded.pm)return;
   if(!esAdmin()||soloLectura())return;
-  const m=(state.manuales||[]).find(x=>x.id===manKey(AUD_PILAR));
+  const m=(state.manuales||[]).find(x=>x.id===manKey(audPilar()));
   const html=(m&&m.html)||'';
   if(!html){state._capsOk=true;return}
   state._capsOk=true;
@@ -10192,7 +10627,7 @@ async function sumarCapitulosManual(){
   if(nuevo.indexOf(MANUAL_MARCA4)<0){nuevo+=MANUAL_ADD4;suma.push('24 y 25')}
   if(nuevo.indexOf(MANUAL_MARCA5)<0){nuevo+=MANUAL_ADD5;suma.push('26')}
   if(!suma.length)return;
-  if(await guardarDoc('pilarManuales/'+manKey(AUD_PILAR),
+  if(await guardarDoc('pilarManuales/'+manKey(audPilar()),
       Object.assign({},m,{html:nuevo,actualizado:new Date().toISOString()}))){
     toast('Se agregaron al manual los capítulos '+suma.join(' y ')+
       (suma.indexOf('24 y 25')>=0?': ahora también la inducción de fleteros y el control de puertas de emergencia':
@@ -10206,7 +10641,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=95;
+const APP_VER=105;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -10576,7 +11011,12 @@ async function guardarCarga(){
    Las tres auditorías del CD, puestas una al lado de la otra. Lo que esta pantalla
    responde es una sola pregunta: **¿lo que el sector declara es lo que hay?**           */
 function vCoherencia(){
-  const R=reglas(), secs=sectoresVista();
+  const R=reglas(), secs=sectoresVista(), hoy=new Date();
+  if(!state.coh)state.coh={sec:'',anio:hoy.getFullYear(),mes:hoy.getMonth()};
+  const K=state.coh;
+  const cs=K.sec||((secs[0]||{}).id||''), ca=K.anio, cm=K.mes;
+  const TRES=cs?tresAuditorias(cs,ca,cm):{con:0,notas:[],brecha:null};
+  const TEM=cs?comparaTemas(cs,ca,cm):{filas:[],col:[],choques:0};
   const filas=secs.map(s=>({s:s,C:coherenciaSector(s.id)})).filter(x=>x.C);
   const sin=secs.length-filas.length;
   const orden=filas.slice().sort((a,b)=>(a.C.pct==null?101:a.C.pct)-(b.C.pct==null?101:b.C.pct));
@@ -10610,6 +11050,66 @@ function vCoherencia(){
     En el pilar: la <b>interna</b> (la del encargado sobre su propio sector) y la <b>externa de pilar</b>,
     que hace Calidad con esa misma lista. Si falta una de las dos, no hay nada que comparar
     y el sector aparece acá como «sin par».</div></div>
+
+  <section class="panel" style="margin-bottom:16px"><header>
+    <h3>Las tres auditorías del mismo sector, en el mismo mes</h3>
+    <span class="sub">la comparación que no necesita que las listas se parezcan</span></header>
+    <div class="body">
+      <div class="filters" style="margin:0 0 14px">
+        <div class="field" style="min-width:220px"><label for="cohSel">Sector</label>
+          <select id="cohSel">${secs.map(x=>`<option value="${esc(x.id)}"${cs===x.id?' selected':''}>${esc(x.nombre)}</option>`).join('')}</select></div>
+        <div class="field"><label for="cohAnio">Año</label>
+          <select id="cohAnio">${[hoy.getFullYear()-1,hoy.getFullYear()].map(x=>`<option value="${x}"${ca===x?' selected':''}>${x}</option>`).join('')}</select></div>
+        <div class="field"><label for="cohMes">Mes</label>
+          <select id="cohMes">${MESESL.map((l,i)=>`<option value="${i}"${cm===i?' selected':''}>${l}</option>`).join('')}</select></div>
+      </div>
+      ${TRES.con?`<div class="cohnotas">${TRES.notas.map(n=>`
+        <div class="cohn ${n.pct==null?'vacia':(n.declara?'dec':'ver')}">
+          <span class="k">${esc(n.l)}</span>
+          <b>${n.pct==null?'—':n1(n.pct)+'%'}</b>
+          <span class="q">${n.pct==null?'no se hizo este mes':esc(n.quien)+(n.n>1?' · '+n.n+' bloques':'')}</span>
+          <span class="t">${n.declara?'declara':'verifica'}</span></div>`).join('')}</div>
+      ${TRES.brecha!=null?`<div class="cohbr ${Math.abs(TRES.brecha)>=10?'mal':(Math.abs(TRES.brecha)>=5?'med':'bien')}">
+        <b>${TRES.brecha>0?'+':''}${n1(TRES.brecha)} puntos de brecha</b>
+        <span>Quien se audita a sí mismo saca <b>${n1(TRES.declaran)} %</b> y quien lo verifica encuentra
+          <b>${n1(TRES.verifican)} %</b>
+          ${TRES.brecha>=10?'Una brecha de dos dígitos, repetida mes a mes, no es optimismo: es que el sector no está mirando lo mismo que Calidad. Conviene recorrer juntos una vez.'
+           :(TRES.brecha>=5?'Brecha moderada. Vale la pena mirar en qué temas se separan, abajo.'
+           :(TRES.brecha>=0?'Brecha chica: el sector se conoce.'
+           :'El sector se puntúa más duro de lo que lo encuentra Calidad. No es un problema, pero conviene saberlo.'))}</span>
+        </div>`:`<div class="soft2">Falta al menos una de las dos partes —quien declara y quien verifica— para poder sacar la brecha.</div>`}
+      <div class="soft2" style="margin-top:12px">El rango del mes va de <b>${TRES.min==null?'—':n1(TRES.min)+' %'}</b>
+        a <b>${TRES.max==null?'—':n1(TRES.max)+' %'}</b>${TRES.rango!=null?' · '+n1(TRES.rango)+' puntos de diferencia entre la más dura y la más blanda':''}.
+        Las cuatro miran el mismo sector en el mismo mes: <b>si no coinciden, alguien está mirando distinto</b>,
+        y eso se ve sin necesidad de que las listas pregunten lo mismo.</div>`
+      :`<div class="empty"><b>Este sector no tiene auditorías en ${esc(MESESL[cm])}</b>Elegí otro mes u otro sector.</div>`}
+    </div></section>
+
+  ${TRES.con>=2?`<section class="panel" style="margin-bottom:16px"><header>
+    <h3>En qué temas no coinciden</h3>
+    <span class="sub">${TEMAS.length} temas que las tres listas miran, aunque los pregunten distinto</span></header>
+    <div class="body">
+      <div class="notice warn" style="margin-bottom:12px"><div><b>Esto es aproximado y hay que leerlo como tal.</b>
+        Del lado del <b>pilar</b> el tema es exacto: cada punto ya dice de qué ítem del diagnóstico sale.
+        Del lado de <b>5S</b> se deduce de las palabras del punto, porque esas checklists todavía no tienen
+        columna de tema. Sirve para saber <b>dónde mirar</b>, no para poner una nota. El día que las
+        checklists 5S tengan su tema, esto pasa a ser exacto sin cambiar nada más.</div></div>
+      ${TEM.filas.length?`<div class="tw"><table class="lst"><thead><tr><th style="min-width:190px">Tema</th>
+        ${TEM.col.map(c=>`<th style="width:118px;font-size:11px">${esc(c.l)}</th>`).join('')}
+        <th style="width:110px"></th></tr></thead><tbody>
+        ${TEM.filas.map(f=>`<tr class="${f.choca?'temchoca':''}">
+          <td><b>${f.T.ic} ${esc(f.T.l)}</b></td>
+          ${f.celdas.map(c=>`<td class="apk">${!c.miro?'<span class="tm no-mir">no miró</span>'
+            :(c.ok?'<span class="ll si">✓</span>':`<span class="ll no">✕</span><span class="tm">${c.mal}</span>`)}</td>`).join('')}
+          <td>${f.choca?'<span class="badge crit dot">No coinciden</span>':'<span class="badge ok dot">Coinciden</span>'}</td></tr>`).join('')}
+      </tbody></table></div>
+      ${TEM.choques?`<div class="soft2" style="margin-top:12px"><b>${TEM.choques} tema${TEM.choques===1?'':'s'}
+        donde una auditoría dice que está bien y otra que no.</b> Ahí es donde conviene recorrer juntos:
+        no es que una esté mintiendo, muchas veces es que miran la misma cosa con un criterio distinto,
+        y eso se arregla hablando una vez y no auditando diez.</div>`
+       :'<div class="soft2" style="margin-top:12px">Las auditorías coinciden en todos los temas que miraron. Es lo que se busca.</div>'}`
+      :`<div class="empty"><b>Todavía no hay temas comparables</b>Hacen falta al menos dos auditorías del mismo mes con puntos sobre los mismos temas.</div>`}
+    </div></section>`:''}
 
   ${filas.length?`<section class="panel"><header><h3>Sector por sector</h3>
     <span class="sub">de menor a mayor coherencia · tocá una fila para ver en qué no coincidieron</span></header>
@@ -10883,14 +11383,66 @@ function vAprobacion(){
        rota sola por quincena entre los jefes; el calendario la muestra, no la inventa;
      · lo del CD entero: control de puertas y verificación del sistema PCI, mensuales.
    El día del mes se edita por sector. Lo que vence sin hacerse queda en rojo.           */
-const CAL_DEF={diaGen:15,diaInt:25,diaPuertas:10,diaPci:5};
+const CAL_DEF={diaGen:15,diaInt:25,diaSeg:20,diaPuertas:10,diaPci:5,diaRev:5};
+/* qué día del mes le toca a cada cosa. 'seg' es la auditoría interna del pilar
+   Seguridad: la que hace SySO sobre el sector, una vez por mes. */
+const CALK={gen:'diaGen',int:'diaInt',seg:'diaSeg'};
+/* los bloques de la auditoría interna que son del sector · puertas y PCI son del CD */
+const SEG_SEC=['syso','ol','permiso','epp','apto','hip','doc'];
 const calCfg=()=>Object.assign({},CAL_DEF,state.calendario||{});
-const calDia=(sec,k)=>{const c=calCfg();const p=(c.plan||{})[sec]||{};return Number(p[k])||Number(c[k==='gen'?'diaGen':'diaInt'])};
+const calDia=(sec,k)=>{const c=calCfg();const p=(c.plan||{})[sec]||{};return Number(p[k])||Number(c[CALK[k]||'diaInt'])};
 function calFecha(a,m,dia){
   const ult=new Date(a,m+1,0).getDate();
   return iso(new Date(a,m,Math.min(Math.max(1,dia),ult)));
 }
 async function guardarCal(c){ return guardarDoc('config/calendario',Object.assign({},c,{actualizado:new Date().toISOString()})) }
+
+/* ================= la revisión trimestral =================
+   Lo que pidió la Gerencia: revisar cada tres meses si los sectores llegan a la meta
+   y si hay que mover algo. Se hace después de cerrado el trimestre, el día que fija
+   Calidad del mes siguiente. Queda registrada acá: quién la hizo, cuándo y qué salió. */
+const revKey=(a,t)=>a+'-T'+(t+1);
+const revDe=(a,t)=>((calCfg().revis||{})[revKey(a,t)])||null;
+function revFecha(a,t){
+  const C=calCfg(), m=(t+1)*3;          /* el mes siguiente al cierre del trimestre */
+  return m>11?calFecha(a+1,0,C.diaRev):calFecha(a,m,C.diaRev);
+}
+/* 29 sectores el mismo día no los audita nadie. Esto reparte la interna de SySO
+   entre los días hábiles del mes, en el orden en que están los sectores. */
+async function repartirSeg(){
+  const secs=sectoresVista(); if(!secs.length)return false;
+  const c=calCfg(), plan=Object.assign({},c.plan||{});
+  const dias=[]; for(let d=2;d<=27;d++){const wd=new Date(2026,0,d).getDay();dias.push(d)}
+  secs.forEach((s,i)=>{plan[s.id]=Object.assign({},plan[s.id]||{},{seg:dias[i%dias.length]})});
+  return guardarCal(Object.assign({},c,{plan:plan}));
+}
+async function registrarRevision(a,t,nota){
+  const c=calCfg(), revis=Object.assign({},c.revis||{});
+  revis[revKey(a,t)]={fecha:todayISO(),por:(state.sesion&&state.sesion.nombre)||'',nota:String(nota||'').trim()};
+  return guardarCal(Object.assign({},c,{revis:revis}));
+}
+function revisionHTML(a){
+  const hoy=hoyIso(), ed=esAdmin();
+  const filas=[0,1,2,3].map(t=>{
+    const R=revDe(a,t), f=revFecha(a,t);
+    const e=R?{k:'ok',l:'Hecha el '+fmtDate(R.fecha)+(R.por?' por '+esc(R.por):'')}
+      :(String(f)<hoy?{k:'crit',l:'Vencida · era el '+fmtDate(f)}:{k:'warn',l:'Prevista el '+fmtDate(f)});
+    return `<tr><td><b>${esc(trimL(t))}</b></td>
+      <td>${fmtDate(f)}</td>
+      <td><span class="badge ${e.k} dot">${esc(e.l)}</span></td>
+      <td style="font-size:12.5px;color:var(--ink-2)">${R&&R.nota?esc(R.nota):'<span style="color:var(--ink-3)">—</span>'}</td>
+      <td>${ed&&!R?`<button class="btn sm" data-calrev="${a}|${t}">Registrar</button>`:''}</td></tr>`}).join('');
+  return `<section class="panel" style="margin-bottom:16px">
+    <header><h3>Revisión trimestral del programa</h3>
+      <span class="sub">Calidad y Gerencia · se hace una vez cerrado el trimestre</span></header>
+    <div class="tw"><table class="lst"><thead><tr><th style="min-width:200px">Trimestre</th>
+      <th style="width:120px">Fecha prevista</th><th style="min-width:210px">Estado</th>
+      <th style="min-width:200px">Qué salió</th><th style="width:110px"></th></tr></thead>
+      <tbody>${filas}</tbody></table></div>
+    <div class="body"><p class="sub" style="margin:0">Se revisa el promedio del trimestre contra la meta
+      (${n1(reglas().metaTrim)} %) y el piso de cada mes (${n1(reglas().pisoMes)} %). Si hay que mover un
+      umbral, se mueve acá y después en Reglas del puntaje, no al revés.</p></div></section>`;
+}
 function vCalendario(){
   const hoy=new Date(), secs=sectoresVista(), C=calCfg();
   if(!state.cal)state.cal={anio:hoy.getFullYear(),mes:hoy.getMonth()};
@@ -10900,6 +11452,9 @@ function vCalendario(){
   const hechoInt=s=>inte.filter(x=>x.sectorId===s&&enMes(x.fecha,a,m)).sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0];
   const estado=(prev,hecho)=>hecho?{k:'ok',l:'Hecha el '+fmtDate(hecho.fecha)}
     :(String(prev)<hoyIso()?{k:'crit',l:'Vencida · era el '+fmtDate(prev)}:{k:'warn',l:'Prevista el '+fmtDate(prev)});
+  const hechoSeg=s=>(state.segAud||[]).filter(x=>x.sectorId===s&&SEG_SEC.indexOf(x.tipo)>=0
+      &&rolDeSegAud(x)==='interna'&&enMes(x.fecha,a,m))
+    .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0];
   const pu=(state.segAud||[]).filter(x=>x.tipo==='puertas'&&enMes(x.fecha,a,m))[0];
   const pc=(state.segAud||[]).filter(x=>x.tipo==='pci'&&enMes(x.fecha,a,m))[0];
   const fPu=calFecha(a,m,C.diaPuertas), fPc=calFecha(a,m,C.diaPci);
@@ -10911,8 +11466,9 @@ function vCalendario(){
   <div class="head"><div><h1>Calendario de auditorías</h1>
     <p>Qué le toca a cada sector este mes y en qué día. La <b>auditoría sectorial</b> no se carga acá:
       rota sola entre los jefes cada quincena, y el calendario la muestra para que cada uno sepa a quién
-      le toca auditar.</p></div>
-    <div class="headbtns"><button class="btn" id="btnCalImp">Imprimir</button></div></div>
+      le toca auditar. La <b>auditoría interna del pilar Seguridad</b> la hace SySO sector por sector,
+      una vez al mes. Abajo está la <b>revisión trimestral</b> del programa.</p></div>
+    <div class="headbtns">${esAdmin()?`<button class="btn ghost" id="btnCalRep">Repartir la interna de SySO en el mes</button>`:''}<button class="btn" id="btnCalImp">Imprimir</button></div></div>
 
   <div class="filters">
     <div class="field"><label for="calAnio">Año</label>
@@ -10922,7 +11478,11 @@ function vCalendario(){
     ${esAdmin()?`<div class="field" style="max-width:140px"><label for="calDg">Día · general</label>
       <input type="text" inputmode="numeric" id="calDg" data-cald="diaGen" value="${esc(C.diaGen)}"></div>
     <div class="field" style="max-width:140px"><label for="calDi">Día · del sector</label>
-      <input type="text" inputmode="numeric" id="calDi" data-cald="diaInt" value="${esc(C.diaInt)}"></div>`:''}
+      <input type="text" inputmode="numeric" id="calDi" data-cald="diaInt" value="${esc(C.diaInt)}"></div>
+    <div class="field" style="max-width:150px"><label for="calDs">Día · interna de SySO</label>
+      <input type="text" inputmode="numeric" id="calDs" data-cald="diaSeg" value="${esc(C.diaSeg)}"></div>
+    <div class="field" style="max-width:150px"><label for="calDr">Día · revisión trimestral</label>
+      <input type="text" inputmode="numeric" id="calDr" data-cald="diaRev" value="${esc(C.diaRev)}"></div>`:''}
   </div>
 
   <div class="grid g4" style="margin-bottom:16px">
@@ -10943,18 +11503,24 @@ function vCalendario(){
     <div class="tw"><table class="lst"><thead><tr><th style="min-width:170px">Sector</th>
       <th style="width:92px">Día</th><th style="min-width:190px">Auditoría general · Calidad</th>
       <th style="width:92px">Día</th><th style="min-width:190px">La del propio sector</th>
+      <th style="width:92px">Día</th><th style="min-width:200px">Auditoría interna · pilar Seguridad</th>
       <th style="min-width:150px">Quién lo audita esta quincena</th></tr></thead><tbody>
       ${secs.map(s=>{
-        const dg=calDia(s.id,'gen'), di=calDia(s.id,'int');
+        const dg=calDia(s.id,'gen'), di=calDia(s.id,'int'), dsg=calDia(s.id,'seg');
         const eg=estado(calFecha(a,m,dg),hechoGen(s.id)), ei=estado(calFecha(a,m,di),hechoInt(s.id));
+        const es=estado(calFecha(a,m,dsg),hechoSeg(s.id));
         const r=rot.find(x=>x.sector.id===s.id);
         return `<tr><td><b>${esc(s.nombre)}</b></td>
           <td>${esAdmin()?`<input class="caldia" data-calsec="${esc(s.id)}|gen" value="${dg}">`:dg}</td>
           <td><span class="badge ${eg.k} dot">${esc(eg.l)}</span></td>
           <td>${esAdmin()?`<input class="caldia" data-calsec="${esc(s.id)}|int" value="${di}">`:di}</td>
           <td><span class="badge ${ei.k} dot">${esc(ei.l)}</span></td>
+          <td>${esAdmin()?`<input class="caldia" data-calsec="${esc(s.id)}|seg" value="${dsg}">`:dsg}</td>
+          <td><span class="badge ${es.k} dot">${esc(es.l)}</span></td>
           <td style="font-size:12.5px">${r&&r.jefeId?esc(nombreJefe(r.jefeId)||'—'):'<span style="color:var(--ink-3)">sin asignar</span>'}</td></tr>`}).join('')}
     </tbody></table></div></section>
+
+  ${revisionHTML(a)}
 
   <section class="panel"><header><h3>Lo del Centro de Distribución entero</h3>
     <span class="sub">no es de un sector: se hace una vez al mes para todo el CD</span></header>
@@ -10963,11 +11529,11 @@ function vCalendario(){
         <div class="calc ${pu?'ok':(String(fPu)<hoyIso()?'crit':'warn')}">
           <b>Control de las 13 puertas de emergencia</b>
           <span>${pu?'Hecho el '+fmtDate(pu.fecha)+' por '+esc(pu.por||'—')+(pu.validadoPor?' · validado por '+esc(pu.validadoPor):' · sin validar'):'Previsto el '+fmtDate(fPu)}</span>
-          <button class="btn sm" data-go="audint" data-asubgo="puertas">Ir a cargarlo</button></div>
+          ${puedeAud()?`<button class="btn sm" data-go="audint" data-asubgo="puertas">Ir a cargarlo</button>`:(puede('audint')?`<button class="btn sm ghost" data-go="audint" data-asubgo="puertas">Ver</button>`:`<span class="sub">lo carga SySO</span>`)}</div>
         <div class="calc ${pc?'ok':(String(fPc)<hoyIso()?'crit':'warn')}">
           <b>Verificación del sistema PCI</b>
           <span>${pc?'Hecha el '+fmtDate(pc.fecha)+' por '+esc(pc.por||'—'):'Prevista el '+fmtDate(fPc)}</span>
-          <button class="btn sm" data-go="audint" data-asubgo="pci">Ir a cargarlo</button></div>
+          ${puedeAud()?`<button class="btn sm" data-go="audint" data-asubgo="pci">Ir a cargarlo</button>`:(puede('audint')?`<button class="btn sm ghost" data-go="audint" data-asubgo="pci">Ver</button>`:`<span class="sub">lo carga SySO</span>`)}</div>
       </div>
     </div></section>`;
 }
@@ -11408,8 +11974,8 @@ document.addEventListener('keydown',e=>{
 
 
 /* ================= menú por sitio ================= */
-const NAVITEMS={"papelera": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2.6 4.3h10.8\"/><path d=\"M12.2 4.3v8.4a1.3 1.3 0 01-1.3 1.3H5.1a1.3 1.3 0 01-1.3-1.3V4.3\"/><path d=\"M6 4.3V3a1 1 0 011-1h2a1 1 0 011 1v1.3\"/><path d=\"M6.6 7v4M9.4 7v4\"/></svg>", "l": "Papelera", "badge": ""}, "cumplimiento": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.7a6.3 6.3 0 106.3 6.3\"/><path d=\"M8 8V1.7A6.3 6.3 0 0114.3 8z\"/></svg>", "l": "% de cumplimiento", "badge": ""}, "audgen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M5.3 8.2l1.9 1.9 3.5-4\"/></svg>", "l": "Auditoría general", "badge": ""}, "audsec": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011-1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Auditoría sectorial", "badge": ""}, "audint": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 5.2V3.4a1.4 1.4 0 011.4-1.4h7.2A1.4 1.4 0 0113 3.4v9.2a1.4 1.4 0 01-1.4 1.4H4.4A1.4 1.4 0 013 12.6V10.8\"/><path d=\"M1.6 8h6.8M6.6 6.2L8.4 8l-1.8 1.8\"/></svg>", "l": "Auditoría interna", "badge": ""}, "manual": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M6.2 6.1a1.9 1.9 0 113.1 1.5c-.7.5-1.3.8-1.3 1.6\"/><path d=\"M8 11.7v.2\"/></svg>", "l": "Cómo se usa", "badge": ""}, "resumen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 13.5h12\"/><path d=\"M4 13.5V8M7.3 13.5V4M10.6 13.5V6.5M14 13.5V2.5\"/></svg>", "l": "Resumen ejecutivo", "badge": ""}, "impacto": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M8 4.6v6.8M6.3 6.2h3.4M6.3 9.8h3.4\"/></svg>", "l": "Impacto monetario", "badge": ""}, "piso": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"3.5\" y=\"1.5\" width=\"9\" height=\"13\" rx=\"2\"/><path d=\"M6.5 12h3\"/><path d=\"M6 5.8l1.4 1.4 2.6-2.9\"/></svg>", "l": "Auditar", "badge": ""}, "rotacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011 -1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Rotación de auditorías", "badge": ""}, "tablero": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"1.5\" width=\"5\" height=\"6\" rx=\"1\"/><rect x=\"9.5\" y=\"1.5\" width=\"5\" height=\"9\" rx=\"1\"/><rect x=\"1.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"2\" rx=\"1\"/></svg>", "l": "Tablero", "badge": ""}, "evolucion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 12.5l3.5-4 3 2.5 5.5-6.5\"/><path d=\"M10.5 4.5H14v3.5\"/></svg>", "l": "Evolución por sector", "badge": ""}, "validar": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 8.4l3 3 7-7.4\"/><path d=\"M13.5 8v5.5a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1H10\"/></svg>", "l": "Por validar", "badge": "badgeVal"}, "expedientes": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z\"/><path d=\"M1.5 4.5V3a1 1 0 011-1h3L7 3.5\"/></svg>", "l": "Auditorías realizadas", "badge": ""}, "auditorias": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3.5h12M2 8h12M2 12.5h12\"/></svg>", "l": "Histórico y puntajes", "badge": ""}, "hallazgos": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8L14.5 13.5h-13z\"/><path d=\"M8 6v3.5M8 11.4v.2\"/></svg>", "l": "Plan de acción", "badge": "badgeHall"}, "buenas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8l1.9 4h4.3l-3.4 2.8 1.3 4.3L8 10.4l-4.1 2.5 1.3-4.3L1.8 5.8h4.3z\"/></svg>", "l": "Buenas prácticas", "badge": ""}, "copa": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M4.5 2h7v3.5a3.5 3.5 0 01-7 0z\"/><path d=\"M4.5 3H2.6v1.1A2.4 2.4 0 004.8 6.5M11.5 3h1.9v1.1a2.4 2.4 0 01-2.2 2.4\"/><path d=\"M8 9v2.5M5.6 14h4.8l-.5-2.5H6.1z\"/></svg>", "l": "Reconocimiento y copa", "badge": ""}, "layouts": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4l4.5-2 4 2 4.5-2v10l-4.5 2-4-2-4.5 2z\"/><path d=\"M6 2v10M10 4v10\"/></svg>", "l": "Layouts y semáforo 5S", "badge": ""}, "pantalla": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"2.5\" width=\"13\" height=\"9\" rx=\"1\"/><path d=\"M5.5 14h5\"/></svg>", "l": "Pantalla del CD", "badge": ""}, "pilares": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3h12\"/><path d=\"M3.5 3v9M8 3v9M12.5 3v9\"/><path d=\"M1.5 12h13v2h-13z\"/></svg>", "l": "Los 6 pilares", "badge": ""}, "checklists": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 4h2.5M2 8h2.5M2 12h2.5M7 4h7M7 8h7M7 12h7\"/></svg>", "l": "Checklists", "badge": ""}, "sectores": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 14.5V7l4-2.5V14.5M5.5 14.5V2.5l4 2V14.5M9.5 14.5V6l5 2.5v6z\"/></svg>", "l": "Sitios y sectores", "badge": ""}, "mejoras": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5.9 10.9a4.1 4.1 0 114.2 0\"/><path d=\"M6.3 11.2h3.4v1.5a1.7 1.7 0 01-3.4 0z\"/><path d=\"M8 1.4v1.2M2.7 4.1l.9.7M13.3 4.1l-.9.7\"/></svg>", "l": "Mejoras del sector", "badge": ""}, "ahorro": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"6.4\" cy=\"9.6\" r=\"4.6\"/><path d=\"M4.8 9.6h3.2M6.4 8v3.2\"/><path d=\"M10.4 6.1l2.1-2.7 2.1 2.7\"/><path d=\"M12.5 3.4v5.2\"/></svg>", "l": "Ahorro · vista macro", "badge": ""}, "aprobacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3.2 8.3l2.6 2.6 6-6.4\"/><circle cx=\"8\" cy=\"8\" r=\"6.4\"/></svg>", "l": "Aprobación del sector", "badge": ""}, "reglas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 11.5L11.5 2l2.5 2.5L4.5 14H2z\"/><path d=\"M9.4 4.1l2.5 2.5\"/><path d=\"M2 8h3\"/></svg>", "l": "Reglas del puntaje", "badge": ""}, "tarjetas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.6\" y=\"3.4\" width=\"8.4\" height=\"10.2\" rx=\"1.2\"/><path d=\"M5.4 2.1l7.6 1.8a1.2 1.2 0 01.9 1.5l-2 8.1\"/></svg>", "l": "Tarjetas", "badge": "badgeTarj"}, "calendario": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.8\" y=\"3\" width=\"12.4\" height=\"11.2\" rx=\"1.4\"/><path d=\"M1.8 6.6h12.4\"/><path d=\"M5.2 1.6v2.6M10.8 1.6v2.6\"/><path d=\"M5 9.4h2M9 9.4h2M5 11.8h2\"/></svg>", "l": "Calendario", "badge": ""}, "coherencia": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"5.9\" cy=\"8\" r=\"4.3\"/><circle cx=\"10.1\" cy=\"8\" r=\"4.3\"/></svg>", "l": "Coherencia entre auditorías", "badge": ""}, "audext": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"7.2\" cy=\"7.2\" r=\"4.6\"/><path d=\"M10.6 10.6l3 3\"/><path d=\"M5.3 7.3l1.4 1.4 2.4-2.8\"/></svg>", "l": "Auditoría externa de pilar", "badge": ""}};
-NAVITEMS.mejoras={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11.5l3.5-4 2.5 2.2L13.5 4"/><path d="M10 4h3.5v3.5"/><path d="M2 14h12"/></svg>',l:'Mejoras del sector',badge:''};
+const NAVITEMS={"papelera": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2.6 4.3h10.8\"/><path d=\"M12.2 4.3v8.4a1.3 1.3 0 01-1.3 1.3H5.1a1.3 1.3 0 01-1.3-1.3V4.3\"/><path d=\"M6 4.3V3a1 1 0 011-1h2a1 1 0 011 1v1.3\"/><path d=\"M6.6 7v4M9.4 7v4\"/></svg>", "l": "Papelera", "badge": ""}, "cumplimiento": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.7a6.3 6.3 0 106.3 6.3\"/><path d=\"M8 8V1.7A6.3 6.3 0 0114.3 8z\"/></svg>", "l": "Auditoría 5S", "badge": ""}, "audgen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M5.3 8.2l1.9 1.9 3.5-4\"/></svg>", "l": "Auditoría general", "badge": ""}, "audsec": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011-1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Auditoría", "badge": ""}, "audint": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 5.2V3.4a1.4 1.4 0 011.4-1.4h7.2A1.4 1.4 0 0113 3.4v9.2a1.4 1.4 0 01-1.4 1.4H4.4A1.4 1.4 0 013 12.6V10.8\"/><path d=\"M1.6 8h6.8M6.6 6.2L8.4 8l-1.8 1.8\"/></svg>", "l": "Auditoría interna", "badge": ""}, "manual": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M6.2 6.1a1.9 1.9 0 113.1 1.5c-.7.5-1.3.8-1.3 1.6\"/><path d=\"M8 11.7v.2\"/></svg>", "l": "Cómo se usa", "badge": ""}, "resumen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 13.5h12\"/><path d=\"M4 13.5V8M7.3 13.5V4M10.6 13.5V6.5M14 13.5V2.5\"/></svg>", "l": "Resumen ejecutivo", "badge": ""}, "impacto": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M8 4.6v6.8M6.3 6.2h3.4M6.3 9.8h3.4\"/></svg>", "l": "Impacto monetario", "badge": ""}, "piso": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"3.5\" y=\"1.5\" width=\"9\" height=\"13\" rx=\"2\"/><path d=\"M6.5 12h3\"/><path d=\"M6 5.8l1.4 1.4 2.6-2.9\"/></svg>", "l": "Auditar", "badge": ""}, "rotacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011 -1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Asignación de auditores", "badge": ""}, "tablero": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"1.5\" width=\"5\" height=\"6\" rx=\"1\"/><rect x=\"9.5\" y=\"1.5\" width=\"5\" height=\"9\" rx=\"1\"/><rect x=\"1.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"2\" rx=\"1\"/></svg>", "l": "Tablero", "badge": ""}, "evolucion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 12.5l3.5-4 3 2.5 5.5-6.5\"/><path d=\"M10.5 4.5H14v3.5\"/></svg>", "l": "Evolución por sector", "badge": ""}, "validar": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 8.4l3 3 7-7.4\"/><path d=\"M13.5 8v5.5a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1H10\"/></svg>", "l": "Por validar", "badge": "badgeVal"}, "expedientes": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z\"/><path d=\"M1.5 4.5V3a1 1 0 011-1h3L7 3.5\"/></svg>", "l": "Auditorías realizadas", "badge": ""}, "auditorias": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3.5h12M2 8h12M2 12.5h12\"/></svg>", "l": "Histórico y puntajes", "badge": ""}, "hallazgos": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8L14.5 13.5h-13z\"/><path d=\"M8 6v3.5M8 11.4v.2\"/></svg>", "l": "Plan de acción de NC", "badge": "badgeHall"}, "buenas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8l1.9 4h4.3l-3.4 2.8 1.3 4.3L8 10.4l-4.1 2.5 1.3-4.3L1.8 5.8h4.3z\"/></svg>", "l": "Buenas prácticas", "badge": ""}, "copa": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M4.5 2h7v3.5a3.5 3.5 0 01-7 0z\"/><path d=\"M4.5 3H2.6v1.1A2.4 2.4 0 004.8 6.5M11.5 3h1.9v1.1a2.4 2.4 0 01-2.2 2.4\"/><path d=\"M8 9v2.5M5.6 14h4.8l-.5-2.5H6.1z\"/></svg>", "l": "Reconocimiento", "badge": ""}, "layouts": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4l4.5-2 4 2 4.5-2v10l-4.5 2-4-2-4.5 2z\"/><path d=\"M6 2v10M10 4v10\"/></svg>", "l": "Layout general", "badge": ""}, "pantalla": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"2.5\" width=\"13\" height=\"9\" rx=\"1\"/><path d=\"M5.5 14h5\"/></svg>", "l": "Pantalla del CD", "badge": ""}, "pilares": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3h12\"/><path d=\"M3.5 3v9M8 3v9M12.5 3v9\"/><path d=\"M1.5 12h13v2h-13z\"/></svg>", "l": "Los 6 pilares", "badge": ""}, "checklists": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 4h2.5M2 8h2.5M2 12h2.5M7 4h7M7 8h7M7 12h7\"/></svg>", "l": "Checklists", "badge": ""}, "sectores": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 14.5V7l4-2.5V14.5M5.5 14.5V2.5l4 2V14.5M9.5 14.5V6l5 2.5v6z\"/></svg>", "l": "Sitios y sectores", "badge": ""}, "mejoras": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5.9 10.9a4.1 4.1 0 114.2 0\"/><path d=\"M6.3 11.2h3.4v1.5a1.7 1.7 0 01-3.4 0z\"/><path d=\"M8 1.4v1.2M2.7 4.1l.9.7M13.3 4.1l-.9.7\"/></svg>", "l": "Mejora continua", "badge": ""}, "ahorro": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"6.4\" cy=\"9.6\" r=\"4.6\"/><path d=\"M4.8 9.6h3.2M6.4 8v3.2\"/><path d=\"M10.4 6.1l2.1-2.7 2.1 2.7\"/><path d=\"M12.5 3.4v5.2\"/></svg>", "l": "Ahorro · vista macro", "badge": ""}, "aprobacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3.2 8.3l2.6 2.6 6-6.4\"/><circle cx=\"8\" cy=\"8\" r=\"6.4\"/></svg>", "l": "Aprobación del sector", "badge": ""}, "reglas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 11.5L11.5 2l2.5 2.5L4.5 14H2z\"/><path d=\"M9.4 4.1l2.5 2.5\"/><path d=\"M2 8h3\"/></svg>", "l": "Reglas del puntaje", "badge": ""}, "tarjetas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.6\" y=\"3.4\" width=\"8.4\" height=\"10.2\" rx=\"1.2\"/><path d=\"M5.4 2.1l7.6 1.8a1.2 1.2 0 01.9 1.5l-2 8.1\"/></svg>", "l": "Tarjetas", "badge": "badgeTarj"}, "calendario": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.8\" y=\"3\" width=\"12.4\" height=\"11.2\" rx=\"1.4\"/><path d=\"M1.8 6.6h12.4\"/><path d=\"M5.2 1.6v2.6M10.8 1.6v2.6\"/><path d=\"M5 9.4h2M9 9.4h2M5 11.8h2\"/></svg>", "l": "Calendario", "badge": ""}, "coherencia": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"5.9\" cy=\"8\" r=\"4.3\"/><circle cx=\"10.1\" cy=\"8\" r=\"4.3\"/></svg>", "l": "Coherencia entre auditorías", "badge": ""}, "audext": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"7.2\" cy=\"7.2\" r=\"4.6\"/><path d=\"M10.6 10.6l3 3\"/><path d=\"M5.3 7.3l1.4 1.4 2.4-2.8\"/></svg>", "l": "Auditoría externa de pilar", "badge": ""}, "tendencia": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.8 12.4l3.6-4.2 2.6 2.3 5.4-6\"/><path d=\"M10.2 4.5h3.5V8\"/><path d=\"M1.8 14.2h12.4\"/></svg>", "l": "Tendencia mensual", "badge": ""}};
+NAVITEMS.mejoras={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11.5l3.5-4 2.5 2.2L13.5 4"/><path d="M10 4h3.5v3.5"/><path d="M2 14h12"/></svg>',l:'Mejora continua',badge:''};
 NAVITEMS.sanciones={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.8v12.4"/><path d="M3 4.5h10"/><path d="M5.2 4.8L3 9.2h4.4zM10.8 4.8L8.6 9.2H13z"/><path d="M3 9.2a2.2 2.2 0 004.4 0M8.6 9.2a2.2 2.2 0 004.4 0"/></svg>',l:'Reconocimientos del mes',badge:''};
 NAVITEMS.ahorro={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12.5 6 7l3 2.5L14 3.5"/><path d="M10 3.5h4v4"/></svg>',l:'Ahorro y sectores'};
 NAVITEMS.gerencia={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="1.5"/><path d="M4.5 9.5l2.5-2.5 2 2 2.5-3.5"/></svg>',l:'Resumen general',badge:''};
@@ -11429,7 +11995,16 @@ const SITIOS_CAT=[
   {id:'ind-arrocera',grupo:'industria',nombre:'Arrocera',corto:'Arrocera',ciudad:''},
   {id:'ind-yerbatera',grupo:'industria',nombre:'Yerbatera',corto:'Yerbatera',ciudad:''}
 ];
-const MENU5S=[['Dirección',['resumen','ahorro','impacto']],['Operación',['cumplimiento','aprobacion','coherencia','calendario','audgen','audsec','audint','audext','seginf','tarjetas','rotacion','tablero','evolucion','expedientes','auditorias','hallazgos','mejoras','buenas']],['Gestión visual',['copa','pantalla','layouts']],['Sólo Calidad',['reglas','papelera']]];
+/* El menú tal como lo definió Calidad en el pizarrón del 05/10:
+     CAT · 5S                 → auditoría, plan de acción, asignación, mejora, layout, reconocimiento
+     Auditoría interna CDSA   → la auditoría cruzada y su calendario
+   El resto es seguimiento de Calidad y Gerencia: no le aparece al sector. */
+const MENU5S=[
+ ['Dirección',['resumen','ahorro','impacto','tablero']],
+ ['CAT · 5S',['cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','tendencia']],
+ ['Auditoría interna CDSA',['audsec','calendario']],
+ ['Seguimiento de Calidad',['aprobacion','coherencia','audgen','audext','audint','seginf','tarjetas','evolucion','auditorias','expedientes','buenas','sanciones','pantalla']],
+ ['Sólo Calidad',['reglas','papelera']]];
 function sitiosMenu(){
   const extra=state.sitios.filter(x=>!SITIOS_CAT.some(c=>c.id===x.id)).map(x=>({id:x.id,grupo:x.grupo||'cd',padre:x.padre||'',nombre:x.nombre,corto:x.nombre,ciudad:x.ciudad||''}));
   return SITIOS_CAT.concat(extra);
@@ -11447,12 +12022,32 @@ function isOpen(k){
 function navItem(v,extra){const it=NAVITEMS[v];
   /* si el rol no puede abrir esa parte, no le aparece en el menú */
   if(!it||!puede(v))return '';
+  /* la auditoría interna no es una sola: hay una por pilar, y a cada uno le aparece
+     la del pilar que lleva. Calidad y Gerencia las ven todas. */
+  if(v==='audint'){
+    const mios=pilaresQueVe();
+    if(!mios.length)return '';
+    return mios.map(id=>{const q=pilarDe(id)||{};
+      return `<button class="nav" data-view="audint" data-audpil="${esc(id)}"${extra||''}>${it.svg} Auditoría interna · ${esc(q.nombre||id)}</button>`}).join('');
+  }
   return `<button class="nav" data-view="${v}"${extra||''}>${it.svg} ${esc(it.l)}${it.badge?` <span class="badge ${it.badge==='badgeVal'?'warn':'crit'}" id="${it.badge}" hidden>0</span>`:''}</button>`}
 const foldIco='<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z"/><path d="M1.5 4.5V3a1 1 0 011-1h3L7 3.5"/></svg>';
 function navFold(k,label,body,cls,attr){
   const open=isOpen(k);
   return `<button class="navfold ${cls||''}" data-fold="${k}"${attr||''} aria-expanded="${open}"><span class="car">▾</span>${cls==='site'?'':foldIco}${esc(label)}</button>
   <div class="foldbody" data-foldbody="${k}"${open?'':' hidden'}>${body}</div>`;
+}
+/* Qué pilares ve cada perfil. SySO trabaja el pilar Seguridad: es el único que le
+   aparece, porque los otros cinco los lleva otra gente. Calidad y Gerencia ven los
+   seis. Los demás ven los seis para consultar el manual de su pilar. */
+function pilaresDelPerfil(){
+  const todos=pilCfg().pilares||[];
+  const rol=(state.sesion&&state.sesion.rol)||'admin';
+  if(rol==='syso'||rol==='sysoana'){
+    const p=todos.filter(x=>x.id===audPilar());
+    return p.length?p:todos;
+  }
+  return todos;
 }
 function navHTML(){
   let h=navItem('manual')+navItem('gerencia');
@@ -11462,12 +12057,14 @@ function navHTML(){
     const ds=` data-sitio="${st.id}"`;
     const m5=MENU5S.map(([lab,vs])=>{const cuerpo=vs.map(v=>navItem(v,ds)).join('');
       return cuerpo?`<div class="navlabel">${lab}</div>`+cuerpo:''}).join('');
-    const pil=puede('pilares')?(`<button class="nav" data-view="pilares" data-pilnav=""${ds}>${NAVITEMS.pilares.svg} Los 6 pilares</button>`+
-      pilCfg().pilares.map(p=>`<button class="nav sub" data-view="pilares" data-pilnav="${p.id}"${ds}><span class="pn">P${p.num}</span>${esc(p.nombre)}</button>`).join('')):'';
+    const pils=pilaresDelPerfil();
+    const pil=(puede('pilares')&&pils.length)?((pils.length>1
+        ?`<button class="nav" data-view="pilares" data-pilnav=""${ds}>${NAVITEMS.pilares.svg} Los 6 pilares</button>`:'')+
+      pils.map(p=>`<button class="nav sub" data-view="pilares" data-pilnav="${p.id}"${ds}><span class="pn">P${p.num}</span>${esc(p.nombre)}</button>`).join('')):'';
     /* en las plantas, la etiqueta de pallet va directo, sin carpeta intermedia: es lo que más se usa */
     const prod=g.id==='industria'?navItem('etiquetas',ds):'';
     return prod+(m5?navFold('s:'+st.id+':5s','5S',m5,'lvl'):'')
-      +(pil?navFold('s:'+st.id+':pil','Pilares',pil,'lvl'):'');
+      +(pil?navFold('s:'+st.id+':pil',pilaresDelPerfil().length>1?'Pilares':'Pilar Seguridad',pil,'lvl'):'');
   };
   GRUPOS.forEach(g=>{
     const delGrupo=todos.filter(x=>x.grupo===g.id);
@@ -11750,7 +12347,46 @@ function escalaCriticidadHTML(abierta){
 }
 const HIPTIPO={seguridad:'Seguridad',higiene:'Higiene y salud ocupacional',acto:'Acto o comportamiento'};
 const DOCEST={tiene:{l:'Tiene',cls:'ok'},no:{l:'No tiene',cls:'crit'},na:{l:'No aplica',cls:''},sin:{l:'Sin verificar',cls:'warn'}};
-const AUD_PILAR='seguridad';
+/* ================= una auditoría interna por pilar =================
+   Lo que pidió Calidad: la auditoría interna no es sólo la de Seguridad. Cada pilar
+   tiene su encargado, su propia lista y recorre los sectores que le tocan. El de
+   Seguridad es el que está armado (salud y seguridad, orden y limpieza, puertas,
+   PCI, permiso de trabajo, EPP, apto, riesgos y documentos). Los otros cinco arrancan
+   con una lista que arma Calidad junto con el dueño del pilar, más los documentos de
+   ese pilar, sus acciones y su informe por sector.
+     · quién la carga  → el encargado del pilar (y Calidad, que entra a todos)
+     · quién la mira   → además, Gerencia
+   A cada usuario se le puede poner su pilar en Usuarios (campo `pilares`). Si no tiene
+   nada cargado, manda el rol: SySO lleva Seguridad. */
+const PIL_SEG='seguridad';
+const PIL_ROL={syso:['seguridad'],sysoana:['seguridad']};
+function pilaresQueCarga(){
+  const todos=(pilCfg().pilares||[]).map(p=>p.id);
+  if(esAdmin())return todos;
+  const ses=state.sesion||{};
+  const u=usuarioDe(ses.usuario)||{};
+  const prop=(Array.isArray(u.pilares)&&u.pilares.length)?u.pilares
+    :((Array.isArray(ses.pilares)&&ses.pilares.length)?ses.pilares:null);
+  if(prop)return prop.filter(id=>todos.indexOf(id)>=0);
+  return (PIL_ROL[ses.rol]||[]).filter(id=>todos.indexOf(id)>=0);
+}
+function pilaresQueVe(){
+  const ses=state.sesion||{};
+  if(esAdmin())return (pilCfg().pilares||[]).map(p=>p.id);
+  /* a Gerencia le interesa la del pilar Seguridad, que es la que pidió ver.
+     Las otras cinco las sigue Calidad: no le llenan el menú al Gerente. */
+  if(ses.rol==='gerencia')return [PIL_SEG];
+  return pilaresQueCarga();
+}
+function audPilar(){
+  const A=state.aud||{};
+  if(A.pilar&&pilarDe(A.pilar))return A.pilar;
+  const v=pilaresQueVe();
+  return v.length?v[0]:PIL_SEG;
+}
+const esPilSeg=()=>audPilar()===PIL_SEG;
+/* quién puede cargar la auditoría interna del pilar que está abierto */
+const puedeAudPilar=pid=>esAdmin()||pilaresQueCarga().indexOf(pid||audPilar())>=0;
 
 const docSecKey=sec=>state.sitioSel+'__'+(sec||'_cd');
 const docSecDe=sec=>state.diag&&0?null:(state.docSector||[]).find(x=>x.id===docSecKey(sec))||{};
@@ -11788,6 +12424,16 @@ const SEGBLOQ={
  syso:{t:'Salud y seguridad ocupacional',ic:'\u{1F9BA}',foto:true,
    d:'Las condiciones del lugar y la forma de trabajar. Cada sector tiene SU lista: sale de los peligros que la hipermatriz le asigna a ese sector, de lo que se hace ahí y de las prácticas de salud del puesto.'}
 };
+/* el bloque de los pilares que todavía no tienen recorrida propia: una lista sola */
+function bloqDe(b){
+  if(SEGBLOQ[b])return SEGBLOQ[b];
+  if(String(b).indexOf('p:')===0){
+    const q=pilarDe(String(b).slice(2))||{};
+    return {t:'La lista del pilar '+(q.nombre||''),ic:'\u{1F4DD}',foto:true,
+      d:'Lo que el encargado del pilar '+(q.nombre||'')+' verifica en el sector. La arma Calidad junto con él: mientras esté vacía, la pantalla lo dice.'};
+  }
+  return {t:b,d:''};
+}
 const SEGCHK_COLS=['id','b','t','crit','ev','item','alcance','acc','g','pu'];
 /* el tipo de cada sector del CD: decide qué puntos de SySO le tocan.
    Si la estructura ya trae el tipo del sector, manda esa; esto es el respaldo. */
@@ -11835,7 +12481,7 @@ function docEstado(sec,r){
   const v=(docReqResp(sec)[r.id]||{}).v;
   if(v)return v;
   /* si el documento ya está cargado en el pilar, cuenta como que lo tiene */
-  if(r.doc&&docsVisibles(AUD_PILAR).some(d=>d.id===r.doc))return 'tiene';
+  if(r.doc&&docsVisibles(audPilar()).some(d=>d.id===r.doc))return 'tiene';
   /* el estado con el que vino cargado desde el relevamiento de Calidad */
   if(r.est0)return r.est0;
   return 'sin';
@@ -11847,7 +12493,7 @@ function docsSinArchivo(sec,alc){
     const v=docReqResp(sec)[r.id]||{};
     const id=v.docId||r.doc||'';
     if(!id)return true;
-    const d=docsVisibles(AUD_PILAR).find(x=>x.id===id);
+    const d=docsVisibles(audPilar()).find(x=>x.id===id);
     return !d||!(d.data||d.url);
   });
 }
@@ -12116,7 +12762,7 @@ function organigramaHTML(p){
         <td>${celda(i,'ve',f[4],'Quién controla')}</td>
         <td>${ed?`<select class="orgs" data-orgdoc="${i}">
               <option value="">— sin documento de la biblioteca —</option>
-              ${docsVisibles(AUD_PILAR).map(x=>`<option value="${esc(x.id)}"${f[5]===x.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}
+              ${docsVisibles(audPilar()).map(x=>`<option value="${esc(x.id)}"${f[5]===x.id?' selected':''}>${esc(x.titulo)}</option>`).join('')}
             </select>
             <input class="orgi" data-orgf="${i}:doc" value="${esc(String(f[5]||'').indexOf('pd-')===0?'':(f[5]||''))}" placeholder="…o escribí dónde está">`
           :orgDocHTML(f[5])}</td>
@@ -12530,9 +13176,58 @@ document.addEventListener('click',async e=>{
     return}
   const tjd=t.closest('[data-tjdel]');
   if(tjd&&esAdmin()){ borrarDoc('tarjetas/'+tjd.dataset.tjdel).then(ok=>{if(ok)toast('Tarjeta eliminada')}); return }
+  if(t.id==='btnTendImp'||(t.closest&&t.closest('#btnTendImp'))){ window.print(); return }
+  if(t.id==='btnCalRep'||(t.closest&&t.closest('#btnCalRep'))){
+    if(!esAdmin())return;
+    repartirSeg().then(ok=>{if(ok)toast('La interna de SySO quedó repartida entre los días 2 y 27')});
+    return}
+  const mji=t.closest('[data-mjimpl]');
+  if(mji){
+    const m=(state.mejoras||[]).find(x=>x.id===mji.dataset.mjimpl); if(!m)return;
+    if(!puedeCargarMejora(m.sectorId)){toast('Esto lo marca el sector o Calidad');return}
+    const prender=mji.dataset.mjv==='1';
+    if(prender&&!fotosMejora(m.id).some(x=>x.tipo==='despues')){
+      toast('Subí primero la foto de después: sin eso la mejora no se puede dar por implementada');return}
+    const d=Object.assign({},m); delete d.id;
+    d.implementada=prender;
+    d.implEl=prender?todayISO():'';
+    d.implPor=prender?((state.sesion&&state.sesion.nombre)||''):'';
+    guardarDoc(COL.mj+'/'+m.id,d).then(ok=>{if(ok)toast(prender
+      ?'Marcada como implementada · ya cuenta para el reconocimiento'
+      :'Vuelve a quedar como anotada')});
+    return}
+  const efb=t.closest('[data-efec]');
+  if(efb){
+    const h=state.hallazgos.find(x=>x.id===efb.dataset.efech); if(!h)return;
+    if(!puedeCerrar()&&!puedeCargarCorreccion(h)){toast('La efectividad la verifica Calidad o el sector');return}
+    const v=efb.dataset.efec;
+    const d=Object.assign({},h); delete d.id;
+    anotarCambio(d,'efectivo',h.efectivo||'',v);
+    d.efectivo=v; d.efectivoEl=new Date().toISOString();
+    d.efectivoPor=(state.sesion&&state.sesion.nombre)||'';
+    if(v==='si')d.efecPorQue='';
+    state.openHab='h:'+h.id;
+    guardarDoc(COL.ha+'/'+h.id,d).then(ok=>{if(ok)toast(v==='si'
+      ?'Verificada: la acción fue efectiva'
+      :'Anotado · escribí por qué no funcionó y abrí la acción nueva')});
+    return}
+  const crv=t.closest('[data-calrev]');
+  if(crv&&esAdmin()){
+    const [a,tr]=crv.dataset.calrev.split('|').map(Number);
+    const q=prompt('¿Qué salió de la revisión del '+trimL(tr)+'? (una línea)','');
+    if(q==null)return;
+    registrarRevision(a,tr,q).then(ok=>{if(ok)toast('Revisión registrada')});
+    return}
+  const apl=t.closest('[data-audpil]');
+  if(apl){
+    const id=apl.dataset.audpil;
+    if(pilaresQueVe().indexOf(id)>=0&&audPilar()!==id)
+      state.aud=Object.assign({},state.aud||{},{pilar:id,sec:'',sub:null,chk:{},libres:[]});
+  }
   const asg=t.closest('[data-asubgo]');
   if(asg){ state.aud=Object.assign({},state.aud,{sub:asg.dataset.asubgo}); }
   const chs=t.closest('[data-cohsec]');
+  if(chs&&!state.coh)state.coh={sec:chs.dataset.cohsec,anio:new Date().getFullYear(),mes:new Date().getMonth()};
   if(chs){ state.cohSec=state.cohSec===chs.dataset.cohsec?null:chs.dataset.cohsec; render(); return }
   if(t.id==='btnCohImp'||(t.closest&&t.closest('#btnCohImp'))){ window.print(); return }
   const aps=t.closest('[data-apsec]');
@@ -12542,28 +13237,28 @@ document.addEventListener('click',async e=>{
   if(asb){ state.aud.sub=asb.dataset.asub; render(); return }
   const dq=t.closest('[data-dq]');
   if(dq){
-    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
     const id=dq.dataset.dqi, clave=dq.dataset.dqs, v=dq.dataset.dq;
     const act=docReqResp(clave)[id]||{};
     docTocar(clave,id,'v',act.v===v?'sin':v);
     render();return}
   const puv=t.closest('[data-puv]');
   if(puv){
-    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
     const n=Number(puv.dataset.pup), k=puv.dataset.puc, v=puv.dataset.puv, R=puertasResp();
     R[n]=R[n]||{};
     R[n][k]=R[n][k]===v?'':v;
     if(!R[n][k])delete R[n][k];
     render();return}
   if(t.id==='btnPuTodo'||(t.closest&&t.closest('#btnPuTodo'))){
-    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
     const R=puertasResp();
     puertasLista().forEach(p=>{R[p.n]=R[p.n]||{};PUERTAS_COND.forEach(c=>R[p.n][c.k]='si')});
     render();return}
   if(t.id==='btnPuGuardar'||(t.closest&&t.closest('#btnPuGuardar'))){ guardarPuertas(); return }
   const pciv=t.closest('[data-pciv]');
   if(pciv){
-    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
     const id=pciv.dataset.pcii, v=pciv.dataset.pciv, R=pciResp();
     R[id]=R[id]||{};
     R[id].v=R[id].v===v?'':v;
@@ -12581,7 +13276,7 @@ document.addEventListener('click',async e=>{
   /* --- los bloques nuevos: permiso de trabajo, EPP y apto de trabajo --- */
   const ckb=t.closest('[data-ckv]');
   if(ckb){
-    if(!puedeAud()){toast('La auditoría interna la cargan Calidad, SySO y el jefe del sector');return}
+    if(!puedeAud()){toast('La auditoría interna del pilar Seguridad la cargan SySO y Calidad');return}
     const b=ckb.dataset.ckb, id=ckb.dataset.cki, v=ckb.dataset.ckv, R=chkResp(b);
     R[id]=R[id]||{};
     R[id].v=R[id].v===v?'':v;
@@ -13527,7 +14222,7 @@ document.addEventListener('click',async e=>{
       reqsDe(alc).forEach(r=>{const x=R[r.id]||{};
         limpio[r.id]={v:docEstado(clave,r),docId:x.docId||r.doc||'',vence:x.vence||'',obs:x.obs||''}});
       const g=calcDocs(clave,alc);
-      return guardarDoc('docSector/'+docSecKey(clave),{sitioId:state.sitioSel,sectorId:clave,pilarId:AUD_PILAR,
+      return guardarDoc('docSector/'+docSecKey(clave),{sitioId:state.sitioSel,sectorId:clave,pilarId:audPilar(),
         alcance:alc,resp:limpio,pct:g.pct,tiene:g.tiene,no:g.no,noAplica:g.na,sinVerificar:g.sin,total:g.tot,
         actualizado:new Date().toISOString(),actualizadoPor:state.auditor||(state.sesion&&state.sesion.nombre)||'—'});
     };
