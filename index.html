@@ -2106,11 +2106,15 @@ function coherenciaPilarSector(sec){
   return Object.keys(porBloque).map(b=>coherenciaPilarDe(porBloque[b])).filter(Boolean);
 }
 /* la coherencia del sector, juntando 5S y pilar: el peor de los dos manda */
+/* De qué auditorías hablamos acá. Por defecto, solo 5S: la cruzada entre jefes contra la
+   general de Calidad, que es la comparación que le interesa a todo el mundo. Calidad puede
+   abrir el ámbito y sumar el pilar, que compara la interna del pilar contra la externa. */
+const cohSolo5S=()=>!(state.coh&&state.coh.amb==='todo');
 function coherenciaSector(sec){
   const gen=auditoriasPuntaje().filter(x=>x.sectorId===sec&&x.coh)
     .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0];
   const c5=gen?gen.coh:null;
-  const cp=coherenciaPilarSector(sec);
+  const cp=cohSolo5S()?[]:coherenciaPilarSector(sec);
   const todas=[].concat(c5?[{origen:'5S',c:c5,aud:gen}]:[],
     cp.map(c=>({origen:(SEGBLOQ[c.externa.tipo]||{t:c.externa.tipo}).t,c:c,aud:c.externa})));
   if(!todas.length)return null;
@@ -2143,13 +2147,14 @@ function tresAuditorias(sec,a,m){
     {k:'pex', l:'De pilar · externa',                 a:pE[0]||null, pct:prom(pE), quien:pE.length?(pE[0].por||'—'):'', declara:false, n:pE.length},
     {k:'gen', l:'General · la de Calidad',            a:g,  pct:g?g.pct:null,  quien:g?(g.auditor||'—'):'',  declara:false}
   ];
-  const con=notas.filter(x=>x.pct!=null);
+  const vis=cohSolo5S()?notas.filter(x=>x.k==='sec'||x.k==='gen'):notas;
+  const con=vis.filter(x=>x.pct!=null);
   const dec=con.filter(x=>x.declara), ver=con.filter(x=>!x.declara);
   const pD=dec.length?Math.round(dec.reduce((n,x)=>n+x.pct,0)/dec.length*10)/10:null;
   const pV=ver.length?Math.round(ver.reduce((n,x)=>n+x.pct,0)/ver.length*10)/10:null;
   const max=con.length?Math.max.apply(null,con.map(x=>x.pct)):null;
   const min=con.length?Math.min.apply(null,con.map(x=>x.pct)):null;
-  return {notas:notas,con:con.length,
+  return {notas:vis,todas:notas,con:con.length,
     brecha:(pD!=null&&pV!=null)?Math.round((pD-pV)*10)/10:null,
     declaran:pD,verifican:pV,rango:(max!=null&&min!=null)?Math.round((max-min)*10)/10:null,
     max:max,min:min};
@@ -2221,12 +2226,12 @@ function temasDePilar(L){
 function comparaTemas(sec,a,m){
   const T=tresAuditorias(sec,a,m);
   const pil=(state.segAud||[]).filter(x=>x.sectorId===sec&&enMes(x.fecha,a,m)&&Array.isArray(x.detalle));
-  const col=[
-    {k:'sec',l:'Sectorial', t:temasDe5S(T.notas[0].a)},
-    {k:'pil',l:'Pilar · interna', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='interna'))},
-    {k:'pex',l:'Pilar · externa', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='externa'))},
-    {k:'gen',l:'General', t:temasDe5S(T.notas[3].a)}
-  ];
+  const nota=k=>((T.todas||T.notas).find(x=>x.k===k)||{});
+  const col=[{k:'sec',l:'Sectorial', t:temasDe5S(nota('sec').a)}]
+    .concat(cohSolo5S()?[]:[
+      {k:'pil',l:'Pilar · interna', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='interna'))},
+      {k:'pex',l:'Pilar · externa', t:temasDePilar(pil.filter(x=>rolDeSegAud(x)==='externa'))}])
+    .concat([{k:'gen',l:'General', t:temasDe5S(nota('gen').a)}]);
   const filas=TEMAS.map(TT=>{
     const celdas=col.map(c=>{
       const v=c.t[TT.k];
@@ -6604,6 +6609,7 @@ document.addEventListener('change',e=>{
       .catch(e=>toast('No se pudo usar esa imagen: '+(e&&e.message||'')));
     t.value='';return}
   if(t.id==='cohSel'){state.coh=Object.assign({},state.coh,{sec:t.value});render();return}
+  if(t.id==='cohAmb'){state.coh=Object.assign({},state.coh,{amb:t.value});state.cohSec=null;render();return}
   if(t.id==='cohAnio'){state.coh=Object.assign({},state.coh,{anio:Number(t.value)});render();return}
   if(t.id==='cohMes'){state.coh=Object.assign({},state.coh,{mes:Number(t.value)});render();return}
   if(t.id==='apVista'){state.ap=Object.assign({},state.ap,{vista:t.value});render();return}
@@ -11013,7 +11019,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=114;
+const APP_VER=115;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -11439,6 +11445,7 @@ function vCoherencia(){
   if(!state.coh)state.coh={sec:'',anio:hoy.getFullYear(),mes:hoy.getMonth()};
   const K=state.coh;
   const cs=K.sec||((secs[0]||{}).id||''), ca=K.anio, cm=K.mes;
+  const S5=cohSolo5S();
   const TRES=cs?tresAuditorias(cs,ca,cm):{con:0,notas:[],brecha:null};
   const TEM=cs?comparaTemas(cs,ca,cm):{filas:[],col:[],choques:0};
   const filas=secs.map(s=>({s:s,C:coherenciaSector(s.id)})).filter(x=>x.C);
@@ -11449,11 +11456,12 @@ function vCoherencia(){
   const prom=comp?Math.round((1-disc/comp)*1000)/10:null;
   const abierto=state.cohSec;
   return `${avisoDb()}
-  <div class="head"><div><h1>Coherencia entre auditorías</h1>
+  <div class="head"><div><h1>Coherencia entre auditorías${S5?' 5S':''}</h1>
     <p>Lo que el sector declara contra lo que se encuentra cuando se vuelve a mirar. Se compara
-      <b>punto por punto</b>, con la misma lista: la auditoría sectorial contra la general de Calidad,
-      y la del pilar contra la externa de pilar. Una <b>discrepancia</b> es un punto que alguien dio por
-      cumplido y después no estaba cumpliendo.</p></div>
+      <b>punto por punto</b>, con la misma checklist 5S: la auditoría <b>sectorial</b> contra la
+      <b>general</b> de Calidad${S5?'':', y la interna del pilar contra la externa de pilar'}.
+      Una <b>discrepancia</b> es un punto que alguien dio por cumplido y después no estaba
+      cumpliendo.</p></div>
     <div class="headbtns"><button class="btn" id="btnCohImp">Imprimir</button></div></div>
 
   <div class="grid g4" style="margin-bottom:16px">
@@ -11470,14 +11478,16 @@ function vCoherencia(){
 
   <div class="notice info" style="margin-bottom:16px"><div>
     <b>Para que haya coherencia tiene que haber dos auditorías de la misma lista.</b>
-    En 5S: la <b>sectorial</b> (la cruzada entre jefes) y la <b>general</b> (la de Calidad).
-    En el pilar: la <b>interna</b> (la del encargado sobre su propio sector) y la <b>externa de pilar</b>,
-    que hace Calidad con esa misma lista. Si falta una de las dos, no hay nada que comparar
-    y el sector aparece acá como «sin par».</div></div>
+    ${S5?`La <b>sectorial</b> —la cruzada entre jefes, la que hacen ustedes— y la <b>general</b>,
+      la que hace Calidad con la misma checklist 5S. Una declara y la otra verifica.`
+     :`En 5S: la <b>sectorial</b> (la cruzada entre jefes) y la <b>general</b> (la de Calidad).
+      En el pilar: la <b>interna</b> (la del encargado sobre su propio sector) y la <b>externa de pilar</b>,
+      que hace Calidad con esa misma lista.`}
+    Si falta una de las dos, no hay nada que comparar y el sector aparece acá como «sin par».</div></div>
 
   <section class="panel" style="margin-bottom:16px"><header>
-    <h3>Las tres auditorías del mismo sector, en el mismo mes</h3>
-    <span class="sub">la comparación que no necesita que las listas se parezcan</span></header>
+    <h3>${S5?'Las dos auditorías 5S del mismo sector, en el mismo mes':'Las auditorías del mismo sector, en el mismo mes'}</h3>
+    <span class="sub">${S5?'la sectorial, que declara, contra la general de Calidad, que verifica':'la comparación que no necesita que las listas se parezcan'}</span></header>
     <div class="body">
       <div class="filters" style="margin:0 0 14px">
         <div class="field" style="min-width:220px"><label for="cohSel">Sector</label>
@@ -11486,6 +11496,10 @@ function vCoherencia(){
           <select id="cohAnio">${[hoy.getFullYear()-1,hoy.getFullYear()].map(x=>`<option value="${x}"${ca===x?' selected':''}>${x}</option>`).join('')}</select></div>
         <div class="field"><label for="cohMes">Mes</label>
           <select id="cohMes">${MESESL.map((l,i)=>`<option value="${i}"${cm===i?' selected':''}>${l}</option>`).join('')}</select></div>
+        ${esAdmin()?`<div class="field" style="min-width:230px"><label for="cohAmb">Qué se compara</label>
+          <select id="cohAmb">
+            <option value="5s"${S5?' selected':''}>Solo 5S · sectorial contra general</option>
+            <option value="todo"${S5?'':' selected'}>5S y pilar</option></select></div>`:''}
       </div>
       ${TRES.con?`<div class="cohnotas">${TRES.notas.map(n=>`
         <div class="cohn ${n.pct==null?'vacia':(n.declara?'dec':'ver')}">
@@ -11504,19 +11518,19 @@ function vCoherencia(){
         </div>`:`<div class="soft2">Falta al menos una de las dos partes —quien declara y quien verifica— para poder sacar la brecha.</div>`}
       <div class="soft2" style="margin-top:12px">El rango del mes va de <b>${TRES.min==null?'—':n1(TRES.min)+' %'}</b>
         a <b>${TRES.max==null?'—':n1(TRES.max)+' %'}</b>${TRES.rango!=null?' · '+n1(TRES.rango)+' puntos de diferencia entre la más dura y la más blanda':''}.
-        Las cuatro miran el mismo sector en el mismo mes: <b>si no coinciden, alguien está mirando distinto</b>,
+        Miran el mismo sector en el mismo mes: <b>si no coinciden, alguien está mirando distinto</b>,
         y eso se ve sin necesidad de que las listas pregunten lo mismo.</div>`
       :`<div class="empty"><b>Este sector no tiene auditorías en ${esc(MESESL[cm])}</b>Elegí otro mes u otro sector.</div>`}
     </div></section>
 
   ${TRES.con>=2?`<section class="panel" style="margin-bottom:16px"><header>
     <h3>En qué temas no coinciden</h3>
-    <span class="sub">${TEMAS.length} temas que las tres listas miran, aunque los pregunten distinto</span></header>
+    <span class="sub">${TEMAS.length} temas que las listas miran, aunque los pregunten distinto</span></header>
     <div class="body">
       <div class="notice warn" style="margin-bottom:12px"><div><b>Esto es aproximado y hay que leerlo como tal.</b>
-        Del lado del <b>pilar</b> el tema es exacto: cada punto ya dice de qué ítem del diagnóstico sale.
-        Del lado de <b>5S</b> se deduce de las palabras del punto, porque esas checklists todavía no tienen
-        columna de tema. Sirve para saber <b>dónde mirar</b>, no para poner una nota. El día que las
+        En <b>5S</b> el tema se deduce de las palabras del punto, porque esas checklists todavía no tienen
+        columna de tema.${S5?'':' Del lado del <b>pilar</b> sí es exacto: cada punto ya dice de qué ítem del diagnóstico sale.'}
+        Sirve para saber <b>dónde mirar</b>, no para poner una nota. El día que las
         checklists 5S tengan su tema, esto pasa a ser exacto sin cambiar nada más.</div></div>
       ${TEM.filas.length?`<div class="tw"><table class="lst"><thead><tr><th style="min-width:190px">Tema</th>
         ${TEM.col.map(c=>`<th style="width:118px;font-size:11px">${esc(c.l)}</th>`).join('')}
