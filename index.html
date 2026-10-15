@@ -1933,6 +1933,17 @@ function calcular(cl,resp){
 
 const todosSectores=()=>state.sitios.flatMap(s=>(s.sectores||[]).map(x=>Object.assign({},x,{sitioId:s.id,sitioNombre:s.nombre})));
 const sectorDe=id=>todosSectores().find(s=>s.id===id);
+/* Los disparadores de «no cumple». Se escriben uno por línea en el editor y se
+   leen como lista: basta que aparezca uno para marcar No. */
+const disparadores=it=>String((it&&it.noCumple)||'').split('\n').map(x=>x.replace(/^[-•·*\s]+/,'').trim()).filter(Boolean);
+const tieneDetalle=it=>!!(it&&(it.criterio||it.donde||it.evidencia||disparadores(it).length));
+function detalleItemHTML(it,cls){
+  const ds=disparadores(it),c=cls||'crit';
+  return (it.criterio?`<div class="${c}"><b>Qué se verifica:</b> ${esc(it.criterio)}</div>`:'')
+   +(ds.length?`<div class="${c}"><b>No cumple si aparece al menos uno:</b><ul style="margin:3px 0 0;padding-left:17px">${ds.map(d=>`<li>${esc(d)}</li>`).join('')}</ul></div>`:'')
+   +(it.donde?`<div class="${c}"><b>Dónde mirar:</b> ${esc(it.donde)}</div>`:'')
+   +(it.evidencia?`<div class="${c}"><b>La foto debe mostrar:</b> ${esc(it.evidencia)}</div>`:'');
+}
 const habOk=s=>HAB.every((_,i)=>(s.habilitacion||{})['h'+i]);
 const habN=s=>HAB.reduce((n,_,i)=>n+((s.habilitacion||{})['h'+i]?1:0),0);
 
@@ -2474,8 +2485,8 @@ const PERM={
   jefe:    MENU_BASE,
   sector:  MENU_BASE,
   sitio:   mas('etiquetas'),
-  syso:    MENU_BASE,
-  sysoana: MENU_BASE,
+  syso:    mas('pilares'),
+  sysoana: mas('pilares'),
   mejoras: MENU_BASE,
   planta:  mas('etiquetas'),
   rrhh:    mas('pilares'),
@@ -2560,7 +2571,7 @@ const esAdmin=()=>!state.sesion||state.sesion.rol==='admin';
    Recursos Humanos la dotación y los días perdidos, y Enfermería las atenciones y
    las lesiones. Cada bloque dice quién lo carga y quién puede escribirlo. */
 const BLOQIND=[
-  {id:'syso',t:'Seguridad y Salud Ocupacional',quien:'Jefatura de SySO · Christian Monges',roles:['sitio'],
+  {id:'syso',t:'Seguridad y Salud Ocupacional',quien:'Jefatura de SySO · Christian Monges',roles:['sitio','syso','sysoana'],
    color:'accent',nota:'Accidentes, incidentes, actos y condiciones inseguras, y el cumplimiento del programa anual.',
    pide:'los accidentes, los incidentes y los actos y condiciones inseguras del mes',
    circuito:'Es el encargado del pilar. Lo que carga acá alimenta el nivel de accidentes, el ranking de sectores, el cumplimiento del programa y el informe mensual que sube a la Gerencia del CD.'},
@@ -2620,10 +2631,10 @@ const GENTE={
 /* Los accidentes y las lesiones son datos sensibles: la pestaña la ven Calidad
    (que ve todo), la Jefatura de SySO, Recursos Humanos y Enfermería. Nadie más.
    Los jefes de sector, los referentes y la Gerencia no la ven. */
-const ROLIND=['sitio','rrhh','enfermeria'];
+const ROLIND=['sitio','syso','sysoana','rrhh','enfermeria'];
 const veInd=()=>esAdmin()||ROLIND.indexOf((state.sesion&&state.sesion.rol)||'')>=0;
 /* El pilar "casa" de cada rol: es donde le avisamos que tiene que ir a cargar. */
-const PILCASA={rrhh:'gente',enfermeria:'gente'};
+const PILCASA={rrhh:'gente',enfermeria:'gente',syso:'seguridad',sysoana:'seguridad'};
 /* Lo que le falta cargar al usuario que está adentro, mes por mes. */
 function miPendiente(){
   if(!state.sesion)return null;
@@ -4636,7 +4647,7 @@ function vAuditar(){
             const noCumple=val!=null&&val!=='na'&&esFalla(cl,val);
             return `<div class="item${B?' bB':''}" data-item="${esc(it.id)}">
               <div class="q"><div class="txt"><p>${esc(it.texto)}</p>
-                ${it.criterio?`<p class="crit"><b>Cómo se evalúa:</b> ${esc(it.criterio)}</p>`:''}
+                ${detalleItemHTML(it,'crit')}
                 <div class="tags">
                   <span class="badge${B?'':' a'}">${B?'Bloque B · no puntúa':'Bloque A · puntúa'}</span>
                   <span class="badge ${sev.k}">${sev.l} · ${sev.dias} d</span>
@@ -4644,7 +4655,7 @@ function vAuditar(){
                   ${it.sinFoto?'<span class="badge warn">sin foto</span>':''}
                 </div></div>
               <div class="scale">${opciones.map(o=>`<button type="button" class="${o.v===0?'no':(o.v===1&&!bin?'no':(o.v===2?'mid':''))}" data-val="${o.v}" aria-pressed="${String(val===o.v)}">${esc(o.l)}</button>`).join('')}
-              <button type="button" class="na" data-val="na" aria-pressed="${String(val==='na')}" data-tip="N/A" data-tipd="No aplica a este sector">N/A</button></div></div>
+              <button type="button" class="na" data-val="na" aria-pressed="${String(val==='na')}" data-tip="No aplica" data-tipd="El ítem no existe en este sector: sale del cálculo, no baja el puntaje">No aplica</button></div></div>
               ${val!=null&&val!=='na'?`<div class="obs"><textarea data-obs placeholder="${noCumple?'Qué se observó y dónde. Pasa al plan de acción.':'Observación (opcional)'}">${esc(rr.obs||'')}</textarea></div>`:''}
               ${noCumple?`<div class="flag${B?' b':''}">${B
                 ? `Hallazgo de infraestructura: va a ${esc(it.area||'mantenimiento')} con vencimiento al ${fmtDate(addDaysISO(sev.dias))}. No baja el puntaje del sector.`
@@ -4940,7 +4951,7 @@ function detalleAuditoria(a){
     <div class="tw"><table><thead><tr><th>Ítem</th><th style="width:80px">Bloque</th><th class="r" style="width:120px">Resultado</th><th style="width:30%">Observación</th></tr></thead><tbody>
     ${(s.items||[]).map(it=>{const rr=(a.respuestas||{})[it.id]||{};const val=rr.v;
       const bin=(a.modo||'binario')!=='escala';
-      const lab=val==='na'?'N/A':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
+      const lab=val==='na'?'No aplica':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
       const cls=val==null||val==='na'?'':(esFalla({modo:a.modo},val)?'crit':'ok');
       return `<tr><td>${esc(it.texto)}${it.criterio?`<br><span style="color:var(--ink-3);font-size:12px">${esc(it.criterio)}</span>`:''}</td><td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
       <td class="r"><span class="badge ${cls}">${esc(lab)}</span></td><td style="color:var(--ink-3)">${esc(rr.obs||'')}</td></tr>`}).join('')}
@@ -5073,7 +5084,7 @@ function editorAuditoria(e){
       <td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
       <td><div class="earow">
         ${opciones.map(o=>`<label class="eaop${String(o.v)===val?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value="${o.v}"${String(o.v)===val?' checked':''}> ${esc(o.l)}</label>`).join('')}
-        <label class="eaop${val==='na'?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value="na"${val==='na'?' checked':''}> N/A</label>
+        <label class="eaop${val==='na'?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value="na"${val==='na'?' checked':''}> No aplica</label>
         <label class="eaop${val===''?' on':''}"><input type="radio" name="ea-${esc(it.id)}" data-eav="${esc(it.id)}" value=""${val===''?' checked':''}> Sin responder</label>
       </div></td>
       <td><input type="text" data-eao="${esc(it.id)}" value="${esc(rr.obs||'')}" placeholder="Observación"></td></tr>`;
@@ -10547,7 +10558,7 @@ function detalleExpediente(a){
     }).map(it=>{
       const rr=(a.respuestas||{})[it.id]||{};const val=rr.v;
       const bin=(a.modo||'binario')!=='escala';
-      const lab=val==='na'?'N/A':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
+      const lab=val==='na'?'No aplica':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
       const cls=val==null||val==='na'?'':(esFalla({modo:a.modo},val)?'crit':'ok');
       return `<tr><td><span style="color:var(--ink-3);font-family:'IBM Plex Mono',monospace;font-size:11px">${esc(s.codigo)}</span> ${esc(it.texto)}</td>
       <td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
@@ -10737,7 +10748,7 @@ function vInforme(){
       ${(cl.secciones||[]).flatMap(s=>(s.items||[]).filter(it=>((a.respuestas||{})[it.id]||{}).v!=null).map(it=>{
         const rr=(a.respuestas||{})[it.id]||{};const val=rr.v;
         const bin=(a.modo||'binario')!=='escala';
-        const lab=val==='na'?'N/A':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
+        const lab=val==='na'?'No aplica':(val==null?'—':(bin?(Number(val)===1?'Cumple':'No cumple'):`${val} · ${ESCALA4[Number(val)].l}`));
         const cls=val==null||val==='na'?'':(esFalla({modo:a.modo},val)?'crit':'ok');
         return `<tr><td><span class="mono" style="color:var(--ink-3);font-size:11px">${esc(s.codigo)}</span> ${esc(it.texto)}</td>
         <td><span class="badge${(it.bloque||'A')==='B'?'':' a'}">${esc(it.bloque||'A')}</span></td>
@@ -10999,7 +11010,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=111;
+const APP_VER=113;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -11222,7 +11233,7 @@ function vPiso(){
     <div class="qcard">
       <span class="chip2">${esc(it.sec.codigo)} · ${esc(it.sec.nombre)}</span>
       <div class="qt">${esc(it.texto)}</div>
-      ${it.criterio?`<div class="qh"><b>Qué mirar:</b> ${esc(it.criterio)}</div>`:''}
+      ${detalleItemHTML(it,'qh')}
       <div class="qh">${B?'Esto es de infraestructura: si falta, lo resuelve Mantenimiento o Compras y no baja el puntaje del sector.':'Si ves un solo desvío, es «no cumple». Sin medias tintas.'}</div>
       <div class="bigopts">
         <button class="bigopt si" data-wv="1" aria-pressed="${String(rr.v===1)}">✓ Cumple</button>
@@ -12240,7 +12251,8 @@ function editorChecklist(cl){
   const nA=items.filter(i=>(i.bloque||'A')==='A').length;
   return `<div class="head"><div>
     <button class="btn ghost sm" id="btnCerrarCl" style="margin-bottom:8px">← Volver a checklists</button>
-    <h1>Editar checklist</h1><p>${(cl.secciones||[]).length} secciones · ${items.length} ítems · ${nA} puntúan · recorrido estimado ${Math.max(10,Math.round(items.length*0.8))} min</p></div>
+    <h1>Editar checklist</h1><p>${(cl.secciones||[]).length} secciones · ${items.length} ítems · ${nA} puntúan · ${items.filter(tieneDetalle).length} con criterio escrito · recorrido estimado ${Math.max(10,Math.round(items.length*0.8))} min</p>
+    <p style="margin:6px 0 0;color:var(--ink-3);font-size:12.5px;max-width:70ch">Lo que escribas en <b>No cumple si…</b> es lo que el auditor va a leer en el celular al contestar. Un disparador por línea: si aparece uno solo, el ítem es «no cumple». Así dos auditores distintos marcan lo mismo.</p></div>
     <div class="headbtns"><button class="btn" id="btnAddSec">＋ Sección</button><button class="btn primary" id="btnSaveCl">Guardar checklist</button></div></div>
   <div class="panel" style="margin-bottom:14px"><div class="body grid g4">
     <div class="field"><label for="clNombre">Nombre</label><input id="clNombre" type="text" value="${esc(cl.nombre||'')}" placeholder="Ej.: 5S Depósito · CAT"></div>
@@ -12256,13 +12268,20 @@ function editorChecklist(cl){
     <div class="field" style="grid-column:1/-1"><label>Se aplica a sectores de tipo</label><div class="chips">
       ${TIPOS.map(t=>`<label class="chip" style="cursor:pointer;padding-right:10px"><input type="checkbox" data-tipo="${t.v}"${(cl.tipos||[]).indexOf(t.v)>=0?' checked':''}> ${esc(t.l)}</label>`).join('')}
     </div></div>
+    <div class="field" style="grid-column:1/-1"><label>O solo a estos sectores · si marcás alguno, manda sobre el tipo${(cl.sectores||[]).length?' · '+(cl.sectores||[]).length+' marcado'+((cl.sectores||[]).length===1?'':'s'):''}</label>
+    <div class="chips" style="max-height:176px;overflow:auto;padding:3px;border:1px solid var(--line);border-radius:8px">
+      ${todosSectores().map(x=>`<label class="chip" style="cursor:pointer;padding-right:10px"><input type="checkbox" data-secl="${esc(x.id)}"${(cl.sectores||[]).indexOf(x.id)>=0?' checked':''}> ${esc(x.nombre)}</label>`).join('')}
+    </div></div>
   </div></div>
   ${(cl.secciones||[]).map((s,si)=>`<section class="sec" data-sec="${si}">
     <header>
       <input type="text" data-sf="codigo" value="${esc(s.codigo||'')}" style="width:62px;font-family:'IBM Plex Mono',monospace;font-weight:600;text-align:center" aria-label="Código">
       <input type="text" data-sf="nombre" value="${esc(s.nombre||'')}" style="max-width:200px;font-weight:600" aria-label="Nombre de sección">
       <input type="text" data-sf="jp" value="${esc(s.jp||'')}" placeholder="término original" style="max-width:140px;color:var(--ink-3)" aria-label="Término original">
-      <span style="margin-left:auto">${delBtn('sec:'+si,`data-del-sec="${si}"`,'Eliminar sección')}</span>
+      <span style="margin-left:auto;display:flex;gap:4px;align-items:center">
+        <button class="btn ghost sm" data-mv-sec="${si}:-1" title="Subir sección" aria-label="Subir sección">↑</button>
+        <button class="btn ghost sm" data-mv-sec="${si}:1" title="Bajar sección" aria-label="Bajar sección">↓</button>
+        ${delBtn('sec:'+si,`data-del-sec="${si}"`,'Eliminar sección')}</span>
     </header>
     ${(s.items||[]).map((it,ii)=>`<div class="item${(it.bloque||'A')==='B'?' bB':''}" data-it="${ii}">
       <div style="display:flex;gap:10px;align-items:flex-end;flex-wrap:wrap">
@@ -12275,9 +12294,19 @@ function editorChecklist(cl){
         <div class="field" style="width:88px"><label>Peso</label><select data-if="peso">${[1,2,3].map(p=>`<option value="${p}"${(Number(it.peso)||1)===p?' selected':''}>×${p}</option>`).join('')}</select></div>
         <div class="field" style="width:170px"><label>Impacta en el pilar</label><select data-if="pilar"><option value=""${!it.pilar?' selected':''}>— solo 5S —</option>${pilCfg().pilares.map(p=>`<option value="${p.id}"${it.pilar===p.id?' selected':''}>P${p.num} ${esc(p.nombre)}</option>`).join('')}</select></div>
         <label class="chip" style="cursor:pointer;padding:6px 10px" title="Marca los ítems de espacios personales: se registran sin fotografía"><input type="checkbox" data-if="sinFoto"${it.sinFoto?' checked':''}> sin foto</label>
+        <button class="btn ghost sm" data-mv-it="${si}:${ii}:-1" title="Subir ítem" aria-label="Subir ítem">↑</button>
+        <button class="btn ghost sm" data-mv-it="${si}:${ii}:1" title="Bajar ítem" aria-label="Bajar ítem">↓</button>
         ${delBtn('it:'+si+':'+ii,`data-del-it="${ii}"`,'✕','Eliminar ítem')}
       </div>
-      <div class="field" style="margin-top:8px"><label>Criterio de evaluación · lo que el auditor ve al contestar</label><input type="text" data-if="criterio" value="${esc(it.criterio||'')}" placeholder="Qué mirar concretamente para decidir si cumple"></div>
+      <div class="grid g2" style="margin-top:8px">
+        <div class="field"><label>Qué se verifica · en una línea, sin adjetivos</label><textarea data-if="criterio" rows="3" placeholder="Ej.: Ordenado no es que no haya nada: es que todo lo que hay esté donde el layout lo asigna, con su cartel legible.">${esc(it.criterio||'')}</textarea></div>
+        <div class="field"><label>No cumple si… · un disparador por línea, basta uno</label><textarea data-if="noCumple" rows="3" placeholder="Hay un elemento fuera de su demarcación o pisando la línea&#10;Una línea del piso está borrada en más de la mitad de su recorrido&#10;Falta un cartel, está tapado o no coincide con el layout">${esc(it.noCumple||'')}</textarea></div>
+      </div>
+      <div class="grid g3" style="margin-top:8px">
+        <div class="field"><label>Dónde mirar · los puntos de este sector</label><input type="text" data-if="donde" value="${esc(it.donde||'')}" placeholder="Ej.: debajo del pupitre, detrás del portón, rincón entre columna y pared"></div>
+        <div class="field"><label>Qué debe mostrar la foto</label><input type="text" data-if="evidencia" value="${esc(it.evidencia||'')}" placeholder="Ej.: foto donde se vean la línea de demarcación y el elemento"></div>
+        <div class="field"><label>Fuente</label><input type="text" data-if="fuente" value="${esc(it.fuente||'')}" placeholder="Auditoría CAT 4S · BPA Logística CDSA · Propio del sector"></div>
+      </div>
       </div>`).join('')}
     <div class="item"><button class="btn sm" data-add-it="${si}">＋ Agregar ítem</button></div>
   </section>`).join('')}
@@ -13432,6 +13461,12 @@ function vPilares(){
   if(state.pil.editManual!=null){const x=$('#manualEdit');if(x)state.pil.editManual=x.innerHTML}
   if(state.db&&(!state.loaded.au||!state.loaded.pi))return `<div class="head"><div><h1>Pilares CAT</h1><p>Cargando datos…</p></div></div>`;
   if(state.pil.id&&pilarDe(state.pil.id))return vPilarDetalle();
+  /* El que lleva un solo pilar entra directo al suyo: el índice de los seis no le sirve
+     y le mostraría números de áreas que no son suyas. SySO ve Seguridad y nada más. */
+  if(!esAdmin()){
+    const mios=pilaresQueVe();
+    if(mios.length===1&&pilarDe(mios[0])){state.pil.id=mios[0];return vPilarDetalle()}
+  }
   state.pil.id=null;
   const c=pilCfg(),per=state.pil.per;
   const secs=sectoresVista();
@@ -13482,7 +13517,7 @@ function vPilarDetalle(){
   const nSec=secs.filter(s=>pondPilarSector(p,s.id,per).v!=null).length;
   return `${avisoDb()}
   <div class="head"><div>
-    <button class="btn ghost sm" data-pil="">← Todos los pilares</button>
+    ${(esAdmin()||pilaresQueVe().length>1)?'<button class="btn ghost sm" data-pil="">← Todos los pilares</button>':''}
     <div class="eyebrow2">${esc(sitioActual().corto)}</div><h1 style="margin-top:6px">P${p.num} · ${esc(p.nombre)}</h1>
     <p>${esc(p.lema||'')}${p.estado?' · <span class="badge warn">'+esc(p.estado)+'</span>':''}</p></div>
     <div class="headbtns">${state.pil.tab==='manual'?'':pilHead()}</div></div>
@@ -14790,7 +14825,12 @@ document.addEventListener('click',async e=>{
   }
   if(t.id==='btnNuevaCl'){state.editCl={id:uid('c-'),nombre:'',version:'1.0',modo:'binario',activa:true,tipos:[],secciones:[],creado:new Date().toISOString()};render();return}
   const ec=t.closest('[data-edit-cl]');
-  if(ec){state.editCl=JSON.parse(JSON.stringify(state.checklists.find(x=>x.id===ec.dataset.editCl)));render();return}
+  if(ec){
+    if(!esAdmin()){toast('Las checklists las edita Calidad. Pedile el cambio a la líder CAT.');return}
+    const c0=state.checklists.find(x=>x.id===ec.dataset.editCl);
+    if(!c0){toast('Esa checklist ya no existe');return}
+    state.editCl=JSON.parse(JSON.stringify(c0));window.scrollTo(0,0);render();return;
+  }
   const dc=t.closest('[data-dup-cl]');
   if(dc){
     const c=state.checklists.find(x=>x.id===dc.dataset.dupCl);
@@ -14810,6 +14850,18 @@ document.addEventListener('click',async e=>{
   }
   const ai=t.closest('[data-add-it]');
   if(ai){state.editCl.secciones[+ai.dataset.addIt].items.push({id:uid('i-'),texto:'',peso:1,bloque:'A',severidad:'menor'});render();return}
+  const mvi=t.closest('[data-mv-it]');
+  if(mvi&&state.editCl){
+    const p=mvi.dataset.mvIt.split(':').map(Number),arr=state.editCl.secciones[p[0]].items,j=p[1]+p[2];
+    if(j>=0&&j<arr.length){const x=arr[p[1]];arr[p[1]]=arr[j];arr[j]=x;render()}
+    return;
+  }
+  const mvs=t.closest('[data-mv-sec]');
+  if(mvs&&state.editCl){
+    const p=mvs.dataset.mvSec.split(':').map(Number),arr=state.editCl.secciones,j=p[0]+p[1];
+    if(j>=0&&j<arr.length){const x=arr[p[0]];arr[p[0]]=arr[j];arr[j]=x;render()}
+    return;
+  }
   const di=t.closest('[data-del-it]');
   if(di){const si=+di.closest('[data-sec]').dataset.sec;state.editCl.secciones[si].items.splice(+di.dataset.delIt,1);render();return}
   const ds=t.closest('[data-del-sec]');
@@ -15125,6 +15177,10 @@ document.addEventListener('change',async e=>{
     if(t.dataset.tipo!=null){
       const s=new Set(state.editCl.tipos||[]);t.checked?s.add(t.dataset.tipo):s.delete(t.dataset.tipo);
       state.editCl.tipos=Array.from(s);return;
+    }
+    if(t.dataset.secl!=null){
+      const s=new Set(state.editCl.sectores||[]);t.checked?s.add(t.dataset.secl):s.delete(t.dataset.secl);
+      state.editCl.sectores=Array.from(s);render();return;
     }
   }
   if(t.id==='layPlano'){state.lay=state.lay||{};state.lay.plano=t.value;state.lay.sel=null;render();return}
