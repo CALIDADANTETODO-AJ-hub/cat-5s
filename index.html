@@ -2485,8 +2485,8 @@ const PERM={
   jefe:    MENU_BASE,
   sector:  MENU_BASE,
   sitio:   mas('etiquetas'),
-  syso:    mas('pilares'),
-  sysoana: mas('pilares'),
+  syso:    mas('pilares','coherencia'),
+  sysoana: mas('pilares','coherencia'),
   mejoras: MENU_BASE,
   planta:  mas('etiquetas'),
   rrhh:    mas('pilares'),
@@ -2706,7 +2706,10 @@ function latidoTablet(){
   },MIN_TABLET*60000);
 }
 ['click','keydown','pointerdown'].forEach(ev=>document.addEventListener(ev,()=>{if(esTablet()&&state.sesion)latidoTablet()},true));
-const restringidoASitio=()=>!!(state.sesion&&(state.sesion.rol==='sitio'||state.sesion.rol==='sector'||state.sesion.rol==='jefe'||state.sesion.rol==='planta')&&state.sesion.sitioId);
+/* Quién ve un solo sitio. SySO trabaja en el CD San Antonio: no tiene nada que hacer
+   en Arrocera, en Itauguá ni en las plantas, así que el menú le muestra su sitio y nada más. */
+const RESTR_SITIO=['sitio','sector','jefe','planta','syso','sysoana'];
+const restringidoASitio=()=>!!(state.sesion&&RESTR_SITIO.indexOf(state.sesion.rol)>=0&&state.sesion.sitioId);
 function puede(v){
   if(!v)return true;
   /* la auditoría interna no la habilita el rol sino el pilar: el que lleva un pilar
@@ -11010,7 +11013,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=113;
+const APP_VER=114;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12445,8 +12448,8 @@ const SITIOS_CAT=[
 const MENU5S=[
  ['Dirección',['resumen','ahorro','impacto','tablero']],
  ['CAT · 5S',['cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','tendencia']],
- ['Auditoría interna CDSA',['audsec','expedientes','calendario']],
- ['Seguimiento de Calidad',['aprobacion','coherencia','audgen','audext','audint','seginf','tarjetas','evolucion','auditorias','buenas','sanciones','pantalla']],
+ ['Auditoría interna CDSA',['audsec','expedientes','coherencia','audint','calendario']],
+ ['Seguimiento de Calidad',['aprobacion','audgen','audext','seginf','tarjetas','evolucion','auditorias','buenas','sanciones','pantalla']],
  ['Sólo Calidad',['reglas','papelera']]];
 function sitiosMenu(){
   const extra=state.sitios.filter(x=>!SITIOS_CAT.some(c=>c.id===x.id)).map(x=>({id:x.id,grupo:x.grupo||'cd',padre:x.padre||'',nombre:x.nombre,corto:x.nombre,ciudad:x.ciudad||''}));
