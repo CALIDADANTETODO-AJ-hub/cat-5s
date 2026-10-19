@@ -359,6 +359,21 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 @media(max-width:620px){.manualdoc{padding:22px 16px}
   .manualdoc .mbody .orgn{min-width:0;flex:1 1 42%}}
 .manualdoc .mfoot{border-top:1px solid #ccd5d0;margin-top:26px;padding-top:10px;font-size:11px;color:#5D6B63}
+.manualdoc .mhead{align-items:flex-start}
+.manualdoc .mcod{margin-left:auto;border:1px solid #ccd5d0;border-radius:4px;min-width:186px;flex:none}
+.manualdoc .mcod div{display:flex;justify-content:space-between;gap:12px;padding:5px 10px;border-bottom:1px solid #ccd5d0;font-size:11.5px}
+.manualdoc .mcod div:last-child{border-bottom:0}
+.manualdoc .mcod span{color:#5D6B63;text-transform:uppercase;letter-spacing:.08em;font-size:10px;padding-top:1px}
+.manualdoc .mcod b{color:#124334;font-weight:700}
+.manualdoc .mnum{color:#124334;font-weight:700;margin-right:7px}
+.manualdoc .mnota{border-left:3px solid #B07406;background:#FFF6DA;padding:10px 14px;border-radius:0 6px 6px 0;margin:12px 0;font-size:13px}
+.manualdoc .mnota b{color:#8A5B05}
+.manualdoc .mfirmas{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border:1px solid #ccd5d0;margin-top:30px}
+.manualdoc .mfirmas div{padding:10px 12px 26px;border-right:1px solid #ccd5d0}
+.manualdoc .mfirmas div:last-child{border-right:0}
+.manualdoc .mfirmas span{display:block;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:#5D6B63;margin-bottom:4px}
+.manualdoc .mfirmas b{font-size:13px;color:#16241E}
+@media(max-width:640px){.manualdoc{padding:20px 18px}.manualdoc .mhead{flex-wrap:wrap}.manualdoc .mcod{margin-left:0;width:100%}.manualdoc .mfirmas{grid-template-columns:1fr}.manualdoc .mfirmas div{border-right:0;border-bottom:1px solid #ccd5d0}}
 @media print{body.print-manual .head,body.print-manual .grid,body.print-manual .ptabs,body.print-manual .panel:not(.manualpanel),body.print-manual .manualpanel>header,body.print-manual .notice,body.print-manual .soft2{display:none!important}
   body.print-manual .manualdoc{border:0;box-shadow:none;max-width:none;padding:0}
   body.print-manual .manualpanel{border:0;background:transparent;box-shadow:none}}
@@ -11041,7 +11056,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=117;
+const APP_VER=118;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12297,151 +12312,196 @@ const MAN_DEF=[
  ['Auditado','Responsable o representante del sector sometido a auditoría.']
 ];
 const MAN_IND=['Porcentaje de cumplimiento global y por sector.','Cantidad de hallazgos por clasificación y por 4S.','Porcentaje de planes presentados dentro del plazo.','Porcentaje de acciones implementadas dentro del plazo.','Porcentaje de acciones efectivas.','Cantidad de hallazgos vencidos y reincidentes.','Evolución de resultados entre auditorías.'];
-const MAN_SECS=[
- {id:'obj',t:'Objetivo y alcance'},{id:'def',t:'Definiciones'},{id:'pri',t:'Principios'},
- {id:'res',t:'Responsabilidades'},{id:'eje',t:'Cómo se ejecuta'},{id:'cal',t:'Respuestas y cálculo'},
- {id:'hal',t:'Hallazgos'},{id:'inf',t:'Informe'},{id:'pla',t:'Plan de acción'},
- {id:'seg',t:'Seguimiento y cierre'},{id:'ind',t:'Indicadores'}
-];
-function manLista(xs){return '<ul class="manul">'+xs.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>'}
+function manLista(xs){return '<ul>'+xs.map(x=>`<li>${esc(x)}</li>`).join('')+'</ul>'}
+function manTabla(cab,filas){
+  return `<table><thead><tr>${cab.map(c=>`<th${c[1]?` style="width:${c[1]}"`:''}>${esc(c[0])}</th>`).join('')}</tr></thead>
+  <tbody>${filas.map(f=>`<tr>${f.map((c,i)=>`<td>${i===0?'<b>'+esc(c)+'</b>':esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table>`;
+}
+const manTit=(n,t)=>`<h2><span class="mnum">${n}</span>${esc(t)}</h2>`;
+
+/* El manual, con el formato del documento original: encabezado con código, versión y
+   edición, numeración de capítulos y pie de firmas. Es el mismo contenido del archivo
+   que aprobó el Comité; se muestra acá para consultarlo durante la auditoría. */
 function vManualAud(){
-  state.man=state.man||{sec:'obj'};
-  const S=state.man.sec;
-  const bloque=(id,cuerpo)=>S===id?`<section class="panel manbl"><div class="body">${cuerpo}</div></section>`:'';
   return `${avisoDb()}
-  <div class="head"><div>
-    <div class="eyebrow2">PRG-GEN-CAT-01 · versión 00 · edición 08-10-2026</div>
-    <h1>Manual de Auditorías CAT</h1>
-    <p>La metodología para planificar, ejecutar, informar y dar seguimiento a las auditorías del
-      Programa CAT. Esto es lo que manda: si la aplicación y el manual no coinciden, el manual tiene
-      razón y se avisa a Calidad. Preparado por Ernesto Córdova.</p></div></div>
+  <div class="head"><div><h1>Manual de Auditorías CAT</h1>
+    <p>Documento del programa, disponible para consulta durante la ejecución de la auditoría.
+       Ante discrepancia entre la aplicación y el manual, prevalece el manual.</p></div>
+    <div class="headbtns"><button class="btn sm" id="btnManAudImp">Imprimir / PDF</button></div></div>
 
-  <div class="mantabs" role="tablist">${MAN_SECS.map(x=>
-    `<button role="tab" data-mansec="${x.id}" aria-selected="${S===x.id}">${esc(x.t)}</button>`).join('')}</div>
+  <section class="panel manualpanel"><div class="manualdoc">
+    <div class="mhead">
+      <img src="${LOGO}" alt="Calidad Ante Todo">
+      <div><div class="mk">CAT · Calidad Ante Todo</div>
+        <h1>Manual de Auditorías CAT</h1>
+        <div class="ms">Programa Calidad Ante Todo · División Industrial · Grupo AJ Vierci</div></div>
+      <div class="mcod">
+        <div><span>Código</span><b>PRG-GEN-CAT-01</b></div>
+        <div><span>Versión</span><b>00</b></div>
+        <div><span>Edición</span><b>08-10-2026</b></div>
+      </div>
+    </div>
 
-  ${bloque('obj',`<h3>Objetivo</h3>
-    <p>Establecer la metodología para planificar, ejecutar, informar y dar seguimiento a las auditorías
-      del Programa CAT, asegurando la evaluación objetiva de las condiciones de orden, limpieza,
-      estandarización y disciplina operativa, así como el tratamiento de los hallazgos hasta la
-      verificación de la efectividad de las acciones implementadas.</p>
-    <h3 style="margin-top:18px">Alcance</h3>
-    <p>Aplica a todas las unidades de negocio de la división industrial del grupo AJ Vierci: áreas
-      operativas, depósitos, mantenimiento, muelles, oficinas, servicios, espacios comunes y áreas
-      externas. Comprende el ciclo completo: programación, preparación, ejecución, informe, plan de
-      acción, seguimiento, verificación de efectividad y cierre.</p>
-    <h3 style="margin-top:18px">Documentos asociados</h3>
-    ${manLista(['Checklist vigente de Auditoría CAT 4S por sector.','Cronograma anual o periódico de auditorías CAT.','Informe de Auditoría CAT.','Registro de plan de acción y seguimiento de hallazgos.','POES, procedimientos, instructivos, layouts, registros y estándares aplicables a cada sector.'])}`)}
+    <div class="mbody">
 
-  ${bloque('def',`<h3>Definiciones</h3>
-    <div class="tw"><table><thead><tr><th style="width:210px">Término</th><th>Definición</th></tr></thead>
-    <tbody>${MAN_DEF.map(([a,b])=>`<tr><td><b>${esc(a)}</b></td><td>${esc(b)}</td></tr>`).join('')}</tbody></table></div>`)}
+      ${manTit(1,'Objetivo')}
+      <p>Establecer la metodología para planificar, ejecutar, informar y dar seguimiento a las
+      auditorías del Programa CAT, asegurando la evaluación objetiva de las condiciones de orden,
+      limpieza, estandarización y disciplina operativa, así como el tratamiento de los hallazgos
+      hasta la verificación de la efectividad de las acciones implementadas.</p>
 
-  ${bloque('pri',`<h3>Principios de la auditoría</h3>
-    ${manLista(['Objetividad e imparcialidad.','Evaluación basada en evidencias verificables.','Respeto, comunicación clara y confidencialidad.','Trazabilidad desde el hallazgo hasta su cierre.','Enfoque preventivo y de mejora continua, no punitivo.','Independencia: cuando sea posible, el auditor no evaluará actividades bajo su responsabilidad directa.'])}
-    <div class="notice info" style="margin-top:14px"><div><b>No es punitivo.</b> La auditoría busca que el
-      sector mejore, no que alguien quede mal. Por eso el auditor no impone la solución: puede explicar
-      el requisito, pero la causa y las acciones las define el responsable del sector.</div></div>`)}
+      ${manTit(2,'Alcance')}
+      <p>Aplica a todas las unidades de negocio de la división industrial del grupo AJ Vierci, entre
+      ellos áreas operativas, depósitos, mantenimiento, muelles, oficinas, servicios, espacios comunes
+      y áreas externas. Comprende el ciclo completo de auditoría: programación, preparación, ejecución,
+      informe, plan de acción, seguimiento, verificación de efectividad y cierre.</p>
 
-  ${bloque('res',`<h3>Comité CAT</h3>
-    ${manLista(['Definir el programa, alcance, frecuencia y cronograma de auditorías.','Designar auditores competentes y comunicar la auditoría a los sectores.','Consolidar resultados, indicadores, reincidencias y tendencias.','Revisar los planes de acción y realizar su seguimiento.','Verificar el cumplimiento y la efectividad de las acciones, o asignar a una persona competente.','Escalar los hallazgos críticos, vencidos o reincidentes a la Gerencia correspondiente.'])}
-    <h3 style="margin-top:18px">El auditor</h3>
-    ${manLista(['Preparar la auditoría, revisar antecedentes y conocer los criterios aplicables.','Evaluar únicamente sobre la base de evidencias objetivas y mantener una conducta respetuosa.','Registrar respuestas, evidencias y comentarios en el checklist vigente.','Tomar fotografías, evitando exponer información personal o sensible.','Comunicar de inmediato cualquier condición crítica de inocuidad, seguridad o continuidad operativa.','Redactar hallazgos claros: criterio, condición observada, evidencia y ubicación.','Emitir el informe dentro del plazo.','No imponer la solución al auditado.','Participar en el seguimiento y verificar la efectividad cuando sea asignado.'])}
-    <h3 style="margin-top:18px">El auditado</h3>
-    ${manLista(['Facilitar el acceso al sector, documentos, registros y personal requerido.','Acompañar el recorrido o designar un representante con conocimiento del área.','Proporcionar información veraz y aclarar las condiciones observadas.','Reconocer la evidencia presentada o dejar documentada su discrepancia.','Aplicar contención o corrección inmediata cuando exista riesgo.','Analizar las causas, elaborar el plan de acción y proponer plazos realistas.','Implementar las acciones y presentar evidencias de cumplimiento.','Mantener las mejoras y colaborar con la verificación de efectividad.'])}
-    <h3 style="margin-top:18px">El responsable del sector</h3>
-    <p>Aprueba el plan de acción, asegura recursos, cumple los plazos, informa desvíos y
-      <b>evita el cierre administrativo</b> de acciones que todavía no demostraron efectividad.</p>`)}
+      ${manTit(3,'Referencias y documentos asociados')}
+      ${manLista(['Checklist vigente de Auditoría CAT 4S por sector.','Cronograma anual o periódico de auditorías CAT.','Informe de Auditoría CAT.','Registro de plan de acción y seguimiento de hallazgos.','POES, procedimientos, instructivos, layouts, registros y estándares aplicables a cada sector.'])}
 
-  ${bloque('eje',`<h3>Programación</h3>
-    <p>El Comité CAT elabora un cronograma según el alcance del programa, los resultados anteriores,
-      los riesgos, los cambios, los reclamos, los incidentes y las reincidencias. Puede haber auditorías
-      programadas, de seguimiento o extraordinarias.</p>
-    <h3 style="margin-top:18px">Preparación</h3>
-    ${manLista(['Definir fecha, horario y auditor responsable.','Revisar el informe anterior, las acciones pendientes y las reincidencias.','Preparar los elementos de registro y los equipos de protección personal requeridos.'])}
-    <h3 style="margin-top:18px">Ejecución y obtención de evidencias</h3>
-    <p>Observación directa, entrevistas, revisión de documentos y registros, y muestreo de condiciones
-      representativas. <b>La ausencia de la evidencia requerida se considera incumplimiento</b> cuando el
-      criterio exige demostrar la ejecución.</p>
-    <h3 style="margin-top:18px">Las 4S que se evalúan</h3>
-    <div class="tw"><table><thead><tr><th style="width:62px">S</th><th style="width:190px">Principio</th><th>Aspectos mínimos</th></tr></thead>
-    <tbody>${MAN_4S.map(([s,p,a])=>`<tr><td><span class="badge a">${esc(s)}</span></td><td><b>${esc(p)}</b></td><td>${esc(a)}</td></tr>`).join('')}</tbody></table></div>`)}
+      ${manTit(4,'Definiciones')}
+      ${manTabla([['Término','210px'],['Definición','']],[
+        ['Auditoría CAT','Proceso sistemático, documentado y objetivo para determinar el grado de cumplimiento de los criterios del Programa CAT.'],
+        ['Criterio de auditoría','Requisito utilizado como referencia: checklist CAT, procedimiento, POES, instructivo, estándar interno o requisito aplicable.'],
+        ['Evidencia objetiva','Información verificable obtenida mediante observación, entrevista, revisión documental, registro o fotografía.'],
+        ['Hallazgo','Resultado de comparar la evidencia obtenida con un criterio de auditoría.'],
+        ['Corrección','Acción inmediata para eliminar el incumplimiento detectado, sin necesariamente eliminar su causa.'],
+        ['Acción correctiva','Acción destinada a eliminar la causa del hallazgo y evitar su repetición.'],
+        ['Cumplimiento de la acción','Confirmación de que la acción comprometida fue ejecutada y cuenta con evidencia.'],
+        ['Efectividad','Confirmación de que la acción controló o eliminó la causa y que el hallazgo no se repitió.'],
+        ['Auditado','Responsable o representante del sector sometido a auditoría.']])}
 
-  ${bloque('cal',`<h3>Criterios de respuesta</h3>
-    <div class="tw"><table><thead><tr><th style="width:130px">Respuesta</th><th>Aplicación</th></tr></thead>
-    <tbody>${MAN_RESP.map(([r,k,a])=>`<tr><td><span class="badge ${k}">${esc(r)}</span></td><td>${esc(a)}</td></tr>`).join('')}</tbody></table></div>
-    <div class="notice warn" style="margin-top:14px"><div><b>Un cumplimiento parcial se registra como No</b>
-      y se explica en comentarios. No hay medias tintas: si ves un solo desvío, es «no cumple».</div></div>
-    <h3 style="margin-top:18px">Cálculo</h3>
-    <p class="manform">% de cumplimiento = criterios respondidos <b>Sí</b> ÷ total de criterios <b>aplicables</b> × 100</p>
-    <p>Los «No aplica» salen del denominador: no bajan la nota, pero hay que justificarlos.</p>
-    <h3 style="margin-top:18px">Niveles de resultado</h3>
-    <div class="tw"><table><thead><tr><th style="width:130px">Resultado</th><th style="width:110px">Nivel</th><th>Tratamiento</th></tr></thead>
-    <tbody>${MAN_NIV.map(([r,n,k,t])=>`<tr><td class="mono">${esc(r)}</td><td><span class="badge ${k} dot">${esc(n)}</span></td><td>${esc(t)}</td></tr>`).join('')}</tbody></table></div>
-    ${(Number(VERDE)!==75||Number(ROJO)!==49)?`<div class="notice crit" style="margin-top:14px"><div>
-      <b>Atención: la aplicación no usa estos cortes.</b> El manual pone el verde desde 75 % y el rojo
-      debajo de 49 %. La aplicación trabaja con <b>meta ${VERDE} %</b> y <b>rojo debajo de ${ROJO} %</b>,
-      que es lo que pidió la Dirección. Con un ${Math.round((75+Number(VERDE))/2)} %, por ejemplo, el manual
-      diría verde y la aplicación dice amarillo. Hay que unificar: o se corrige el manual antes de que
-      circule firmado, o se cambian los cortes de la aplicación.</div></div>`:''}`)}
+      ${manTit(5,'Principios de la auditoría')}
+      ${manLista(['Objetividad e imparcialidad.','Evaluación basada en evidencias verificables.','Respeto, comunicación clara y confidencialidad.','Trazabilidad desde el hallazgo hasta su cierre.','Enfoque preventivo y de mejora continua, no punitivo.','Independencia: cuando sea posible, el auditor no evaluará actividades bajo su responsabilidad directa.'])}
 
-  ${bloque('hal',`<h3>Clasificación de hallazgos</h3>
-    <div class="tw"><table><thead><tr><th style="width:120px">Clasificación</th><th>Criterio</th><th style="width:30%">Respuesta requerida</th></tr></thead>
-    <tbody>${MAN_HALL.map(([c,k,cr,rr])=>`<tr><td><span class="badge ${k} dot">${esc(c)}</span></td><td>${esc(cr)}</td><td>${esc(rr)}</td></tr>`).join('')}</tbody></table></div>
-    <h3 style="margin-top:18px">Cómo se redacta un hallazgo</h3>
-    <p>Específico, verificable y comprensible. Debe incluir <b>condición observada</b>,
-      <b>evidencia objetiva</b> y <b>fotografía</b>. Sin expresiones ambiguas y sin atribuir causas
-      que no se analizaron.</p>
-    <div class="manej"><span class="k">Ejemplo del manual</span>
-      <p>«En la sala de tableros de Mantenimiento se observaron vasos de vidrio y una botella fuera de
-        la ubicación establecida. El criterio SEIRI requiere mantener únicamente los elementos
-        necesarios y segregar los elementos no conformes.»</p></div>`)}
+      ${manTit(6,'Responsabilidades')}
+      <h3>6.1 Comité CAT</h3>
+      ${manLista(['Definir el programa, alcance, frecuencia y cronograma de auditorías.','Designar auditores competentes y comunicar la auditoría a los sectores.','Consolidar resultados, indicadores, reincidencias y tendencias.','Revisar los planes de acción y realizar su seguimiento.','Verificar el cumplimiento y la efectividad de las acciones o asignar a una persona competente para hacerlo.','Escalar los hallazgos críticos, vencidos o reincidentes a la Gerencia correspondiente.'])}
+      <h3>6.2 Funciones del auditor</h3>
+      ${manLista(['Preparar la auditoría, revisar antecedentes y conocer los criterios aplicables.','Evaluar únicamente sobre la base de evidencias objetivas y mantener una conducta respetuosa.','Registrar respuestas, evidencias y comentarios en el checklist vigente.','Tomar fotografías, evitando exponer información personal o sensible.','Comunicar inmediatamente cualquier condición crítica de inocuidad, seguridad o continuidad operativa.','Redactar hallazgos claros, indicando criterio, condición observada, evidencia y ubicación.','Elaborar y emitir el informe dentro del plazo establecido.','No imponer la solución al auditado; puede orientar sobre el requisito, pero la causa y las acciones corresponden al responsable del sector.','Participar en el seguimiento y verificar la efectividad cuando sea asignado.'])}
+      <h3>6.3 Responsabilidades del auditado</h3>
+      ${manLista(['Facilitar el acceso al sector, documentos, registros y personal requerido.','Acompañar el recorrido o designar un representante con conocimiento del área.','Proporcionar información veraz y aclarar las condiciones observadas.','Reconocer la evidencia presentada o dejar documentada su discrepancia.','Aplicar contención o corrección inmediata cuando exista riesgo.','Analizar las causas, elaborar el plan de acción y proponer plazos realistas.','Implementar las acciones y presentar evidencias de cumplimiento.','Mantener las mejoras y colaborar con la verificación de efectividad.'])}
+      <h3>6.4 Responsable del sector</h3>
+      <p>Es responsable de aprobar el plan de acción, asegurar recursos, cumplir los plazos, informar
+      desvíos y evitar el cierre administrativo de acciones que todavía no hayan demostrado efectividad.</p>
 
-  ${bloque('inf',`<h3>Informe de auditoría</h3>
-    <p>Lo emite el auditor con el programa vigente, de forma automática al terminar la auditoría.
-      Tiene que ser claro y trazable, y contener como mínimo:</p>
-    ${manLista(['Identificación, fecha, objetivo, alcance y sectores auditados.','Auditor, acompañantes y responsables del sector.','Criterios y documentos utilizados.','Resultado global y por sector o categoría.','Hallazgos, evidencias y fotografías vinculadas.','Condiciones críticas comunicadas durante la auditoría.','Fortalezas u observaciones relevantes.','Conclusión, responsables de respuesta y fecha límite para presentar el plan de acción.'])}`)}
+      ${manTit(7,'Desarrollo')}
+      <h3>7.1 Programación</h3>
+      <p>El Comité CAT elaborará un cronograma basado en el alcance del programa, resultados anteriores,
+      riesgos, cambios, reclamos, incidentes y reincidencias. Podrán realizarse auditorías programadas,
+      de seguimiento o extraordinarias.</p>
+      <h3>7.2 Preparación</h3>
+      ${manLista(['Definir fecha, horario y auditor responsable.','Revisar el informe anterior, acciones pendientes y reincidencias.','Preparar elementos de registro y equipos de protección personal requeridos.'])}
+      <h3>7.3 Ejecución y obtención de evidencias</h3>
+      <p>La auditoría se ejecutará mediante observación directa, entrevistas, revisión de documentos y
+      registros, y muestreo de condiciones representativas. La ausencia de evidencia requerida se
+      considerará incumplimiento cuando el criterio exija demostrar la ejecución.</p>
+      <h3>7.4 Las 4S evaluadas</h3>
+      ${manTabla([['S','62px'],['Principio','190px'],['Aspectos mínimos','']],[
+        ['1S','SEIRI Clasificar','Existencia exclusiva de elementos necesarios; retiro, identificación y segregación de materiales vencidos, dañados, obsoletos o sin uso.'],
+        ['2S','SEITON Ordenar','Ubicación definida e identificada; layout y señalización; accesos, pasillos, equipos de emergencia y flujo de trabajo libres.'],
+        ['3S','SEISO Limpiar','Condición de pisos, paredes, techos, estructuras, equipos, superficies, recipientes y puntos ciegos; ausencia de residuos, polvo, derrames, olores y plagas.'],
+        ['4S','SEIKETSU Estandarizar','POES y procedimientos vigentes; responsables, métodos, productos, frecuencias, criterios de aceptación, registros, ejecución y tratamiento de desvíos.']])}
+      <h3>7.5 Criterios de respuesta y cálculo</h3>
+      ${manTabla([['Respuesta','150px'],['Aplicación','']],[
+        ['Sí','El criterio se cumple completamente y existe evidencia suficiente.'],
+        ['No','Existe incumplimiento total o parcial, ausencia de evidencia o desviación respecto del estándar.'],
+        ['No aplica','El criterio no corresponde al sector. Debe justificarse y excluirse del cálculo.']])}
+      <p>Porcentaje de cumplimiento = criterios respondidos Sí ÷ total de criterios aplicables × 100.
+      Un cumplimiento parcial se registra como No y se explica en comentarios.</p>
+      ${manTabla([['Resultado','150px'],['Nivel','110px'],['Tratamiento','']],[
+        ['75 % a 100 %','Verde','Mantener condiciones y corregir los hallazgos puntuales.'],
+        ['50 % a 74 %','Amarillo','Requiere plan de acción y seguimiento dentro del plazo acordado.'],
+        ['Menor a 49 %','Rojo','Requiere intervención prioritaria, seguimiento reforzado y escalamiento al Comité CAT.']])}
+      ${(Number(VERDE)!==75||Number(ROJO)!==49)?`<div class="mnota"><b>Nota de Calidad, ajena al documento firmado.</b>
+        La aplicación opera con meta ${VERDE} % y rojo por debajo de ${ROJO} %, conforme a lo dispuesto por la
+        Dirección. Los cortes de esta tabla y los de la aplicación no coinciden y deben unificarse.</div>`:''}
+      <h3>7.6 Clasificación de hallazgos</h3>
+      ${manTabla([['Clasificación','130px'],['Criterio',''],['Respuesta requerida','30%']],[
+        ['Crítico','Riesgo inmediato para inocuidad, seguridad, legalidad, producto o continuidad operativa.','Contención inmediata, comunicación a responsables y tratamiento prioritario.'],
+        ['Mayor','Incumplimiento relevante, sistemático, reincidente o ausencia de un control requerido.','Análisis de causa y acción correctiva formal.'],
+        ['Menor','Desviación puntual que no representa riesgo inmediato ni falla general del sistema.','Corrección y acción proporcional para evitar repetición.'],
+        ['Observación','Oportunidad de mejora o condición que podría convertirse en incumplimiento.','Evaluación por el responsable del sector y tratamiento cuando corresponda.']])}
+      <h3>7.7 Redacción del hallazgo</h3>
+      <p>Cada hallazgo deberá ser específico, verificable y comprensible. Debe incluir condición
+      observada, evidencia objetiva y fotografía. No se utilizarán expresiones ambiguas ni se
+      atribuirán causas sin análisis.</p>
+      <p class="hint">Ejemplo: en la sala de tableros de Mantenimiento se observaron vasos de vidrio y
+      una botella fuera de la ubicación establecida. El criterio SEIRI requiere mantener únicamente los
+      elementos necesarios y segregar los elementos no conformes.</p>
 
-  ${bloque('pla',`<h3>Plan de acción</h3>
-    <p>El responsable del sector lo elabora para cada hallazgo dentro de los <b>15 días</b> posteriores
-      a la auditoría. Las acciones son proporcionales al riesgo, tienen responsable y fecha, y
-      distinguen entre corrección inmediata y acción correctiva, preventiva u oportunidad de mejora.</p>
-    <div class="tw"><table><thead><tr><th style="width:200px">Campo</th><th>Contenido requerido</th></tr></thead>
-    <tbody>${MAN_PLAN.map(([a,b])=>`<tr><td><b>${esc(a)}</b></td><td>${esc(b)}</td></tr>`).join('')}</tbody></table></div>
-    <div class="notice warn" style="margin-top:14px"><div><b>El plan se puede devolver.</b> Los responsables
-      técnicos del Comité CAT lo rechazan cuando la acción no responde a la causa, el responsable no está
-      definido, el plazo no es coherente o no hay criterio de efectividad.</div></div>
-    <h3 style="margin-top:18px">Análisis de causa</h3>
-    <p>Obligatorio para hallazgos críticos, mayores, reincidentes, o cuando la corrección inmediata no
-      evita la repetición. Se pueden usar 5 Porqués, Ishikawa, tormenta de ideas, Pareto u otra
-      herramienta apropiada. <b>La descripción del hallazgo no es una causa</b> y no se repite como tal.</p>`)}
+      ${manTit(8,'Informe de auditoría')}
+      <p>El auditor emitirá el informe utilizando el programa vigente, de forma automática al terminar
+      la auditoría. El documento será claro y trazable, y contendrá como mínimo:</p>
+      ${manLista(['Identificación, fecha, objetivo, alcance y sectores auditados.','Auditor, acompañantes y responsables del sector.','Criterios y documentos utilizados.','Resultado global y por sector o categoría.','Hallazgos, evidencias y fotografías vinculadas.','Condiciones críticas comunicadas durante la auditoría.','Fortalezas u observaciones relevantes.','Conclusión, responsables de respuesta y fecha límite para presentar el plan de acción.'])}
 
-  ${bloque('seg',`<h3>Seguimiento</h3>
-    <p>El líder CAT mantiene el estado de cada hallazgo: abierto, en análisis, acción en ejecución,
-      pendiente de verificación, cerrado o reabierto. Las prórrogas requieren justificación, nueva fecha
-      y aprobación. <b>Si una acción vence sin evidencia suficiente, el hallazgo queda abierto</b> y se
-      escala al Comité CAT o al Gerente General según su gravedad.</p>
-    <h3 style="margin-top:18px">Verificación de cumplimiento</h3>
-    <p>Confirma que la acción se ejecutó como se aprobó: revisión documental, fotografías, entrevistas
-      o inspección en campo. La evidencia tiene que estar fechada, ser legible y guardar relación directa
-      con la acción. <b>Una foto aislada o un documento modificado no alcanzan</b> cuando el hallazgo
-      exige demostrar aplicación sostenida.</p>
-    <h3 style="margin-top:18px">Verificación de efectividad</h3>
-    <div class="tw"><table><thead><tr><th style="width:170px">Resultado</th><th>Criterio</th><th style="width:30%">Decisión</th></tr></thead>
-    <tbody>${MAN_EFEC.map(([r,k,c,d])=>`<tr><td><span class="badge ${k} dot">${esc(r)}</span></td><td>${esc(c)}</td><td>${esc(d)}</td></tr>`).join('')}</tbody></table></div>
-    <h3 style="margin-top:18px">Cierre</h3>
-    <p>Un hallazgo se cierra <b>únicamente</b> cuando se verificó el cumplimiento de las acciones
-      <b>y</b> su efectividad. El cierre lleva fecha, responsable de verificación, evidencia revisada y
-      conclusión. Si no pasó tiempo suficiente para evaluar la efectividad, el estado es
-      <b>pendiente de verificación</b>, no cerrado.</p>`)}
+      ${manTit(9,'Plan de acción de hallazgos')}
+      <p>El responsable del sector elaborará el plan de acción para cada hallazgo dentro del plazo
+      máximo de 15 días posteriores a la auditoría. Las acciones deberán ser proporcionales al riesgo,
+      contar con responsable y fecha, y distinguir entre corrección inmediata y acción correctiva,
+      acción preventiva u oportunidad de mejora.</p>
+      ${manTabla([['Campo','210px'],['Contenido requerido','']],[
+        ['Hallazgo','Código o número y descripción trazable al informe.'],
+        ['Contención o corrección','Medida inmediata para controlar el riesgo o corregir la condición.'],
+        ['Análisis de causa','Causa o causas verificadas mediante una herramienta adecuada, cuando corresponda.'],
+        ['Acción','Actividad destinada a eliminar o controlar la causa (puede ser correctiva, preventiva u oportunidad de mejora).'],
+        ['Responsable','Persona con autoridad para ejecutar o coordinar la acción.'],
+        ['Fecha compromiso','Fecha realista de implementación.'],
+        ['Evidencia esperada','Documento, registro, fotografía, verificación en campo o indicador que demostrará la ejecución.'],
+        ['Criterio de efectividad','Resultado observable y plazo de seguimiento que demostrarán que el problema no se repite.']])}
+      <p>Los responsables técnicos del Comité CAT revisarán el plan y podrán devolverlo cuando la acción
+      propuesta no responda a la causa, el responsable no esté definido, el plazo no sea coherente o no
+      exista criterio de efectividad.</p>
 
-  ${bloque('ind',`<h3>Indicadores del programa</h3>
-    ${manLista(MAN_IND)}
-    <div class="notice info" style="margin-top:14px"><div>Todos estos salen solos de la aplicación a
-      medida que se cargan las auditorías y los planes de acción. No hay que llevarlos aparte.</div></div>`)}
+      ${manTit(10,'Análisis de causa')}
+      <p>Se realizará análisis de causa para hallazgos críticos, mayores, reincidentes o aquellos cuya
+      corrección inmediata no evite la repetición. Podrán utilizarse 5 Porqués, Ishikawa, tormenta de
+      ideas, Pareto u otra herramienta apropiada; los formatos serán proporcionados por los responsables
+      técnicos del Comité CAT. La descripción del hallazgo no deberá repetirse como causa.</p>
 
-  <p class="soft2" style="margin-top:18px">Documento oficial firmado:
-    <a href="${MANUAL_URL}" target="_blank" rel="noopener">Manual de Auditorías CAT en SharePoint</a>
-    · requiere la cuenta del grupo. Lo que ves acá es su contenido, cargado el ${fmtDate('2026-10-19')}.</p>`;
+      ${manTit(11,'Seguimiento de acciones')}
+      <p>El líder CAT mantendrá un registro actualizado del estado de cada hallazgo: abierto, en
+      análisis, acción en ejecución, pendiente de verificación, cerrado o reabierto. Antes del
+      vencimiento podrá emitir recordatorios. Las prórrogas requerirán justificación, nueva fecha y
+      aprobación del responsable definido.</p>
+      <p>Cuando una acción venza sin evidencia suficiente, el hallazgo permanecerá abierto y será
+      escalado al Comité CAT o, según su gravedad, al Gerente General de la unidad de negocio.</p>
+
+      ${manTit(12,'Verificación de cumplimiento')}
+      <p>La verificación de cumplimiento confirma que la acción fue ejecutada según lo aprobado. Podrá
+      realizarse mediante revisión documental, fotografías, entrevistas o inspección en campo. La
+      evidencia deberá estar fechada, ser legible y guardar relación directa con la acción.</p>
+      <p>La presentación de una fotografía aislada o la modificación de un documento no serán
+      suficientes cuando el hallazgo requiera demostrar aplicación sostenida.</p>
+
+      ${manTit(13,'Verificación de efectividad')}
+      <p>La efectividad se evaluará después de un período suficiente para observar el desempeño del
+      control. La verificación podrá realizarse mediante una auditoría de seguimiento, revisión de
+      registros, ausencia de reincidencia, indicadores, entrevistas y observación directa.</p>
+      ${manTabla([['Resultado','180px'],['Criterio',''],['Decisión','30%']],[
+        ['Efectiva','La causa fue eliminada o controlada; el requisito se cumple y no existe reincidencia en el período evaluado.','Cerrar el hallazgo y registrar la evidencia.'],
+        ['Parcialmente efectiva','Existe mejora, pero persisten desviaciones o el control no está completamente sostenido.','Mantener abierto, complementar el plan y fijar nueva verificación.'],
+        ['No efectiva','El hallazgo se repite, la causa persiste o la acción no produjo el resultado esperado.','Reabrir, realizar nuevo análisis de causa y definir nuevas acciones.']])}
+
+      ${manTit(14,'Cierre del hallazgo')}
+      <p>Un hallazgo se cerrará únicamente cuando se verifique el cumplimiento de las acciones y su
+      efectividad. El cierre incluirá fecha, responsable de verificación, evidencia revisada y
+      conclusión. Cuando no haya transcurrido tiempo suficiente para evaluar la efectividad, el estado
+      será pendiente de verificación y no cerrado.</p>
+
+      ${manTit(15,'Indicadores')}
+      ${manLista(['Porcentaje de cumplimiento global y por sector.','Cantidad de hallazgos por clasificación y por 4S.','Porcentaje de planes presentados dentro del plazo.','Porcentaje de acciones implementadas dentro del plazo.','Porcentaje de acciones efectivas.','Cantidad de hallazgos vencidos y reincidentes.','Evolución de resultados entre auditorías.'])}
+
+    </div>
+
+    <div class="mfirmas">
+      <div><span>Preparado por</span><b>Ernesto Córdova</b></div>
+      <div><span>Revisado por</span><b>&nbsp;</b></div>
+      <div><span>Autorizado por</span><b>&nbsp;</b></div>
+    </div>
+    <div class="mfoot">Sistema CAT · Grupo Vierci · Documento controlado: la versión vigente es la que
+      se muestra en la aplicación.</div>
+  </div></section>`;
 }
 
 function vChecklists(){
@@ -15086,6 +15146,7 @@ document.addEventListener('click',async e=>{
   const dlc=t.closest('[data-del-cl]');if(dlc){await borrarDoc(COL.cl+'/'+dlc.dataset.delCl);toast('Checklist eliminada');return}
   const ms=t.closest('[data-mansec]');
   if(ms){state.man=Object.assign({},state.man,{sec:ms.dataset.mansec});window.scrollTo(0,0);render();return}
+  if(t.id==='btnManAudImp'){document.body.classList.add('print-manual');setTimeout(()=>{window.print();document.body.classList.remove('print-manual')},60);return}
   if(t.id==='btnCerrarCl'){state.editCl=null;render();return}
   if(t.id==='btnAddSec'){
     const n=state.editCl.secciones.length+1;
