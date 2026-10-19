@@ -2521,7 +2521,7 @@ const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
      · sitios de industria  → Etiqueta de pallet
      · RRHH y Enfermería    → Los pilares, que es donde cargan sus indicadores
    Calidad (admin) es la única que ve todo: es quien administra el programa. */
-const MENU_BASE=['manual','manualaud','cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','audsec','expedientes','calendario'];
+const MENU_BASE=['manual','manualaud','cumplimiento','hallazgos','pendientes','rotacion','mejoras','layouts','copa','audsec','expedientes','calendario'];
 const mas=function(){return MENU_BASE.concat(Array.prototype.slice.call(arguments))};
 const PERM={
   jefe:    MENU_BASE,
@@ -2582,7 +2582,12 @@ function veoExpediente(a){
   if(!a)return false;
   if(esAdmin()||soloLectura())return true;
   const rol=(state.sesion&&state.sesion.rol)||'';
-  if(rol==='syso'||rol==='sysoana')return false;
+  /* el que audita firma lo que auditó: aunque SySO no vea los expedientes de 5S,
+     sí ve el suyo para poder firmarlo junto con el auditado. */
+  if(rol==='syso'||rol==='sysoana'){
+    const yo=String((state.sesion&&state.sesion.nombre)||'').trim();
+    return !!yo&&[a.auditor,a.por,a.auditorJefeNombre].some(x=>String(x||'').trim()===yo);
+  }
   return veoSector(a.sectorId);
 }
 /* cartel que explica el recorte, así nadie cree que el sistema está fallando */
@@ -3636,6 +3641,7 @@ function render(){
      (operario de planta, RRHH, enfermería). Sin este if, el dibujado explotaba y la
      app quedaba en blanco para ellos en TODAS las pantallas. */
   const bh=$('#badgeHall');if(bh){bh.hidden=nAb===0;bh.textContent=nAb}
+  const bp=$('#badgePend');if(bp){const nP=(typeof misPendientes==='function')?misPendientes().length:0;bp.hidden=nP===0;bp.textContent=nP}
   const nTj=tarjetasVisibles().filter(tarjVencida).length;
   const bt=$('#badgeTarj');if(bt){bt.hidden=nTj===0;bt.textContent=nTj}
   const nPend=pendientes().length;
@@ -3643,7 +3649,7 @@ function render(){
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={tendencia:vTendencia,manual:vManual,manualaud:vManualAud,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={pendientes:vPendientes,tendencia:vTendencia,manual:vManual,manualaud:vManualAud,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
@@ -5467,7 +5473,7 @@ function vHallazgos(){
       ${secs.map(s=>`<option value="${esc(s.id)}"${state.fh.sector===s.id?' selected':''}>${esc(s.nombre)}</option>`).join('')}</select></div>
     <div class="field"><label for="hArea">Área que ejecuta</label><select id="hArea">
       <option value="all"${state.fh.area==='all'?' selected':''}>Todas las áreas</option>
-      ${AREAS.map(a=>`<option value="${a.v}"${state.fh.area===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
+      ${areasPlan().map(a=>`<option value="${a.v}"${state.fh.area===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
     <div class="field"><label for="hEstado">Filtro</label><select id="hEstado">
       ${[['pendientes','Sin cerrar'],['criticos','Solo críticos'],['vencidos','Solo vencidos'],['reincidentes','Solo reincidentes'],['preventivas','Con preventiva'],['revisar','Preventivas por revisar'],['revisarhoy','Me toca revisar ya'],['sintipo','Sin clasificar'],['abierto','Abiertos'],['proceso','En proceso'],['cerrado','Cerrados'],['all','Todos']]
         .map(([v,l])=>`<option value="${v}"${state.fh.estado===v?' selected':''}>${l}</option>`).join('')}</select></div>
@@ -5507,7 +5513,7 @@ function vHallazgos(){
               ?(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).d
               :'Elegí una: no es lo mismo tapar el pozo que sacar lo que lo abre. Un hallazgo no se cierra sin esto.')}</div></div>
           <div class="field"><label>Acción correctiva · qué se hizo o se va a hacer para corregirlo</label><textarea data-f="accionCorrectiva" style="min-height:44px" placeholder="Ej.: reparar el agujero de la pared del comedor">${esc(h.accionCorrectiva||'')}</textarea></div>
-          <div class="field"><label>Área que ejecuta · si depende de otra área, acá se registra la solicitud</label><select data-f="area">${AREAS.map(a=>`<option value="${a.v}"${(h.area||'sector')===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
+          <div class="field"><label>Área que ejecuta · si depende de otra área, acá se registra la solicitud</label><select data-f="area">${areasPlan().map(a=>`<option value="${a.v}"${(h.area||'sector')===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
           ${(h.area||'sector')!=='sector'?`<div class="field"><label>Fecha de la solicitud al área</label><input type="date" data-f="fechaSolicitud" value="${esc(h.fechaSolicitud||'')}"></div>`:''}
           <div class="field"><label>Causa raíz · por qué pasó</label><textarea data-f="causaRaiz" style="min-height:44px">${esc(h.causaRaiz||'')}</textarea></div>
           <div class="field"><label>Acción preventiva · qué se cambia para que no vuelva a pasar${llevaPrev(h)?'':' · opcional si la solución es sólo correctiva'}</label><textarea data-f="accionPreventiva" style="min-height:44px" placeholder="Ej.: cambiar el procedimiento de descarga y capacitar al turno tarde">${esc(h.accionPreventiva||'')}</textarea></div>
@@ -10503,7 +10509,11 @@ function detalleExpediente(a){
   const arch=ev.filter(e=>!e.esImagen||!e.data);
   const hs=state.hallazgos.filter(h=>h.auditoriaId===a.id);
   const cl=state.checklists.find(c=>c.id===a.checklistId);
+  const EF=estadoFirma(a);
   return `${avisoDb()}
+  ${EF.k!=='ok'?`<div class="notice ${EF.k==='crit'?'crit':'warn'}" style="margin-bottom:14px"><div>
+    <b>${EF.k==='crit'?'Esta auditoría todavía no está firmada.':'Falta una firma.'}</b>
+    ${esc(EF.d)}. El informe no se considera cerrado hasta que firman el auditor y el auditado.${puedeFirmar()?' El recuadro de firmas está al final de esta pantalla.':''}</div></div>`:''}
   ${panelValidacion(a,ev)}
   <section class="panel" style="margin-bottom:16px;border-color:var(--accent)">
     <div class="body" style="display:flex;justify-content:space-between;gap:14px;align-items:center;flex-wrap:wrap">
@@ -11057,7 +11067,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=119;
+const APP_VER=121;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12505,6 +12515,89 @@ function vManualAud(){
   </div></section>`;
 }
 
+/* ================= áreas que ejecutan =================
+   Antes había cinco etiquetas genéricas («Sector», «Otros»). Ahora la lista son los
+   sectores reales del CD —Administración, Mantenimiento, Muelles— más las dos áreas
+   que no son un sector: Compras y un tercero externo. El valor guardado es el id del
+   sector, así el pendiente se le puede mostrar a quien trabaja ahí.              */
+const AREAS_EXTRA=[{v:'compras',l:'Compras'},{v:'tercero',l:'Tercero externo'}];
+const AREAS_VIEJAS={sector:'',mantenimiento:'s-manten',seguridad:''};
+function areasPlan(){
+  const secs=todosSectores().slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre)));
+  return [{v:'sector',l:'El propio sector auditado'}]
+    .concat(secs.map(s=>({v:s.id,l:s.nombre})))
+    .concat(AREAS_EXTRA);
+}
+const areaLabel=v=>{
+  if(!v||v==='sector')return 'El propio sector';
+  const s=sectorDe(v); if(s)return s.nombre;
+  const e=AREAS_EXTRA.find(x=>x.v===v); if(e)return e.l;
+  const vj=AREAS_VIEJAS[v]; if(vj){const s2=sectorDe(vj); if(s2)return s2.nombre}
+  return v;
+};
+/* el id de sector al que le toca ejecutar, o '' si lo ejecuta el propio sector */
+const areaSectorId=h=>{
+  const v=h&&h.area;
+  if(!v||v==='sector')return '';
+  if(sectorDe(v))return v;
+  return AREAS_VIEJAS[v]||'';
+};
+
+/* ================= pendientes =================
+   Lo que otra persona le pidió a mi área: una acción correctiva de un hallazgo que
+   nació en otro sector. Aparece acá hasta que se resuelve.                        */
+function misPendientes(){
+  const todos=(state.hallazgos||[]).filter(h=>{
+    if(h.estado==='cerrado')return false;
+    const sid=areaSectorId(h);
+    if(!sid)return false;
+    if(sid===h.sectorId)return false;      /* lo ejecuta el mismo sector: no es un pedido */
+    return esAdmin()?true:veoSector(sid);
+  });
+  const hoy=todayISO();
+  return todos.map(h=>Object.assign({},h,{
+    _area:areaSectorId(h),
+    _vencido:!!(h.vence&&String(h.vence)<hoy),
+    _dias:h.vence?Math.round((new Date(h.vence)-new Date(hoy))/86400000):null
+  })).sort((a,b)=>String(a.vence||'9999').localeCompare(String(b.vence||'9999')));
+}
+function vPendientes(){
+  const L=misPendientes();
+  const venc=L.filter(x=>x._vencido).length;
+  const hechos=L.filter(x=>x.hecho).length;
+  return `${avisoDb()}
+  <div class="head"><div><h1>Pendientes</h1>
+    <p>Acciones correctivas que otra persona asignó a su área. Cada una indica de qué sector y
+       de qué auditoría proviene, quién la asignó y la fecha comprometida. Se resuelve cargando
+       la evidencia; la verificación de efectividad la realiza quien la asignó.</p></div></div>
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi${L.length?'':' tintok'}"><div class="k">Asignados a su área</div><div class="v">${L.length}</div>
+      <div class="m"><span>${L.length?'sin resolver':'no hay pendientes'}</span></div></div>
+    <div class="kpi${venc?' tint':''}"><div class="k">Vencidos</div><div class="v">${venc}</div>
+      <div class="m"><span>${venc?'pasaron la fecha comprometida':'ninguno'}</span></div></div>
+    <div class="kpi"><div class="k">Con evidencia cargada</div><div class="v">${hechos}</div>
+      <div class="m"><span>esperando verificación</span></div></div>
+    <div class="kpi"><div class="k">Más próximo</div><div class="v" style="font-size:22px;padding-top:10px">${L.length&&L[0].vence?fmtDate(L[0].vence):'—'}</div>
+      <div class="m"><span>${L.length&&L[0].vence?esc(nombreSector(L[0].sectorId)||''):'sin fecha'}</span></div></div>
+  </div>
+  ${L.length?`<div class="rotgrid" style="padding:0">${L.map(h=>{
+    const sev=SEV[h.severidad||'menor']||{l:'',k:''};
+    const quien=h.areaPor||h.auditor||h.por||'—';
+    return `<article class="rotcard ${h._vencido?'pend':'list'}" style="border-left-color:${h._vencido?'var(--crit)':'var(--accent)'}">
+      <div><span class="badge ${sev.k}">${esc(sev.l)}</span>
+        ${h._vencido?'<span class="badge crit dot">Vencido</span>'
+          :(h.vence?`<span class="badge warn dot">${h._dias!=null&&h._dias>=0?'faltan '+h._dias+' día'+(h._dias===1?'':'s'):'sin fecha'}</span>`:'<span class="badge">sin fecha</span>')}</div>
+      <div class="rn" style="font-weight:600;line-height:1.35">${esc(h.item||h.texto||'')}</div>
+      ${h.desc?`<div class="rt" style="line-height:1.45">${esc(String(h.desc).slice(0,180))}${String(h.desc).length>180?'…':''}</div>`:''}
+      <div class="rt">Origen: <b>${esc(h.sectorNombre||nombreSector(h.sectorId)||'')}</b>${h.codigo?' · '+esc(h.codigo):''}${h.fecha?' · auditoría del '+fmtDate(h.fecha):''}</div>
+      <div class="rl"><b>Asignó:</b> ${esc(quien)}${h.areaEl?' · '+fmtDate(String(h.areaEl).slice(0,10)):''}</div>
+      <div class="rl"><b>Fecha comprometida:</b> ${h.vence?fmtDate(h.vence):'a definir'}</div>
+      ${h.evidenciaEsperada?`<div class="rt">Evidencia esperada: ${esc(h.evidenciaEsperada)}</div>`:''}
+      <div class="rb"><button class="btn primary" data-pendver="${esc(h.id)}">Abrir y cargar la evidencia</button></div>
+    </article>`}).join('')}</div>`
+  :'<div class="panel"><div class="empty"><b>No hay acciones asignadas a su área</b>Cuando alguien registre una acción correctiva que depende de su área, aparece acá con su fecha comprometida.</div></div>'}`;
+}
+
 function vChecklists(){
   if(state.editCl)return editorChecklist(state.editCl);
   state.clf=state.clf||{g:'all',q:''};
@@ -12727,6 +12820,7 @@ NAVITEMS.gerencia={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="no
 NAVITEMS.etiquetas={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="11" rx="1.5"/><path d="M4 5v6M6.5 5v6M9 5v6M11.5 5v6"/></svg>',l:'Etiqueta de pallet',badge:''};
 NAVITEMS.usuarios={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5.5" r="2.5"/><path d="M1.5 13.5a4.5 4.5 0 019 0"/><circle cx="11.5" cy="6" r="2"/><path d="M11 10.5a3.5 3.5 0 013.5 3"/></svg>',l:'Usuarios',badge:''};
 NAVITEMS.manualaud={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.2A1.2 1.2 0 013.7 2h3.1A1.6 1.6 0 018 2.9 1.6 1.6 0 019.2 2h3.1a1.2 1.2 0 011.2 1.2v8.6a1.2 1.2 0 01-1.2 1.2H9.2A1.6 1.6 0 008 13.9a1.6 1.6 0 00-1.2-.9H3.7a1.2 1.2 0 01-1.2-1.2z"/><path d="M8 2.9v11"/></svg>',l:'Manual de auditorías',badge:''};
+NAVITEMS.pendientes={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.5 2.5h5a1 1 0 011 1v1h1.2a1 1 0 011 1v8a1 1 0 01-1 1H3.3a1 1 0 01-1-1v-8a1 1 0 011-1H4.5v-1a1 1 0 011-1z"/><path d="M5.6 9.1l1.6 1.6 3.2-3.6"/></svg>',l:'Pendientes',badge:'badgePend'};
 NAVITEMS.bitacora={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1.5h8l2.5 2.5v10.5h-10.5z"/><path d="M5.5 7h5M5.5 9.5h5M5.5 12h3"/></svg>',l:'Bitácora',badge:''};
 const GRUPOS=[{id:'cd',nombre:'CAT Centros de Distribución'},{id:'industria',nombre:'CAT Industrias'}];
 const SITIOS_CAT=[
@@ -12747,7 +12841,7 @@ const SITIOS_CAT=[
    El resto es seguimiento de Calidad y Gerencia: no le aparece al sector. */
 const MENU5S=[
  ['Dirección',['resumen','ahorro','impacto','tablero']],
- ['CAT · 5S',['cumplimiento','hallazgos','rotacion','mejoras','layouts','copa','tendencia']],
+ ['CAT · 5S',['cumplimiento','hallazgos','pendientes','rotacion','mejoras','layouts','copa','tendencia']],
  ['Auditoría interna CDSA',['audsec','expedientes','coherencia','audint','calendario']],
  ['Seguimiento de Calidad',['aprobacion','audgen','audext','seginf','tarjetas','evolucion','auditorias','buenas','sanciones','pantalla']],
  ['Sólo Calidad',['reglas','papelera']]];
@@ -15148,6 +15242,9 @@ document.addEventListener('click',async e=>{
   const ms=t.closest('[data-mansec]');
   if(ms){state.man=Object.assign({},state.man,{sec:ms.dataset.mansec});window.scrollTo(0,0);render();return}
   if(t.id==='btnManAudImp'){document.body.classList.add('print-manual');setTimeout(()=>{window.print();document.body.classList.remove('print-manual')},60);return}
+  const pv=t.closest('[data-pendver]');
+  if(pv){state.fh=Object.assign({},state.fh,{q:'',sector:'all',area:'all',filtro:'abiertos'});
+    go('hallazgos'); state.hallOpen=pv.dataset.pendver; render(); return}
   if(t.id==='btnCerrarCl'){state.editCl=null;render();return}
   if(t.id==='btnAddSec'){
     const n=state.editCl.secciones.length+1;
@@ -15559,6 +15656,11 @@ document.addEventListener('change',async e=>{
     /* queda el rastro de qué se cambió y quién lo cambió, antes de tocar el valor */
     anotarCambio(d,t.dataset.f,h[t.dataset.f],t.value);
     d[t.dataset.f]=t.value;
+    if(t.dataset.f==='area'){
+      d.areaPor=(state.sesion&&state.sesion.nombre)||state.auditor||'';
+      d.areaEl=new Date().toISOString();
+      if(t.value&&t.value!=='sector')toast('Queda como pendiente de '+areaLabel(t.value));
+    }
     if(t.dataset.f==='capFecha'&&t.value&&!h.capFecha){
       /* se capacitó: ahora hay que volver a mirar, así que la revisión queda pendiente otra vez */
       d.seMantuvo=''; d.revObs='';
