@@ -10611,7 +10611,8 @@ function detalleExpediente(a){
       <td class="r"><span class="badge ${cls}">${esc(lab)}</span></td>
       <td style="color:var(--ink-3)">${esc(rr.obs||'')}</td></tr>`;
     })).join('')}
-    </tbody></table></div></section>`:''}`;
+    </tbody></table></div></section>`:''}
+  ${firmasHTML(a)}`;
 }
 
 /* ---------- la ficha de la auditoría, sin nada que aprobar ----------
@@ -11056,7 +11057,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=118;
+const APP_VER=119;
 async function chequearVersion(){
   if(state.local)return;
   try{
