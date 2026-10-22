@@ -292,6 +292,47 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 .ptabs{display:flex;gap:6px;margin:0 0 16px;border-bottom:1px solid var(--line);padding-bottom:0}
 .ptabs button{border:0;background:transparent;padding:10px 14px;font-weight:600;color:var(--ink-3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;font-size:14px}
 .ptabs button[aria-selected="true"]{color:var(--accent-2);border-bottom-color:var(--accent)}
+.efb{flex:1;height:10px;background:var(--surface-3);border-radius:999px;overflow:hidden}
+.efb i{display:block;height:100%;background:var(--ink-3);border-radius:999px}
+.efb i.ok{background:var(--ok)}.efb i.warn{background:var(--warn)}.efb i.crit{background:var(--crit)}
+.efleg{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-top:12px;font-size:12px;color:var(--ink-3)}
+.efleg span{display:flex;gap:6px;align-items:center}
+.efleg i{width:11px;height:11px;border-radius:3px;display:inline-block}
+.efsec{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.efsec .efn{min-width:230px;display:flex;flex-direction:column;gap:2px;font-size:13.5px}
+.efsec .efn span{font-size:11.5px;color:var(--ink-3)}
+.efsec .efp{width:70px;text-align:right;font-weight:600;font-size:13.5px}
+.efrow{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;border:1px solid var(--line);border-left:4px solid var(--ink-3);border-radius:10px;padding:13px 15px;background:var(--surface)}
+.efrow.efect{border-left-color:var(--ok)}.efrow.noefect{border-left-color:var(--crit)}
+.efrow .eft{flex:1;min-width:260px;font-size:13.5px;line-height:1.45}
+.efrow .efm{font-size:12px;color:var(--ink-3);margin-top:3px}
+.efrow .efa{display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.efrow.parcial{border-left-color:var(--warn)}
+.efrow .efpct{font-size:27px;font-weight:700;line-height:1;white-space:nowrap;font-variant-numeric:tabular-nums}
+.efrow .efpct small{font-size:13px;font-weight:600;color:var(--ink-3);margin-left:1px}
+.efrow .efpct.ok{color:var(--ok)}.efrow .efpct.warn{color:var(--warn)}.efrow .efpct.crit{color:var(--crit)}
+.efdet{margin:6px 0 0;padding-left:16px;font-size:12px;color:var(--ink-3);line-height:1.55}
+.efdet li b{color:var(--crit);font-variant-numeric:tabular-nums}
+.efrub{width:100%;border-collapse:collapse;font-size:12.5px}
+.efrub th,.efrub td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+.efrub th{font-size:11px;letter-spacing:.4px;text-transform:uppercase;color:var(--ink-3);font-weight:600}
+.efrub td.p{text-align:right;white-space:nowrap;font-weight:600;font-variant-numeric:tabular-nums;width:90px}
+.manualdoc .mbody table.mt{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0 14px}
+.manualdoc .mbody table.mt th,.manualdoc .mbody table.mt td{border:1px solid #C5BFAE;padding:5px 8px;text-align:left;vertical-align:top}
+.manualdoc .mbody table.mt th{background:#F1EFE6;font-size:11.5px;text-transform:uppercase;letter-spacing:.03em}
+.avlist{display:flex;flex-direction:column;gap:12px;padding:14px 16px 16px}
+.avlist .rotcard{width:100%;max-width:none}
+.acres{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:7px;font-size:12px;color:var(--ink-3)}
+.acres .ac{display:inline-flex;gap:4px;align-items:center;white-space:nowrap}
+.acres .ac.ok{color:var(--ok)}.acres .ac.warn{color:var(--warn)}
+.acres .ac b{font-size:13px;letter-spacing:-1px}
+.efedit{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:10px;padding:13px 15px;background:var(--surface-2);display:flex;flex-direction:column;gap:10px;margin:6px 0 2px}
+.efedit .efeh{display:flex;flex-direction:column;gap:3px;font-size:13px}
+.efedit .efeh span{font-size:12px;color:var(--ink-3);line-height:1.45}
+.efedit .efeg{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end}
+.efedit .efeg .field{min-width:132px;margin:0}
+.efedit .efeg .field.w{min-width:240px;flex:1}
+.efedit .efeb{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .rotgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:12px;padding:16px}
 .rotcard{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px 16px 15px 18px}
 .rotcard.pend{border-left:4px solid var(--warn)}
@@ -376,7 +417,11 @@ table.heat td.r .badge{min-width:64px;justify-content:center}
 @media(max-width:640px){.manualdoc{padding:20px 18px}.manualdoc .mhead{flex-wrap:wrap}.manualdoc .mcod{margin-left:0;width:100%}.manualdoc .mfirmas{grid-template-columns:1fr}.manualdoc .mfirmas div{border-right:0;border-bottom:1px solid #ccd5d0}}
 @media print{body.print-manual .head,body.print-manual .grid,body.print-manual .ptabs,body.print-manual .panel:not(.manualpanel),body.print-manual .manualpanel>header,body.print-manual .notice,body.print-manual .soft2{display:none!important}
   body.print-manual .manualdoc{border:0;box-shadow:none;max-width:none;padding:0}
-  body.print-manual .manualpanel{border:0;background:transparent;box-shadow:none}}
+  body.print-manual .manualpanel{border:0;background:transparent;box-shadow:none}
+  body.print-ef .headbtns,body.print-ef .filters,body.print-ef .efa,body.print-ef .efedit,
+  body.print-ef .notice,body.print-ef .backbtn{display:none!important}
+  body.print-ef .panel{break-inside:avoid;border:1px solid #ccc;box-shadow:none}
+  body.print-ef .efrow{break-inside:avoid}}
 /* ---------- manual ---------- */
 .acc{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:10px;overflow:hidden}
 .acc>button{width:100%;display:flex;align-items:center;gap:12px;padding:15px 18px;background:transparent;border:0;cursor:pointer;text-align:left;font-size:15px;font-weight:600}
@@ -1531,8 +1576,8 @@ const n0=v=>v==null?'—':String(Math.round(v));
    Todo esto se edita desde Calidad y queda en config/reglas, para que el día que la
    Gerencia quiera mover un umbral no haya que tocar el programa. */
 const REGLAS_DEF={
-  metaMes:80,    /* para estar en verde el mes */
-  rojo:60,       /* debajo de esto, rojo */
+  metaMes:75,    /* Verde desde 75 % · Manual CAT, punto 7.2 */
+  rojo:50,       /* Rojo por debajo de 50 % · Manual CAT, punto 7.2 */
   pisoMes:70,    /* ningún mes del trimestre puede caer debajo, por bueno que sea el promedio */
   metaTrim:80,   /* promedio de los tres meses */
   cohMin:90,     /* coherencia mínima entre lo que declara el sector y lo que encuentra Calidad */
@@ -1620,7 +1665,13 @@ function porQueNoLlega(list,meta){
   return {pct:pct,meta:M,llega:pct!=null&&pct>=M,cumple:cumple,evaluados:eval_,
           noCumplen:noCumplen,faltan:faltan,filas:filas,pocos:pocos,porZona:porZona};
 }
-const SEV={critico:{l:'Crítico',dias:3,k:'crit'},mayor:{l:'Mayor',dias:15,k:'warn'},menor:{l:'Menor',dias:30,k:''}};
+/* Plazos del Manual CAT, punto 7.3. Crítico: contención inmediata, corrección hasta 3 días
+   y acción correctiva definitiva hasta 15. Mayor: 30 días. Menor: entre 45 y 60, se toma el
+   máximo. Observación: sin tiempo definido, por eso no vence. */
+const SEV={critico:{l:'Crítico',dias:15,diasCorr:3,k:'crit'},
+           mayor:{l:'Mayor',dias:30,k:'warn'},
+           menor:{l:'Menor',dias:60,k:''},
+           observacion:{l:'Observación',dias:0,sinPlazo:true,k:'a'}};
 /* "Listo para verificar" es hasta donde llega el sector: cargó la corrección y la foto,
    y queda esperando que Calidad vaya a mirar. El cierre no lo pone quien fue auditado. */
 const ESTADOS=[{v:'abierto',l:'Abierto'},{v:'proceso',l:'En proceso'},
@@ -1736,7 +1787,7 @@ const state={
   draft:null,carga:null,wiz:null,editCl:null,editAud:null,firma:null,openAudit:null,openHab:null,confirmKey:null,zonas:null,
   tv:{on:false,i:0,timer:null,pausa:false},
   openExp:null,openInf:null,lightbox:null,tour:null,acc:0,subida:null,
-  pallets:[],pilarDocs:[],pilarInd:[],reco:[],mejoras:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,orgCfg:null,orgEd:null,orgNivel:'cd',orgSec:'',docReqCfg:null,docReqEd:null,puertasCfg:null,pciCfg:null,reglas:null,ap:null,apSec:null,tarjetas:[],tj:null,calendario:null,cal:null,cohSec:null,coh:null,aud:{sub:'syso',rol:'',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[],
+  pallets:[],pilarDocs:[],pilarInd:[],reco:[],mejoras:[],diag:[],diagCfg:null,diagEd:null,segChkCfg:null,segChkEd:null,audK:null,openSeg:null,docSector:[],segAud:[],segAcc:[],docEd:null,orgCfg:null,orgEd:null,orgNivel:'cd',orgSec:'',docReqCfg:null,docReqEd:null,puertasCfg:null,pciCfg:null,reglas:null,ap:null,apSec:null,tarjetas:[],tj:null,visitas:[],avisos:[],acuses:[],avf:null,avOpen:null,docCat:null,docCatEd:false,calendario:null,cal:null,cohSec:null,coh:null,aud:{sub:'syso',rol:'',sec:'',resp:{},ol:{},olObs:{},olf:'',hora:'',sup:'',chk:{},libres:[],trab:{},pers:[],
     pu:{},puObs:{},puHora:'',puTurno:'Mañana',pci:{},pciObs:{}},impSec:null,verComo:null,sesionReal:null,productos:null,loaded:{tj:false,pl:false,pr:false,est:false,cl:false,au:false,ha:false,bu:false,ev:false,rc:false,mj:false,pa:false,im:false,ac:false,cv:false,pi:false,pp:false,pm:false,dg:false,ds:false,sa:false,sc:false,us:false,bi:false,pl:false}
 };
 try{state.auditor=localStorage.getItem('cat.auditor')||''}catch(e){}
@@ -1782,7 +1833,7 @@ function localDb(){
 }
 
 /* ================= conexión ================= */
-const COL={cl:'checklists',au:'auditorias',ha:'hallazgos',bu:'buenas',ev:'evidencias',pd:'pilarDocs',pi:'pilarInd',rc:'reconocimientos',mj:'mejoras',pl:'papelera'};
+const COL={cl:'checklists',au:'auditorias',ha:'hallazgos',bu:'buenas',ev:'evidencias',pd:'pilarDocs',pi:'pilarInd',rc:'reconocimientos',mj:'mejoras',pl:'papelera',vi:'visitas',av:'avisos',ac:'acuses',pa:'pilarArch'};
 /* límite por documento de la base: dejamos margen para los metadatos.
    Las fotos se comprimen hasta entrar en MAXB64. Los documentos del pilar —una política,
    un plan de emergencia— no se pueden comprimir sin arruinarlos, así que tienen su propio
@@ -1811,9 +1862,16 @@ function firebaseDb(){
       const o=JSON.parse(txt);const d=(o&&o.datos)?o.datos:o;
       if(!d||typeof d!=='object')throw new Error('formato');
       const keys=Object.keys(d).filter(k=>k.split('/').length===2&&k!=='config/acceso'); /* la clave de administración de esta base no se pisa */
-      for(let i=0;i<keys.length;i+=200){
-        const b=fs.batch();keys.slice(i,i+200).forEach(k=>b.set(fs.doc(k),limpio(d[k])));await b.commit();
+      /* Un respaldo con documentos escaneados adentro pesa megas: si se arman los lotes
+         por cantidad, el lote explota. Se arman por tamaño y se cierran antes del tope. */
+      let lote=fs.batch(), n=0, bytes=0;
+      for(const k of keys){
+        const v=limpio(d[k]);
+        const t=JSON.stringify(v).length+k.length+32;
+        if(n&&(bytes+t>6500000||n>=400)){await lote.commit();lote=fs.batch();n=0;bytes=0}
+        lote.set(fs.doc(k),v); n++; bytes+=t;
       }
+      if(n)await lote.commit();
       return keys.length;
     }
   };
@@ -1873,6 +1931,9 @@ async function conectar(){
   sub('pilarDiag','diag','dg');
   sub('docSector','docSector','ds'); sub('segAud','segAud','sa'); sub('segAcc','segAcc','sc');
   sub('tarjetas','tarjetas','tj');
+  sub('visitas','visitas','vi');
+  sub('avisos','avisos','av');
+  sub('acuses','acuses','ac');
   db.doc('config/pilarDiag').onSnapshot(s=>{state.diagCfg=s.exists?s.data():null;render()},()=>{});
   db.doc('config/docReq').onSnapshot(s=>{state.docReqCfg=s.exists?s.data():null;render()},()=>{});
   db.doc('config/puertas').onSnapshot(s=>{state.puertasCfg=s.exists?s.data():null;render()},()=>{});
@@ -1887,7 +1948,8 @@ async function conectar(){
 }
 async function guardarDoc(path,data){
   if(!state.db){toast('Sin almacenamiento: el cambio no se guardó');return false}
-  if(soloLectura()&&path.indexOf('bitacora/')!==0&&path.indexOf('usuarios/')!==0){toast('Tu usuario es de solo lectura: podés ver, no cambiar');return false}
+  if(soloLectura()&&path.indexOf('bitacora/')!==0&&path.indexOf('usuarios/')!==0
+     &&path.indexOf('visitas/')!==0&&path.indexOf('acuses/')!==0){toast('Tu usuario es de solo lectura: podés ver, no cambiar');return false}
   const existia=existeDoc(path);
   try{await state.db.doc(path).set(data);registrar(existia?'modificó':'creó',descAccion(path,data),path);return true}
   catch(e){
@@ -1999,7 +2061,7 @@ function enPeriodo(f){const d=state.f.periodo;if(d==='all')return true;return St
 function sectoresQueVeo(){
   const s=state.sesion;
   /* SySO ve todos los sectores porque le audita la seguridad a todos */
-  if(!s||s.rol==='admin'||s.rol==='gerencia'||s.rol==='sitio'
+  if(!s||s.rol==='admin'||s.rol==='gerencia'||s.rol==='sitio'||s.rol==='comite'
        ||s.rol==='syso'||s.rol==='sysoana')return null;   /* null = todos */
   /* el responsable de mejoras ve su sector, igual que el referente */
   if(s.rol==='sector'||s.rol==='mejoras')return s.sectorId?[s.sectorId]:[];
@@ -2437,13 +2499,18 @@ function ultimaPorSector(auds){
   return m;
 }
 const abierto=h=>h.estado!=='cerrado';
-const vencido=h=>abierto(h)&&h.fechaLimite&&String(h.fechaLimite)<todayISO();
+const sinPlazo=h=>!!((SEV[(h&&h.severidad)||'menor']||{}).sinPlazo);
+const vencido=h=>abierto(h)&&!sinPlazo(h)&&h.fechaLimite&&String(h.fechaLimite)<todayISO();
 const cerradoEnPlazo=h=>h.estado==='cerrado'&&h.fechaLimite&&h.cerrado&&String(h.cerrado).slice(0,10)<=String(h.fechaLimite);
 /* ---------- la mejora continua que puntúa ----------
    Calidad decidió que cuente la mejora **implementada**, no la anotada: si alcanzara
    con cargarla, se cargan diez el último día del mes y no cambia nada en el piso.
    Una mejora se marca como implementada cuando está hecha y tiene su foto de después. */
 const mejImpl=m=>!!(m&&m.implementada);
+/* Manual CAT, punto 14.1: la mejora autónoma debe tener parámetros de medición y
+   evidencia que permitan comparar la situación inicial con el resultado. */
+const mejMedible=m=>!!(m&&m.implementada&&(m.medible||((m.situacion||'').trim()&&(m.evidencia||'').trim())));
+const mejorasMedibles=(secId,a,m)=>(state.mejoras||[]).filter(x=>x.sectorId===secId&&mejMedible(x)&&enMes(fechaImpl(x),a,m));
 const fechaImpl=m=>String((m&&(m.implEl||m.fecha))||'').slice(0,10);
 function mejorasImplementadas(secId,a,m){
   return (state.mejoras||[]).filter(x=>x.sectorId===secId&&mejImpl(x)&&enMes(fechaImpl(x),a,m));
@@ -2505,7 +2572,8 @@ const ROLES=[
   {v:'sysoana',l:'Analista de SySO',d:'Trabaja con el Jefe de SySO en todo el CD: carga los documentos, los aptos y los indicadores, y ve todo lo del pilar. No firma informes ni cierra acciones.'},
   {v:'planta',l:'Operario de planta',d:'Solo su planta: etiqueta de pallet e historial de pallets.'},
   {v:'rrhh',l:'Recursos Humanos',d:'Carga la dotación, las horas trabajadas y los días perdidos de los indicadores de seguridad. Ve el manual de los pilares.'},
-  {v:'enfermeria',l:'Enfermería',d:'Carga las atenciones, el tipo de lesión y la parte del cuerpo de los indicadores de seguridad. Ve el manual de los pilares.'}
+  {v:'enfermeria',l:'Enfermería',d:'Carga las atenciones, el tipo de lesión y la parte del cuerpo de los indicadores de seguridad. Ve el manual de los pilares.'},
+  {v:'comite',l:'Comité CAT · auditor general',d:'Revisa. Ve el manual, las auditorías realizadas de todos los sectores y la coherencia entre auditorías, y puede volver a medir la efectividad de un plan de acción junto con la Líder CAT. No audita, no carga y no edita.'}
 ];
 const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
 /* ================= qué ve cada perfil =================
@@ -2521,26 +2589,29 @@ const rolLabel=v=>(ROLES.find(r=>r.v===v)||{}).l||v;
      · sitios de industria  → Etiqueta de pallet
      · RRHH y Enfermería    → Los pilares, que es donde cargan sus indicadores
    Calidad (admin) es la única que ve todo: es quien administra el programa. */
-const MENU_BASE=['manual','manualaud','cumplimiento','hallazgos','pendientes','rotacion','mejoras','layouts','copa','audsec','expedientes','calendario'];
+const MENU_BASE=['manual','manualaud','avisos','cumplimiento','hallazgos','pendientes','rotacion','mejoras','layouts','copa','audsec','expedientes','calendario','coherencia'];
 const mas=function(){return MENU_BASE.concat(Array.prototype.slice.call(arguments))};
 const PERM={
   jefe:    MENU_BASE,
   sector:  MENU_BASE,
   sitio:   mas('etiquetas'),
-  syso:    mas('pilares','coherencia'),
-  sysoana: mas('pilares','coherencia'),
+  syso:    mas('pilares'),
+  sysoana: mas('pilares'),
   mejoras: MENU_BASE,
   planta:  mas('etiquetas'),
   rrhh:    mas('pilares'),
   enfermeria: mas('pilares'),
   gerencia:   mas('tendencia'),
+  /* El Comité revisa, no opera: el manual, las auditorías hechas y la coherencia
+     entre auditorías. Desde ahí vuelve a medir la efectividad si hace falta. */
+  comite:  ['manual','manualaud','avisos','expedientes','auditorias','coherencia'],
   admin:   null
 };
 
 /* a dónde entra cada perfil cuando abre la aplicación */
 const HOME={jefe:'cumplimiento',sector:'cumplimiento',sitio:'cumplimiento',
   syso:'audint',sysoana:'audint',gerencia:'tendencia',mejoras:'hallazgos',
-  rrhh:'pilares',enfermeria:'pilares',planta:'cumplimiento',admin:'tablero'};
+  rrhh:'pilares',enfermeria:'pilares',planta:'cumplimiento',comite:'expedientes',admin:'tablero'};
 function vistaInicial(){
   const r=(state.sesion&&state.sesion.rol)||'admin';
   const h=HOME[r];
@@ -2733,7 +2804,15 @@ function panelIndOtroPilar(pid){
       </div>`}).join('')}
     </div></div></section>`;
 }
-const soloLectura=()=>!!(state.sesion&&state.sesion.rol==='gerencia');
+/* La Gerencia mira y no toca. El Comité CAT también mira, con una sola excepción: el
+   dictamen de efectividad, que es justamente lo que se sienta a resolver. Por eso la
+   excepción es explícita y dura lo que dura esa escritura. */
+const soloLectura=()=>{
+  const r=(state.sesion&&state.sesion.rol)||'';
+  if(r==='gerencia')return true;
+  if(r==='comite')return true;
+  return false;
+};
 /* Modo tablet: la tablet del CD es una sola y la usan todos los jefes. Se prende por
    dispositivo (queda en ese navegador). Con el modo prendido, al terminar el informe
    aparece el botón para cerrar sesión y que pase el siguiente, y la sesión se cierra
@@ -2902,6 +2981,9 @@ const USUARIOS_CD=[
   {n:'Rossmarys Aiva',u:'raiva',r:'admin',g:'Calidad',obs:'Líder CAT'},
   {n:'Zully Galeano',u:'zully.galeano',r:'gerencia',g:'Calidad',obs:'Gerente de Calidad'},
   {n:'Óscar Benítez',u:'oscar.benitez',r:'gerencia',g:'Dirección',obs:'Gerente del Centro de Distribución'},
+  {n:'Víctor Rodríguez',u:'victor.rodriguez',r:'gerencia',g:'Dirección',obs:'Dirección'},
+  /* Comité CAT · auditores generales: revisan y vuelven a medir la efectividad */
+  {n:'Ernesto Córdova',u:'ernesto.cordova',r:'comite',g:'Comité CAT',obs:'Auditor general del Comité CAT'},
   /* Pilar Seguridad */
   {n:'Christian Monges',u:'christian.monges',r:'sitio',g:'Pilar Seguridad',obs:'Encargado del pilar Seguridad · Jefatura de SySO'},
   {n:'Rubén Torres',u:'ruben.torres',r:'sitio',g:'Pilar Seguridad',obs:'Responsable de SySO · CIPA'},
@@ -2916,7 +2998,7 @@ const USUARIOS_CD=[
   {n:'Jorge Vega',u:'jorge.vega',r:'jefe',j:'j-jorge',g:'Jefes de sector',obs:'Jefatura de mantenimiento y servicios'},
   {n:'Alicia Agüero',u:'alicia.aguero',r:'jefe',j:'j-alicia',g:'Jefes de sector',obs:'Jefatura de administración'},
   {n:'Alfonso Gamarra',u:'alfonso.gamarra',r:'jefe',j:'j-alfonso',g:'Jefes de sector',obs:'Jefatura de seguridad patrimonial'},
-  {n:'Viviana Sánchez',u:'viviana.sanchez',r:'jefe',j:'j-viviana',g:'Jefes de sector',obs:'Jefatura de calidad y ambiente · CIPA'},
+  {n:'Viviana Sánchez',u:'viviana.sanchez',r:'comite',g:'Comité CAT',obs:'Auditora general del Comité CAT · jefatura de calidad y ambiente'},
   /* Líderes 5S por sector */
   {n:'Lucio Villanueva',u:'lucio.villanueva',r:'sector',s:'s-boston',g:'Líderes 5S',obs:'Boston recepción'},
   {n:'Domingo Recalde',u:'domingo.recalde',r:'sector',s:'s-boston',g:'Líderes 5S',obs:'Boston almacenamiento y preparado'},
@@ -3234,6 +3316,9 @@ function vUsuarios(){
     <div class="field"><label>Sitio</label><select name="sitioId" data-uf="sitioId"${f.rol==='admin'||f.rol==='gerencia'?' disabled':''}>${sitiosMenu().map(x=>`<option value="${x.id}"${f.sitioId===x.id?' selected':''}>${esc(x.corto)}</option>`).join('')}</select></div>
     <div class="field"><label>Jefe ${f.rol==='jefe'?'':'(solo para jefes de sector)'}</label><select name="jefeId" data-uf="jefeId"${f.rol!=='jefe'?' disabled':''}><option value="">—</option>${jefesCfg().lista.map(j=>`<option value="${j.id}"${f.jefeId===j.id?' selected':''}>${esc(j.nombre)}</option>`).join('')}</select></div>
     <div class="field"><label>Sector ${f.rol==='sector'?'':'(solo para referentes)'}</label><select name="sectorId" data-uf="sectorId"${f.rol!=='sector'?' disabled':''}><option value="">—</option>${secs.map(x=>`<option value="${x.id}"${f.sectorId===x.id?' selected':''}>${esc(x.nombre)}</option>`).join('')}</select></div>
+    <div class="field"><label>Área de AJ que atiende <span style="color:var(--ink-3);font-weight:400">· opcional</span></label>
+      <select name="areaAJ" data-uf="areaAJ"><option value="">—</option>${AREAS_AJ.map(a=>`<option value="${a.v}"${f.areaAJ===a.v?' selected':''}>${esc(a.l)}</option>`).join('')}</select>
+      <div class="sm" style="color:var(--ink-3);margin-top:4px">Si se carga, a esta persona le aparecen en <b>Pendientes</b> las acciones correctivas derivadas a esa área.</div></div>
     <div><button class="btn primary" type="submit">Crear usuario</button></div>
   </form></div></section>
   <section class="panel"><header><h3>Usuarios cargados</h3><div class="sub">${us.length} además del administrador "admin"</div></header>
@@ -3269,7 +3354,8 @@ async function crearUsuario(form){
   const jefeId=rol==='jefe'?(form.jefeId?form.jefeId.value:''):'';
   if(rol==='sector'&&!sectorId){toast('Elegí el sector del referente');return}
   if(rol==='jefe'&&!jefeId){toast('Elegí a qué jefe corresponde este usuario');return}
-  const d={nombre,rol,sitioId,sectorId,jefeId,hashes:await hashesDe(clave),activo:true,debeCambiar:true,creado:new Date().toISOString(),creadoPor:state.auditor||'Calidad'};
+  const areaAJ=(form.areaAJ&&form.areaAJ.value)||'';
+  const d={nombre,rol,sitioId,sectorId,jefeId,areaAJ,hashes:await hashesDe(clave),activo:true,debeCambiar:true,creado:new Date().toISOString(),creadoPor:state.auditor||'Calidad'};
   if(await guardarDoc('usuarios/'+u,d)){toast('Usuario '+u+' creado. Pasale la clave inicial.');state.uf=null;render()}
 }
 
@@ -3517,6 +3603,26 @@ document.addEventListener('input',e=>{const t=e.target;
 if(t.id==='mjSector'){state.mj=Object.assign(state.mj||{},{sector:t.value});render();return}if(t.id==='clfQ'&&state.clf){state.clf.q=t.value;clearTimeout(state.clfT);state.clfT=setTimeout(()=>{render();const x=$('#clfQ');if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}},250);return}if(t.id==='bfQ'&&state.bf){state.bf.q=t.value;clearTimeout(state.bfT);state.bfT=setTimeout(()=>{render();const x=$('#bfQ');if(x){x.focus();x.setSelectionRange(x.value.length,x.value.length)}},250)}});
 document.addEventListener('submit',async e=>{if(e.target&&e.target.id==='formUsuario'){e.preventDefault();await crearUsuario(e.target)}},true);
 document.addEventListener('submit',async e=>{
+  if(!e.target||e.target.id!=='formAviso')return;
+  e.preventDefault();
+  if(!esAdmin()){toast('Los avisos los envía Calidad');return}
+  const f=e.target;
+  const titulo=String(f.titulo.value||'').trim();
+  if(titulo.length<4){toast('Escribí el título del aviso');return}
+  const destino=f.destino.value;
+  const d={titulo:titulo,texto:String((f.texto&&f.texto.value)||'').trim(),
+    tipo:f.tipo.value||'aviso',
+    rol:destino==='rol'?(f.rol?f.rol.value:''):'',
+    sectorId:destino==='sector'?(f.sectorId?f.sectorId.value:''):'',
+    usuario:destino==='usuario'?(f.usuario?f.usuario.value:''):'',
+    hasta:String((f.hasta&&f.hasta.value)||''),
+    por:(state.sesion&&state.sesion.nombre)||'Calidad',
+    el:new Date().toISOString()};
+  const id=uid('av-');
+  if(await guardarDoc(COL.av+'/'+id,d)){f.reset();state.avf=null;
+    toast('Aviso enviado · '+avisoDestinoL(d).toLowerCase());render()}
+},true);
+document.addEventListener('submit',async e=>{
   if(!e.target||e.target.id!=='formMejora')return;
   e.preventDefault();
   const f=e.target, sec=f.sectorId.value;
@@ -3644,19 +3750,24 @@ function render(){
   const bp=$('#badgePend');if(bp){const nP=(typeof misPendientes==='function')?misPendientes().length:0;bp.hidden=nP===0;bp.textContent=nP}
   const nTj=tarjetasVisibles().filter(tarjVencida).length;
   const bt=$('#badgeTarj');if(bt){bt.hidden=nTj===0;bt.textContent=nTj}
+  const bav=$('#badgeAv');if(bav){const nAv=(typeof avisosSinLeer==='function')?avisosSinLeer().length:0;bav.hidden=nAv===0;bav.textContent=nAv}
   const nPend=pendientes().length;
   const bv=$('#badgeVal');if(bv){bv.hidden=nPend===0;bv.textContent=nPend}
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={pendientes:vPendientes,tendencia:vTendencia,manual:vManual,manualaud:vManualAud,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={avisos:vAvisos,efectividad:vEfectividad,pendientes:vPendientes,tendencia:vTendencia,manual:vManual,manualaud:vManualAud,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
     const f=$('#p1');if(f&&document.activeElement!==f&&document.activeElement!==$('#p2'))f.focus();
     $('#lbroot').innerHTML='';return;
   }
-  $('#main').innerHTML=(hayAtras?`<button class="btn ghost sm backbtn" id="btnVolver" title="Volver">← Volver</button>`:'')+bannerVerComo()+avisoCarga()+avisoSector()+avisoClave()+(views[state.view]||vTablero)();
+  if(state.docCat&&state.view==='pilares'){
+    $('#main').innerHTML=vDocCat();$('#lbroot').innerHTML='';return;
+  }
+  $('#main').innerHTML=(hayAtras?`<button class="btn ghost sm backbtn" id="btnVolver" title="Volver">← Volver</button>`:'')+bannerVerComo()+avisoCarga()+avisoSector()+avisoClave()
+    +(state.view==='avisos'?'':avisosBannerHTML())+(views[state.view]||vTablero)();
   const lb=$('#lbroot');
   if(state.subida){lb.innerHTML=ventanaSubida();return}
   if(state.tour!=null){lb.innerHTML=tourHTML();return}
@@ -4009,8 +4120,26 @@ function vTendencia(){
       <div class="m"><span>debajo del rojo o dos meses seguidos en baja</span></div></div>
   </div>
 
+  ${(function(){
+    const S=serieCD(M);
+    const con=S.filter(x=>x.pct!=null);
+    if(!con.length)return '';
+    const ult=con[con.length-1], pre=con.length>1?con[con.length-2]:null;
+    const dif=pre?Math.round((ult.pct-pre.pct)*10)/10:null;
+    return `<section class="panel" style="margin-bottom:16px"><header><h3>Cómo viene todo el Centro de Distribución</h3>
+      <span class="sub">promedio mensual de los sectores auditados · meta ${n1(reglas().metaMes)} % · rojo ${n1(reglas().rojo)} %</span></header>
+      <div class="body">${graficoCD(S)}
+        <div class="efleg">
+          <span><i style="background:var(--ok)"></i> Sectores en verde</span>
+          <span><i style="background:var(--warn)"></i> En amarillo</span>
+          <span><i style="background:var(--crit)"></i> En rojo</span>
+          <span><i style="background:var(--accent)"></i> Promedio del CD</span>
+          <span style="margin-left:auto">Último mes: <b>${n1(ult.pct)} %</b>${
+            dif==null?'':` · ${dif>=0?'+':''}${n1(dif)} puntos contra el mes anterior`}</span>
+        </div></div></section>`})()}
+
   <section class="panel"><header><h3>Sector por sector</h3>
-    <span class="sub">ordenados por cómo vienen · primero los que van bien</span></header>
+    <span class="sub">ordenados por cómo vienen · primero los que van bien · tocá un sector para ver en qué falla</span></header>
     <div class="tw"><table class="lst"><thead><tr>
       <th style="min-width:190px">Sector</th>
       <th style="width:120px">Cómo viene</th>
@@ -4020,9 +4149,10 @@ function vTendencia(){
       <th style="width:110px">Últimos ${TEND_MESES}</th>
       ${M.map(x=>`<th class="r" style="width:62px">${esc(MESESL[x.m].slice(0,3))}</th>`).join('')}
     </tr></thead><tbody>
-    ${filas.map(function(f){const T=f.T;
-      return `<tr>
-        <td><b>${esc(f.sc.nombre)}</b><br><span style="color:var(--ink-3);font-size:11.5px">${
+    ${filas.map(function(f){const T=f.T;const ab=state.tendOpen===f.sc.id;
+      return `<tr data-tendsec="${esc(f.sc.id)}" style="cursor:pointer">
+        <td><b>${esc(f.sc.nombre)}</b> <span class="car" style="color:var(--ink-3)">${ab?'▾':'▸'}</span>
+          <br><span style="color:var(--ink-3);font-size:11.5px">${
           (f.sc.zona||'operativa')==='apoyo'?'Apoyo':'Operativa'}</span></td>
         <td><span class="badge ${T.t.k} dot">${T.t.l}</span></td>
         <td class="r">${T.ult==null?'<span style="color:var(--ink-3)">—</span>'
@@ -4033,7 +4163,8 @@ function vTendencia(){
         ${T.serie.map(x=>`<td class="r" style="font-size:12px;color:${x.pct==null?'var(--ink-3)'
           :(x.pct>=T.meta?'var(--ok)':(x.pct<T.rojo?'var(--crit)':'var(--warn)'))}">${
           x.pct==null?'—':n1(x.pct)}</td>`).join('')}
-      </tr>`}).join('')}
+      </tr>
+      ${ab?`<tr><td colspan="${6+T.serie.length}" style="padding-top:0">${detalleTendSector(f.sc)}</td></tr>`:''}`}).join('')}
     </tbody></table></div>
     <div class="body" style="padding-top:0"><div class="soft2">
       <b>Va bien</b>: subió respecto del mes anterior y llega a la meta.
@@ -4042,6 +4173,77 @@ function vTendencia(){
       <b>Va mal</b>: está debajo del rojo, o viene bajando dos meses seguidos.
       Un sector sin auditoría en el mes queda en blanco: no se inventa el número.</div></div>
   </section>`;
+}
+
+/* ---------- el CD mes a mes: cuántos sectores en cada color y el promedio ---------- */
+function serieCD(M){
+  const secs=sectoresVista();
+  const R=reglas();
+  return M.map(function(x){
+    const vals=[];let ok=0,wa=0,cr=0;
+    secs.forEach(function(sc){
+      const k=llavesSector(sc.id,x.a,x.m);
+      if(k.pct==null)return;
+      vals.push(k.pct);
+      if(k.pct>=Number(R.metaMes))ok++;else if(k.pct<Number(R.rojo))cr++;else wa++;
+    });
+    return {a:x.a,m:x.m,l:MESESL[x.m].slice(0,3),n:vals.length,ok:ok,wa:wa,cr:cr,
+      pct:vals.length?Math.round(vals.reduce(function(p,q){return p+q},0)/vals.length*10)/10:null};
+  });
+}
+function graficoCD(S){
+  const W=960,H=250,P={l:40,r:48,t:16,b:32};
+  const n=S.length||1, bw=Math.min(50,(W-P.l-P.r)/n*0.6), paso=(W-P.l-P.r)/n;
+  const max=Math.max(1,...S.map(function(x){return x.n}));
+  const cx=function(i){return P.l+paso*i+paso/2};
+  const alto=function(v){return (H-P.t-P.b)*v/max};
+  const barras=S.map(function(x,i){
+    if(!x.n)return '';
+    let acc=0;const seg=[];
+    [['ok','var(--ok)'],['wa','var(--warn)'],['cr','var(--crit)']].forEach(function(par){
+      const v=x[par[0]];if(!v)return;
+      const al=alto(v), yy=H-P.b-acc-al; acc+=al;
+      seg.push('<rect x="'+(cx(i)-bw/2).toFixed(1)+'" y="'+yy.toFixed(1)+'" width="'+bw.toFixed(1)+'" height="'+al.toFixed(1)+'" fill="'+par[1]+'" rx="2"/>');
+    });
+    return seg.join('');
+  }).join('');
+  const pts=S.map(function(x,i){return x.pct==null?null:[cx(i),P.t+(H-P.t-P.b)*(1-x.pct/100)]}).filter(Boolean);
+  const linea=pts.length>1?'<polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round" points="'
+    +pts.map(function(p){return p[0].toFixed(1)+','+p[1].toFixed(1)}).join(' ')+'"/>':'';
+  const puntos=pts.map(function(p){return '<circle cx="'+p[0].toFixed(1)+'" cy="'+p[1].toFixed(1)+'" r="3.5" fill="var(--accent)"/>'}).join('');
+  const R=reglas();
+  const guia=[[Number(R.metaMes),'var(--ok)'],[Number(R.rojo),'var(--crit)']].map(function(g){
+    const yy=P.t+(H-P.t-P.b)*(1-g[0]/100);
+    return '<line x1="'+P.l+'" y1="'+yy.toFixed(1)+'" x2="'+(W-P.r)+'" y2="'+yy.toFixed(1)+'" stroke="'+g[1]+'" stroke-width="1" stroke-dasharray="4 4" opacity=".55"/>'
+      +'<text x="'+(W-P.r+6)+'" y="'+(yy+4).toFixed(1)+'" font-size="11" fill="var(--ink-3)">'+n1(g[0])+' %</text>';
+  }).join('');
+  const labs=S.map(function(x,i){
+    return '<text x="'+cx(i).toFixed(1)+'" y="'+(H-10)+'" font-size="11" text-anchor="middle" fill="var(--ink-3)">'+esc(x.l)+'</text>'
+      +(x.pct==null?'':'<text x="'+cx(i).toFixed(1)+'" y="'+(H-P.b-alto(x.n)-6).toFixed(1)+'" font-size="11" text-anchor="middle" fill="var(--ink-2)" font-weight="600">'+n1(x.pct)+' %</text>');
+  }).join('');
+  return '<svg viewBox="0 0 '+W+' '+H+'" width="100%" height="'+H+'" role="img" aria-label="Sectores por color y promedio del CD, mes a mes">'
+    +guia+barras+linea+puntos+labs+'</svg>';
+}
+/* qué le pasa a este sector, en una frase y con los datos que ya están cargados */
+function detalleTendSector(sc){
+  const d=diagnostico().filter(function(x){return x.s.id===sc.id})[0];
+  if(!d)return '<div class="soft2">Sin datos cargados para este sector.</div>';
+  const ab=(state.hallazgos||[]).filter(function(h){return h.sectorId===sc.id&&abierto(h)})
+    .sort(function(x,y){return String(x.fechaLimite||'9999').localeCompare(String(y.fechaLimite||'9999'))}).slice(0,6);
+  return `<div class="efedit" style="border-left-color:var(--${d.nv.k==='crit'?'crit':(d.nv.k==='warn'?'warn':'ok')})">
+    <div class="efeh"><b>${esc(sc.nombre)} · por qué viene así</b></div>
+    <ul style="margin:0;padding-left:18px;font-size:13px;line-height:1.6">
+      ${motivosDe(d).map(function(m){return '<li>'+esc(m)+'</li>'}).join('')}</ul>
+    ${d.top.length?`<div style="font-size:12.5px"><b>Lo que más se repite:</b> ${
+      d.top.map(function(t){return esc(t[0])+' ('+t[1]+')'}).join(' · ')}</div>`:''}
+    ${ab.length?`<div class="tw"><table class="lst"><thead><tr><th style="min-width:220px">Hallazgo sin cerrar</th>
+      <th style="width:110px">Severidad</th><th style="width:120px">Vence</th><th style="min-width:140px">Área que ejecuta</th></tr></thead><tbody>
+      ${ab.map(function(h){const sv=SEV[h.severidad||'menor']||{l:'',k:''};
+        return '<tr><td>'+esc(h.item||'')+'</td><td><span class="badge '+sv.k+'">'+esc(sv.l)+'</span></td>'
+          +'<td>'+(h.fechaLimite?(vencido(h)?'<b style="color:var(--crit)">'+fmtDate(h.fechaLimite)+'</b>':fmtDate(h.fechaLimite)):'—')+'</td>'
+          +'<td>'+esc(areaLabel(h.area||'sector'))+'</td></tr>'}).join('')}
+      </tbody></table></div>`:'<div class="soft2">No tiene hallazgos sin cerrar.</div>'}
+  </div>`;
 }
 
 /* ---------- el trimestre ----------
@@ -4930,7 +5132,7 @@ function accionesDeAuditoriaHTML(a){
         <div><div class="dgk">Qué se hizo</div><p>${esc(h.accionCorrectiva||'')||'<span style="color:var(--crit)">todavía no se escribió la acción</span>'}</p></div>
         <div><div class="dgk">Tipo de solución</div><p>${(typeof solLabel==='function'&&solLabel(h))?esc(solLabel(h)):'<span style="color:var(--ink-3)">sin clasificar</span>'}</p></div>
         <div><div class="dgk">Quién responde</div><p>${esc(h.responsable||'')||'<span style="color:var(--ink-3)">sin asignar</span>'}${
-          (h.area||'sector')!=='sector'?'<br><span class="sm">derivado a '+esc((AREAS.find(x=>x.v===h.area)||{}).l||h.area)+'</span>':''}</p></div>
+          (h.area||'sector')!=='sector'?'<br><span class="sm">derivado a '+esc(areaLabel(h.area))+'</span>':''}</p></div>
         <div><div class="dgk">Seguimiento</div><p>${esc2?esc(esc2.l):(e?esc(e.l):'—')}</p></div>
       </div>
       ${h.accionPreventiva?`<div style="margin-top:7px"><div class="dgk">Para que no vuelva a pasar</div>
@@ -5473,7 +5675,7 @@ function vHallazgos(){
       ${secs.map(s=>`<option value="${esc(s.id)}"${state.fh.sector===s.id?' selected':''}>${esc(s.nombre)}</option>`).join('')}</select></div>
     <div class="field"><label for="hArea">Área que ejecuta</label><select id="hArea">
       <option value="all"${state.fh.area==='all'?' selected':''}>Todas las áreas</option>
-      ${areasPlan().map(a=>`<option value="${a.v}"${state.fh.area===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
+      ${areasPlanHTML(state.fh.area,true)}</select></div>
     <div class="field"><label for="hEstado">Filtro</label><select id="hEstado">
       ${[['pendientes','Sin cerrar'],['criticos','Solo críticos'],['vencidos','Solo vencidos'],['reincidentes','Solo reincidentes'],['preventivas','Con preventiva'],['revisar','Preventivas por revisar'],['revisarhoy','Me toca revisar ya'],['sintipo','Sin clasificar'],['abierto','Abiertos'],['proceso','En proceso'],['cerrado','Cerrados'],['all','Todos']]
         .map(([v,l])=>`<option value="${v}"${state.fh.estado===v?' selected':''}>${l}</option>`).join('')}</select></div>
@@ -5491,7 +5693,7 @@ function vHallazgos(){
         ${h.bloque==='B'?`<br><span class="badge">Infraestructura · no puntúa</span>`:''}
         ${h.sinFoto?' <span class="badge warn">registro sin foto</span>':''}
         ${h.accionCorrectiva?`<br><span style="font-size:12.5px"><b style="color:var(--ok)">Acción:</b> ${esc(h.accionCorrectiva)}</span>`:(abierto(h)?' <span class="badge warn">sin acción correctiva</span>':'')}
-        ${(h.area||'sector')!=='sector'?`<br><span class="badge a">Derivado a ${esc((AREAS.find(a=>a.v===h.area)||{}).l||h.area)}${h.fechaSolicitud?' · solicitud '+fmtDate(h.fechaSolicitud):''}</span>${!h.fechaSolicitud&&abierto(h)?' <span class="badge warn">falta fecha de solicitud</span>':''}`:''}
+        ${(h.area||'sector')!=='sector'?`<br><span class="badge a">Derivado a ${esc(areaLabel(h.area))}${h.fechaSolicitud?' · solicitud '+fmtDate(h.fechaSolicitud):''}</span>${!h.fechaSolicitud&&abierto(h)?' <span class="badge warn">falta fecha de solicitud</span>':''}`:''}
         ${solDe(h)?`<br><span class="badge ${(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).cls||''}">Solución ${esc(solLabel(h).toLowerCase())}</span>${
           (()=>{const e=estadoRev(h);return e?` <span class="badge ${e.k}">${esc(e.l)}</span>`:''})()}`
           :(abierto(h)?'<br><span class="badge warn">falta decir si es correctiva o preventiva</span>':'')}
@@ -5499,11 +5701,7 @@ function vHallazgos(){
         ${rc>=2?`<br><span class="badge crit">Reincidencia ×${rc}</span>${rc>=2&&!h.causaRaiz?' <span class="badge warn">falta causa raíz</span>':''}`:''}
         ${evidenciasHall(h.id).length?`<br>${evidenciasHall(h.id).filter(x=>x.esImagen&&x.data).map(x=>`<img src="${x.data}" alt="${esc(x.nombre)}" data-lb="${esc(x.id)}" title="${x.tipo==='correccion'?'Foto de corrección':'Foto del hallazgo'}" style="width:52px;height:52px;object-fit:cover;border-radius:8px;border:2px solid ${x.tipo==='correccion'?'var(--ok)':'var(--line)'};cursor:zoom-in;margin:6px 5px 0 0">`).join('')}`:''}
         ${evidenciasHall(h.id).some(x=>x.tipo==='correccion')?'<br><span class="badge ok dot">Foto de corrección cargada</span>':(h.estado==='cerrado'&&!h.sinFoto?'<br><span class="badge warn">cerrado sin foto de corrección</span>':'')}
-        ${h.estado==='cerrado'?(efecDe(h)
-          ?`<br><span class="badge ${EFEC[efecDe(h)].k} dot">${EFEC[efecDe(h)].l}</span>${
-            noEfectiva(h)&&String(h.efecPorQue||'').trim()?`<br><span style="font-size:12.5px"><b style="color:var(--crit)">Por qué no:</b> ${esc(h.efecPorQue)}</span>`:''}${
-            noEfectiva(h)&&!String(h.efecPorQue||'').trim()?' <span class="badge warn">falta decir por qué</span>':''}`
-          :'<br><span class="badge warn">falta verificar si fue efectiva</span>'):''}
+        ${efectividadLineaHTML(h)}
         <br><button class="btn ghost sm" data-exp="${esc(h.id)}" style="margin-top:4px;padding:2px 6px">${state.openHab==='h:'+h.id?'Ocultar':'Acción correctiva y causa raíz'}</button>
         ${h.sinFoto?' <span class="badge warn">sin foto por protocolo</span>':` <label class="btn ghost sm" style="cursor:pointer;padding:2px 6px">＋ foto del hallazgo<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" style="display:none"></label> <label class="btn sm" style="cursor:pointer;padding:2px 6px;color:var(--ok)">✔ foto de corrección<input type="file" multiple accept="image/*" data-up-hall="${esc(h.id)}" data-tipo="correccion" style="display:none"></label>`}
         ${state.openHab==='h:'+h.id?`<div style="margin-top:8px;display:flex;flex-direction:column;gap:6px;max-width:520px">
@@ -5513,7 +5711,7 @@ function vHallazgos(){
               ?(TIPOSOL.filter(x=>x.v===solDe(h))[0]||{}).d
               :'Elegí una: no es lo mismo tapar el pozo que sacar lo que lo abre. Un hallazgo no se cierra sin esto.')}</div></div>
           <div class="field"><label>Acción correctiva · qué se hizo o se va a hacer para corregirlo</label><textarea data-f="accionCorrectiva" style="min-height:44px" placeholder="Ej.: reparar el agujero de la pared del comedor">${esc(h.accionCorrectiva||'')}</textarea></div>
-          <div class="field"><label>Área que ejecuta · si depende de otra área, acá se registra la solicitud</label><select data-f="area">${areasPlan().map(a=>`<option value="${a.v}"${(h.area||'sector')===a.v?' selected':''}>${a.l}</option>`).join('')}</select></div>
+          <div class="field"><label>Área que ejecuta · si depende de otra área, acá se registra la solicitud</label><select data-f="area">${areasPlanHTML(h.area||'sector')}</select></div>
           ${(h.area||'sector')!=='sector'?`<div class="field"><label>Fecha de la solicitud al área</label><input type="date" data-f="fechaSolicitud" value="${esc(h.fechaSolicitud||'')}"></div>`:''}
           <div class="field"><label>Causa raíz · por qué pasó</label><textarea data-f="causaRaiz" style="min-height:44px">${esc(h.causaRaiz||'')}</textarea></div>
           <div class="field"><label>Acción preventiva · qué se cambia para que no vuelva a pasar${llevaPrev(h)?'':' · opcional si la solución es sólo correctiva'}</label><textarea data-f="accionPreventiva" style="min-height:44px" placeholder="Ej.: cambiar el procedimiento de descarga y capacitar al turno tarde">${esc(h.accionPreventiva||'')}</textarea></div>
@@ -5525,7 +5723,7 @@ function vHallazgos(){
             ${historialHTML(h)}</div>
         </div>`:''}
         </span></div></td>
-      <td>${esc(h.sectorNombre)}<br><span style="color:var(--ink-3);font-size:11.5px">${esc((AREAS.find(a=>a.v===(h.area||'sector'))||{}).l||'')}</span></td>
+      <td>${esc(h.sectorNombre)}<br><span style="color:var(--ink-3);font-size:11.5px">${esc(areaLabel(h.area||'sector'))}</span></td>
       <td>${(()=>{const ta=tipoHallazgo(h);
         return `<span class="badge ${ta.cls}">${esc(ta.l)}</span>`+(h.fecha?`<div class="sm" style="color:var(--ink-3)">${fmtDate(h.fecha)}</div>`:'')})()}</td>
       <td><span class="badge ${sev.k}">${sev.l}</span><br><span style="color:var(--ink-3);font-size:11px">${sev.dias} días</span></td>
@@ -6180,8 +6378,11 @@ function ultimasLayout(){
 }
 function semSector(s,U){
   const e=U.ext[s.id],i=U.int[s.id];
-  const ref=e||i;const nv=nivel(ref?ref.pct:null);
-  return {e,i,ref,nv,origen:e?'externa':(i?'interna':'')};
+  const ref=e||i;let nv=nivel(ref?ref.pct:null);
+  /* un solo criterio crítico incumplido deja el sector en rojo, sin importar el porcentaje */
+  const cr=(ref&&typeof criticosDe==='function')?criticosDe(ref):[];
+  if(cr.length)nv={k:'crit',l:'Punto crítico'};
+  return {e,i,ref,nv,critico:cr.length,origen:e?'externa':(i?'interna':'')};
 }
 /* Las zonas que se ven: las que editó Calidad (config/zonas) si existen, si no las que
    vienen medidas de fábrica. Mientras se está editando manda el borrador en pantalla. */
@@ -6414,6 +6615,7 @@ function vCumplimiento(){
   const lado=state.wCump||'';
   const nomSel=sel==='all'?'del CD':'de '+(nombreSector(sel)||'');
   return `${avisoDb()}
+  ${sel!=='all'?visitasHTML(sel):''}
   <div class="head"><div><h1>% de cumplimiento ${esc(nomSel)}</h1>
     <p>No sale del promedio de los puntajes: sale de contar punto por punto la última auditoría
     validada de cada sector. Por eso el porcentaje se puede abrir y decir por falta de qué.
@@ -6651,6 +6853,10 @@ document.addEventListener('change',e=>{
       N.fotos=(N.fotos||[]).concat([d]);render()})
       .catch(e=>toast('No se pudo usar esa imagen: '+(e&&e.message||'')));
     t.value='';return}
+  if(t.dataset&&t.dataset.avf){avCapturar();
+    state.avf=Object.assign({},state.avf||{},{[t.dataset.avf]:t.value});render();return}
+  if(t.id==='efSec'){state.ef=Object.assign({},state.ef,{sec:t.value});render();return}
+  if(t.id==='efModo'){state.ef=Object.assign({},state.ef,{modo:t.value});render();return}
   if(t.id==='cohSel'){state.coh=Object.assign({},state.coh,{sec:t.value});render();return}
   if(t.id==='cohAmb'){state.coh=Object.assign({},state.coh,{amb:t.value});state.cohSec=null;render();return}
   if(t.id==='cohAnio'){state.coh=Object.assign({},state.coh,{anio:Number(t.value)});render();return}
@@ -6949,7 +7155,7 @@ const docsIncorporados=pid=>pid!=='seguridad'?[]:[]
   .concat(DOCSREF.map(f=>Object.assign({},f,{pilarId:'seguridad',incorporado:true})));
 function docsPilar(pid){
   const subidos=state.pilarDocs.filter(d=>d.pilarId===pid);
-  const hay=id=>subidos.some(d=>d.id===id&&(d.data||d.url));
+  const hay=id=>subidos.some(d=>d.id===id&&tieneArchivo(d));
   const refs=docsIncorporados(pid).filter(d=>{
     /* si el archivo real ya está cargado, la fila de papel sobra */
     const a=REF_ARCH[d.id];
@@ -6962,7 +7168,11 @@ function docsPilar(pid){
     .sort((a,b)=>(b.incorporado?1:0)-(a.incorporado?1:0)||String(b.creado||'').localeCompare(String(a.creado||'')));
 }
 /* ¿este documento se puede abrir y mostrar, o sólo está nombrado? */
-const tieneArchivo=d=>!!(d&&(d.data||d.url||d.tipo==='form'));
+const tieneArchivo=d=>!!(d&&(d.data||d.url||d.tipo==='form'||(d.arch&&d.arch.n)||(d.docTipo==='cat'&&d.html)));
+/* qué es cada documento: uno del programa, en formato CAT, o la prueba de que algo se hizo */
+const DOCTIPO={cat:{l:'Documento CAT',k:'ok',d:'Pasado al formato del programa: se lee y se imprime desde acá.'},
+               evi:{l:'Evidencia',k:'a',d:'La prueba tal como la entregó quien la emitió.'}};
+const tipoDocL=d=>DOCTIPO[(d&&d.docTipo)||'']||null;
 function estadoDocs(pid){
   const L=docsVisibles(pid);
   const con=L.filter(tieneArchivo), sin=L.filter(d=>!tieneArchivo(d));
@@ -7274,7 +7484,7 @@ function docsEnGeneralHTML(sec){
         <b>auditoría interna</b> del pilar Seguridad. Lo que marques acá lo ve también SySO, y lo que
         marca SySO lo ves acá: es una sola lista para todo el CD.</div>
       ${L.map(r=>{const e=docEstado(sec,r),E=DOCEST[e];
-        const d=r.doc?docsVisibles(audPilar()).filter(x=>x.id===r.doc)[0]:null;
+        const d=(r.doc?docsVisibles(audPilar()).filter(x=>x.id===r.doc)[0]:null)||docsDeReq(r.id)[0];
         return `<div class="dqi ${E.cls}" style="margin-bottom:6px">
           <div class="dqt"><div><div class="dqn">¿El sector tiene: ${esc(r.t)}?</div>
             <div class="sm" style="color:var(--ink-3)">Lo tiene que tener ${esc(r.quien||'el sector')}${
@@ -7566,7 +7776,7 @@ function audDocsHTML(sec,ed){
   const gCD=calcDocs('_cd','cd'), gS=sec?calcDocs(sec,'sector'):null;
   const unaFila=(clave)=>r=>{
     const e=docEstado(clave,r), E=DOCEST[e], v=docReqResp(clave)[r.id]||{};
-    const dd=r.doc?docsVisibles(audPilar()).filter(d=>d.id===r.doc)[0]:null;
+    const dd=(r.doc?docsVisibles(audPilar()).filter(d=>d.id===r.doc)[0]:null)||docsDeReq(r.id)[0];
     const dsel=v.docId?docsVisibles(audPilar()).filter(d=>d.id===v.docId)[0]:dd;
     return `<div class="dqi ${E.cls}">
       <div class="dqt"><div><div class="dqn">${esc(r.t)}</div>
@@ -8988,12 +9198,49 @@ function dataABlob(dataUrl){
     return new Blob([u],{type:mime});
   }catch(e){return null}
 }
+/* los documentos que responden a un requisito del pilar: los que Calidad enlazó a mano
+   (r.doc) y los que traen el requisito escrito adentro (marcadorReq) */
+function docsDeReq(reqId,pid){
+  if(!reqId)return [];
+  return docsVisibles(pid||audPilar()).filter(d=>d.marcadorReq===reqId);
+}
 function docPorId(id){
   if(!id)return null;
   return (state.pilarDocs||[]).find(x=>x.id===id&&puedeVerDoc(x))||null;
 }
+/* ---------- el archivo pesado no viaja con la lista ----------
+   Un escaneo de treinta páginas no puede vivir dentro del documento que la aplicación
+   escucha todo el tiempo: la pantalla tardaría en abrir aunque nadie mire ese archivo.
+   El archivo se guarda partido en `pilarArch` y se trae sólo cuando alguien lo abre. */
+const archPartes={};
+async function traerArchivo(d){
+  const a=d&&d.arch; if(!a||!a.n)return null;
+  if(archPartes[d.id])return archPartes[d.id];
+  if(!state.db)return null;
+  toast('Abriendo '+(a.kb?Math.round(a.kb)+' KB…':'el documento…'));
+  const ps=[];
+  for(let i=0;i<a.n;i++){
+    const sn=await state.db.doc(COL.pa+'/'+d.id+'__'+i).get();
+    if(!sn||!sn.exists)return null;
+    ps.push((sn.data()||{}).p||'');
+  }
+  const url='data:'+(a.tipo||'application/pdf')+';base64,'+ps.join('');
+  archPartes[d.id]=url;
+  return url;
+}
 function abrirDoc(d){
   if(!d)return false;
+  if(d.docTipo==='cat'&&d.html){state.docCat=d.id;window.scrollTo(0,0);render();return true}
+  if(d.arch&&d.arch.n){
+    traerArchivo(d).then(u=>{
+      if(!u){toast('No se pudo traer el archivo');return}
+      const b=dataABlob(u);
+      if(b){const o=URL.createObjectURL(b);window.open(o,'_blank','noopener');
+        setTimeout(()=>{try{URL.revokeObjectURL(o)}catch(e){}},120000);}
+      else window.open(u,'_blank','noopener');
+    });
+    return true;
+  }
   if(d.url){window.open(d.url,'_blank','noopener');return true}
   if(d.data){
     const b=dataABlob(d.data);
@@ -9014,7 +9261,7 @@ function docEnlaceHTML(d,conVer){
   /* un documento de referencia: existe en papel, lo tiene alguien, no está subido */
   if(d.ref&&!d.data&&!d.url)
     return `📋 <b>${esc(d.titulo)}</b> <i>lo tiene ${esc(d.quien||'el pilar')}</i>${ver}`;
-  const hay=!!(d.data||d.url);
+  const hay=tieneArchivo(d);
   const tit=hay?`<a href="#" data-dcabrir="${esc(d.id)}"><b>${esc(d.titulo)}</b></a>`
                :`<b>${esc(d.titulo)}</b> <span style="color:var(--crit)">— registrado sin archivo</span>`;
   const bajar=d.data?` · <a href="${d.data}" download="${esc(d.nombreArchivo||d.titulo)}">bajar para editar</a>`:'';
@@ -9645,6 +9892,61 @@ function formHTML(id){
   <div class="soft2" style="max-width:900px;margin:12px auto 0">Lo que escribas queda en esta pantalla hasta que lo imprimas. El permiso firmado se archiva en el sector y en la Jefatura de SySO.</div>`;
 }
 
+/* ---------- el documento en formato CAT ----------
+   Un Word pasado al formato del programa: encabezado con código y versión, el texto
+   adentro, y el pie con quién lo preparó. Se lee sin salir de la aplicación y se
+   imprime igual que el manual. Calidad lo edita desde la misma pantalla.          */
+function vDocCat(){
+  const d=(state.pilarDocs||[]).find(x=>x.id===state.docCat);
+  if(!d||!puedeVerDoc(d))return `<div class="head"><div><h1>Documento</h1>
+    <p>Ese documento no está disponible con tu usuario.</p></div>
+    <div class="headbtns"><button class="btn ghost" id="btnDocCatCerrar">Volver</button></div></div>`;
+  const ed=state.docCatEd;
+  const cod=d.codigo||('DOC-'+String(d.id||'').toUpperCase().slice(3,20));
+  return `<div class="head"><div><h1>${esc(d.titulo||'Documento')}</h1>
+    <p>${esc(CATL[catDoc(d)]?CATL[catDoc(d)].l:'Documento del pilar')}${d.notas?' · '+esc(d.notas):''}</p></div>
+    <div class="headbtns">
+      <button class="btn ghost" id="btnDocCatCerrar">Volver a Documentos</button>
+      <button class="btn" id="btnDocCatImp">Imprimir</button>
+      ${esAdmin()?`<button class="btn${ed?' primary':''}" id="btnDocCatEd">${ed?'Dejar de editar':'Editar'}</button>`:''}
+      ${esAdmin()&&ed?`<button class="btn primary" id="btnDocCatGuardar">Guardar</button>`:''}
+    </div></div>
+  ${ed?`<section class="panel" style="margin-bottom:14px"><header><h3>Editar el documento</h3>
+    <span class="sub">se escribe con las mismas etiquetas del manual</span></header>
+    <div class="body"><div class="filters" style="margin:0 0 10px">
+      <div class="field" style="flex:2;min-width:220px"><label for="dkTit">Título</label>
+        <input id="dkTit" value="${esc(d.titulo||'')}"></div>
+      <div class="field" style="min-width:150px"><label for="dkCod">Código</label>
+        <input id="dkCod" value="${esc(cod)}"></div>
+      <div class="field" style="min-width:120px"><label for="dkVer">Versión</label>
+        <input id="dkVer" value="${esc(d.version||'00')}"></div>
+      <div class="field" style="min-width:150px"><label for="dkFec">Edición</label>
+        <input type="date" id="dkFec" value="${esc(String(d.edicion||d.creado||'').slice(0,10))}"></div>
+    </div>
+    <div class="field"><label for="dkHtml">Contenido</label>
+      <textarea id="dkHtml" style="min-height:360px;font-family:'IBM Plex Mono',monospace;font-size:12.5px">${esc(d.html||'')}</textarea></div>
+    </div></section>`:''}
+  <section class="panel manualpanel"><div class="manualdoc">
+    <div class="mhead">
+      <img src="${LOGO}" alt="Calidad Ante Todo">
+      <div><div class="mk">CAT · Calidad Ante Todo — Pilar Seguridad</div>
+        <h1>${esc(d.titulo||'')}</h1>
+        <div class="ms">Centro de Distribución San Antonio</div>
+        ${d.notas?`<div class="mm">${esc(d.notas)}</div>`:''}</div>
+      <div class="mcod">
+        <div><span>Código</span><b>${esc(cod)}</b></div>
+        <div><span>Versión</span><b>${esc(d.version||'00')}</b></div>
+        <div><span>Edición</span><b>${esc(fmtDate(String(d.edicion||d.creado||'').slice(0,10)))}</b></div>
+        <div><span>Carpeta</span><b>${esc(CATL[catDoc(d)]?CATL[catDoc(d)].l.split(',')[0]:'—')}</b></div>
+      </div>
+    </div>
+    <div class="mbody">${d.html||'<p>Sin contenido.</p>'}</div>
+    <div class="mfirmas"><div><b>Preparado por</b><br>Jefatura de SySO</div>
+      <div><b>Revisado por</b><br>Líder CAT · Calidad</div>
+      <div><b>Autorizado por</b><br>Gerencia del CD</div></div>
+  </div></section>`;
+}
+
 function docsPilarHTML(p){
   const adm=esAdmin(),pid=p.id;
   const ds=docsVisibles(pid),todos=docsPilar(pid);
@@ -9671,6 +9973,14 @@ function docsPilarHTML(p){
         <input id="dcTit" data-dcf="titulo" value="${esc((e&&e.titulo)||'')}" placeholder="Ej.: Matriz IPER firmada 2026"></div>
       <div class="field" style="flex:3;min-width:240px"><label for="dcUrl">Enlace (carpeta de red, SharePoint, Drive)</label>
         <input id="dcUrl" data-dcf="url" value="${esc((e&&e.url)||'')}" placeholder="https://… o \\\\servidor\\carpeta\\archivo.pdf"></div>
+      <div class="field" style="min-width:200px"><label for="dcCat">Carpeta</label>
+        <select id="dcCat" data-dcf="cat">${DOCCAT.map(([k,l])=>`<option value="${k}"${((e&&e.cat)||'')===k?' selected':''}>${esc(l)}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:170px"><label for="dcTipo">Tipo</label>
+        <select id="dcTipo" data-dcf="docTipo"><option value="evi"${((e&&e.docTipo)||'evi')==='evi'?' selected':''}>Evidencia · se adjunta</option>
+        <option value="cat"${(e&&e.docTipo)==='cat'?' selected':''}>Documento CAT · se lee adentro</option></select></div>
+      <div class="field" style="min-width:160px"><label for="dcReq">Requisito que cierra</label>
+        <select id="dcReq" data-dcf="marcadorReq"><option value="">— ninguno —</option>
+        ${docReqCfg().map(r=>`<option value="${esc(r.id)}"${(e&&e.marcadorReq)===r.id?' selected':''}>${esc(r.id)} · ${esc(String(r.t||'').slice(0,54))}</option>`).join('')}</select></div>
       <div class="field" style="min-width:210px"><label for="dcMarc">Responde a</label>
         <select id="dcMarc" data-dcf="marcador"><option value="">— sin ubicar en el manual —</option>
         ${marc.map(x=>`<option value="${esc(x.k)}"${(e&&e.marcador)===x.k?' selected':''}>${esc(x.texto.slice(0,64))}…</option>`).join('')}</select></div>
@@ -9735,13 +10045,17 @@ function docsPilarHTML(p){
             ${G.filter(d=>d.confidencial).length?`<span class="badge warn">${G.filter(d=>d.confidencial).length} confidencial</span>`:''}
             <span class="dcar">${on?'▴':'▾'}</span></span></button>
         ${on?`<div class="tw"><table><thead><tr><th style="min-width:200px">Documento</th><th style="min-width:180px">Nota</th><th style="width:110px">Acceso</th><th style="width:130px">Cargado</th><th style="width:150px"></th></tr></thead><tbody>
-      ${G.map(d=>`<tr><td><b style="font-weight:600">${esc(d.titulo||'—')}</b>${d.marcador?`<br><span style="color:var(--ink-3);font-size:11.5px">enlazado al manual</span>`:''}</td>
+      ${G.map(d=>`<tr><td><b style="font-weight:600">${esc(d.titulo||'—')}</b>
+        ${tipoDocL(d)?` <span class="badge ${tipoDocL(d).k}">${esc(tipoDocL(d).l)}</span>`:''}
+        ${d.marcadorReq?`<br><span style="color:var(--ink-3);font-size:11.5px">cierra el requisito <b>${esc(d.marcadorReq)}</b></span>`:
+          (d.marcador?`<br><span style="color:var(--ink-3);font-size:11.5px">enlazado al manual</span>`:'')}
+        ${d.arch&&d.arch.paginas?`<br><span style="color:var(--ink-3);font-size:11.5px">${d.arch.paginas} página${d.arch.paginas===1?'':'s'}${d.arch.kb?' · '+d.arch.kb+' KB':''}</span>`:''}</td>
         <td style="color:var(--ink-2);font-size:12.5px">${esc(d.notas||'')}</td>
         <td>${d.confidencial?'<span class="badge warn dot">Confidencial</span>':(d.incorporado?'<span class="badge a">Del CD</span>':'<span class="badge">Todos</span>')}</td>
         <td style="font-size:12px;color:var(--ink-3)">${tieneArchivo(d)
           ?`<span class="badge ok dot">Con archivo</span>${d.creado?'<br>'+fmtDate(String(d.creado).slice(0,10)):''}${d.subidoPor?'<br>'+esc(d.subidoPor):''}`
           :`<span class="badge warn dot">Sólo en papel</span><br>lo tiene ${esc(d.quien||'el pilar')}`}</td>
-        <td class="r">${d.tipo==='form'?`<button class="btn sm" data-form="${esc(d.id)}">Abrir</button> `:''}${(d.data||d.url)?`<button class="btn sm primary" data-dcabrir="${esc(d.id)}">Abrir</button> `:''}${d.data?`<a class="btn sm" href="${d.data}" download="${esc(d.nombreArchivo||d.titulo||'doc')}">Bajar</a> `:''}
+        <td class="r">${d.tipo==='form'?`<button class="btn sm" data-form="${esc(d.id)}">Abrir</button> `:''}${(d.data||d.url||(d.arch&&d.arch.n)||(d.docTipo==='cat'&&d.html))?`<button class="btn sm primary" data-dcabrir="${esc(d.id)}">${d.docTipo==='cat'?'Leer':'Abrir'}</button> `:''}${d.data?`<a class="btn sm" href="${d.data}" download="${esc(d.nombreArchivo||d.titulo||'doc')}">Bajar</a> `:''}${(d.arch&&d.arch.n)?`<button class="btn sm" data-dcbajar="${esc(d.id)}">Bajar</button> `:''}
           ${(adm&&!tieneArchivo(d))?`<label class="btn sm primary" style="cursor:pointer">Subir el archivo
             <input type="file" accept="image/*,application/pdf" data-refup="${esc(d.id)}" style="display:none"></label> `:''}
           ${(adm&&!d.incorporado)?`<button class="btn sm ghost" data-dcedit="${esc(d.id)}">Editar</button> ${delBtn('dc:'+d.id,`data-dcdel="${esc(d.id)}"`,'✕','Eliminar')}`:''}</td></tr>`).join('')}
@@ -9763,7 +10077,7 @@ async function guardarDocPilar(){
   if(!state.pil.doc)return;
   const e=leerFormDoc();state.pil.doc=e;
   if(!String(e.titulo||'').trim()){toast('Poné el nombre del documento');return}
-  if(!String(e.url||'').trim()&&!e.data){toast('Cargá un enlace o un archivo');return}
+  if(!String(e.url||'').trim()&&!e.data&&!(e.arch&&e.arch.n)&&!(e.docTipo==='cat'&&e.html)){toast('Cargá un enlace o un archivo');return}
   const id=e.id||uid('pd-');
   const d={pilarId:state.pil.id,sitioId:state.sitioSel||'',titulo:String(e.titulo).trim(),
     url:String(e.url||'').trim(),data:e.data||'',nombreArchivo:e.nombreArchivo||'',
@@ -9831,11 +10145,26 @@ function recoDe(secId,pct,a,m){
   const impl=mejorasImplementadas(secId,a,m);
   const pctMej=Math.min(100,Math.round(impl.length/Math.max(1,C.mejMeta)*1000)/10);
   const venc=(state.hallazgos||[]).filter(h=>h.sectorId===secId&&vencido(h));
-  const castigo=venc.length?C.castigo:0;
+  /* Manual CAT, punto 14.2: se descuentan 10 puntos si el plan de acción se presentó
+     fuera de los 15 días posteriores a la auditoría. */
+  const fuera=(state.hallazgos||[]).filter(h=>h.sectorId===secId&&h.fecha&&h.planEl
+      &&String(h.planEl).slice(0,10)>masDias(String(h.fecha).slice(0,10),15));
+  const castigo=(venc.length||fuera.length)?C.castigo:0;
   const base=pct==null?null:Math.round((pct*C.pesoAud/100+pctMej*C.pesoMej/100)*10)/10;
-  const total=base==null?null:Math.round(Math.max(0,base-castigo)*10)/10;
-  return {pctAud:pct,pctMej:pctMej,impl:impl.length,meta:C.mejMeta,
-          venc:venc.length,castigo:castigo,base:base,total:total,cfg:C};
+  let total=base==null?null:Math.round(Math.max(0,base-castigo)*10)/10;
+  /* un punto crítico descalifica: ni reconocimiento ni mejora continua ese mes */
+  const cr=(typeof criticoSector==='function')?criticoSector(secId,a,m):null;
+  /* Manual CAT, punto 14.1: para ingresar al cuadro de reconocimiento el área necesita
+     una auditoría sin hallazgos críticos y una mejora autónoma ejecutada con resultados
+     medibles. Sin alguna de las dos no ingresa, cualquiera sea el puntaje. */
+  const med=(typeof mejorasMedibles==='function')?mejorasMedibles(secId,a,m):[];
+  const falta=[];
+  if(cr)falta.push('hallazgo crítico en la auditoría');
+  if(!med.length)falta.push('sin mejora autónoma con resultados medibles');
+  if(falta.length)total=0;
+  return {pctAud:pct,pctMej:pctMej,impl:impl.length,medibles:med.length,meta:C.mejMeta,
+          venc:venc.length,planFuera:fuera.length,castigo:castigo,base:base,total:total,cfg:C,
+          critico:cr?cr.items.length:0,descalificado:falta.length>0,porQueNo:falta};
 }
 function copa(){
   const secs=sectoresPuntaje();                  /* el ranking es público: entran todos */
@@ -10488,6 +10817,7 @@ function vExpedientes(){
 }
 
 function detalleExpediente(a){
+  if(a&&a.sectorId)registrarVisita(a.sectorId,'Expediente de la auditoría del '+fmtDate(a.fecha));
   const nv=nivel(a.pct);
   /* segregación por S: qué sección se está mirando y si se filtran cumple / no cumple */
   state.fexp=state.fexp||{s:'all',v:'all'};
@@ -10511,6 +10841,7 @@ function detalleExpediente(a){
   const cl=state.checklists.find(c=>c.id===a.checklistId);
   const EF=estadoFirma(a);
   return `${avisoDb()}
+  ${avisoCriticoHTML(a)}
   ${EF.k!=='ok'?`<div class="notice ${EF.k==='crit'?'crit':'warn'}" style="margin-bottom:14px"><div>
     <b>${EF.k==='crit'?'Esta auditoría todavía no está firmada.':'Falta una firma.'}</b>
     ${esc(EF.d)}. El informe no se considera cerrado hasta que firman el auditor y el auditado.${puedeFirmar()?' El recuadro de firmas está al final de esta pantalla.':''}</div></div>`:''}
@@ -10622,7 +10953,66 @@ function detalleExpediente(a){
       <td style="color:var(--ink-3)">${esc(rr.obs||'')}</td></tr>`;
     })).join('')}
     </tbody></table></div></section>`:''}
+  ${efectividadAudHTML(a)}
   ${firmasHTML(a)}`;
+}
+
+/* ---------- la efectividad de esta auditoría, dentro del expediente ----------
+   El Comité CAT abre una auditoría vieja y pregunta lo mismo que preguntaría en la
+   reunión: de todo lo que salió mal acá, ¿qué se arregló de verdad? Esto lo contesta
+   hallazgo por hallazgo, dice si ya fue medido y por quién, y deja volver a medirlo. */
+function efectividadAudHTML(a){
+  const H=(state.hallazgos||[]).filter(h=>h.auditoriaId===a.id||h.audId===a.id
+    ||(h.sectorId===a.sectorId&&String(h.fecha).slice(0,10)===String(a.fecha).slice(0,10)));
+  if(!H.length)return '';
+  const L=H.map(h=>Object.assign({},h,{_s:segEfect(h)}));
+  const med=L.filter(h=>h._s.confirmado);
+  const P=med.map(h=>h._s.pct).filter(x=>x!=null);
+  const prom=P.length?Math.round(P.reduce((x,y)=>x+y,0)/P.length*10)/10:null;
+  const puede=puedeDictaminar();
+  /* Para todos los demás —el sector, los jefes, la Gerencia y el Comité— esto es una
+     lectura: el plan de acción se midió o no se midió, y con qué porcentaje. Nada de
+     quién lo midió, cuándo ni con qué fundamento: eso es trabajo interno de Calidad. */
+  if(!puede)return `<section class="panel" style="margin-bottom:16px"><header>
+    <h3>Efectividad de los planes de acción de esta auditoría</h3>
+    <span class="sub">${med.length} de ${L.length} medidos${prom==null?'':' · promedio '+n1(prom)+' %'}</span></header>
+    <div class="tw"><table class="lst"><thead><tr><th style="min-width:280px">Hallazgo</th>
+      <th style="width:190px">Efectividad</th><th class="r" style="width:120px">Porcentaje</th></tr></thead><tbody>
+    ${L.map(h=>`<tr><td>${esc(h.item||h.texto||'')}</td>
+      <td>${h._s.confirmado
+        ? `<span class="badge ${EF_K[h._s.k]} dot">Medida · ${esc(EF_L[h._s.k]||'')}</span>`
+        : '<span class="badge">No medida todavía</span>'}</td>
+      <td class="r">${h._s.confirmado&&h._s.pct!=null?`<b>${h._s.pct} %</b>`:'<span style="color:var(--ink-3)">—</span>'}</td></tr>`).join('')}
+    </tbody></table></div>
+    <div class="body"><div class="soft2">La efectividad se mide a los ${DIAS_VERIF} días de cerrada la acción:
+      se controla si el mismo criterio volvió a salir «no cumple» en el sector, si el cierre entró en plazo y si
+      quedó la evidencia. De ahí sale el porcentaje. La medición la realiza Calidad.</div></div>
+  </section>`;
+  return `<section class="panel" style="margin-bottom:16px"><header>
+    <h3>Efectividad de los planes de acción de esta auditoría</h3>
+    <span class="sub">${med.length} de ${L.length} ya medidos${prom==null?'':' · promedio '+n1(prom)+' %'} · se puede volver a medir</span></header>
+    <div class="tw"><table class="lst"><thead><tr><th style="min-width:230px">Hallazgo</th>
+      <th style="width:165px">Efectividad</th><th style="width:95px">Porcentaje</th>
+      <th style="min-width:150px">Quién midió</th><th style="width:150px"></th></tr></thead><tbody>
+    ${L.map(h=>`<tr><td>${esc(h.item||h.texto||'')}
+        ${h._s.nota?`<div class="sm" style="color:var(--ink-3);margin-top:3px"><b>Fundamento:</b> ${esc(h._s.nota)}</div>`:''}</td>
+      <td>${h._s.confirmado
+        ? `<span class="badge ${EF_K[h._s.k]} dot">${esc(EF_L[h._s.k]||'')}</span>${
+            h._s.manual?'<br><span class="badge a" style="margin-top:3px">Dictamen del comité</span>':''}`
+        : `<span class="badge">${esc(h._s.k==='espera'?'En observación':(h._s.k==='sin'?'La acción todavía no se cerró':'Propuesta: '+(EF_L[h._s.k]||'')))}</span>`}</td>
+      <td style="white-space:nowrap">${h._s.pct==null?'—':`<b>${h._s.pct} %</b>`}${
+        h._s.confirmado&&h._s.calc!=null&&h._s.calc!==h._s.pct?`<div class="sm" style="color:var(--ink-3)">cálculo ${h._s.calc} %</div>`:''}</td>
+      <td>${h._s.confirmado?esc(h._s.por||'—'):'<span style="color:var(--ink-3)">todavía nadie</span>'}${
+        h._s.confirmado&&h._s.el?`<div class="sm" style="color:var(--ink-3)">${fmtDate(h._s.el)}</div>`:''}</td>
+      <td class="r"><button class="btn sm${h._s.confirmado?'':' primary'}" data-efedit="${esc(h.id)}">${
+        state.efEdit&&state.efEdit.id===h.id?'Cerrar':(h._s.confirmado?'Volver a medir':'Medir')}</button></td></tr>
+      ${state.efEdit&&state.efEdit.id===h.id?`<tr><td colspan="5" style="padding-top:0">${editorDictamen(h,h._s)}</td></tr>`:''}`).join('')}
+    </tbody></table></div>
+    <div class="body"><div class="soft2">Un hallazgo ya medido se puede volver a medir cuantas veces
+      haga falta: se registra el resultado nuevo, el porcentaje, quién dictamina, la fecha y el fundamento,
+      y el cálculo de la aplicación queda al lado. Todo queda en el historial del hallazgo.
+      <b>Esto lo ve sólo Calidad</b>; los demás perfiles ven únicamente si está medida y con qué porcentaje.</div></div>
+  </section>`;
 }
 
 /* ---------- la ficha de la auditoría, sin nada que aprobar ----------
@@ -11067,7 +11457,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=121;
+const APP_VER=130;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12421,18 +12811,20 @@ function vManualAud(){
       <p>Porcentaje de cumplimiento = criterios respondidos Sí ÷ total de criterios aplicables × 100.
       Un cumplimiento parcial se registra como No y se explica en comentarios.</p>
       ${manTabla([['Resultado','150px'],['Nivel','110px'],['Tratamiento','']],[
-        ['75 % a 100 %','Verde','Mantener condiciones y corregir los hallazgos puntuales.'],
-        ['50 % a 74 %','Amarillo','Requiere plan de acción y seguimiento dentro del plazo acordado.'],
-        ['Menor a 49 %','Rojo','Requiere intervención prioritaria, seguimiento reforzado y escalamiento al Comité CAT.']])}
-      ${(Number(VERDE)!==75||Number(ROJO)!==49)?`<div class="mnota"><b>Nota de Calidad, ajena al documento firmado.</b>
-        La aplicación opera con meta ${VERDE} % y rojo por debajo de ${ROJO} %, conforme a lo dispuesto por la
-        Dirección. Los cortes de esta tabla y los de la aplicación no coinciden y deben unificarse.</div>`:''}
+        ['Desde 75 % hasta 100 %','Verde','Mantener condiciones y corregir los hallazgos puntuales.'],
+        ['Desde 50 % hasta menos de 75 %','Amarillo','Requiere plan de acción y seguimiento dentro del plazo acordado.'],
+        ['Menos de 50 %','Rojo','Requiere intervención prioritaria, seguimiento reforzado y escalamiento al Comité CAT.']])}
+      <p>Cuando se detecte un hallazgo crítico, el resultado se clasificará automáticamente en
+      nivel <b>rojo</b>, independientemente del porcentaje de cumplimiento obtenido.</p>
+      ${(Number(VERDE)!==75||Number(ROJO)!==50)?`<div class="mnota"><b>Nota de Calidad, ajena al documento firmado.</b>
+        La aplicación opera con meta ${VERDE} % y rojo por debajo de ${ROJO} %. Los cortes de esta tabla y los
+        de la aplicación no coinciden y deben unificarse.</div>`:''}
       <h3>7.6 Clasificación de hallazgos</h3>
-      ${manTabla([['Clasificación','130px'],['Criterio',''],['Respuesta requerida','30%']],[
-        ['Crítico','Riesgo inmediato para inocuidad, seguridad, legalidad, producto o continuidad operativa.','Contención inmediata, comunicación a responsables y tratamiento prioritario.'],
-        ['Mayor','Incumplimiento relevante, sistemático, reincidente o ausencia de un control requerido.','Análisis de causa y acción correctiva formal.'],
-        ['Menor','Desviación puntual que no representa riesgo inmediato ni falla general del sistema.','Corrección y acción proporcional para evitar repetición.'],
-        ['Observación','Oportunidad de mejora o condición que podría convertirse en incumplimiento.','Evaluación por el responsable del sector y tratamiento cuando corresponda.']])}
+      ${manTabla([['Clasificación','118px'],['Criterio',''],['Respuesta requerida','24%'],['Tiempo máximo para ejecutar la acción','22%']],[
+        ['Crítico','Riesgo inmediato para inocuidad, seguridad, legalidad, producto o continuidad operativa.','Contención inmediata, comunicación a responsables y tratamiento prioritario.','Contención inmediata; hasta 3 días para la corrección y hasta 15 días para la acción correctiva definitiva.'],
+        ['Mayor','Incumplimiento relevante, sistemático, reincidente o ausencia de un control requerido.','Análisis de causa y acción correctiva formal.','Hasta 30 días posteriores a la detección.'],
+        ['Menor','Desviación puntual que no representa riesgo inmediato ni falla general del sistema.','Corrección y acción proporcional para evitar repetición.','Entre 45 y 60 días.'],
+        ['Observación','Oportunidad de mejora o condición que podría convertirse en incumplimiento.','Evaluación por el responsable del sector y tratamiento cuando corresponda.','Sin tiempo definido.']])}
       <h3>7.7 Redacción del hallazgo</h3>
       <p>Cada hallazgo deberá ser específico, verificable y comprensible. Debe incluir condición
       observada, evidencia objetiva y fotografía. No se utilizarán expresiones ambiguas ni se
@@ -12486,8 +12878,8 @@ function vManualAud(){
       suficientes cuando el hallazgo requiera demostrar aplicación sostenida.</p>
 
       ${manTit(13,'Verificación de efectividad')}
-      <p>La efectividad se evaluará después de un período suficiente para observar el desempeño del
-      control. La verificación podrá realizarse mediante una auditoría de seguimiento, revisión de
+      <p>La efectividad se evaluará después de un período suficiente, que no deberá superar los
+      <b>tres meses</b>, para observar el desempeño del control. La verificación podrá realizarse mediante una auditoría de seguimiento, revisión de
       registros, ausencia de reincidencia, indicadores, entrevistas y observación directa.</p>
       ${manTabla([['Resultado','180px'],['Criterio',''],['Decisión','30%']],[
         ['Efectiva','La causa fue eliminada o controlada; el requisito se cumple y no existe reincidencia en el período evaluado.','Cerrar el hallazgo y registrar la evidencia.'],
@@ -12520,28 +12912,323 @@ function vManualAud(){
    sectores reales del CD —Administración, Mantenimiento, Muelles— más las dos áreas
    que no son un sector: Compras y un tercero externo. El valor guardado es el id del
    sector, así el pendiente se le puede mostrar a quien trabaja ahí.              */
-const AREAS_EXTRA=[{v:'compras',l:'Compras'},{v:'tercero',l:'Tercero externo'}];
-const AREAS_VIEJAS={sector:'',mantenimiento:'s-manten',seguridad:''};
+/* Las áreas de AJ: las que resuelven una acción correctiva que el sector auditado no
+   puede resolver solo. No son sectores del CD —Infraestructura no tiene un depósito—,
+   así que van en su propio grupo, separadas de los sectores, y cada una sabe a quién
+   le toca: por sector cuando lo tiene (Mantenimiento), por rol cuando no (SySO, RRHH).
+   El pendiente le aparece a quien trabaja ahí, y además a quien tenga esa área cargada
+   en su usuario. */
+const AREAS_AJ=[
+  {v:'a-manten', l:'Mantenimiento',                    sec:'s-manten', roles:[]},
+  {v:'a-infra',  l:'Infraestructura y Obras',          sec:'',         roles:[]},
+  {v:'a-syso',   l:'SySO · Seguridad y Salud Ocupacional', sec:'',     roles:['syso','sysoana']},
+  {v:'a-rrhh',   l:'Recursos Humanos',                 sec:'',         roles:['rrhh']},
+  {v:'a-calidad',l:'Calidad',                          sec:'',         roles:['admin']},
+  {v:'a-ti',     l:'Sistemas / TI',                    sec:'',         roles:[]},
+  {v:'a-servg',  l:'Servicios Generales y Limpieza',   sec:'',         roles:[]},
+  {v:'a-segpat', l:'Seguridad Patrimonial',            sec:'',         roles:[]},
+  {v:'a-ext',    l:'Proveedor o contratista externo',  sec:'',         roles:[]}];
+/* lo que se cargó con las etiquetas viejas sigue leyéndose */
+const AREAS_VIEJAS={sector:'',mantenimiento:'a-manten',seguridad:'a-syso',
+  compras:'a-infra',tercero:'a-ext',otros:''};
+const areaAJ=v=>AREAS_AJ.find(x=>x.v===v)||null;
+const normArea=v=>{
+  v=String(v||'');
+  if(!v||v==='sector')return 'sector';
+  if(areaAJ(v))return v;
+  if(sectorDe(v))return v;
+  return AREAS_VIEJAS[v]||v;
+};
 function areasPlan(){
   const secs=todosSectores().slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre)));
   return [{v:'sector',l:'El propio sector auditado'}]
-    .concat(secs.map(s=>({v:s.id,l:s.nombre})))
-    .concat(AREAS_EXTRA);
+    .concat(AREAS_AJ.map(a=>({v:a.v,l:a.l})))
+    .concat(secs.map(s=>({v:s.id,l:s.nombre})));
+}
+/* el select, con las áreas y los sectores en grupos separados */
+function areasPlanHTML(sel,conTodas){
+  const secs=todosSectores().slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre)));
+  const v=normArea(sel);
+  const op=(val,lab)=>`<option value="${esc(val)}"${v===val?' selected':''}>${esc(lab)}</option>`;
+  return (conTodas?`<option value="all"${sel==='all'?' selected':''}>Todas las áreas</option>`:'')
+    +op('sector','El propio sector auditado')
+    +`<optgroup label="Áreas de AJ">${AREAS_AJ.map(a=>op(a.v,a.l)).join('')}</optgroup>`
+    +`<optgroup label="Sectores del CD">${secs.map(x=>op(x.id,x.nombre)).join('')}</optgroup>`;
 }
 const areaLabel=v=>{
+  v=normArea(v);
   if(!v||v==='sector')return 'El propio sector';
+  const a=areaAJ(v); if(a)return a.l;
   const s=sectorDe(v); if(s)return s.nombre;
-  const e=AREAS_EXTRA.find(x=>x.v===v); if(e)return e.l;
-  const vj=AREAS_VIEJAS[v]; if(vj){const s2=sectorDe(vj); if(s2)return s2.nombre}
   return v;
 };
-/* el id de sector al que le toca ejecutar, o '' si lo ejecuta el propio sector */
+/* el id de sector al que le toca ejecutar, o '' si no lo resuelve un sector */
 const areaSectorId=h=>{
-  const v=h&&h.area;
+  const v=normArea(h&&h.area);
   if(!v||v==='sector')return '';
+  const a=areaAJ(v); if(a)return a.sec||'';
   if(sectorDe(v))return v;
-  return AREAS_VIEJAS[v]||'';
+  return '';
 };
+/* ¿este pendiente es mío? Lo es si trabajo en el sector que ejecuta, si mi rol atiende
+   esa área, o si tengo esa área cargada en mi usuario. */
+function meTocaArea(h){
+  const v=normArea(h&&h.area);
+  if(!v||v==='sector')return false;
+  if(esAdmin())return true;
+  const yo=state.sesion||{}, rol=yo.rol||'';
+  const u=usuarioDe(yo.usuario)||{};
+  if(u.areaAJ&&u.areaAJ===v)return true;
+  const a=areaAJ(v);
+  if(a){
+    if(a.roles.indexOf(rol)>=0)return true;
+    if(a.sec)return veoSector(a.sec);
+    return false;
+  }
+  return veoSector(v);
+}
+
+/* ================= quién miró el sector =================
+   La Gerencia y el Comité entran a ver cómo está un sector. Antes eso no dejaba rastro
+   y el sector no se enteraba. Ahora queda registrado —una línea por persona, sector y
+   día— y el sector lo ve: «Óscar Benítez echó un vistazo a tu sector el 20/10». Sirve
+   para las dos partes: el sector sabe que lo miran y la Gerencia sabe que se nota.   */
+const VISITA_ROLES=['gerencia','comite'];
+async function registrarVisita(secId,que){
+  if(!secId||!state.db)return;
+  const yo=yoReal()||{};
+  const rol=yo.rol||'';
+  if(VISITA_ROLES.indexOf(rol)<0)return;          /* Calidad administra, no «visita» */
+  if(verComo())return;                            /* mirar «como» otro no cuenta      */
+  const hoy=todayISO();
+  const id=secId+'__'+(yo.usuario||'anon')+'__'+hoy;
+  if((state.visitas||[]).some(v=>v.id===id))return;
+  state.visitas=(state.visitas||[]).concat([{id:id,sectorId:secId,usuario:yo.usuario||'',
+    nombre:yo.nombre||'',rol:rol,fecha:hoy,que:que||''}]);
+  try{await guardarDoc(COL.vi+'/'+id,{sectorId:secId,usuario:yo.usuario||'',
+    nombre:yo.nombre||'',rol:rol,fecha:hoy,que:que||'',el:new Date().toISOString()})}catch(e){}
+}
+const visitasDe=secId=>(state.visitas||[]).filter(v=>v.sectorId===secId)
+  .sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));
+function visitasHTML(secId){
+  if(!secId)return '';
+  const L=visitasDe(secId).slice(0,6);
+  if(!L.length)return '';
+  const ab=(state.hallazgos||[]).filter(h=>h.sectorId===secId&&abierto(h)).length;
+  return `<div class="notice" style="margin-bottom:14px"><div>
+    <b>${esc(L[0].nombre||'La Gerencia')} echó un vistazo a este sector el ${fmtDate(L[0].fecha)}.</b>
+    ${L.length>1?' Antes también: '+L.slice(1).map(v=>esc(v.nombre)+' el '+fmtDate(v.fecha)).join(' · ')+'.':''}
+    ${ab?` Lo que ven es lo que está cargado hoy: <b>${ab} hallazgo${ab===1?'':'s'} sin cerrar</b>.`
+        :' El plan de acción está al día.'}</div></div>`;
+}
+
+/* La línea de efectividad del hallazgo, la misma para todos los perfiles: si el plan de
+   acción ya se midió y con qué porcentaje. Quién lo midió y con qué fundamento queda
+   dentro del seguimiento de Calidad, no acá. */
+function efectividadLineaHTML(h){
+  if(!h||!verificable(h))return '';
+  const S=segEfect(h);
+  if(S.confirmado)return `<br><span class="badge ${EF_K[S.k]} dot">Efectividad medida · ${
+    esc(EF_L[S.k]||'')}${S.pct==null?'':' · '+S.pct+' %'}</span>`;
+  if(S.k==='espera')return `<br><span class="badge">Efectividad: se mide el ${fmtDate(S.ver)}</span>`;
+  return '<br><span class="badge">Efectividad: no medida todavía</span>';
+}
+
+/* ================= avisos y notificaciones =================
+   Calidad necesita poder decirle algo a la gente dentro del propio sistema: que el
+   lunes se audita, que cambió una regla, que un sector quedó en rojo. Antes eso iba
+   por WhatsApp y se perdía. Un aviso tiene destinatario —todos, un rol, un sector o
+   una persona—, puede tener fecha de vencimiento y aparece arriba de la pantalla
+   hasta que la persona lo marca como leído. Lo leído queda en el navegador de cada
+   uno: no hace falta escribir en la base para cerrar un cartel.                    */
+const AVISO_TIPOS=[{v:'aviso',l:'Aviso',k:''},{v:'alerta',l:'Alerta',k:'warn'},{v:'urgente',l:'Urgente',k:'crit'}];
+const tipoAviso=v=>AVISO_TIPOS.find(x=>x.v===v)||AVISO_TIPOS[0];
+/* ---------- el acuse: una palomita, el ojo, dos palomitas ----------
+   Calidad necesita saber si el aviso llegó de verdad. Como el sistema ya cuenta las
+   veces que cada uno entró, con esto se puede decir algo preciso: «entró cuatro veces
+   desde que se lo mandé y todavía no lo abrió». Tres estados y nada más:
+     ✓   enviado · todavía no le apareció
+     ojo lo vio en pantalla, no lo cerró
+     ✓✓  leído · tocó «Entendido»
+   Vive en su propia colección, un documento por aviso y persona, así nadie pisa a
+   nadie y cerrar un cartel no reescribe el aviso.                                  */
+const acuseId=(av,u)=>String(av)+'__'+String(u);
+const acuseDe=(av,u)=>(state.acuses||[]).find(x=>x.id===acuseId(av,u))||null;
+const ICO_OJO='<svg width="13" height="13" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" style="vertical-align:-2px"><path d="M1 8s2.6-4.3 7-4.3S15 8 15 8s-2.6 4.3-7 4.3S1 8 1 8z"/><circle cx="8" cy="8" r="1.9"/></svg>';
+const ACUSE={
+  enviado:{l:'Enviado',ico:'✓',       k:'',    d:'Todavía no le apareció en pantalla'},
+  visto:  {l:'Lo vio',  ico:ICO_OJO,  k:'warn',d:'Le apareció el aviso pero no lo cerró'},
+  leido:  {l:'Leído',   ico:'✓✓',     k:'ok',  d:'Tocó «Entendido»'}};
+function estadoAcuse(avId,usuario){
+  const a=acuseDe(avId,usuario);
+  if(a&&a.leido)return Object.assign({k2:'leido',el:a.leido},ACUSE.leido);
+  if(a&&a.visto)return Object.assign({k2:'visto',el:a.visto},ACUSE.visto);
+  return Object.assign({k2:'enviado',el:''},ACUSE.enviado);
+}
+async function guardarAcuse(avId,campo){
+  const yo=state.sesion||{};
+  if(!yo.usuario||esAdmin()||verComo())return;
+  const id=acuseId(avId,yo.usuario);
+  const ya=acuseDe(avId,yo.usuario);
+  if(ya&&ya[campo])return;                       /* ya estaba: no se vuelve a escribir */
+  const d={avisoId:avId,usuario:yo.usuario,nombre:yo.nombre||'',rol:yo.rol||'',
+    visto:(ya&&ya.visto)||'',leido:(ya&&ya.leido)||''};
+  d[campo]=new Date().toISOString();
+  if(campo==='leido'&&!d.visto)d.visto=d[campo];
+  state.acuses=(state.acuses||[]).filter(x=>x.id!==id).concat([Object.assign({id:id},d)]);
+  try{await guardarDoc(COL.ac+'/'+id,d)}catch(e){}
+}
+const marcarLeido=id=>guardarAcuse(id,'leido');
+const leiAviso=id=>{const yo=state.sesion||{};const a=acuseDe(id,yo.usuario||'');return !!(a&&a.leido)};
+/* a quiénes les tocaba este aviso */
+function destinatariosDe(a){
+  const us=(state.usuarios||[]).filter(u=>u.activo!==false&&u.rol!=='admin');
+  if(a.usuario)return us.filter(u=>u.id===a.usuario);
+  if(a.sectorId)return us.filter(u=>u.sectorId===a.sectorId);
+  if(a.rol&&a.rol!=='all')return us.filter(u=>u.rol===a.rol);
+  return us;
+}
+/* cuántas veces entró esa persona desde que se envió el aviso: es lo que convierte
+   «no lo leyó» en «entró cuatro veces y no lo leyó» */
+function ingresosDesde(usuario,desde){
+  if(!desde)return 0;
+  return (state.bitacora||[]).filter(b=>b.usuario===usuario&&b.accion==='ingresó'
+    &&String(b.fecha)>=String(desde)).length;
+}
+const avisoVigente=a=>!!a&&(!a.hasta||String(a.hasta)>=todayISO());
+/* ¿este aviso es para mí? */
+function avisoParaMi(a){
+  const yo=state.sesion||{};
+  if(!a)return false;
+  if(esAdmin())return false;        /* Calidad los envía; no se los avisa a sí misma */
+  if(a.usuario)return a.usuario===yo.usuario;
+  if(a.sectorId)return yo.sectorId===a.sectorId;
+  if(a.rol&&a.rol!=='all')return a.rol===yo.rol;
+  return true;
+}
+function avisosParaMi(){
+  return (state.avisos||[]).filter(a=>avisoVigente(a)&&avisoParaMi(a))
+    .sort((x,y)=>String(y.el||'').localeCompare(String(x.el||'')));
+}
+const avisosSinLeer=()=>avisosParaMi().filter(a=>!leiAviso(a.id));
+function avisoDestinoL(a){
+  if(a.usuario){const u=usuarioDe(a.usuario);return 'Para '+esc((u&&u.nombre)||a.usuario)}
+  if(a.sectorId)return 'Para el sector '+esc(nombreSector(a.sectorId)||a.sectorId);
+  if(a.rol&&a.rol!=='all')return 'Para '+esc(rolLabel(a.rol));
+  return 'Para todo el CD';
+}
+/* el cartel de arriba: sólo lo que no se leyó todavía */
+function avisosBannerHTML(){
+  const L=avisosSinLeer().slice(0,3);
+  if(!L.length)return '';
+  /* se registra que le apareció: el ojo del acuse */
+  L.forEach(a=>{try{guardarAcuse(a.id,'visto')}catch(e){}});
+  return L.map(a=>{const t=tipoAviso(a.tipo);
+    return `<div class="notice ${t.k}" style="margin-bottom:12px"><div>
+      <b>${esc(a.titulo||t.l)}</b>${a.texto?' '+esc(a.texto):''}
+      <div class="sm" style="color:var(--ink-3);margin-top:4px">${esc(a.por||'Calidad')} · ${
+        fmtDate(String(a.el||'').slice(0,10))}${a.hasta?' · vence el '+fmtDate(a.hasta):''}</div></div>
+      <button class="btn sm" data-avleido="${esc(a.id)}">Entendido</button></div>`}).join('');
+}
+/* el selector de destino repinta el formulario: antes de hacerlo se guarda lo tecleado */
+function avCapturar(){
+  const f=$('#formAviso');
+  if(!f)return;
+  const g=n=>{const e=f.elements[n];return e?e.value:null};
+  const A=Object.assign({},state.avf||{});
+  ['titulo','texto','hasta','tipo','destino','rol','sectorId','usuario'].forEach(n=>{
+    const v=g(n); if(v!=null)A[n]=v;
+  });
+  state.avf=A;
+}
+/* quién lo leyó, quién lo vio y quién entró sin abrirlo */
+function acuseTablaHTML(a,E){
+  const desde=String(a.el||'').slice(0,10);
+  const orden={enviado:0,visto:1,leido:2};
+  const L=E.slice().sort((x,y)=>orden[x.k2]-orden[y.k2]||String(x.u.nombre).localeCompare(String(y.u.nombre)));
+  return `<div class="tw" style="margin:8px 0 2px"><table class="lst"><thead><tr>
+    <th style="min-width:170px">Persona</th><th style="min-width:130px">Rol</th>
+    <th style="width:150px">Acuse</th><th style="width:130px">Cuándo</th>
+    <th class="r" style="width:150px">Entradas desde el aviso</th></tr></thead><tbody>
+    ${L.map(x=>{const n=ingresosDesde(x.u.id,desde);
+      return `<tr><td>${esc(x.u.nombre||x.u.id)}</td><td>${esc(rolLabel(x.u.rol))}</td>
+        <td><span class="badge ${x.k} dot">${x.ico} ${esc(x.l)}</span></td>
+        <td>${x.el?fmtDate(String(x.el).slice(0,10)):'—'}</td>
+        <td class="r">${x.k2==='leido'?'<span style="color:var(--ink-3)">—</span>'
+          :(n?`<b${n>=2?' style="color:var(--crit)"':''}>${n}</b>${n>=2?' · entró y no lo abrió':''}`
+             :'<span style="color:var(--ink-3)">no entró</span>')}</td></tr>`}).join('')}
+  </tbody></table></div>`;
+}
+function vAvisos(){
+  const mios=avisosParaMi();
+  const todos=(state.avisos||[]).slice().sort((x,y)=>String(y.el||'').localeCompare(String(x.el||'')));
+  const f=state.avf||{tipo:'aviso',destino:'all',rol:'jefe',sectorId:'',usuario:''};state.avf=f;
+  const secs=todosSectores().slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre)));
+  const us=(state.usuarios||[]).slice().sort((a,b)=>String(a.nombre).localeCompare(String(b.nombre)));
+  const tarjeta=(a,admin)=>{const t=tipoAviso(a.tipo);const leido=leiAviso(a.id);
+    const D=admin?destinatariosDe(a):[];
+    const E=D.map(u=>Object.assign({u:u},estadoAcuse(a.id,u.id)));
+    const nL=E.filter(x=>x.k2==='leido').length, nV=E.filter(x=>x.k2==='visto').length,
+          nE=E.filter(x=>x.k2==='enviado').length;
+    const ab=state.avOpen===a.id;
+    return `<article class="rotcard ${leido?'list':'pend'}" style="border-left-color:var(--${t.k==='crit'?'crit':(t.k==='warn'?'warn':'accent')})">
+      <div><span class="badge ${t.k}">${esc(t.l)}</span>
+        ${avisoVigente(a)?'':'<span class="badge">Vencido</span>'}
+        ${(!admin&&leido)?'<span class="badge ok dot">Leído</span>':''}</div>
+      <div class="rn" style="font-weight:600;line-height:1.35">${esc(a.titulo||'')}</div>
+      ${a.texto?`<div class="rt">${esc(a.texto)}</div>`:''}
+      <div class="rl">${avisoDestinoL(a)} · ${esc(a.por||'Calidad')} · ${fmtDate(String(a.el||'').slice(0,10))}${
+        a.hasta?' · vence el '+fmtDate(a.hasta):''}</div>
+      ${admin?`<div class="acres">
+        <span class="ac ok" title="${esc(ACUSE.leido.d)}"><b>✓✓</b> ${nL} leído${nL===1?'':'s'}</span>
+        <span class="ac warn" title="${esc(ACUSE.visto.d)}">${ICO_OJO} ${nV} ${nV===1?'lo vio':'lo vieron'}</span>
+        <span class="ac" title="${esc(ACUSE.enviado.d)}"><b>✓</b> ${nE} sin abrir</span>
+        ${D.length?`<button class="btn sm ghost" data-avquien="${esc(a.id)}">${ab?'Ocultar':'Ver quién'}</button>`:''}
+      </div>`:''}
+      ${admin&&ab?acuseTablaHTML(a,E):''}
+      <div class="rb">${(!admin&&!leido)?`<button class="btn sm primary" data-avleido="${esc(a.id)}">Marcar como leído</button>`:''}
+        ${admin?`<button class="btn sm ghost" data-avdel="${esc(a.id)}" data-ck="avdel:${esc(a.id)}" style="color:var(--crit)">${
+          state.confirmKey==='avdel:'+a.id?'¿Borrar este aviso? Tocá de nuevo':'Borrar'}</button>`:''}</div>
+    </article>`};
+  return `${avisoDb()}
+  <div class="head"><div><h1>Avisos y notificaciones</h1>
+    <p>${esAdmin()
+      ? 'Lo que Calidad necesita que la gente sepa dentro del propio sistema: una auditoría que viene, una regla que cambió, un sector que quedó en rojo. El aviso le aparece arriba de la pantalla a quien corresponda hasta que lo marque como leído.'
+      : 'Lo que Calidad le avisó a usted o a su sector. Marcá como leído lo que ya viste; los avisos vencidos se dejan de mostrar solos.'}</p></div></div>
+
+  ${esAdmin()?`<section class="panel" style="margin-bottom:16px"><header><h3>Escribir un aviso</h3>
+    <span class="sub">elegí a quién le llega</span></header>
+    <div class="body"><form id="formAviso" class="grid g3" autocomplete="off" style="align-items:end">
+      <div class="field" style="grid-column:span 2"><label>Título</label>
+        <input name="titulo" type="text" value="${esc(f.titulo||'')}" placeholder="Ej.: El lunes 27 se audita Boston y BK" required></div>
+      <div class="field"><label>Tipo</label><select name="tipo">
+        ${AVISO_TIPOS.map(x=>`<option value="${x.v}"${f.tipo===x.v?' selected':''}>${esc(x.l)}</option>`).join('')}</select></div>
+      <div class="field" style="grid-column:span 3"><label>Mensaje</label>
+        <textarea name="texto" style="min-height:58px" placeholder="Qué tiene que saber la persona, y qué se espera que haga">${esc(f.texto||'')}</textarea></div>
+      <div class="field"><label>Para</label><select name="destino" data-avf="destino">
+        <option value="all"${f.destino==='all'?' selected':''}>Todo el CD</option>
+        <option value="rol"${f.destino==='rol'?' selected':''}>Un rol</option>
+        <option value="sector"${f.destino==='sector'?' selected':''}>Un sector</option>
+        <option value="usuario"${f.destino==='usuario'?' selected':''}>Una persona</option></select></div>
+      <div class="field"><label>${f.destino==='rol'?'Rol':(f.destino==='sector'?'Sector':(f.destino==='usuario'?'Persona':'Alcance'))}</label>
+        ${f.destino==='rol'?`<select name="rol">${ROLES.filter(r=>r.v!=='admin').map(r=>`<option value="${r.v}"${f.rol===r.v?' selected':''}>${esc(r.l)}</option>`).join('')}</select>`
+        :(f.destino==='sector'?`<select name="sectorId">${secs.map(x=>`<option value="${x.id}"${f.sectorId===x.id?' selected':''}>${esc(x.nombre)}</option>`).join('')}</select>`
+        :(f.destino==='usuario'?`<select name="usuario">${us.map(u=>`<option value="${esc(u.id)}"${f.usuario===u.id?' selected':''}>${esc(u.nombre)} · ${esc(rolLabel(u.rol))}</option>`).join('')}</select>`
+        :'<input disabled value="Le llega a todos los usuarios del CD">'))}</div>
+      <div class="field"><label>Se deja de mostrar el <span style="color:var(--ink-3);font-weight:400">· opcional</span></label>
+        <input type="date" name="hasta" value="${esc(f.hasta||'')}"></div>
+      <div><button class="btn primary" type="submit">Enviar el aviso</button></div>
+    </form></div></section>`:''}
+
+  ${esAdmin()?`<section class="panel"><header><h3>Avisos enviados</h3>
+    <span class="sub">${todos.length} en total · ${todos.filter(avisoVigente).length} vigentes</span></header>
+    ${todos.length?`<div class="avlist">${todos.map(a=>tarjeta(a,true)).join('')}</div>`
+      :'<div class="empty"><b>Todavía no enviaste ningún aviso</b>Escribí el primero arriba.</div>'}</section>`
+  :`<section class="panel"><header><h3>Sus avisos</h3>
+    <span class="sub">${mios.filter(a=>!leiAviso(a.id)).length} sin leer de ${mios.length}</span></header>
+    ${mios.length?`<div class="rotgrid" style="padding:0">${mios.map(a=>tarjeta(a,false)).join('')}</div>`
+      :'<div class="empty"><b>No hay avisos</b>Cuando Calidad envíe uno para usted o para su sector, aparece acá.</div>'}</section>`}`;
+}
 
 /* ================= pendientes =================
    Lo que otra persona le pidió a mi área: una acción correctiva de un hallazgo que
@@ -12549,14 +13236,15 @@ const areaSectorId=h=>{
 function misPendientes(){
   const todos=(state.hallazgos||[]).filter(h=>{
     if(h.estado==='cerrado')return false;
+    const v=normArea(h.area);
+    if(!v||v==='sector')return false;
     const sid=areaSectorId(h);
-    if(!sid)return false;
-    if(sid===h.sectorId)return false;      /* lo ejecuta el mismo sector: no es un pedido */
-    return esAdmin()?true:veoSector(sid);
+    if(sid&&sid===h.sectorId)return false;  /* lo ejecuta el mismo sector: no es un pedido */
+    return meTocaArea(h);
   });
   const hoy=todayISO();
   return todos.map(h=>Object.assign({},h,{
-    _area:areaSectorId(h),
+    _area:normArea(h.area),
     _vencido:!!(h.vence&&String(h.vence)<hoy),
     _dias:h.vence?Math.round((new Date(h.vence)-new Date(hoy))/86400000):null
   })).sort((a,b)=>String(a.vence||'9999').localeCompare(String(b.vence||'9999')));
@@ -12596,6 +13284,425 @@ function vPendientes(){
       <div class="rb"><button class="btn primary" data-pendver="${esc(h.id)}">Abrir y cargar la evidencia</button></div>
     </article>`}).join('')}</div>`
   :'<div class="panel"><div class="empty"><b>No hay acciones asignadas a su área</b>Cuando alguien registre una acción correctiva que depende de su área, aparece acá con su fecha comprometida.</div></div>'}`;
+}
+
+/* ================= punto crítico =================
+   Un solo ítem crítico en «no cumple» deja al sector en rojo, no importa el porcentaje,
+   y lo descalifica del reconocimiento y de la mejora continua de ese mes. Es la regla
+   que pidió Calidad: un extintor bloqueado no se compensa con orden en el resto. */
+function criticosDe(a){
+  if(!a||!a.respuestas)return [];
+  const cl=state.checklists.find(c=>c.id===a.checklistId);
+  if(!cl)return [];
+  const out=[];
+  (cl.secciones||[]).forEach(s=>(s.items||[]).forEach(it=>{
+    if((it.severidad||'menor')!=='critico')return;
+    const r=a.respuestas[it.id];
+    if(!r||r.v==null||r.v==='na')return;
+    if(esFalla({modo:a.modo},r.v))out.push({codigo:s.codigo,texto:it.texto,obs:r.obs||'',id:it.id});
+  }));
+  return out;
+}
+const hayCritico=a=>criticosDe(a).length>0;
+/* el sector queda descalificado si su última auditoría del mes trae un crítico */
+function criticoSector(secId,a,m){
+  const hoy=new Date();
+  if(a==null){a=hoy.getFullYear();m=hoy.getMonth()}
+  const L=(state.auditorias||[]).filter(x=>x.sectorId===secId&&enMes(x.fecha,a,m)&&es5S(x))
+    .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)));
+  for(const x of L){const c=criticosDe(x); if(c.length)return {aud:x,items:c}}
+  return null;
+}
+function avisoCriticoHTML(a){
+  const c=criticosDe(a);
+  if(!c.length)return '';
+  return `<div class="notice crit" style="margin-bottom:14px"><div>
+    <b>Punto crítico: el sector queda en rojo.</b>
+    ${c.length===1?'Se registró un criterio crítico incumplido':'Se registraron '+c.length+' criterios críticos incumplidos'}, de modo que el
+    resultado no determina el semáforo. El sector queda <b>descalificado del reconocimiento y de la mejora continua</b> de este mes
+    hasta que el hallazgo se cierre con efectividad verificada.
+    <ul style="margin:8px 0 0;padding-left:18px">${c.map(x=>`<li><b>${esc(x.codigo||'')}</b> ${esc(x.texto)}${x.obs?' — '+esc(x.obs):''}</li>`).join('')}</ul></div></div>`;
+}
+
+/* ================= seguimiento de efectividad =================
+   Verificación mensual: 30 días después de cargada la evidencia se vuelve a mirar.
+   Hay reincidencia cuando el mismo criterio vuelve a salir «no cumple» en una auditoría
+   posterior del mismo sector. El sistema propone el resultado; Calidad lo confirma,
+   porque el manual exige que una persona verifique.                                   */
+/* Manual CAT, punto 12: el período de observación no debe superar los tres meses.
+   Calidad fijó la verificación mensual, dentro de ese tope. */
+const DIAS_VERIF=30, DIAS_VERIF_TOPE=90;
+/* No se verifica la efectividad de una acción que todavía no se hizo. Entra a la
+   verificación lo que el sector ya dejó listo o lo que Calidad ya cerró; el resto
+   sigue en el plan de acción, que es donde corresponde trabajarlo. */
+const verificable=h=>h&&(h.estado==='cerrado'||h.estado==='listo');
+const fechaAccion=h=>String(h.hechoEl||h.correccionEl||h.cierreEl
+  ||(h.estado==='cerrado'?String(h.cerrado||'').slice(0,10):'')
+  ||(verificable(h)?(h.vence||h.fecha):'')||'').slice(0,10);
+const fechaVerif=h=>{const f=fechaAccion(h);return f?masDias(f,DIAS_VERIF):''};
+/* ¿volvió a fallar el mismo ítem en ese sector después de la acción? */
+function reincidencias(h){
+  if(!h||!h.itemId)return [];
+  const desde=fechaAccion(h);
+  if(!desde)return [];
+  return (state.auditorias||[]).filter(a=>{
+    if(a.sectorId!==h.sectorId)return false;
+    if(String(a.fecha).slice(0,10)<=desde)return false;
+    const r=(a.respuestas||{})[h.itemId];
+    if(!r||r.v==null||r.v==='na')return false;
+    return esFalla({modo:a.modo},r.v);
+  }).sort((x,y)=>String(x.fecha).localeCompare(String(y.fecha)));
+}
+/* ================= el porcentaje de efectividad =================
+   Calidad pidió que la aplicación no se limite a decir «sí o no»: que mida. Cada plan de
+   acción parte de 100 % y pierde puntos por cada falla del tratamiento que el manual
+   considera relevante. El puntaje se muestra con su descuento renglón por renglón, de
+   modo que la calificación se pueda explicar ante el auditado y sostener ante una
+   certificación. De 85 % en adelante la acción es efectiva; de 50 a 84 %, parcialmente
+   efectiva; por debajo de 50 %, no efectiva.                                          */
+const EF_UMBRAL={efect:85,parcial:50};
+/* Medir la efectividad es de Calidad. El Comité se sienta con la Líder CAT y resuelve,
+   pero el dictamen se carga desde el perfil de Calidad: es quien responde por el dato.
+   Los demás ven el resultado —medida o no medida, y con qué porcentaje—, no quién lo
+   midió ni cuándo: lo que importa afuera es si el plan de acción sirvió. */
+const puedeDictaminar=()=>esAdmin();
+const EF_RUBRICA=[
+  ['Reincidencia · el mismo criterio vuelve a salir «no cumple» en el sector','−45 la primera · −25 cada una más','12 y 13'],
+  ['Cierre fuera del plazo comprometido','−15 hasta 15 días · −25 más allá','11'],
+  ['Sin fotografía de la corrección','−15','10'],
+  ['Hallazgo crítico o reincidente sin causa raíz registrada','−10','13'],
+  ['Solución declarada preventiva y sin acción preventiva escrita','−10','14'],
+  ['Corrección cargada y hallazgo sin cerrar al llegar la verificación','−20','11']];
+function pctEfect(h,re){
+  re=re||[];
+  const d=[];
+  if(re.length)d.push({t:re.length===1
+      ?'Reincidencia: el criterio volvió a salir «no cumple» el '+fmtDate(re[0].fecha)
+      :'Reincidencia en '+re.length+' auditorías posteriores, la última el '+fmtDate(re[re.length-1].fecha),
+    p:-(45+25*(re.length-1))});
+  if(h.estado!=='cerrado')d.push({t:'La corrección está cargada pero Calidad todavía no cerró el hallazgo',p:-20});
+  else if(h.fechaLimite&&h.cerrado){
+    const c=String(h.cerrado).slice(0,10), lim=String(h.fechaLimite);
+    if(c>lim){const dd=Math.max(1,Math.round((new Date(c)-new Date(lim))/86400000));
+      d.push({t:'Cerrado '+dd+' día'+(dd===1?'':'s')+' después del plazo comprometido ('+fmtDate(lim)+')',
+        p:dd>15?-25:-15});}
+  }
+  if(!h.sinFoto&&!evidenciasHall(h.id).some(x=>x.tipo==='correccion'))
+    d.push({t:'Sin fotografía de la corrección',p:-15});
+  if((h.severidad==='critico'||re.length)&&!String(h.causaRaiz||'').trim())
+    d.push({t:'Sin causa raíz registrada, tratándose de un hallazgo '+(h.severidad==='critico'?'crítico':'reincidente'),p:-10});
+  if(llevaPrev(h)&&!String(h.accionPreventiva||'').trim())
+    d.push({t:'Sin acción preventiva escrita, habiéndose declarado una solución preventiva',p:-10});
+  return {pct:Math.max(0,100+d.reduce((a,x)=>a+x.p,0)),det:d};
+}
+const efKDe=p=>p>=EF_UMBRAL.efect?'efect':(p>=EF_UMBRAL.parcial?'parcial':'noefect');
+/* si Calidad corrige la propuesta, el porcentaje acompaña la decisión tomada */
+const pctParaK=(k,p)=>{
+  if(k==='efect')return Math.max(EF_UMBRAL.efect,p==null?100:p);
+  if(k==='noefect')return Math.min(EF_UMBRAL.parcial-1,p==null?0:p);
+  return Math.min(EF_UMBRAL.efect-1,Math.max(EF_UMBRAL.parcial,p==null?60:p));
+};
+const efClase=p=>p==null?'':(p>=EF_UMBRAL.efect?'ok':(p>=EF_UMBRAL.parcial?'warn':'crit'));
+/* el estado del seguimiento de un hallazgo */
+function segEfect(h){
+  const acc=fechaAccion(h), ver=fechaVerif(h), hoy=todayISO();
+  const re=reincidencias(h);
+  const E=pctEfect(h,re);
+  if(h.efectividad)return {k:h.efectividad,l:EF_L[h.efectividad]||h.efectividad,confirmado:true,
+    re:re,ver:ver,pct:(h.efectividadPct==null?E.pct:h.efectividadPct),det:E.det,calc:E.pct,
+    manual:!!h.efectividadManual,nota:h.efectividadNota||'',
+    por:h.efectividadPor||'',el:String(h.efectividadEl||'').slice(0,10)};
+  if(!verificable(h)||!acc)return {k:'sin',l:'La acción todavía no se cerró',confirmado:false,
+    re:re,ver:'',pct:null,det:E.det};
+  if(ver&&ver>hoy&&!re.length)return {k:'espera',l:'En observación',confirmado:false,re:re,ver:ver,
+    pct:E.pct,det:E.det,
+    motivo:'Se verifica el '+fmtDate(ver)+', a los '+DIAS_VERIF+' días de la acción. Provisorio: '+E.pct+' %.'};
+  const k=efKDe(E.pct);
+  return {k:k,l:'Propuesta: '+EF_L[k]+' · '+E.pct+' %',confirmado:false,re:re,ver:ver,pct:E.pct,det:E.det,
+    motivo:E.det.length?'':'Sin descuentos: cerrado en plazo, con evidencia de la corrección y sin reincidencia.'};
+}
+const EF_L={efect:'Efectiva',parcial:'Parcialmente efectiva',noefect:'No efectiva'};
+const EF_K={efect:'ok',parcial:'warn',noefect:'crit',espera:'',sin:''};
+
+/* ================= tendencia de la efectividad =================
+   La serie de los últimos períodos: cuántas verificaciones se confirmaron en cada uno y
+   qué proporción resultó efectiva. Mensual o semanal, según lo que se quiera mirar. */
+function periodoDe(iso,modo){
+  const d=new Date(iso);
+  if(modo==='sem'){
+    const t=new Date(d); t.setDate(t.getDate()-((t.getDay()+6)%7));   /* lunes */
+    return t.toISOString().slice(0,10);
+  }
+  return String(iso).slice(0,7);
+}
+function etiquetaPeriodo(p,modo){
+  if(modo==='sem'){const d=new Date(p);return String(d.getDate()).padStart(2,'0')+'/'+MESES3[d.getMonth()]}
+  const [a,m]=p.split('-');return MESES3[Number(m)-1]+' '+String(a).slice(2);
+}
+function serieEfect(modo,n){
+  const hoy=new Date(); const per=[];
+  for(let i=n-1;i>=0;i--){
+    const d=new Date(hoy);
+    if(modo==='sem')d.setDate(d.getDate()-i*7); else d.setMonth(d.getMonth()-i);
+    per.push(periodoDe(d.toISOString().slice(0,10),modo));
+  }
+  const vistos=[...new Set(per)];
+  const base=(state.hallazgos||[]).filter(h=>veoSector(h.sectorId)&&h.efectividad&&h.efectividadEl);
+  return vistos.map(p=>{
+    const L=base.filter(h=>periodoDe(String(h.efectividadEl).slice(0,10),modo)===p);
+    const ok=L.filter(h=>h.efectividad==='efect').length;
+    const pa=L.filter(h=>h.efectividad==='parcial').length;
+    const no=L.filter(h=>h.efectividad==='noefect').length;
+    /* la línea es el promedio del porcentaje; los registros viejos, sin porcentaje
+       guardado, se recalculan con la misma regla para no dejar huecos en la serie */
+    const ps=L.map(h=>h.efectividadPct==null?(segEfect(h).pct):h.efectividadPct).filter(x=>x!=null);
+    return {p:p,l:etiquetaPeriodo(p,modo),ok:ok,pa:pa,no:no,tot:L.length,
+            pct:ps.length?Math.round(ps.reduce((a,b)=>a+b,0)/ps.length*10)/10:null};
+  });
+}
+/* el gráfico: una barra apilada por período y la línea del porcentaje efectivo */
+function graficoEfect(S){
+  const W=960,H=260,P={l:44,r:44,t:18,b:34};
+  const n=S.length||1, bw=Math.min(54,(W-P.l-P.r)/n*0.62), paso=(W-P.l-P.r)/n;
+  const max=Math.max(1,...S.map(x=>x.tot));
+  const y=v=>P.t+(H-P.t-P.b)*(1-v/max);
+  const cx=i=>P.l+paso*i+paso/2;
+  const barras=S.map((x,i)=>{
+    if(!x.tot)return '';
+    const h=v=>(H-P.t-P.b)*v/max;
+    let acc=0; const seg=[];
+    [['ok','var(--ok)'],['pa','var(--warn)'],['no','var(--crit)']].forEach(([k,c])=>{
+      const v=x[k]; if(!v)return;
+      const alto=h(v), yy=H-P.b-acc-alto; acc+=alto;
+      seg.push(`<rect x="${(cx(i)-bw/2).toFixed(1)}" y="${yy.toFixed(1)}" width="${bw.toFixed(1)}" height="${alto.toFixed(1)}" fill="${c}" rx="2"/>`);
+    });
+    return seg.join('');
+  }).join('');
+  const pts=S.map((x,i)=>x.pct==null?null:[cx(i),P.t+(H-P.t-P.b)*(1-x.pct/100)]).filter(Boolean);
+  const linea=pts.length>1?`<polyline fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"
+    points="${pts.map(p=>p[0].toFixed(1)+','+p[1].toFixed(1)).join(' ')}"/>`:'';
+  const puntos=pts.map(p=>`<circle cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="3.5" fill="var(--accent)"/>`).join('');
+  const ejes=[0,50,100].map(v=>{const yy=P.t+(H-P.t-P.b)*(1-v/100);
+    return `<line x1="${P.l}" y1="${yy.toFixed(1)}" x2="${W-P.r}" y2="${yy.toFixed(1)}" stroke="var(--line)" stroke-width="1"/>
+            <text x="${W-P.r+6}" y="${(yy+4).toFixed(1)}" font-size="11" fill="var(--ink-3)">${v} %</text>`}).join('');
+  const labs=S.map((x,i)=>`<text x="${cx(i).toFixed(1)}" y="${H-10}" font-size="11" text-anchor="middle" fill="var(--ink-3)">${esc(x.l)}</text>
+    ${x.tot?`<text x="${cx(i).toFixed(1)}" y="${(H-P.b-((H-P.t-P.b)*x.tot/max)-6).toFixed(1)}" font-size="11" text-anchor="middle" fill="var(--ink-2)" font-weight="600">${x.tot}</text>`:''}`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" role="img"
+    aria-label="Verificaciones confirmadas por período y porcentaje de efectividad">
+    ${ejes}${barras}${linea}${puntos}${labs}</svg>`;
+}
+
+/* ================= el dictamen del comité =================
+   El porcentaje que calcula la aplicación es una propuesta. Cuando el comité se reúne
+   y resuelve otra cosa —porque fue a mirar al piso, porque el sector presentó evidencia
+   nueva, porque la acción no sostiene la condición— lo que vale es lo que resuelve el
+   comité. Acá se registra: el resultado, el porcentaje, quién dictamina, en qué fecha y
+   con qué fundamento. El cálculo original queda guardado al lado, para que se vea la
+   diferencia entre lo que midió el sistema y lo que resolvieron las personas. */
+function efAbrirDictamen(h,s){
+  const hoy=todayISO();
+  state.efEdit={id:h.id,
+    k:(s.k==='espera'||s.k==='sin')?'efect':s.k,
+    pct:(s.pct==null?100:s.pct),
+    quien:h.efectividadPor||(state.sesion&&state.sesion.nombre)||'',
+    fecha:(String(h.efectividadEl||'').slice(0,10))||hoy,
+    nota:h.efectividadNota||''};
+}
+/* antes de volver a dibujar hay que guardar lo tecleado, o se pierde */
+function efCapturar(){
+  if(!state.efEdit)return;
+  const g=id=>{const e=$('#'+id);return e?e.value:null};
+  const p=g('efPct');
+  if(p!=null&&String(p).trim()!=='')state.efEdit.pct=Math.max(0,Math.min(100,Math.round(Number(p))||0));
+  const q=g('efQuien'); if(q!=null)state.efEdit.quien=q;
+  const f=g('efFecha'); if(f!=null&&f)state.efEdit.fecha=f;
+  const n=g('efNota');  if(n!=null)state.efEdit.nota=n;
+}
+function editorDictamen(h,s){
+  const E=state.efEdit, calc=(s.calc==null?s.pct:s.calc);
+  return `<div class="efedit">
+    <div class="efeh"><b>Dictamen sobre la efectividad</b>
+      <span>${calc==null?'La aplicación todavía no puede calcular el porcentaje.'
+        :'La aplicación calculó <b>'+calc+' %</b> con la regla publicada abajo. Si el comité resuelve otra cosa, vale lo que resuelva el comité: se guarda su porcentaje y el cálculo queda registrado al lado.'}</span></div>
+    <div class="efeg">
+      <div class="field"><label>Resultado</label><div class="dgopt">
+        ${[['efect','si'],['parcial','med'],['noefect','no']].map(([v,c])=>
+          `<button class="${c}" data-efk="${v}" aria-pressed="${E.k===v}">${esc(EF_L[v])}</button>`).join('')}</div></div>
+      <div class="field"><label for="efPct">Porcentaje</label>
+        <input type="number" id="efPct" min="0" max="100" step="1" value="${E.pct}"></div>
+      <div class="field"><label for="efFecha">Fecha del dictamen</label>
+        <input type="date" id="efFecha" value="${esc(E.fecha)}"></div>
+      <div class="field w"><label for="efQuien">Quién dictamina</label>
+        <input id="efQuien" value="${esc(E.quien)}" placeholder="Ej.: Comité de Calidad · acta del 20/10/2026"></div>
+    </div>
+    <div class="field" style="margin:0"><label for="efNota">Fundamento del dictamen</label>
+      <textarea id="efNota" style="min-height:54px" placeholder="Ej.: el comité verificó en piso el 18/10 y resolvió que la acción no sostiene la condición: la demarcación se borró a las tres semanas">${esc(E.nota)}</textarea></div>
+    <div class="efeb"><button class="btn primary sm" data-efguardar="${esc(h.id)}">Guardar el dictamen</button>
+      <button class="btn sm" data-efcancel="1">Cancelar</button>
+      <span class="sm" style="color:var(--ink-3)">Queda anotado en el historial del hallazgo, con quién lo cambió y cuándo.</span></div>
+  </div>`;
+}
+
+function vEfectividad(){
+  state.ef=state.ef||{sec:'all',modo:'mes'};
+  const MODO=state.ef.modo==='sem'?'sem':'mes';
+  const secs=sectoresVista();
+  const base=(state.hallazgos||[]).filter(h=>veoSector(h.sectorId))
+    .filter(h=>state.ef.sec==='all'||h.sectorId===state.ef.sec)
+    .map(h=>Object.assign({},h,{_s:segEfect(h)}));
+  const porDecidir=base.filter(h=>!h._s.confirmado&&['efect','parcial','noefect'].indexOf(h._s.k)>=0)
+    .sort((a,b)=>(a._s.pct||0)-(b._s.pct||0));
+  const lote=porDecidir.filter(h=>h._s.k==='efect');
+  const enObs=base.filter(h=>h._s.k==='espera');
+  const sinAccion=base.filter(h=>h._s.k==='sin').length;
+  const conf=base.filter(h=>h._s.confirmado);
+  const efect=conf.filter(h=>h._s.k==='efect').length;
+  const pcts=conf.map(h=>h._s.pct).filter(x=>x!=null);
+  const prom=pcts.length?Math.round(pcts.reduce((a,b)=>a+b,0)/pcts.length*10)/10:null;
+  const promLote=lote.length?Math.round(lote.reduce((a,h)=>a+h._s.pct,0)/lote.length*10)/10:null;
+  /* por sector: el promedio del porcentaje de las verificaciones ya confirmadas */
+  const filas=secs.map(s=>{
+    const L=base.filter(h=>h.sectorId===s.id&&h._s.confirmado);
+    const P=L.map(h=>h._s.pct).filter(x=>x!=null);
+    const ok=L.filter(h=>h._s.k==='efect').length;
+    const re=base.filter(h=>h.sectorId===s.id&&h._s.re.length).length;
+    return {s:s,n:L.length,ok:ok,re:re,pct:P.length?Math.round(P.reduce((a,b)=>a+b,0)/P.length*10)/10:null};
+  }).filter(f=>f.n||f.re).sort((a,b)=>(a.pct==null?101:a.pct)-(b.pct==null?101:b.pct));
+  const barra=f=>`<div class="efb"><i class="${efClase(f.pct)}" style="width:${Math.max(2,f.pct==null?0:f.pct)}%"></i></div>`;
+  const detalle=h=>h._s.det&&h._s.det.length
+    ? `<ul class="efdet">${h._s.det.map(d=>`<li>${esc(d.t)} <b>${d.p} pts</b></li>`).join('')}</ul>`
+    : `<div class="efm">${esc(h._s.motivo||'')}</div>`;
+  return `${avisoDb()}
+  <div class="head"><div><h1>Efectividad de los planes de acción</h1>
+    <p>La verificación se mide. A los ${DIAS_VERIF} días de cargada la acción la aplicación controla
+       si el criterio volvió a salir «no cumple» en el sector, si el cierre entró en el plazo
+       comprometido, si hay fotografía de la corrección y si se registró la causa raíz. De ese
+       control resulta un <b>porcentaje de efectividad por hallazgo</b>: desde ${EF_UMBRAL.efect} % la acción es
+       efectiva, entre ${EF_UMBRAL.parcial} y ${EF_UMBRAL.efect-1} % parcialmente efectiva y por debajo de ${EF_UMBRAL.parcial} % no efectiva.
+       La aplicación propone; la confirmación la realiza Calidad, conforme al punto 13 del manual.</p></div>
+    <div class="headbtns">
+      <button class="btn" id="btnEfImp">Imprimir</button>
+      <button class="btn" id="btnEfCsv">Descargar</button>
+      <div class="field"><label for="efModo">Tendencia</label>
+        <select id="efModo"><option value="mes"${MODO==='mes'?' selected':''}>Mensual</option>
+        <option value="sem"${MODO==='sem'?' selected':''}>Semanal</option></select></div>
+      <div class="field"><label for="efSec">Sector</label>
+      <select id="efSec"><option value="all"${state.ef.sec==='all'?' selected':''}>Todos</option>
+      ${secs.map(s=>`<option value="${esc(s.id)}"${state.ef.sec===s.id?' selected':''}>${esc(s.nombre)}</option>`).join('')}</select></div></div></div>
+
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi${prom!=null&&prom<EF_UMBRAL.efect?' tint':(prom!=null?' tintok':'')}"><div class="k">Efectividad promedio</div>
+      <div class="v">${prom==null?'—':n1(prom)+'<small>%</small>'}</div>
+      <div class="m"><span>${conf.length?efect+(efect===1?' efectiva':' efectivas')+' de '+conf.length+' verificada'+(conf.length===1?'':'s'):'sin verificaciones confirmadas'}</span></div></div>
+    <div class="kpi${porDecidir.length?' tint':''}"><div class="k">Esperando su confirmación</div><div class="v">${porDecidir.length}</div>
+      <div class="m"><span>${promLote==null?'ninguna propuesta efectiva':(lote.length===1?'1 propuesta efectiva · ':lote.length+' propuestas efectivas · promedio ')+n1(promLote)+' %'}</span></div></div>
+    <div class="kpi"><div class="k">En observación</div><div class="v">${enObs.length}</div>
+      <div class="m"><span>${sinAccion?sinAccion+' sin la acción cerrada':'todavía no cumplen los '+DIAS_VERIF+' días'}</span></div></div>
+    <div class="kpi${base.filter(h=>h._s.re.length).length?' tint':''}"><div class="k">Con reincidencia</div>
+      <div class="v">${base.filter(h=>h._s.re.length).length}</div>
+      <div class="m"><span>el mismo criterio volvió a fallar</span></div></div>
+  </div>
+
+  ${porDecidir.length?`<section class="panel" style="margin-bottom:16px"><header><h3>Esperando su confirmación</h3>
+    <span class="sub">la aplicación calcula el porcentaje; usted lo confirma o lo corrige${
+      sinAccion?' · '+sinAccion+' hallazgo'+(sinAccion===1?'':'s')+' sin la acción cerrada todavía no entra'+(sinAccion===1?'':'n')+' acá':''}</span>
+    ${lote.length?`<div style="margin-left:auto"><button class="btn primary sm" data-eflote="efect">${lote.length===1?'Confirmar la propuesta efectiva · '+n1(promLote)+' %':'Confirmar las '+lote.length+' propuestas efectivas · promedio '+n1(promLote)+' %'}</button></div>`:''}</header>
+    <div class="body" style="display:flex;flex-direction:column;gap:10px">
+    ${porDecidir.map(h=>`<div class="efrow ${h._s.k}">
+      <div class="eft"><b>${esc(h.item||h.texto||'')}</b>
+        <div class="efm">${esc(nombreSector(h.sectorId)||'')}${h.codigo?' · '+esc(h.codigo):''} · acción del ${fmtDate(fechaAccion(h))}${
+          h.fechaLimite?' · plazo '+fmtDate(h.fechaLimite):''}</div>
+        ${detalle(h)}</div>
+      <div class="efa">
+        <div class="efpct ${efClase(h._s.pct)}">${h._s.pct==null?'—':h._s.pct+'<small>%</small>'}</div>
+        <span class="badge ${EF_K[h._s.k]} dot">${esc(EF_L[h._s.k]||'')}</span>
+        <button class="btn sm primary" data-efok="${esc(h.id)}" data-efv="${h._s.k}">Confirmar</button>
+        ${['efect','parcial','noefect'].filter(v=>v!==h._s.k).map(v=>
+          `<button class="btn sm" data-efok="${esc(h.id)}" data-efv="${v}">${esc(EF_L[v])}</button>`).join('')}
+        <button class="btn ghost sm" data-efedit="${esc(h.id)}">Dictaminar…</button>
+      </div>
+      ${state.efEdit&&state.efEdit.id===h.id?`<div style="flex:1 0 100%">${editorDictamen(h,h._s)}</div>`:''}
+      </div>`).join('')}
+    </div></section>`:''}
+
+  ${(function(){
+    const S=serieEfect(MODO,MODO==='sem'?8:6);
+    const con=S.filter(x=>x.tot);
+    const pr=con.length?Math.round(con.reduce((a,x)=>a+(x.pct||0),0)/con.length*10)/10:null;
+    const ult=con.length?con[con.length-1]:null, pre=con.length>1?con[con.length-2]:null;
+    const dif=(ult&&pre&&ult.pct!=null&&pre.pct!=null)?Math.round((ult.pct-pre.pct)*10)/10:null;
+    return `<section class="panel" style="margin-bottom:16px"><header>
+      <h3>Tendencia ${MODO==='sem'?'semanal':'mensual'}</h3>
+      <span class="sub">${MODO==='sem'?'últimas 8 semanas':'últimos 6 meses'} · barras: verificaciones confirmadas · línea: efectividad promedio</span></header>
+      <div class="body">
+        ${con.length?graficoEfect(S):'<div class="empty"><b>Todavía no hay verificaciones confirmadas</b>El gráfico se arma a medida que usted confirma las verificaciones de efectividad.</div>'}
+        ${con.length?`<div class="efleg">
+          <span><i style="background:var(--ok)"></i> Efectiva</span>
+          <span><i style="background:var(--warn)"></i> Parcialmente efectiva</span>
+          <span><i style="background:var(--crit)"></i> No efectiva</span>
+          <span><i style="background:var(--accent)"></i> Efectividad promedio</span>
+          <span style="margin-left:auto">Promedio del período: <b>${pr==null?'—':n1(pr)+' %'}</b>${
+            dif==null?'':` · ${dif>=0?'+':''}${n1(dif)} puntos contra el ${MODO==='sem'?'período':'mes'} anterior`}</span>
+        </div>`:''}
+      </div></section>`})()}
+
+  <section class="panel" style="margin-bottom:16px"><header><h3>Efectividad por sector</h3>
+    <span class="sub">de menor a mayor · promedio de las verificaciones ya confirmadas</span></header>
+    ${filas.length?`<div class="body" style="display:flex;flex-direction:column;gap:12px">
+      ${filas.map(f=>`<div class="efsec">
+        <div class="efn"><b>${esc(f.s.nombre)}</b><span>${f.n} verificada${f.n===1?'':'s'} · ${f.ok} efectiva${f.ok===1?'':'s'}${f.re?' · '+f.re+' con reincidencia':''}</span></div>
+        ${barra(f)}
+        <div class="efp">${f.pct==null?'—':n1(f.pct)+' %'}</div></div>`).join('')}
+    </div>`:'<div class="empty">Todavía no hay verificaciones confirmadas.</div>'}
+  </section>
+
+  ${(function(){
+    const L=conf.slice().sort((a,b)=>String(b._s.el||'').localeCompare(String(a._s.el||''))).slice(0,40);
+    if(!L.length)return '';
+    return `<section class="panel" style="margin-bottom:16px"><header><h3>Verificaciones confirmadas</h3>
+      <span class="sub">${conf.length>40?'las 40 más recientes de '+conf.length+' · ':''}se modifican cuando el comité dictamina otra cosa</span></header>
+      <div class="tw"><table class="lst"><thead><tr><th style="min-width:230px">Criterio</th>
+        <th style="min-width:130px">Sector</th><th style="width:160px">Resultado</th>
+        <th style="width:95px">Porcentaje</th><th style="min-width:150px">Verificó</th>
+        <th style="width:140px"></th></tr></thead><tbody>
+      ${L.map(h=>`<tr><td>${esc(h.item||h.texto||'')}
+          ${h._s.nota?`<div class="sm" style="color:var(--ink-3);margin-top:3px"><b>Fundamento:</b> ${esc(h._s.nota)}</div>`:''}</td>
+        <td>${esc(nombreSector(h.sectorId)||'')}</td>
+        <td><span class="badge ${EF_K[h._s.k]} dot">${esc(EF_L[h._s.k]||'')}</span>
+          ${h._s.manual?'<br><span class="badge a" style="margin-top:3px">Dictamen del comité</span>':''}</td>
+        <td style="white-space:nowrap"><b>${h._s.pct==null?'—':h._s.pct+' %'}</b>${
+          h._s.calc!=null&&h._s.calc!==h._s.pct?`<div class="sm" style="color:var(--ink-3)">cálculo ${h._s.calc} %</div>`:''}</td>
+        <td>${esc(h._s.por||'—')}${h._s.el?`<div class="sm" style="color:var(--ink-3)">${fmtDate(h._s.el)}</div>`:''}</td>
+        <td class="r"><button class="btn sm" data-efedit="${esc(h.id)}">${state.efEdit&&state.efEdit.id===h.id?'Cerrar':'Modificar dictamen'}</button></td></tr>
+        ${state.efEdit&&state.efEdit.id===h.id?`<tr><td colspan="6" style="padding-top:0">${editorDictamen(h,h._s)}</td></tr>`:''}`).join('')}
+      </tbody></table></div></section>`})()}
+
+  ${enObs.length?`<section class="panel" style="margin-bottom:16px"><header><h3>En observación</h3>
+    <span class="sub">se verifican solos al cumplirse los ${DIAS_VERIF} días · el porcentaje es provisorio</span></header>
+    <div class="tw"><table class="lst"><thead><tr><th style="min-width:230px">Criterio</th><th style="min-width:140px">Sector</th>
+      <th style="width:120px">Acción</th><th style="width:120px">Se verifica</th><th style="width:110px">Provisorio</th></tr></thead><tbody>
+      ${enObs.map(h=>`<tr><td>${esc(h.item||h.texto||'')}</td><td>${esc(nombreSector(h.sectorId)||'')}</td>
+        <td>${fmtDate(fechaAccion(h))}</td><td><b>${fmtDate(h._s.ver)}</b></td>
+        <td><span class="badge ${EF_K[efKDe(h._s.pct||0)]} dot">${h._s.pct==null?'—':h._s.pct+' %'}</span>
+          <button class="btn ghost sm" data-efedit="${esc(h.id)}" style="margin-left:6px;padding:2px 7px">Dictaminar…</button></td></tr>
+        ${state.efEdit&&state.efEdit.id===h.id?`<tr><td colspan="5" style="padding-top:0">${editorDictamen(h,h._s)}</td></tr>`:''}`).join('')}
+    </tbody></table></div></section>`:''}
+
+  <section class="panel"><header><h3>Cómo se calcula el porcentaje</h3>
+    <span class="sub">la misma regla para todos los sectores · referencia al Manual de Auditorías CAT</span></header>
+    <div class="tw"><table class="efrub"><thead><tr><th>Cada plan de acción parte de 100 % y descuenta por</th>
+      <th class="p">Descuento</th><th style="width:90px">Manual</th></tr></thead><tbody>
+      ${EF_RUBRICA.map(r=>`<tr><td>${esc(r[0])}</td><td class="p">${esc(r[1])}</td><td>punto ${esc(r[2])}</td></tr>`).join('')}
+      <tr><td><b>Resultado</b></td><td class="p" colspan="2" style="text-align:left">
+        <span class="badge ok dot">${EF_UMBRAL.efect} % o más · Efectiva</span>
+        <span class="badge warn dot">${EF_UMBRAL.parcial} a ${EF_UMBRAL.efect-1} % · Parcialmente efectiva</span>
+        <span class="badge crit dot">menos de ${EF_UMBRAL.parcial} % · No efectiva</span></td></tr>
+    </tbody></table></div>
+    <div class="body"><div class="soft2">El porcentaje es una propuesta de la aplicación. Calidad lo confirma, y el comité
+      puede dictaminar otro resultado con <b>Dictaminar…</b> o <b>Modificar dictamen</b>: se registra el porcentaje resuelto, quién
+      lo resolvió, la fecha y el fundamento, y el cálculo original queda al lado para que se vea la diferencia. Una acción
+      resuelta como efectiva cierra el hallazgo; una resuelta como no efectiva lo vuelve a abrir.</div></div>
+  </section>`;
 }
 
 function vChecklists(){
@@ -12814,6 +13921,7 @@ document.addEventListener('keydown',e=>{
 /* ================= menú por sitio ================= */
 const NAVITEMS={"papelera": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2.6 4.3h10.8\"/><path d=\"M12.2 4.3v8.4a1.3 1.3 0 01-1.3 1.3H5.1a1.3 1.3 0 01-1.3-1.3V4.3\"/><path d=\"M6 4.3V3a1 1 0 011-1h2a1 1 0 011 1v1.3\"/><path d=\"M6.6 7v4M9.4 7v4\"/></svg>", "l": "Papelera", "badge": ""}, "cumplimiento": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.7a6.3 6.3 0 106.3 6.3\"/><path d=\"M8 8V1.7A6.3 6.3 0 0114.3 8z\"/></svg>", "l": "Auditoría 5S", "badge": ""}, "audgen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M5.3 8.2l1.9 1.9 3.5-4\"/></svg>", "l": "Auditoría general", "badge": ""}, "audsec": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011-1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Auditoría", "badge": ""}, "audint": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 5.2V3.4a1.4 1.4 0 011.4-1.4h7.2A1.4 1.4 0 0113 3.4v9.2a1.4 1.4 0 01-1.4 1.4H4.4A1.4 1.4 0 013 12.6V10.8\"/><path d=\"M1.6 8h6.8M6.6 6.2L8.4 8l-1.8 1.8\"/></svg>", "l": "Auditoría interna", "badge": ""}, "manual": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M6.2 6.1a1.9 1.9 0 113.1 1.5c-.7.5-1.3.8-1.3 1.6\"/><path d=\"M8 11.7v.2\"/></svg>", "l": "Cómo se usa", "badge": ""}, "resumen": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 13.5h12\"/><path d=\"M4 13.5V8M7.3 13.5V4M10.6 13.5V6.5M14 13.5V2.5\"/></svg>", "l": "Resumen ejecutivo", "badge": ""}, "impacto": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"8\" cy=\"8\" r=\"6.3\"/><path d=\"M8 4.6v6.8M6.3 6.2h3.4M6.3 9.8h3.4\"/></svg>", "l": "Impacto monetario", "badge": ""}, "piso": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"3.5\" y=\"1.5\" width=\"9\" height=\"13\" rx=\"2\"/><path d=\"M6.5 12h3\"/><path d=\"M6 5.8l1.4 1.4 2.6-2.9\"/></svg>", "l": "Auditar", "badge": ""}, "rotacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M13.6 6.4A5.8 5.8 0 002.6 8\"/><path d=\"M2.4 9.6a5.8 5.8 0 0011 -1.6\"/><path d=\"M13.6 3.2v3.2h-3.2M2.4 12.8V9.6h3.2\"/></svg>", "l": "Asignación de auditores", "badge": ""}, "tablero": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"1.5\" width=\"5\" height=\"6\" rx=\"1\"/><rect x=\"9.5\" y=\"1.5\" width=\"5\" height=\"9\" rx=\"1\"/><rect x=\"1.5\" y=\"9.5\" width=\"5\" height=\"5\" rx=\"1\"/><rect x=\"9.5\" y=\"12.5\" width=\"5\" height=\"2\" rx=\"1\"/></svg>", "l": "Tablero", "badge": ""}, "evolucion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 12.5l3.5-4 3 2.5 5.5-6.5\"/><path d=\"M10.5 4.5H14v3.5\"/></svg>", "l": "Evolución por sector", "badge": ""}, "validar": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3 8.4l3 3 7-7.4\"/><path d=\"M13.5 8v5.5a1 1 0 01-1 1h-9a1 1 0 01-1-1v-9a1 1 0 011-1H10\"/></svg>", "l": "Por validar", "badge": "badgeVal"}, "expedientes": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z\"/><path d=\"M1.5 4.5V3a1 1 0 011-1h3L7 3.5\"/></svg>", "l": "Auditorías realizadas", "badge": ""}, "auditorias": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3.5h12M2 8h12M2 12.5h12\"/></svg>", "l": "Histórico y puntajes", "badge": ""}, "hallazgos": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8L14.5 13.5h-13z\"/><path d=\"M8 6v3.5M8 11.4v.2\"/></svg>", "l": "Plan de acción de NC", "badge": "badgeHall"}, "buenas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M8 1.8l1.9 4h4.3l-3.4 2.8 1.3 4.3L8 10.4l-4.1 2.5 1.3-4.3L1.8 5.8h4.3z\"/></svg>", "l": "Buenas prácticas", "badge": ""}, "copa": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M4.5 2h7v3.5a3.5 3.5 0 01-7 0z\"/><path d=\"M4.5 3H2.6v1.1A2.4 2.4 0 004.8 6.5M11.5 3h1.9v1.1a2.4 2.4 0 01-2.2 2.4\"/><path d=\"M8 9v2.5M5.6 14h4.8l-.5-2.5H6.1z\"/></svg>", "l": "Reconocimiento", "badge": ""}, "layouts": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 4l4.5-2 4 2 4.5-2v10l-4.5 2-4-2-4.5 2z\"/><path d=\"M6 2v10M10 4v10\"/></svg>", "l": "Layout general", "badge": ""}, "pantalla": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.5\" y=\"2.5\" width=\"13\" height=\"9\" rx=\"1\"/><path d=\"M5.5 14h5\"/></svg>", "l": "Pantalla del CD", "badge": ""}, "pilares": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 3h12\"/><path d=\"M3.5 3v9M8 3v9M12.5 3v9\"/><path d=\"M1.5 12h13v2h-13z\"/></svg>", "l": "Los 6 pilares", "badge": ""}, "checklists": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 4h2.5M2 8h2.5M2 12h2.5M7 4h7M7 8h7M7 12h7\"/></svg>", "l": "Checklists", "badge": ""}, "sectores": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.5 14.5V7l4-2.5V14.5M5.5 14.5V2.5l4 2V14.5M9.5 14.5V6l5 2.5v6z\"/></svg>", "l": "Sitios y sectores", "badge": ""}, "mejoras": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M5.9 10.9a4.1 4.1 0 114.2 0\"/><path d=\"M6.3 11.2h3.4v1.5a1.7 1.7 0 01-3.4 0z\"/><path d=\"M8 1.4v1.2M2.7 4.1l.9.7M13.3 4.1l-.9.7\"/></svg>", "l": "Mejora continua", "badge": ""}, "ahorro": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"6.4\" cy=\"9.6\" r=\"4.6\"/><path d=\"M4.8 9.6h3.2M6.4 8v3.2\"/><path d=\"M10.4 6.1l2.1-2.7 2.1 2.7\"/><path d=\"M12.5 3.4v5.2\"/></svg>", "l": "Ahorro · vista macro", "badge": ""}, "aprobacion": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M3.2 8.3l2.6 2.6 6-6.4\"/><circle cx=\"8\" cy=\"8\" r=\"6.4\"/></svg>", "l": "Aprobación del sector", "badge": ""}, "reglas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M2 11.5L11.5 2l2.5 2.5L4.5 14H2z\"/><path d=\"M9.4 4.1l2.5 2.5\"/><path d=\"M2 8h3\"/></svg>", "l": "Reglas del puntaje", "badge": ""}, "tarjetas": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.6\" y=\"3.4\" width=\"8.4\" height=\"10.2\" rx=\"1.2\"/><path d=\"M5.4 2.1l7.6 1.8a1.2 1.2 0 01.9 1.5l-2 8.1\"/></svg>", "l": "Tarjetas", "badge": "badgeTarj"}, "calendario": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><rect x=\"1.8\" y=\"3\" width=\"12.4\" height=\"11.2\" rx=\"1.4\"/><path d=\"M1.8 6.6h12.4\"/><path d=\"M5.2 1.6v2.6M10.8 1.6v2.6\"/><path d=\"M5 9.4h2M9 9.4h2M5 11.8h2\"/></svg>", "l": "Calendario", "badge": ""}, "coherencia": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"5.9\" cy=\"8\" r=\"4.3\"/><circle cx=\"10.1\" cy=\"8\" r=\"4.3\"/></svg>", "l": "Coherencia entre auditorías", "badge": ""}, "audext": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"7.2\" cy=\"7.2\" r=\"4.6\"/><path d=\"M10.6 10.6l3 3\"/><path d=\"M5.3 7.3l1.4 1.4 2.4-2.8\"/></svg>", "l": "Auditoría externa de pilar", "badge": ""}, "tendencia": {"svg": "<svg width=\"16\" height=\"16\" viewBox=\"0 0 16 16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><path d=\"M1.8 12.4l3.6-4.2 2.6 2.3 5.4-6\"/><path d=\"M10.2 4.5h3.5V8\"/><path d=\"M1.8 14.2h12.4\"/></svg>", "l": "Tendencia mensual", "badge": ""}};
 NAVITEMS.mejoras={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 11.5l3.5-4 2.5 2.2L13.5 4"/><path d="M10 4h3.5v3.5"/><path d="M2 14h12"/></svg>',l:'Mejora continua',badge:''};
+NAVITEMS.avisos={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.9a4 4 0 00-4 4c0 3-1.3 4.2-1.3 4.2h10.6S12 8.9 12 5.9a4 4 0 00-4-4z"/><path d="M6.8 12.5a1.4 1.4 0 002.4 0"/></svg>',l:'Avisos',badge:'badgeAv'};
 NAVITEMS.sanciones={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1.8v12.4"/><path d="M3 4.5h10"/><path d="M5.2 4.8L3 9.2h4.4zM10.8 4.8L8.6 9.2H13z"/><path d="M3 9.2a2.2 2.2 0 004.4 0M8.6 9.2a2.2 2.2 0 004.4 0"/></svg>',l:'Reconocimientos del mes',badge:''};
 NAVITEMS.ahorro={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12.5 6 7l3 2.5L14 3.5"/><path d="M10 3.5h4v4"/></svg>',l:'Ahorro y sectores'};
 NAVITEMS.gerencia={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1.5" y="2.5" width="13" height="10" rx="1.5"/><path d="M4.5 9.5l2.5-2.5 2 2 2.5-3.5"/></svg>',l:'Resumen general',badge:''};
@@ -12821,6 +13929,7 @@ NAVITEMS.etiquetas={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="n
 NAVITEMS.usuarios={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="5.5" r="2.5"/><path d="M1.5 13.5a4.5 4.5 0 019 0"/><circle cx="11.5" cy="6" r="2"/><path d="M11 10.5a3.5 3.5 0 013.5 3"/></svg>',l:'Usuarios',badge:''};
 NAVITEMS.manualaud={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2.5 3.2A1.2 1.2 0 013.7 2h3.1A1.6 1.6 0 018 2.9 1.6 1.6 0 019.2 2h3.1a1.2 1.2 0 011.2 1.2v8.6a1.2 1.2 0 01-1.2 1.2H9.2A1.6 1.6 0 008 13.9a1.6 1.6 0 00-1.2-.9H3.7a1.2 1.2 0 01-1.2-1.2z"/><path d="M8 2.9v11"/></svg>',l:'Manual de auditorías',badge:''};
 NAVITEMS.pendientes={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5.5 2.5h5a1 1 0 011 1v1h1.2a1 1 0 011 1v8a1 1 0 01-1 1H3.3a1 1 0 01-1-1v-8a1 1 0 011-1H4.5v-1a1 1 0 011-1z"/><path d="M5.6 9.1l1.6 1.6 3.2-3.6"/></svg>',l:'Pendientes',badge:'badgePend'};
+NAVITEMS.efectividad={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12.6l3.4-4 2.5 2.2 5.2-5.8"/><path d="M9.6 5h3.6v3.5"/><path d="M1.8 14.3h12.4"/></svg>',l:'Efectividad del plan',badge:''};
 NAVITEMS.bitacora={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1.5h8l2.5 2.5v10.5h-10.5z"/><path d="M5.5 7h5M5.5 9.5h5M5.5 12h3"/></svg>',l:'Bitácora',badge:''};
 const GRUPOS=[{id:'cd',nombre:'CAT Centros de Distribución'},{id:'industria',nombre:'CAT Industrias'}];
 const SITIOS_CAT=[
@@ -12843,7 +13952,7 @@ const MENU5S=[
  ['Dirección',['resumen','ahorro','impacto','tablero']],
  ['CAT · 5S',['cumplimiento','hallazgos','pendientes','rotacion','mejoras','layouts','copa','tendencia']],
  ['Auditoría interna CDSA',['audsec','expedientes','coherencia','audint','calendario']],
- ['Seguimiento de Calidad',['aprobacion','audgen','audext','seginf','tarjetas','evolucion','auditorias','buenas','sanciones','pantalla']],
+ ['Seguimiento de Calidad',['efectividad','aprobacion','audgen','audext','seginf','tarjetas','evolucion','auditorias','buenas','sanciones','pantalla']],
  ['Sólo Calidad',['reglas','papelera']]];
 function sitiosMenu(){
   const extra=state.sitios.filter(x=>!SITIOS_CAT.some(c=>c.id===x.id)).map(x=>({id:x.id,grupo:x.grupo||'cd',padre:x.padre||'',nombre:x.nombre,corto:x.nombre,ciudad:x.ciudad||''}));
@@ -12853,6 +13962,13 @@ const sitioCat=id=>sitiosMenu().find(x=>x.id===id)||SITIOS_CAT[0];
 const sitioActual=()=>sitioCat(state.sitioSel);
 function isOpen(k){
   if(state.fold[k]!=null)return state.fold[k];
+  /* las carpetas del menú 5S arrancan cerradas, salvo la que contiene lo que se está
+     mirando: así no aparecen treinta opciones de golpe */
+  if(k.indexOf('m:')===0){
+    const gi=Number(k.split(':').pop());
+    const g=MENU5S[gi];
+    return !!(g&&g[1].indexOf(state.view)>=0);
+  }
   if(k.indexOf('g:')===0)return true;
   if(/^s:[^:]+:5s$/.test(k))return true;
   if(/^s:[^:]+:pil$/.test(k))return false;
@@ -12870,7 +13986,7 @@ function navItem(v,extra){const it=NAVITEMS[v];
     return mios.map(id=>{const q=pilarDe(id)||{};
       return `<button class="nav" data-view="audint" data-audpil="${esc(id)}"${extra||''}>${it.svg} Auditoría interna · ${esc(q.nombre||id)}</button>`}).join('');
   }
-  return `<button class="nav" data-view="${v}"${extra||''}>${it.svg} ${esc(it.l)}${it.badge?` <span class="badge ${it.badge==='badgeVal'?'warn':'crit'}" id="${it.badge}" hidden>0</span>`:''}</button>`}
+  return `<button class="nav" data-view="${v}"${extra||''}>${it.svg} ${esc(it.l)}${it.badge?` <span class="badge ${it.badge==='badgeVal'?'warn':(it.badge==='badgeAv'?'a':'crit')}" id="${it.badge}" hidden>0</span>`:''}</button>`}
 const foldIco='<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.5 4.5V13a1 1 0 001 1h11a1 1 0 001-1V6H8L6.5 4.5z"/><path d="M1.5 4.5V3a1 1 0 011-1h3L7 3.5"/></svg>';
 function navFold(k,label,body,cls,attr){
   const open=isOpen(k);
@@ -12890,13 +14006,17 @@ function pilaresDelPerfil(){
   return todos;
 }
 function navHTML(){
-  let h=navItem('manual')+navItem('manualaud')+navItem('gerencia');
+  let h=navItem('manual')+navItem('manualaud')+navItem('avisos')+navItem('gerencia');
   const soloSitio=restringidoASitio()?state.sesion.sitioId:null;
   const todos=sitiosMenu();
   const bloqueSitio=(st,g)=>{
     const ds=` data-sitio="${st.id}"`;
-    const m5=MENU5S.map(([lab,vs])=>{const cuerpo=vs.map(v=>navItem(v,ds)).join('');
-      return cuerpo?`<div class="navlabel">${lab}</div>`+cuerpo:''}).join('');
+    const m5=MENU5S.map(([lab,vs],gi)=>{const cuerpo=vs.map(v=>navItem(v,ds)).join('');
+      if(!cuerpo)return '';
+      /* con pocas opciones no tiene sentido una carpeta: se muestran directo */
+      const n=(cuerpo.match(/class="nav[ "]/g)||[]).length;
+      return n<=2?`<div class="navlabel">${lab}</div>`+cuerpo
+                 :navFold('m:'+st.id+':'+gi,lab,cuerpo,'grp');}).join('');
     const pils=pilaresDelPerfil();
     const pil=(puede('pilares')&&pils.length)?((pils.length>1
         ?`<button class="nav" data-view="pilares" data-pilnav=""${ds}>${NAVITEMS.pilares.svg} Los 6 pilares</button>`:'')+
@@ -13322,6 +14442,7 @@ function docEstado(sec,r){
   if(v)return v;
   /* si el documento ya está cargado en el pilar, cuenta como que lo tiene */
   if(r.doc&&docsVisibles(audPilar()).some(d=>d.id===r.doc))return 'tiene';
+  if(docsDeReq(r.id).length)return 'tiene';
   /* el estado con el que vino cargado desde el relevamiento de Calidad */
   if(r.est0)return r.est0;
   return 'sin';
@@ -14952,7 +16073,7 @@ document.addEventListener('click',async e=>{
   const db_=t.closest('[data-del-buena]');if(db_){await borrarDoc(COL.bu+'/'+db_.dataset.delBuena);toast('Registro eliminado');return}
   if(t.id==='btnCsvHall'){
     const rows=[['Sitio','Sector','Bloque','Sección','Hallazgo','Descripción','Severidad','Reincidencia','Área','Responsable','Detectado','Vence','Estado','Causa raíz','Acción preventiva']];
-    state.hallazgos.forEach(h=>rows.push([h.sitioNombre,h.sectorNombre,h.bloque||'A',h.seccionCodigo,h.item,h.descripcion,SEV[h.severidad||'menor'].l,h.reincidencia||1,(AREAS.find(a=>a.v===(h.area||'sector'))||{}).l,h.responsable,h.fecha,h.fechaLimite,(ESTADOS.find(x=>x.v===h.estado)||{}).l,h.causaRaiz,h.accionPreventiva]));
+    state.hallazgos.forEach(h=>rows.push([h.sitioNombre,h.sectorNombre,h.bloque||'A',h.seccionCodigo,h.item,h.descripcion,SEV[h.severidad||'menor'].l,h.reincidencia||1,areaLabel(h.area||'sector'),h.responsable,h.fecha,h.fechaLimite,(ESTADOS.find(x=>x.v===h.estado)||{}).l,h.causaRaiz,h.accionPreventiva]));
     bajar('CAT-plan-de-accion-'+todayISO()+'.csv','﻿'+csv(rows));return;
   }
   if(t.id==='btnCsvAud'){
@@ -15245,6 +16366,157 @@ document.addEventListener('click',async e=>{
   const pv=t.closest('[data-pendver]');
   if(pv){state.fh=Object.assign({},state.fh,{q:'',sector:'all',area:'all',filtro:'abiertos'});
     go('hallazgos'); state.hallOpen=pv.dataset.pendver; render(); return}
+  if(t.id==='btnEfImp'){document.body.classList.add('print-ef');
+    setTimeout(()=>{window.print();document.body.classList.remove('print-ef')},60);return}
+  if(t.id==='btnEfCsv'){
+    const secs=sectoresVista();
+    const base=(state.hallazgos||[]).filter(h=>veoSector(h.sectorId)).map(h=>Object.assign({},h,{_s:segEfect(h)}));
+    const rows=[['Sector','Hallazgo','Severidad','Fecha de la auditoría','Plazo','Cerrado','Estado de la verificación',
+      'Resultado','Porcentaje','Cálculo de la aplicación','Dictamen','Quién midió','Fecha de la medición','Fundamento','Reincidencias','Descuentos']];
+    base.forEach(h=>{const S=h._s;
+      rows.push([nombreSector(h.sectorId)||'',h.item||h.texto||'',(SEV[h.severidad||'menor']||{}).l||'',
+        h.fecha||'',h.fechaLimite||'',String(h.cerrado||'').slice(0,10),
+        S.confirmado?'Medida':(S.k==='espera'?'En observación':(S.k==='sin'?'La acción todavía no se cerró':'Propuesta sin confirmar')),
+        EF_L[S.k]||'',S.pct==null?'':S.pct,S.calc==null?'':S.calc,S.manual?'Comité':'',
+        S.por||'',S.el||'',S.nota||'',(S.re||[]).length,
+        (S.det||[]).map(d=>d.t+' ('+d.p+')').join(' · ')]);});
+    const porSec=[[''],['Resumen por sector'],['Sector','Verificaciones confirmadas','Efectivas','Con reincidencia','Efectividad promedio']];
+    secs.forEach(sc=>{const L=base.filter(h=>h.sectorId===sc.id&&h._s.confirmado);
+      const P=L.map(h=>h._s.pct).filter(x=>x!=null);
+      const re=base.filter(h=>h.sectorId===sc.id&&h._s.re.length).length;
+      if(!L.length&&!re)return;
+      porSec.push([sc.nombre,L.length,L.filter(h=>h._s.k==='efect').length,re,
+        P.length?Math.round(P.reduce((a,b)=>a+b,0)/P.length*10)/10:'']);});
+    bajar('CAT-efectividad-'+todayISO()+'.csv',csv(rows.concat(porSec)));return;
+  }
+  if(t.id==='btnDocCatCerrar'){state.docCat=null;state.docCatEd=false;render();return}
+  if(t.id==='btnDocCatImp'){document.body.classList.add('print-manual');
+    setTimeout(()=>{window.print();document.body.classList.remove('print-manual')},60);return}
+  if(t.id==='btnDocCatEd'&&esAdmin()){state.docCatEd=!state.docCatEd;render();return}
+  if(t.id==='btnDocCatGuardar'&&esAdmin()){
+    const d=(state.pilarDocs||[]).find(x=>x.id===state.docCat); if(!d)return;
+    const g=i=>{const e=$('#'+i);return e?e.value:null};
+    const nd=Object.assign({},d,{titulo:(g('dkTit')||d.titulo),codigo:(g('dkCod')||d.codigo||''),
+      version:(g('dkVer')||d.version||'00'),edicion:(g('dkFec')||d.edicion||''),html:(g('dkHtml')||d.html||'')});
+    delete nd.id;
+    if(await guardarDoc(COL.pd+'/'+d.id,nd)){Object.assign(d,nd,{id:d.id});state.docCatEd=false;
+      toast('Documento guardado');render()}
+    return;
+  }
+  const dcb=t.closest('[data-dcbajar]');
+  if(dcb){
+    const d=docPorId(dcb.dataset.dcbajar); if(!d)return;
+    const u=await traerArchivo(d);
+    if(!u){toast('No se pudo traer el archivo');return}
+    const a=document.createElement('a');a.href=u;a.download=(d.arch&&d.arch.nombre)||d.titulo+'.pdf';
+    document.body.appendChild(a);a.click();setTimeout(()=>a.remove(),400);
+    return;
+  }
+  const avq=t.closest('[data-avquien]');
+  if(avq){state.avOpen=(state.avOpen===avq.dataset.avquien)?null:avq.dataset.avquien;render();return}
+  const avl=t.closest('[data-avleido]');
+  if(avl){await marcarLeido(avl.dataset.avleido);render();return}
+  const avd=t.closest('[data-avdel]');
+  if(avd){
+    if(!esAdmin()){toast('Los avisos los maneja Calidad');return}
+    const id=avd.dataset.avdel;
+    if(state.confirmKey!=='avdel:'+id){state.confirmKey='avdel:'+id;render();return}
+    state.confirmKey=null;
+    if(state.db){try{await state.db.doc(COL.av+'/'+id).delete()}catch(e){}}
+    state.avisos=(state.avisos||[]).filter(x=>x.id!==id);
+    toast('Aviso borrado');render();return;
+  }
+  const tsec=t.closest('[data-tendsec]');
+  if(tsec&&!t.closest('a,button,select,input')){
+    state.tendOpen=(state.tendOpen===tsec.dataset.tendsec)?null:tsec.dataset.tendsec;
+    if(state.tendOpen)registrarVisita(state.tendOpen,'Tendencia mensual');
+    render();return;
+  }
+  const eed=t.closest('[data-efedit]');
+  if(eed){
+    const id=eed.dataset.efedit;
+    if(state.efEdit&&state.efEdit.id===id){state.efEdit=null;render();return}
+    const h=(state.hallazgos||[]).find(x=>x.id===id);
+    if(!h){toast('Ese hallazgo ya no existe');return}
+    efAbrirDictamen(h,segEfect(h)); render(); return;
+  }
+  if(t.closest('[data-efcancel]')){state.efEdit=null;render();return}
+  const ek=t.closest('[data-efk]');
+  if(ek&&state.efEdit){
+    efCapturar();
+    state.efEdit.k=ek.dataset.efk;
+    state.efEdit.pct=pctParaK(state.efEdit.k,state.efEdit.pct);
+    render(); return;
+  }
+  const eg=t.closest('[data-efguardar]');
+  if(eg){
+    efCapturar();
+    const E=state.efEdit||{};
+    const h=(state.hallazgos||[]).find(x=>x.id===eg.dataset.efguardar);
+    if(!h){toast('Ese hallazgo ya no existe');state.efEdit=null;render();return}
+    if(!String(E.quien||'').trim()){toast('Falta escribir quién dictamina');return}
+    const calc=pctEfect(h,reincidencias(h)).pct;
+    const nota=String(E.nota||'').trim();
+    let d=Object.assign({},h);
+    d=anotarCambio(d,'Resultado de efectividad',EF_L[h.efectividad]||'sin verificar',EF_L[E.k]||E.k);
+    d=anotarCambio(d,'Porcentaje de efectividad',h.efectividadPct==null?'—':h.efectividadPct+' %',E.pct+' %');
+    d.efectividad=E.k;
+    d.efectividadPct=E.pct;
+    d.efectividadPor=String(E.quien).trim();
+    d.efectividadEl=(E.fecha||todayISO())+'T12:00:00.000Z';
+    d.efectividadNota=nota;
+    d.efectividadCalc=(calc==null?null:calc);
+    d.efectividadManual=(calc==null||E.pct!==calc||!!nota);
+    if(E.k==='efect'){d.estado='cerrado'; if(!d.cerrado)d.cerrado=new Date().toISOString();}
+    else if(d.estado==='cerrado')d.estado='abierto';
+    delete d.id;
+    state._dictamen=true;
+    const okD=await guardarDoc(COL.ha+'/'+h.id,d);
+    state._dictamen=false;
+    if(okD){Object.assign(h,d,{id:h.id});state.efEdit=null;
+      toast('Dictamen registrado: '+(EF_L[E.k]||E.k)+' · '+E.pct+' %');render()}
+    return;
+  }
+  const efl=t.closest('[data-eflote]');
+  if(efl){
+    /* confirma de una sola vez todas las propuestas efectivas del filtro en pantalla.
+       Las reincidentes y las parciales quedan afuera: ésas se miran una por una. */
+    const L=(state.hallazgos||[]).filter(h=>veoSector(h.sectorId))
+      .filter(h=>!state.ef||state.ef.sec==='all'||h.sectorId===state.ef.sec)
+      .map(h=>({h:h,s:segEfect(h)}))
+      .filter(x=>!x.s.confirmado&&x.s.k==='efect');
+    if(!L.length){toast('No hay propuestas efectivas para confirmar');return}
+    efl.disabled=true; efl.textContent='Confirmando…'; state._dictamen=true;
+    const quien=(state.sesion&&state.sesion.nombre)||'', ahora=new Date().toISOString();
+    let n=0;
+    for(const x of L){
+      const d=Object.assign({},x.h,{efectividad:'efect',efectividadPct:pctParaK('efect',x.s.pct),
+        efectividadPor:quien,efectividadEl:ahora,estado:'cerrado'});
+      if(!d.cerrado)d.cerrado=ahora;
+      delete d.id;
+      if(await guardarDoc(COL.ha+'/'+x.h.id,d)){Object.assign(x.h,d,{id:x.h.id});n++}
+    }
+    state._dictamen=false;
+    toast(n+' verificación'+(n===1?' confirmada':'es confirmadas'));render();return;
+  }
+  const ef=t.closest('[data-efok]');
+  if(ef){
+    const h=(state.hallazgos||[]).find(x=>x.id===ef.dataset.efok);
+    if(!h){toast('Ese hallazgo ya no existe');return}
+    const v=ef.dataset.efv;
+    const d=Object.assign({},h,{efectividad:v,efectividadPct:pctParaK(v,segEfect(h).pct),
+      efectividadPor:(state.sesion&&state.sesion.nombre)||'',
+      efectividadEl:new Date().toISOString()});
+    state._dictamen=true;
+    if(v==='efect')d.estado='cerrado';
+    else if(d.estado==='cerrado')d.estado='abierto';
+    delete d.id;
+    const ok1=await guardarDoc(COL.ha+'/'+h.id,d);
+    state._dictamen=false;
+    if(ok1){Object.assign(h,d,{id:h.id});
+      toast('Verificación registrada: '+(EF_L[v]||v)+' · '+d.efectividadPct+' %');render()}
+    return;
+  }
   if(t.id==='btnCerrarCl'){state.editCl=null;render();return}
   if(t.id==='btnAddSec'){
     const n=state.editCl.secciones.length+1;
