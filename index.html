@@ -795,6 +795,19 @@ table.dgt td.dgn{text-align:right;font-variant-numeric:tabular-nums;white-space:
   box-shadow:var(--shadow);transition:transform .1s;display:flex;flex-direction:column;gap:8px
 }
 .seccard:hover{transform:translateY(-2px)}
+.seccard:hover .audir{background:var(--brand);color:#fff;border-color:var(--brand)}
+/* El «Auditar →» al pie de la tarjeta: es lo que dice que la tarjeta se toca. */
+.audir{
+  margin-top:auto;align-self:stretch;text-align:center;font-size:13px;font-weight:700;
+  padding:9px 10px;border-radius:11px;border:1px solid var(--line);
+  background:var(--surface-2);color:var(--brand);transition:background .1s,color .1s,border-color .1s
+}
+.secayuda{
+  display:flex;gap:9px;align-items:flex-start;margin:0 0 12px;padding:11px 13px;
+  border-radius:12px;background:var(--surface-2);border:1px solid var(--line);
+  font-size:13.5px;line-height:1.45;color:var(--ink-2)
+}
+.secayuda b{color:var(--ink)}
 .seccard b{font-size:15px;font-weight:700;line-height:1.2}
 .seccard .sm2{font-size:12px;color:var(--ink-3)}
 .ring{display:grid;place-items:center;margin:8px auto 4px}
@@ -11825,7 +11838,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=138;
+const APP_VER=140;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -11876,8 +11889,18 @@ function wizGuardar(){
     if(!w||!w.sectorId||w.step===0)return;
     const n=Object.keys(w.resp||{}).filter(k=>w.resp[k]&&w.resp[k].v!=null).length;
     if(!n)return;
-    localStorage.setItem(wizKey(),JSON.stringify({w:w,guardado:new Date().toISOString(),
-      sector:nombreSector(w.sectorId)||'',n:n}));
+    /* Las fotos NO van al borrador. Son base64 y con cuatro o cinco llenan el
+       navegador: antes fallaba el guardado entero, en silencio, y se perdía todo.
+       Lo que se guarda —respuestas, observaciones y en qué pregunta iba— pesa
+       unos pocos kilobytes y entra siempre.
+       Mientras la aplicación siga abierta las fotos están en memoria, así que
+       salir a otra pantalla y volver no pierde nada. Lo único que se pierde es si
+       se cierra el navegador o se recarga la página, y el aviso lo dice. */
+    const liviano={};
+    for(const k in w){ if(k!=='fotos')liviano[k]=w[k] }
+    const nf=Object.keys(w.fotos||{}).reduce((t,k)=>t+((w.fotos[k]||[]).length),0);
+    localStorage.setItem(wizKey(),JSON.stringify({w:liviano,guardado:new Date().toISOString(),
+      sector:nombreSector(w.sectorId)||'',n:n,nf:nf}));
   }catch(e){}
 }
 function wizBorrador(){
@@ -11900,9 +11923,15 @@ function avisoBorradorHTML(){
   const b=wizBorrador(); if(!b)return '';
   const total=(function(){const cl=state.checklists.find(c=>c.id===b.w.checklistId);
     return cl?(cl.secciones||[]).reduce((n,s)=>n+(s.items||[]).length,0):0})();
+  /* Si las fotos siguen en memoria —no se recargó la página— no se perdió nada.
+     Si se recargó, hay que decirlo: las respuestas vuelven, las fotos no. */
+  const enMemoria=!!(state.wiz&&state.wiz.sectorId===b.w.sectorId&&state.wiz.fotos
+    &&Object.keys(state.wiz.fotos).length);
+  const fotosPerdidas=(b.nf||0)>0&&!enMemoria;
   return `<div class="notice ${b.quedan<=0?'warn':''}" style="margin-bottom:14px"><div>
     <b>Dejaste una auditoría a medias en ${esc(b.sector)}.</b>
     ${b.n}${total?' de '+total:''} pregunta${b.n===1?'':'s'} contestada${b.n===1?'':'s'}, guardada el ${fmtDate(String(b.guardado).slice(0,10))}.
+    ${fotosPerdidas?`<br><b>Las ${b.nf} foto${b.nf===1?'':'s'} que habías sacado hay que volver a sacarlas</b>: se cerró el navegador y las fotos no quedan guardadas en el borrador. Las respuestas sí.`:''}
     ${b.quedan>0?`Te queda${b.quedan===1?'':'n'} <b>${b.quedan} día${b.quedan===1?'':'s'}</b> para terminarla; después se descarta.`
       :`<b>Hoy es el último día</b> para terminarla: mañana se descarta.`}
     <button class="btn sm primary" id="btnRetomar" style="margin-left:8px">Retomar</button>
@@ -11961,6 +11990,9 @@ function vPiso(){
       ${w.tipo==='interna'?`<div class="soft2" style="margin-bottom:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center">
         <span>${veRotacionCompleta()?'Cada jefe audita sectores que no son suyos. El reparto lo arma el sistema.':'El sistema te asigna los sectores que te tocan; están primero y marcados en verde. Quién audita los demás lo maneja Calidad.'}</span>
         <button class="btn sm" data-go="rotacion">${veRotacionCompleta()?'Ver el cronograma completo':'Ver lo que me toca'}</button></div>`:''}
+      <div class="secayuda"><span>👇</span><div><b>Tocá el sector que vas a auditar.</b>
+        Ahí arranca la checklist y te va mostrando los puntos de a uno: <b>Cumple</b>, <b>No cumple</b>
+        o <b>No aplica</b>. Lo que marques como «no cumple» te va a pedir la foto y qué viste.</div></div>
       <div class="secbuscar">
         <input id="wBuscar" type="search" value="${esc(state.wq||'')}"
           placeholder="Buscar el sector por nombre… (ej.: boston, muelle, oficina)">
@@ -11982,6 +12014,7 @@ function vPiso(){
             :(au.nombre?`<i>${esc(au.nombre)}</i>`:'<span class="rotr">Sin líder cargado</span>')}${au.nombre?`<br><span class="rotr">${esc(au.rol)} de ${esc(s.nombre)}</span>`:''}</span>`
             :`<span class="rotl">${au.nombre?`<i>${esc(au.nombre)}</i><br><span class="rotr">${esc(au.rol)}</span>`:'<span class="rotr">Sin líder cargado</span>'}</span>`}
           <span class="badge ${mia?'ok':(hecha&&w.tipo==='interna'?'':'')} dot" style="align-self:flex-start">${w.tipo==='interna'&&hecha?'Ya se hizo esta semana':(mia?'Te toca a vos':(a&&a.pct!=null?'Última: '+n1(a.pct)+'%':'Sin puntaje'))}</span>
+          <span class="audir">${w.tipo==='interna'&&hecha?'Auditar otra vez →':'Auditar →'}</span>
         </button>`;
       }).join('')})()}</div>
       ${esAdmin()?`<div class="soft2" style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
