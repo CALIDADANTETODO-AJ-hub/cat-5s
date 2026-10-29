@@ -795,6 +795,8 @@ table.dgt td.dgn{text-align:right;font-variant-numeric:tabular-nums;white-space:
   box-shadow:var(--shadow);transition:transform .1s;display:flex;flex-direction:column;gap:8px
 }
 .seccard:hover{transform:translateY(-2px)}
+.chkops{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0;justify-content:center}
+.chked{margin-top:12px;padding:13px;border:1px dashed var(--line);border-radius:13px;background:var(--surface-2);text-align:left}
 .seccard:hover .audir{background:var(--brand);color:#fff;border-color:var(--brand)}
 /* El «Auditar →» al pie de la tarjeta: es lo que dice que la tarjeta se toca. */
 .audir{
@@ -1623,6 +1625,36 @@ function nivel(p){
   if(p>=ROJO)return{k:'warn',l:'Amarillo'};
   return{k:'crit',l:'Rojo'};
 }
+/* ================= el color de una auditoría =================
+   El porcentaje solo no dice cómo está un sector. Un extintor tapado, una salida
+   de emergencia bloqueada o la apertura interior de la cámara que no abre son
+   criterios CRÍTICOS: no se compensan con orden y limpieza. Si alguien tiene que
+   salir y no puede, da lo mismo que el resto esté impecable.
+   Por eso: un solo criterio crítico sin cumplir deja la auditoría en rojo, aunque
+   el número dé verde. El porcentaje se sigue mostrando como es —no se toca—, lo
+   que cambia es el color y el cartel que explica por qué.
+   `criticosEn` sirve para los dos casos: la auditoría ya guardada y la que se
+   está haciendo en el piso, que todavía no tiene respuestas guardadas. */
+function criticosEn(cl,resp,modo){
+  if(!cl||!resp)return [];
+  const out=[];
+  (cl.secciones||[]).forEach(s=>(s.items||[]).forEach(it=>{
+    if((it.severidad||'menor')!=='critico')return;
+    const r=resp[it.id];
+    if(!r||r.v==null||r.v==='na')return;
+    if(esFalla({modo:modo},r.v))out.push({codigo:s.codigo,texto:it.texto,obs:r.obs||'',id:it.id});
+  }));
+  return out;
+}
+function nivelCrit(pct,cr){
+  if(cr&&cr.length)return {k:'crit',l:'Rojo · punto crítico',critico:cr.length,cr:cr};
+  return nivel(pct);
+}
+function nivelAud(a){
+  if(!a)return nivel(null);
+  return nivelCrit(a.pct,criticosDe(a));
+}
+
 /* consolidado ponderado: cumple / evaluados, como en la planilla de auditoría */
 /* ================= el consolidado del CD =================
    Ponderado, no promediado. Un sector con 60 puntos evaluados y otro con 12 no pesan
@@ -3433,7 +3465,7 @@ function resumenSitio(st){
   const ext=state.auditorias.filter(a=>ids.indexOf(a.sectorId)>=0&&tipoAud(a)!=='interna'&&validada(a)&&es5S(a)&&enPeriodo(a.fecha)).sort((a,b)=>String(b.fecha).localeCompare(String(a.fecha)));
   const ult=ultimaPorSector(ext),vig=Object.values(ult);
   const prom=pooled(vig),pOper=pooled(vig.filter(a=>a.zona==='operativa')),pApoyo=pooled(vig.filter(a=>a.zona==='apoyo'));
-  const cat={ok:0,warn:0,crit:0};vig.forEach(a=>{const k=nivel(a.pct).k;if(cat[k]!=null)cat[k]++});
+  const cat={ok:0,warn:0,crit:0};vig.forEach(a=>{const k=nivelAud(a).k;if(cat[k]!=null)cat[k]++});
   const hs=state.hallazgos.filter(h=>ids.indexOf(h.sectorId)>=0),ab=hs.filter(abierto),crit=ab.filter(h=>h.severidad==='critico').length,ve=hs.filter(vencido).length;
   const per=state.pil.per;
   const pil=pilCfg().pilares.map(p=>Object.assign({p},pondPilarCD(p,per,secs)));
@@ -4374,7 +4406,7 @@ function resumen(){
   const pOper=pooled(oper);
   const pApoyo=pooled(apoyo);
   const cat={ok:0,warn:0,crit:0};
-  vig.forEach(a=>{const k=nivel(a.pct).k;if(cat[k]!=null)cat[k]++});
+  vig.forEach(a=>{const k=nivelAud(a).k;if(cat[k]!=null)cat[k]++});
   const hs=hallazgosSitio(),ab=hs.filter(abierto),ve=hs.filter(vencido);
   const cerr=hs.filter(h=>h.estado==='cerrado');
   const enPlazo=cerr.length?cerr.filter(cerradoEnPlazo).length/cerr.length*100:null;
@@ -4931,7 +4963,7 @@ function vTablero(){
   </div>
   <section class="panel"><header><h3>Últimas auditorías</h3><span class="sub">${R.auds.length} en el período</span></header>
     ${R.auds.length?`<div class="tw"><table><thead><tr><th>Fecha</th><th>Sector</th><th>Zona</th><th>Auditor</th><th>Tipo</th><th class="r">Hallazgos</th><th class="r">Puntaje</th></tr></thead>
-    <tbody>${R.auds.slice(0,8).map(a=>{const v=nivel(a.pct);return `<tr class="clickable" data-audit="${esc(a.id)}">
+    <tbody>${R.auds.slice(0,8).map(a=>{const v=nivelAud(a);return `<tr class="clickable" data-audit="${esc(a.id)}">
       <td class="mono num">${fmtDate(a.fecha)}</td><td>${esc(a.sectorNombre)}<br><span style="color:var(--ink-3);font-size:11.5px">${esc(a.sitioNombre||'')}</span></td>
       <td><span class="badge">${a.zona==='apoyo'?'Apoyo':'Operativa'}</span></td><td>${esc(a.auditor||'—')}</td>
       <td><span class="badge${a.tipoAuditoria==='importada'?'':' a'}">${a.tipoAuditoria==='importada'?'Importada':(tipoAud(a)==='interna'?'Sectorial':'General')}</span></td>
@@ -5111,7 +5143,7 @@ function vAuditorias(){
   ${filtrosHTML()}
   <section class="panel">${auds.length?`<div class="tw"><table>
     <thead><tr><th>Fecha</th><th style="width:130px">Tipo</th><th>Sector</th><th>Zona</th><th>Checklist</th><th>Auditor</th><th class="r">Ítems A</th><th class="r">Hallazgos</th><th style="width:104px">Firma</th><th class="r">Puntaje</th></tr></thead>
-    <tbody>${auds.map(x=>{const v=nivel(x.pct);return `<tr class="clickable" data-audit="${esc(x.id)}">
+    <tbody>${auds.map(x=>{const v=nivelAud(x);return `<tr class="clickable" data-audit="${esc(x.id)}">
       <td class="mono num">${fmtDate(x.fecha)}</td>
       <td>${tipoAud(x)==='interna'?'<span class="badge a">Auditoría sectorial</span>':'<span class="badge">Auditoría general</span>'}</td>
       <td>${esc(x.sectorNombre)}<br><span style="color:var(--ink-3);font-size:11.5px">${esc(x.sitioNombre||'')}</span></td>
@@ -5142,7 +5174,7 @@ function vAuditorias(){
    de la tarjeta, EN QUÉ FALLÓ y SI YA SE CORRIGIÓ. Lo único que no se muestra acá es
    lo que se edita y se firma: eso es del sector y de Calidad. */
 function tarjetaPublicaHTML(a){
-  const n=nivel(a.pct);
+  const n=nivelAud(a);
   const hs=(state.hallazgos||[]).filter(h=>h.auditoriaId===a.id);
   const cerr=hs.filter(h=>h.estado==='cerrado');
   const abi=hs.filter(h=>h.estado!=='cerrado');
@@ -5266,7 +5298,7 @@ function accionesDeAuditoriaHTML(a){
 }
 
 function detalleAuditoria(a){
-  const v=nivel(a.pct);
+  const v=nivelAud(a);
   /* el puntaje se ve; el expediente es del sector al que le corresponde */
   if(!veoExpediente(a)){
     return `<div class="head"><div><h1>${esc(a.sectorNombre||nombreSector(a.sectorId)||'')}</h1>
@@ -6206,6 +6238,54 @@ function armarChecklistSector(sid){
    opción, al lado de la checklist 5S de ese sector; se elige una o la otra.
    Conviene correrla como auditoría INTERNA: así queda registrada y no toca el
    puntaje 5S oficial del sector, que mide otra cosa. */
+/* ================= el check list general para áreas =================
+   Diez puntos, los mismos para los 33 sectores. Antes cada sector tenía su propia
+   lista, de 17 a 29 puntos: servía para mirar un sector en detalle, pero no para
+   compararlos entre sí, que es lo que el programa necesita para decidir a quién
+   reconocer y a quién pedirle plan de acción. Un sector con 29 preguntas y otro
+   con 17 no compiten en la misma cancha.
+   El único punto crítico es el del flujo: accesos, pasillos, equipos de emergencia
+   y zonas de trabajo libres. Si eso no se cumple, el sector queda en rojo aunque
+   el resto dé bien. Calidad puede cambiar la severidad de cualquier punto desde el
+   editor, o desde el piso mientras audita. */
+const CHK_GEN_ID='c-5s-general-v1';
+const CHK_GEN_SECS=[{"codigo":"S1","nombre":"SEIRI · Clasificar","items":[{"id":"gen-s1-en-el-area-existen-unicamente-mate","texto":"En el área existen únicamente materiales, equipos, productos y documentos necesarios","criterio":"Verificar la ausencia de elementos innecesarios, vencidos, dañados, obsoletos o abandonados.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Elementos rotos, vencidos u obsoletos guardados «por las dudas»\nEquipos o muebles fuera de servicio estacionados en el área\nMaterial de otro sector guardado acá sin acuerdo\nProducto vencido, dañado o sin identificar a la vista\nEfectos personales fuera del lugar definido","donde":"Los rincones, debajo y arriba de los racks o los muebles, atrás de las columnas, detrás de las puertas y la zona de descarte."},{"id":"gen-s1-los-elementos-obsoletos-o-fuera-de","texto":"Los elementos obsoletos o fuera de uso están identificados con su tarjeta","criterio":"Los elementos no conformes deben estar identificados de acuerdo a las tarjetas de colores, para poder hacer seguimiento de cuál es el tratamiento establecido.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Elemento fuera de uso sin tarjeta\nTarjeta sin fecha, sin motivo o sin responsable\nColor de tarjeta que no corresponde al tratamiento\nTarjeta ilegible, despegada o tapada\nTarjeta con más de 30 días sin resolución","donde":"Cada elemento apartado del proceso, uno por uno, leyendo la tarjeta entera."},{"id":"gen-s1-los-elementos-necesarios-estan-cor","texto":"Los elementos necesarios están correctamente identificados según su uso","criterio":"Todos los elementos se encuentran correctamente identificados según su uso, por ejemplo basureros y herramientas.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Basurero sin identificar por tipo de residuo\nHerramienta o equipo sin rótulo de uso\nRótulo despintado, tapado o ilegible\nRótulo que no coincide con lo que hay\nElementos del mismo tipo identificados de maneras distintas","donde":"Los basureros, el panel o carro de herramientas, los estantes de insumos y los equipos del sector."}]},{"codigo":"S2","nombre":"SEITON · Ordenar","items":[{"id":"gen-s2-los-elementos-accesorios-y-equipos","texto":"Los elementos, accesorios y equipos tienen una ubicación definida, identificada y se mantienen ordenados","criterio":"Verificar identificaciones y señalización visibles; la ubicación tiene que coincidir con el sistema establecido (controlar el layout contra el área).","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Ubicación sin rótulo, tapado o ilegible\nLo que hay no coincide con el rótulo ni con el sistema\nEl área no coincide con el layout publicado\nLayout faltante, desactualizado o no visible en el área\nElementos apoyados fuera de la demarcación\nElementos sin lugar fijo: se guardan donde se puede","donde":"El layout publicado en el acceso, comparándolo con el área; los rótulos de cada ubicación y la demarcación de piso."},{"id":"gen-s2-el-sector-cuenta-con-zona-roja-y-l","texto":"El sector cuenta con zona roja y lo que está ahí se gestiona con tarjeta","criterio":"Todos los elementos que se encuentran en zona roja están gestionados con tarjeta, y se cumple con lo establecido en la tarjeta.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"El sector no tiene zona roja definida\nZona roja sin demarcar ni señalizar\nElemento en zona roja sin tarjeta\nTarjeta vencida o sin la acción cumplida\nProducto liberado mezclado dentro de la zona roja\nZona roja usada como depósito de lo que no se sabe dónde poner","donde":"La zona roja del sector: la demarcación, el cartel y la tarjeta de cada elemento que hay adentro."},{"id":"gen-s2-el-orden-permite-el-correcto-flujo","texto":"El orden permite el correcto flujo de las actividades","criterio":"Todos los accesos, pasillos, equipos de emergencia y zonas de trabajo están libres de obstáculos.","fuente":"Check list general para áreas","bloque":"A","severidad":"critico","peso":1,"noCumple":"Pasillo o senda peatonal con algo encima\nExtintor, BIE, pulsador, tablero o ducha de emergencia tapados\nSalida de emergencia bloqueada, trabada o con la señalización tapada\nCable, manguera o material cruzando el paso\nAcceso a la zona de trabajo obstruido\nCruce sin visibilidad","donde":"La franja peatonal completa, el frente de cada extintor y tablero, todas las salidas de emergencia y los accesos a la zona de trabajo."}]},{"codigo":"S3","nombre":"SEISO · Limpiar","items":[{"id":"gen-s3-el-area-y-las-instalaciones-se-enc","texto":"El área y las instalaciones se encuentran limpias y no son fuente de contaminación","criterio":"Inspeccionar pisos, paredes, techos y estructuras. No debe haber residuos, exceso de polvo, derrames, olores, telarañas, plagas ni condiciones que generen suciedad o contaminación.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Telarañas en vigas, estructuras, luminarias o rincones\nPolvo acumulado sobre estructuras, muebles o mercadería\nDerrame de producto o líquido sin limpiar\nResiduos en el piso o basurero desbordado\nManchas, humedad o filtración en piso, pared o techo\nRastros de plagas: excremento, roeduras, insectos o cebo consumido\nOlor a producto derramado, a residuo o a humedad","donde":"Debajo y detrás de todo, arriba de las vigas y luminarias, los zócalos, las rejillas y los rincones del cielorraso."},{"id":"gen-s3-los-equipos-y-las-mercaderias-se-e","texto":"Los equipos y las mercaderías se encuentran limpios y bien mantenidos","criterio":"Verificar que los equipos, utensilios y mercaderías se encuentren limpios y bien mantenidos. Se incluyen los elementos de limpieza del área.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Equipo con polvo, grasa o suciedad visible\nPérdida de aceite, agua o líquido\nProtección, guarda o parte faltante o rota\nEquipo fuera de servicio sin tarjeta ni fecha\nMercadería con el embalaje sucio, mojado o roto\nElementos de limpieza sucios, rotos o fuera de su lugar","donde":"Las ruedas y la base de los equipos, su parte de atrás, el carro de limpieza y el frente de la mercadería."}]},{"codigo":"S4","nombre":"SEIKETSU · Estandarizar","items":[{"id":"gen-s4-la-limpieza-se-realiza-conforme-al","texto":"La limpieza se realiza conforme al POES establecido y queda la evidencia","criterio":"Verificar el cumplimiento del POES de limpieza, corroborando el correcto registro de las acciones según lo establecido en el documento.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"No hay POES del área a la vista o nadie sabe dónde está\nLa planilla de limpieza está sin firmar o atrasada\nLo que dice la planilla no coincide con lo que se ve\nSe usa un producto distinto del que indica el POES\nNo se respeta la frecuencia definida\nNo queda evidencia de la limpieza hecha","donde":"La planilla de limpieza del área, el carro de limpieza, el rótulo de cada producto y la hoja del POES publicada."},{"id":"gen-s4-los-procesos-estandarizados-de-s1-","texto":"Los procesos estandarizados de S1, S2 y S3 se respetan según lo establecido","criterio":"Si se incumple alguna S, afecta directamente a la 4S: el estándar es lo que sostiene lo anterior en el tiempo.","fuente":"Check list general para áreas","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Lo que se ordenó en la auditoría anterior volvió a desordenarse\nLa tarea se hace distinto según el turno o la persona\nNo hay instructivo escrito de lo que el área tiene que sostener\nEl personal no sabe explicar el estándar de su puesto\nUn hallazgo cerrado volvió a aparecer","donde":"Preguntándole a dos personas del turno cómo sostienen lo que ya se ordenó, y comparando con la auditoría anterior."}]}];
+function armarChecklistGeneral(){
+  return {id:CHK_GEN_ID,doc:{
+    nombre:'5S · Check list general para áreas · CAT',version:'1.0',modo:'binario',activa:true,
+    tipos:[],sectores:CHK_V3.map(d=>d.sid),responsable:'Calidad',
+    secciones:CHK_GEN_SECS,creado:new Date().toISOString(),
+    nota:'Los mismos diez puntos para todas las áreas, unificados por Calidad el 29/10/2026. '
+      +'Reemplaza a las 33 listas por sector, que quedan inactivas pero se siguen leyendo en las '
+      +'auditorías ya hechas. Cada punto trae su criterio de evaluación, qué lo deja en «no cumple» '
+      +'y dónde mirar.'}};
+}
+const faltaGeneral=()=>!state.checklists.some(c=>c.id===CHK_GEN_ID);
+/* las que quedan para desactivar: las de sector que no son la general ni la de BPA */
+function chkPorSectorViejas(){
+  return state.checklists.filter(c=>c.activa!==false&&c.id!==CHK_GEN_ID&&c.id!==CHK_BPA_ID
+    &&!c.pilar&&c.sectores&&c.sectores.length&&c.sectores.length<5);
+}
+async function unificarChecklists(){
+  if(!esAdmin()){toast('Esa parte la maneja Calidad');return}
+  const viejas=chkPorSectorViejas();
+  let n=0;
+  if(faltaGeneral()){
+    const r=armarChecklistGeneral();
+    if(!await guardarDoc(COL.cl+'/'+r.id,r.doc)){toast('No se pudo cargar el check list general');return}
+  }
+  /* desactivar, no borrar: el informe de cada auditoría ya hecha necesita su lista
+     para poder mostrar en qué falló el sector */
+  for(const c of viejas){
+    const d=Object.assign({},c,{activa:false,modificado:new Date().toISOString(),
+      nota:String(c.nota||'')+' Reemplazada el 29/10/2026 por el check list general para áreas. '
+        +'Queda inactiva para que el historial de auditorías se siga leyendo.'});
+    delete d.id;
+    if(await guardarDoc(COL.cl+'/'+c.id,d))n++;
+  }
+  toast('Check list general cargado · '+n+' lista'+(n===1?'':'s')+' por sector quedaron inactivas');
+  render();
+}
 const CHK_BPA_ID='c-bpa-logistica-v1';
 const CHK_BPA_SECS=[{"codigo":"A","nombre":"Depósito y bodega","items":[{"id":"bpa-a-el-techo-las-paredes-los-pisos","texto":"El techo, las paredes, los pisos y el almacenamiento están en buenas condiciones, sin daños estructurales","criterio":"Se mira la estructura, no el orden: goteras, grietas, chapas flojas, pisos hundidos.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Gotera, filtración o mancha de humedad en techo o pared\nGrieta o chapa floja\nPiso hundido, roto o con juntas abiertas\nEstructura de rack golpeada o deformada","donde":"El techo completo mirando hacia arriba, las paredes al ras del piso y las juntas del pavimento."},{"id":"bpa-a-existe-una-barrera-fisica-que-","texto":"Existe una barrera física que evita la migración de suciedad, polvo y plagas desde las áreas vecinas","criterio":"La barrera tiene que estar y tiene que cerrar: una cortina rota no es una barrera.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Cortina de aire o de PVC rota, faltante o levantada\nPortón que queda abierto sin necesidad\nAbertura o hueco al exterior sin cerrar\nBurlete de puerta faltante o gastado","donde":"Cada abertura entre el depósito y el exterior o el área de botellas vacías."},{"id":"bpa-a-los-pisos-estan-limpios-en-gen","texto":"Los pisos están limpios en general, libres de exceso de polvo, desechos y marcas de desgaste","criterio":"Limpio de verdad: se mira debajo de los racks y en las juntas, no el pasillo central.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Polvo acumulado o desechos en el piso\nMarcas de goma o desgaste profundo\nJuntas con suciedad incrustada\nDerrame seco sin limpiar","donde":"Debajo de los racks, las juntas del pavimento, los rincones y detrás de las columnas."},{"id":"bpa-a-el-area-esta-debidamente-ilumi","texto":"El área está debidamente iluminada y permite identificar visualmente pasillos y productos","criterio":"Se mira a la altura del producto, no del techo.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Luminaria apagada o quemada\nPasillo o ubicación en penumbra\nLuminaria sucia que no ilumina\nSombra que impide leer una etiqueta","donde":"El fondo de cada pasillo y las ubicaciones del nivel más bajo."},{"id":"bpa-a-todas-las-luces-del-area-son-i","texto":"Todas las luces del área son irrompibles o están provistas de tapa","criterio":"Es protección del producto: una lámpara que estalla sobre la mercadería la contamina.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Luminaria sin tapa ni protección\nTapa rajada, floja o faltante\nTubo a la vista sobre zona de producto","donde":"Cada luminaria sobre zona de almacenamiento y sobre los muelles."},{"id":"bpa-a-los-pasillos-y-la-plataforma-d","texto":"Los pasillos y la plataforma de carga están claramente marcados y las paletas respetan la distancia","criterio":"La marca tiene que verse entera: un tramo borrado deja de ser una marca.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Tramo de demarcación borrado o incompleto\nPaleta que invade el pasillo marcado\nPlataforma de carga sin marcar\nDistancia a la pared menor a la definida","donde":"El recorrido completo de la demarcación y la línea de paletas contra la pared."},{"id":"bpa-a-los-pasillos-y-compartimentos-","texto":"Los pasillos y compartimentos del depósito están claramente identificados","criterio":"Se lee el cartel desde la entrada del pasillo.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Pasillo sin cartel de identificación\nCartel tapado, despintado o ilegible\nNumeración que no coincide con el sistema","donde":"La cabecera de cada pasillo y el cartel de cada compartimento."},{"id":"bpa-a-no-hay-evidencia-visible-de-av","texto":"No hay evidencia visible de aves, roedores o plagas: plumas, pelo, orina, heces o excrementos","criterio":"Se busca el rastro, no el animal: el rastro queda aunque la plaga no esté.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Excremento, roeduras o plumas\nNido o madriguera\nInsectos vivos o muertos\nOlor a orina\nBolsa o caja roída","donde":"El pie de la pared, detrás de los racks, los rincones, debajo de las paletas y sobre las vigas."},{"id":"bpa-a-las-cajas-de-control-de-plagas","texto":"Las cajas de control de plagas están en buenas condiciones: fijas o ancladas, con etiqueta de advertencia","criterio":"Se controla una por una contra el plano de cebos.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Estación de cebo suelta, movida o faltante\nSin etiqueta de advertencia\nCebo consumido sin reponer\nEstación rota o abierta\nNo coincide con el plano de cebos","donde":"Cada estación del perímetro, comparándola con el plano de cebos del CD."},{"id":"bpa-a-todas-las-puertas-y-ventanas-e","texto":"Todas las puertas y ventanas expuestas al exterior tienen barrera contra plagas, cortina de aire o malla","criterio":"Se prueba cerrando: si queda luz, pasa la plaga.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Puerta o ventana sin barrera\nMalla rota o con agujeros\nCortina de aire que no funciona\nLuz visible por debajo de la puerta cerrada","donde":"Cada puerta y ventana al exterior, mirándolas con la puerta cerrada."},{"id":"bpa-a-la-temperatura-del-deposito-es","texto":"La temperatura del depósito está dentro de parámetros y los sistemas de ventilación están limpios","criterio":"Se mira el registro y el equipo, no la sensación.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Temperatura fuera del parámetro definido\nSin registro de temperatura del día\nRejilla o filtro de ventilación sucio\nExtractor que no funciona","donde":"El termómetro del depósito, la planilla de registro y las rejillas de ventilación."},{"id":"bpa-a-los-autoelevadores-y-vehiculos","texto":"Los autoelevadores y vehículos motorizados se mantienen correctamente: pintura, luces, señales reflectantes","criterio":"Se mira el equipo detenido y se prueba la baliza y la luz.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Pintura saltada u óxido a la vista\nLuz, baliza o bocina que no funciona\nSeñal reflectante faltante o tapada\nPérdida de aceite o hidráulico\nSin check preoperacional del día","donde":"Cada equipo en su zona de estacionamiento, probando luces y baliza."},{"id":"bpa-a-los-autoelevadores-que-operan-","texto":"Los autoelevadores que operan dentro de las áreas de proceso son alimentados por baterías eléctricas","criterio":"En la planilla original este punto figura como «no aplica» en el CDSA. Queda igual, para poder marcarlo «No aplica» y que se vea que se controló.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Equipo a combustión operando dentro del área de proceso\nHumo o gases de escape dentro del depósito\nCarga de combustible dentro del área","donde":"Los equipos que entran al área de proceso, mirando si son eléctricos o a combustión."},{"id":"bpa-a-las-paletas-vacias-se-apilan-c","texto":"Las paletas vacías se apilan cuidadosamente en la zona determinada, respetando la altura de apilamiento","criterio":"Se mide la pila y se mira si está donde tiene que estar.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Paletas fuera de la zona determinada\nPila que supera la altura definida\nPila inclinada o inestable\nPaletas rotas mezcladas con las buenas","donde":"La zona de paletas vacías, midiendo la altura de cada pila."},{"id":"bpa-a-los-materiales-de-packaging-se","texto":"Los materiales de packaging se guardan en los lugares de almacenamiento designados","criterio":"Cartón, film y etiquetas tienen lugar: si están sueltos, se ensucian y se pierden.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Material de packaging fuera de su lugar\nLugar designado sin rótulo\nPackaging apoyado en el piso\nPackaging sucio, mojado o dañado","donde":"El lugar designado de packaging y los puestos donde se usa."},{"id":"bpa-a-los-productos-quimicos-se-guar","texto":"Los productos químicos se guardan en el área designada, según las normas de Higiene y Seguridad","criterio":"Químico fuera de su área es contaminación cruzada esperando pasar.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Químico fuera del área designada\nEnvase sin rótulo o trasvasado\nFalta la hoja de seguridad\nSin bandeja de contención\nQuímico junto a producto o packaging","donde":"El depósito de químicos, su bandeja de contención y la carpeta de hojas de seguridad."}]},{"codigo":"B","nombre":"Producto bloqueado, despacho y transporte","items":[{"id":"bpa-b-el-deposito-tiene-una-zona-des","texto":"El depósito tiene una zona designada para segregar el material no conforme y el producto bloqueado","criterio":"La zona tiene que existir, estar marcada y tener sólo lo que corresponde.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Zona sin demarcar ni rotular\nProducto liberado dentro de la zona\nNo conforme fuera de la zona\nProducto sin tarjeta ni fecha de ingreso","donde":"La zona de bloqueado completa, su cartel y los pallets apartados contra la pared."},{"id":"bpa-b-la-zona-de-despacho-se-mantien","texto":"La zona de despacho se mantiene libre de derrames y basura, con las puertas limpias y en buenas condiciones","criterio":"Se mira al cerrar el despacho, con la zona libre.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Derrame o mancha en el piso\nBasura, film o cartón sueltos\nPuerta sucia, golpeada o que no cierra\nBurlete roto o faltante","donde":"El piso de la zona de despacho y las dos caras de cada puerta."},{"id":"bpa-b-los-andenes-de-carga-y-descarg","texto":"Los andenes de carga y descarga están marcados según las normas de seguridad y el flujo está definido","criterio":"La marca y el flujo son lo que evita que un camión retroceda sobre alguien.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Andén sin marcar o con la marca borrada\nFlujo de camiones sin señalizar\nCalzos o topes faltantes\nSenda peatonal del andén interrumpida","donde":"Cada andén, su demarcación, los calzos y la señalización del flujo."},{"id":"bpa-b-solo-se-fuma-en-las-areas-desi","texto":"Sólo se fuma en las áreas designadas: no hay colillas ni evidencia de fumar en áreas no permitidas","criterio":"La colilla en el piso es la prueba, aunque no se vea a nadie fumando.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Colilla en el piso fuera del área designada\nOlor a cigarrillo en área cerrada\nÁrea designada sin señalizar o sin cenicero\nCenicero desbordado","donde":"Los rincones del depósito, detrás de los contenedores, la zona de pallets vacíos y el perímetro."},{"id":"bpa-b-los-camiones-y-acoplados-que-t","texto":"Los camiones y acoplados que transportan nuestros productos están limpios y en buen estado","criterio":"Se mira adentro del acoplado antes de cargar, con linterna.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Piso del acoplado sucio, mojado o con restos\nOlor dentro del acoplado\nCarga anterior sin retirar\nLona rota o puerta que no cierra","donde":"El interior del acoplado, el piso, el techo y las paredes, antes de cargar."},{"id":"bpa-b-los-acoplados-se-inspeccionan-","texto":"Los acoplados se inspeccionan antes de la carga: limpieza y ausencia de agujeros, fisuras o grietas","criterio":"Tiene que haber una inspección registrada, no un vistazo.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Carga sin inspección registrada\nAgujero, fisura o grieta en el acoplado\nEntrada de luz por el techo o las paredes\nPlanilla de inspección sin firmar","donde":"El interior del acoplado con la puerta cerrada, buscando entradas de luz, y la planilla de inspección."},{"id":"bpa-b-todos-los-materiales-de-packag","texto":"Todos los materiales de packaging se almacenan alejados del piso, sobre paletas o estanterías","criterio":"Nada de packaging apoyado directamente en el piso.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Caja, etiqueta o tapa apoyada en el piso\nPaleta rota o insuficiente debajo\nPackaging contra la pared sin separación\nPackaging mojado por contacto con el piso","donde":"La base de cada estiba de packaging y el contacto con la pared."}]},{"codigo":"C","nombre":"Reproceso, derrames y garage","items":[{"id":"bpa-c-el-area-de-reproceso-clasifica","texto":"El área de reproceso, clasificación o reparación está marcada, es segura y está en buenas condiciones","criterio":"Se mira el área entera: luces, piso, techo y lo que hay adentro.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Área sin demarcar ni rotular\nLuminaria, piso o techo en mal estado\nMaterial mezclado sin clasificar\nHerramientas sueltas o inseguras","donde":"El área de reproceso completa, incluidos su iluminación y su piso."},{"id":"bpa-c-el-garage-de-autoelevadores-es","texto":"El garage de autoelevadores está limpio, organizado y en buen estado de funcionamiento","criterio":"Se mira el piso de abajo y la zona de carga, que es donde se ve todo.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Aceite, grasa o ácido en el piso\nEquipos fuera de su lugar demarcado\nCables de carga en zona de paso\nHerramientas o repuestos sueltos\nLavaojos o extintor obstruidos","donde":"El piso del garage, la zona de carga de baterías y el frente del extintor."},{"id":"bpa-c-las-zonas-de-derrame-estan-en-","texto":"Las zonas de derrame están en buenas condiciones: limpias, sin olor que atraiga plagas, y no se consumen alimentos","criterio":"El olor es la señal: si se siente, atrae plagas aunque el piso parezca limpio.","fuente":"BPA Logística · PL-AC-20-01","bloque":"A","severidad":"mayor","peso":1,"noCumple":"Resto de producto derramado sin limpiar\nOlor dulce o fermentado\nInsectos o moscas en la zona\nRestos de comida o envases de bebida\nDesagüe de la zona tapado","donde":"El piso de la zona de derrame, el desagüe y los rincones."}]}];
 const CHK_BPA_SECTORES=["s-boston", "s-boston-alm", "s-laser", "s-pasillos", "s-bk", "s-mae", "s-mezz", "s-zonau", "s-punto", "s-devol", "s-zonaroja", "s-libreria", "s-muelles"];
@@ -6348,7 +6428,7 @@ function vMiRotacion(){
       : (hoy.length?'las '+hoy.length+' hechas':'ninguno asignado')}</span></header>
     ${hoy.length?`<div class="rotgrid">${hoy.map(p=>{const s=p.sector,au=auditadoDe(s),a=hechas[qAct+'|'+s.id];
       return `<article class="rotcard ${a?'list':'pend'}">
-        <div>${a?`<span class="badge ${nivel(a.pct).k} dot">${a.pct==null?'Hecha':n1(a.pct)+' %'}</span> <span class="rt">${fmtDate(a.fecha)}</span>`:'<span class="badge warn dot">Pendiente</span>'}</div>
+        <div>${a?`<span class="badge ${nivelAud(a).k} dot">${a.pct==null?'Hecha':n1(a.pct)+' %'}</span> <span class="rt">${fmtDate(a.fecha)}</span>`:'<span class="badge warn dot">Pendiente</span>'}</div>
         <div><div class="rn">${esc(s.nombre)}</div>
           <div class="rt">${esc((TIPOS.find(t=>t.v===(s.tipo||'general'))||{}).l||'')}</div></div>
         <div class="rl">${au.nombre?`<b>${esc(au.nombre)}</b><div class="rt">${esc(au.rol)}</div>`:'<span class="badge warn">sin líder cargado</span>'}</div>
@@ -6371,7 +6451,7 @@ function vMiRotacion(){
           const P=(a.secciones||[]).filter(x=>x.pct!=null).slice().sort((x,y)=>x.pct-y.pct)[0];
           return `<tr><td><b>${esc(a.sectorNombre||nombreSector(a.sectorId)||'')}</b></td>
             <td>${fmtDate(a.fecha)}</td>
-            <td class="r"><span class="badge ${nivel(a.pct).k} dot">${a.pct==null?'—':n1(a.pct)+' %'}</span></td>
+            <td class="r"><span class="badge ${nivelAud(a).k} dot">${a.pct==null?'—':n1(a.pct)+' %'}</span></td>
             <td>${P?`<b>${esc(P.codigo||'')}</b> · ${esc(P.nombre||'')} <span style="color:var(--ink-3)">${n1(P.pct)} %</span>`:'<span style="color:var(--ink-3)">sin detalle</span>'}</td>
             <td class="r"><button class="btn sm" data-verexp="${esc(a.id)}">Ver informe</button></td></tr>`}).join('')}
       </tbody></table></div>`:'<div class="empty"><b>Todavía no cargaste ninguna</b>Cuando guardes la primera, aparece acá con su informe.</div>'}
@@ -6593,10 +6673,8 @@ function ultimasLayout(){
 }
 function semSector(s,U){
   const e=U.ext[s.id],i=U.int[s.id];
-  const ref=e||i;let nv=nivel(ref?ref.pct:null);
-  /* un solo criterio crítico incumplido deja el sector en rojo, sin importar el porcentaje */
-  const cr=(ref&&typeof criticosDe==='function')?criticosDe(ref):[];
-  if(cr.length)nv={k:'crit',l:'Punto crítico'};
+  const ref=e||i;const cr=ref?criticosDe(ref):[];
+  const nv=ref?nivelAud(ref):nivel(null);
   return {e,i,ref,nv,critico:cr.length,origen:e?'externa':(i?'interna':'')};
 }
 /* Las zonas que se ven: las que editó Calidad (config/zonas) si existen, si no las que
@@ -7042,6 +7120,8 @@ document.addEventListener('change',e=>{
       toast('Archivo listo · completá el resto y cargá el informe');render()};
     fr.readAsDataURL(f);return;
   }
+  if(t.dataset&&t.dataset.ced!=null&&state.chkEd){
+    state.chkEd=Object.assign({},state.chkEd,{[t.dataset.ced]:t.value});return}
   if(t.dataset&&t.dataset.inf!=null&&veZonaInformes()){
     state.inf=Object.assign(infNuevo(),state.inf||{},{[t.dataset.inf]:t.value});
     if(t.dataset.inf==='tipo')render();
@@ -7145,6 +7225,8 @@ document.addEventListener('change',e=>{
 });
 document.addEventListener('input',e=>{
   const t=e.target;if(!t||!t.dataset)return;
+  if(t.dataset.ced!=null&&state.chkEd){
+    state.chkEd=Object.assign({},state.chkEd,{[t.dataset.ced]:t.value});return}
   if(t.dataset.inf!=null&&veZonaInformes()){
     state.inf=Object.assign(infNuevo(),state.inf||{},{[t.dataset.inf]:t.value});return}
   if(t.dataset.dcf!=null&&esAdmin()){state.pil.doc=Object.assign({},state.pil.doc||{},{[t.dataset.dcf]:t.value});return}
@@ -10700,7 +10782,7 @@ function tvSlides(){
     <div class="meter"><i style="width:${Math.max(1,Math.min(100,R.pOper||0))}%;background:var(--${nvO.k==='na'?'ink-3':nvO.k})"></i></div>
     <div style="font-size:1.6vw;color:var(--ink-3);margin-top:1.2vh">Meta ${VERDE}% · ${oper.length} sectores medidos · zonas de apoyo ${R.pApoyo==null?'—':n1(R.pApoyo)+'%'}</div>`});
   if(oper.length)slides.push({t:'Puntaje por sector · operativas',h:`<div class="tvbars">${oper.slice(0,9).map(x=>{
-    const nv=nivel(x.a.pct);
+    const nv=nivelAud(x.a);
     return `<div class="tvbar"><b>${esc(x.s.nombre)}</b><div class="tr"><div class="fl ${nv.k}" style="width:${Math.max(1.5,x.a.pct)}%"></div></div><span class="vv" style="color:var(--${nv.k})">${n1(x.a.pct)}%</span></div>`}).join('')}</div>`});
   const acc={};R.vig.forEach(a=>(a.secciones||[]).forEach(s=>{if(s.pct==null)return;acc[s.codigo]=acc[s.codigo]||{n:s.nombre,su:0,c:0};acc[s.codigo].su+=s.pct;acc[s.codigo].c++}));
   const ax=Object.entries(acc).sort((a,b)=>a[0].localeCompare(b[0]));
@@ -10751,7 +10833,7 @@ function tvSlides(){
   }
   const peores=oper.slice(-3).reverse().filter(x=>x.a.pct<VERDE);
   if(peores.length)slides.push({t:'Sectores que necesitan ayuda esta semana',h:`<div class="tvbars">${peores.map(x=>{
-    const nv=nivel(x.a.pct),ca=criticosAbiertosDe(x.s.id);
+    const nv=nivelAud(x.a),ca=criticosAbiertosDe(x.s.id);
     return `<div class="tvbar"><b>${esc(x.s.nombre)}</b><div class="tr"><div class="fl ${nv.k}" style="width:${Math.max(1.5,x.a.pct)}%"></div></div><span class="vv" style="color:var(--${nv.k})">${n1(x.a.pct)}%</span></div>`+
     (ca?`<div style="font-size:1.1vw;color:var(--crit);margin-top:-.6vh">${ca} hallazgo${ca===1?'':'s'} crítico${ca===1?'':'s'} abierto${ca===1?'':'s'}</div>`:'')}).join('')}</div>`});
   return slides.length?slides:[{t:'CAT 5S',h:'<div class="foco">Todavía no hay datos cargados.</div>'}];
@@ -11019,6 +11101,38 @@ function vManual(){
 
 /* ================= expedientes: carpeta de auditorías realizadas ================= */
 const evidenciasDe=id=>state.evidencias.filter(e=>e.auditoriaId===id&&veoSector(e.sectorId)).sort((a,b)=>String(a.creado).localeCompare(String(b.creado)));
+/* ================= las fotos, también en la computadora =================
+   Las fotos viven en el aplicativo: son la prueba del hallazgo y tienen que estar
+   donde está el hallazgo. Pero Calidad además las necesita en su carpeta, y
+   bajarlas de a una, renombrando, no es trabajo de nadie. Esto las baja todas con
+   el nombre ya puesto: sector, fecha, punto y número.
+   El navegador las descarga de a una; se espacian un poco para que no las bloquee
+   por bajar muchas juntas. */
+const nombreFoto=(a,e,i)=>{
+  const limpio=t=>String(t||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/[^A-Za-z0-9 ]+/g,' ').replace(/\s+/g,' ').trim().replace(/ /g,'-').slice(0,46);
+  const pto=limpio(e.nota||e.nombre||'foto');
+  return [limpio(a.sectorNombre||nombreSector(a.sectorId)||'sector'),
+          String(a.fecha||'').slice(0,10),
+          pto||'foto', String(i+1).padStart(2,'0')].join('_')+'.jpg';
+};
+function bajarUnaFoto(dataUrl,nombre){
+  return new Promise(res=>{
+    try{
+      const el=document.createElement('a');el.href=dataUrl;el.download=nombre;
+      document.body.appendChild(el);el.click();
+      setTimeout(()=>{el.remove();res()},320);
+    }catch(e){res()}
+  });
+}
+async function bajarFotosAuditoria(id){
+  const a=state.auditorias.find(x=>x.id===id);if(!a)return;
+  const F=evidenciasDe(id).filter(e=>e.esImagen&&e.data);
+  if(!F.length){toast('Esta auditoría no tiene fotos cargadas');return}
+  toast('Bajando '+F.length+' foto'+(F.length===1?'':'s')+'… no cierres la pestaña');
+  for(let i=0;i<F.length;i++)await bajarUnaFoto(F[i].data,nombreFoto(a,F[i],i));
+  toast(F.length+' foto'+(F.length===1?'':'s')+' en tu carpeta de descargas');
+}
 const evidenciasHall=id=>state.evidencias.filter(e=>e.hallazgoId===id);
 const kb=b=>b==null?'—':(b<1024?b+' B':(b<1048576?Math.round(b/1024)+' KB':(b/1048576).toFixed(1)+' MB'));
 
@@ -11180,7 +11294,7 @@ function vExpedientes(){
     return `<div class="secTitle" style="margin-top:18px">${fmtMes(k)} · ${list.length} auditoría${list.length===1?'':'s'}</div>
     <section class="panel"><div class="tw"><table>
       <thead><tr><th style="width:104px">Fecha</th><th style="min-width:170px">Sector</th><th style="width:120px">Tipo</th><th>Auditor</th><th class="r" style="width:92px">Puntaje</th><th class="r" style="width:88px">Hallazgos</th><th class="r" style="width:96px">Adjuntos</th><th style="width:130px"></th></tr></thead>
-      <tbody>${list.map(a=>{const nv=nivel(a.pct);const ev=evidenciasDe(a.id);
+      <tbody>${list.map(a=>{const nv=nivelAud(a);const ev=evidenciasDe(a.id);
         return `<tr class="clickable" data-exp-open="${esc(a.id)}">
         <td class="mono num">${fmtDate(a.fecha)}</td>
         <td><b>${esc(a.sectorNombre)}</b><br><span style="color:var(--ink-3);font-size:11.5px">${esc(a.sitioNombre||'')}</span></td>
@@ -11199,7 +11313,7 @@ function vExpedientes(){
 
 function detalleExpediente(a){
   if(a&&a.sectorId)registrarVisita(a.sectorId,'Expediente de la auditoría del '+fmtDate(a.fecha));
-  const nv=nivel(a.pct);
+  const nv=nivelAud(a);
   /* segregación por S: qué sección se está mirando y si se filtran cumple / no cumple */
   state.fexp=state.fexp||{s:'all',v:'all'};
   const fS=state.fexp.s, fV=state.fexp.v;
@@ -11441,7 +11555,7 @@ function vValidar(){ state.view='expedientes'; return vExpedientes() }
 function vValidarViejo(){
   const ps=pendientes();
   const dev=state.auditorias.filter(a=>estadoCarga(a)==='devuelta');
-  const fila=a=>{const ev=evidenciasDe(a.id);const nv=nivel(a.pct);
+  const fila=a=>{const ev=evidenciasDe(a.id);const nv=nivelAud(a);
     return `<tr class="clickable" data-exp-open="${esc(a.id)}">
       <td class="mono num">${fmtDate(a.fecha)}</td>
       <td><b>${esc(a.sectorNombre)}</b><br><span style="color:var(--ink-3);font-size:11.5px">${esc(a.sitioNombre||'')}</span></td>
@@ -11510,7 +11624,7 @@ function vInforme(){
   const ev=evidenciasDe(a.id),fotos=ev.filter(e=>e.esImagen&&e.data),arch=ev.filter(e=>!e.esImagen||!e.data);
   const hs=state.hallazgos.filter(h=>h.auditoriaId===a.id);
   const cl=state.checklists.find(c=>c.id===a.checklistId);
-  const nv=nivel(a.pct),st=estadoCarga(a);
+  const nv=nivelAud(a),st=estadoCarga(a);
   const cumple=a.cumple!=null?a.cumple:Math.max(0,(a.evaluados||0)-(a.fallas||0));
   const ef=estadoFirma(a);
   return `${esTablet()&&state.sesion?`<div class="notice" style="margin-bottom:12px"><div>
@@ -11522,12 +11636,15 @@ function vInforme(){
     ${ef.k==='ok'||!puedeFirmar()?'':'<button class="btn primary" id="btnIrFirma">✍ Firmar la auditoría</button>'}
     <button class="btn" onclick="window.print()">Imprimir</button>
     <button class="btn${ef.k==='ok'?' primary':''}" data-dl-exp="${esc(a.id)}">Descargar el informe</button>
+    ${(function(){const nf=evidenciasDe(a.id).filter(e=>e.esImagen&&e.data).length;
+      return nf?`<button class="btn" data-dl-fotos="${esc(a.id)}" title="Baja las fotos a tu computadora con el nombre del sector, la fecha y el punto">⬇ Bajar las ${nf} foto${nf===1?'':'s'}</button>`:''})()}
     <span class="badge ${ef.k} dot">${ef.l}</span>
     ${st==='validada'?'':`<span class="badge ${ESTCARGA[st].k}">${ESTCARGA[st].l}</span>`}
   </div>
   ${ef.k==='ok'||!puedeFirmar()?'':`<div class="notice" style="margin-bottom:14px"><div>
     <b>Falta firmar esta auditoría ${tipoAud(a)==='interna'?'interna':'externa'}.</b> ${esc(ef.d)}. Firmá vos y pasale el celular al ${esc(a.liderRol||'líder')} del sector para que firme en conformidad, antes de descargar o imprimir el informe.
     </div><button class="btn primary sm" id="btnIrFirma2">Ir a firmar</button></div>`}
+  ${avisoCriticoLista(criticosDe(a),'El informe dice '+n1(a.pct)+' %: el color no sigue al número mientras el punto crítico no se corrija.')}
   <div class="inf">
     <div class="ih">
       <div><h1>${esc(nombreInforme(a))}</h1>
@@ -11596,7 +11713,7 @@ async function descargarInformesSector(sectorId){
   const auds=state.auditorias.filter(a=>a.sectorId===sectorId).sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)));
   if(!auds.length){toast('Ese sector todavía no tiene auditorías');return}
   const bloques=auds.map(a=>{
-    const ev=evidenciasDe(a.id),hs=state.hallazgos.filter(h=>h.auditoriaId===a.id),nv=nivel(a.pct);
+    const ev=evidenciasDe(a.id),hs=state.hallazgos.filter(h=>h.auditoriaId===a.id),nv=nivelAud(a);
     const cumple=a.cumple!=null?a.cumple:Math.max(0,(a.evaluados||0)-(a.fallas||0));
     return `<section class="a"><h2>${esc(nombreInforme(a))}</h2>
     <div class="m">Auditor: ${esc(a.auditor||'—')} · ${esc(a.checklistNombre||'')} · ${ESTCARGA[estadoCarga(a)].l}</div>
@@ -11634,7 +11751,7 @@ ${bloques}
 async function descargarExpediente(id){
   const a=state.auditorias.find(x=>x.id===id);if(!a)return;
   const ev=evidenciasDe(id),hs=state.hallazgos.filter(h=>h.auditoriaId===id);
-  const nv=nivel(a.pct);
+  const nv=nivelAud(a),crD=criticosDe(a);
   const html=`<!doctype html><html lang="es"><head><meta charset="utf-8"><title>${esc(nombreInforme(a))}</title>
 <style>body{font-family:-apple-system,Segoe UI,sans-serif;max-width:900px;margin:32px auto;padding:0 20px;color:#153731;line-height:1.6}
 h1{font-size:26px;margin:0 0 4px}h2{font-size:17px;margin:28px 0 10px;border-bottom:2px solid #DEEDE8;padding-bottom:6px}
@@ -11651,6 +11768,10 @@ figcaption{font-size:12.5px;color:#41615A;margin-top:6px}
 <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;border-bottom:2px solid #0E4B43;padding-bottom:12px;margin-bottom:16px">
 <h1 style="margin:0">${esc(nombreInforme(a))}</h1><img src="${LOGO}" alt="CAT" style="height:52px"></div>
 <div class="m"><b>Auditor:</b> ${esc(a.auditorJefeNombre||a.auditor||'—')} &nbsp;·&nbsp; <b>Sector auditado:</b> ${esc(a.sectorNombre||'')} &nbsp;·&nbsp; <b>${esc(a.liderRol||'Líder 5S')} del sector:</b> ${esc(a.liderSector||'sin asignar')} &nbsp;·&nbsp; <b>Fecha:</b> ${fmtDate(a.fecha)}<br>${esc(a.sitioNombre||'')} · ${labelTipo(a)}${a.auditorJefeNombre&&a.auditor&&a.auditorJefeNombre!==a.auditor?' · cargado por '+esc(a.auditor):''} · ${esc(a.checklistNombre||'')}${a.checklistVersion?' v'+esc(a.checklistVersion):''}</div>
+${crD.length?`<div style="border:2px solid #C0392B;background:#FDEDEC;color:#922B21;border-radius:10px;padding:12px 14px;margin:14px 0">
+<b>Este sector queda en ROJO por ${crD.length===1?'un punto crítico':'los '+crD.length+' puntos críticos'} que siguen.</b>
+Un criterio crítico sin cumplir deja el sector en rojo aunque el porcentaje dé verde: no se compensa con el resto.
+<ul style="margin:7px 0 0;padding-left:18px">${crD.map(x=>`<li><b>${esc(x.codigo)}</b> · ${esc(x.texto)}${x.obs?' — '+esc(x.obs):''}</li>`).join('')}</ul></div>`:''}
 <div><span class="k"><b>${n1(a.pct)}%</b>Cumplimiento · ${nv.l}</span>
 <span class="k"><b>${a.cumple!=null?a.cumple:Math.max(0,(a.evaluados||0)-(a.fallas||0))}/${a.evaluados||0}</b>Ítems que cumplen</span>
 <span class="k"><b>${hs.length}</b>Hallazgos</span>
@@ -11682,8 +11803,11 @@ ${a.firmadoEl?`<div class="m" style="margin-top:8px">Firmado el ${esc(a.firmadoE
 }
 
 /* ================= modo piso: auditar en el celular ================= */
-function ringHTML(pct){
-  const nv=nivel(pct),R=54,C=2*Math.PI*R;
+function ringHTML(pct,nvForzado){
+  /* nvForzado llega cuando hay un punto crítico: el número es el que es, pero el
+     anillo tiene que estar en rojo igual que la etiqueta. Si no, se lee «96,6» en
+     verde con un cartel rojo al lado y nadie entiende cuál manda. */
+  const nv=nvForzado||nivel(pct),R=54,C=2*Math.PI*R;
   const p=Math.max(0,Math.min(100,pct||0));
   return `<div class="ring"><svg width="140" height="140" viewBox="0 0 140 140">
     <circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--surface-3)" stroke-width="13"/>
@@ -11838,7 +11962,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=140;
+const APP_VER=143;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12005,7 +12129,7 @@ function vPiso(){
         if(!lista.length)return '<div class="empty" style="grid-column:1/-1"><b>Ningún sector se llama así</b>Probá con otra palabra o tocá «Ver todos».</div>';
         if(w.tipo==='interna'&&yo)lista.sort((x,y)=>((rj[y.id]===yo)-(rj[x.id]===yo))||x.nombre.localeCompare(y.nombre));
         return lista.map(s=>{
-        const a=R.ult[s.id];const nv=nivel(a?a.pct:null);const jq=rj[s.id];const au=auditadoDe(s);
+        const a=R.ult[s.id];const nv=a?nivelAud(a):nivel(null);const jq=rj[s.id];const au=auditadoDe(s);
         const mia=yo&&jq===yo,hecha=hechas[qw+'|'+s.id];
         return `<button class="seccard${mia?' mio':''}" data-wsec="${esc(s.id)}">
           <b>${esc(s.nombre)}</b>
@@ -12034,16 +12158,18 @@ function vPiso(){
 
   /* paso 2: resultado */
   if(w.step===2){
-    const nv=nivel(r.pct);
+    const crW=criticosEn(cl,w.resp,cl.modo);
+    const nv=nivelCrit(r.pct,crW);
     const fallas=items.filter(it=>{const rr=w.resp[it.id];return rr&&rr.v!=null&&rr.v!=='na'&&esFalla(cl,rr.v)});
     return `${avisoDb()}<div class="piso">
+      ${avisoCriticoLista(crW,'El puntaje da '+n1(r.pct)+' %, pero el color no sigue al número: hasta que esto se corrija, el sector está en rojo.')}
       <div class="ph"><button class="back" data-wstep="1" aria-label="Volver">←</button>
         <div><h1>Resultado · ${esc(sec.nombre)}</h1><div class="sub">${w.tipo==='interna'?'Revisión interna cruzada':'Auditoría oficial'} del ${fmtDate(w.fecha)}</div></div></div>
       <div class="qcard done">
         <div class="lider">${(()=>{const au=auditadoDe(sec);const jid=w.tipo==='interna'?jefeQueAudita(quincenaDe(w.fecha),sec.id):'';
           const jq=(jid&&(veRotacionCompleta()||jid===miJefeId()))?nombreJefe(jid):'';
           return `${jq?`Auditó <b>${esc(jq)}</b> · `:''}${au.nombre?`${esc(au.rol)} del sector: <b>${esc(au.nombre)}</b>`:'Sector sin líder cargado'}<br><span style="font-size:11.5px;opacity:.75">${esc(sec.nombre)} · ${fmtDate(w.fecha)}</span>`})()}</div>
-        ${ringHTML(r.pct)}
+        ${ringHTML(r.pct,nv)}
         <span class="badge ${nv.k} dot" style="font-size:13px;padding:5px 12px">${nv.l}</span>
         <h2 style="margin-top:14px">${r.evaluados-r.fallas} de ${r.evaluados} puntos cumplen</h2>
         <p style="color:var(--ink-3);margin:0">${fallas.length?`Hay ${fallas.length} cosa${fallas.length===1?'':'s'} para corregir. Cada una queda en el plan de acción con fecha.`:'Sin desvíos registrados.'}</p>
@@ -12095,6 +12221,7 @@ function vPiso(){
           <label class="btn sm wfoto">📷 Sacar foto<input type="file" accept="image/*" capture="environment" data-wfoto multiple hidden></label>
           <label class="btn sm ghost wfoto">Elegir de la galería<input type="file" accept="image/*" data-wfoto multiple hidden></label></div>`}</div>`:''}
     </div>
+    ${editorItemHTML(cl,it,it.sec.codigo)}
     ${(()=>{const f=faltaFoto(it,rr);
       return f?`<div class="wbloq"><b>Falta la foto.</b>
         Marcaste que no cumple. La foto es la prueba: sin ella, el sector puede discutir el hallazgo
@@ -12109,6 +12236,100 @@ function vPiso(){
     ${planoAudHTML(sec.id,false)}
   </div>`;
 }
+/* ================= corregir la checklist desde el piso =================
+   Caminando el sector aparecen cosas que la lista no pregunta. El ejemplo de
+   Calidad: «¿está el layout visible en el área?». Antes eso se anotaba aparte y
+   se agregaba después, desde la oficina, si alguien se acordaba.
+   Ahora se agrega en el momento, en la sección donde corresponde, y queda en la
+   checklist del sector para la próxima vez. Lo mismo para corregir un enunciado
+   que quedó confuso: se arregla acá y queda arreglado.
+   Lo hace Calidad: cambiar el instrumento mientras se mide es una decisión del
+   que define la medición, no del que la aplica. */
+const puedeTocarChk=()=>esAdmin()&&!soloLectura();
+function itemNuevoChk(sec){
+  return {texto:'',codigo:sec||'S1',severidad:'mayor',bloque:'A',criterio:'',noCumple:'',donde:''};
+}
+async function guardarItemChk(clId,modo){
+  if(!puedeTocarChk()){toast('El instrumento lo define Calidad');return}
+  const cl=state.checklists.find(c=>c.id===clId);
+  if(!cl){toast('No encuentro esa checklist');return}
+  const e=Object.assign({},state.chkEd||{});
+  document.querySelectorAll('[data-ced]').forEach(el=>{e[el.dataset.ced]=el.value});
+  const texto=String(e.texto||'').trim();
+  if(texto.length<10){toast('Escribí el punto completo, como lo va a leer el que audita');return}
+  let secciones;
+  if(modo==='editar'){
+    secciones=(cl.secciones||[]).map(b=>Object.assign({},b,{items:(b.items||[]).map(it=>
+      it.id===e.id?Object.assign({},it,{texto:texto,
+        severidad:e.severidad||it.severidad||'mayor',bloque:e.bloque||it.bloque||'A'}):it)}));
+  }else{
+    const nuevo={id:'op-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6),
+      texto:texto,criterio:String(e.criterio||'').trim(),
+      noCumple:String(e.noCumple||'').trim(),donde:String(e.donde||'').trim(),
+      fuente:'Agregado en el piso',bloque:e.bloque||'A',
+      severidad:e.severidad||'mayor',peso:1,
+      agregadoPor:(state.sesion&&state.sesion.nombre)||'Calidad',
+      agregado:new Date().toISOString()};
+    const cod=e.codigo||'S1';
+    let puesto=false;
+    secciones=(cl.secciones||[]).map(b=>{
+      if(b.codigo!==cod)return b;
+      puesto=true;
+      /* se pone justo después del punto en el que está parada, para contestarlo ya */
+      const ix=(b.items||[]).findIndex(x=>x.id===e.cerca);
+      const L=(b.items||[]).slice();
+      L.splice(ix>=0?ix+1:L.length,0,nuevo);
+      return Object.assign({},b,{items:L});
+    });
+    if(!puesto)secciones=secciones.concat([{codigo:cod,nombre:cod,items:[nuevo]}]);
+  }
+  const doc=Object.assign({},cl,{secciones:secciones,modificado:new Date().toISOString(),
+    nota:String(cl.nota||'').replace(/ Se (agregaron|corrigieron) puntos.*$/,'')+
+      (modo==='editar'?' Se corrigieron puntos desde el piso.':' Se agregaron puntos desde el piso.')});
+  delete doc.id;
+  if(await guardarDoc(COL.cl+'/'+cl.id,doc)){
+    state.chkEd=null;
+    toast(modo==='editar'?'Enunciado corregido · queda así para todos':'Punto agregado · ya está en la checklist del sector');
+    render();
+  }
+}
+function editorItemHTML(cl,it,secCodigo){
+  if(!puedeTocarChk())return '';
+  const E=state.chkEd;
+  if(!E||E.cl!==cl.id)return `<div class="chkops">
+    <button class="btn sm ghost" data-ced-nuevo="${esc(secCodigo)}" data-ced-cerca="${esc(it.id)}">＋ Agregar un punto acá</button>
+    <button class="btn sm ghost" data-ced-editar="${esc(it.id)}">✎ Corregir este enunciado</button>
+  </div>`;
+  const esEd=E.modo==='editar';
+  return `<div class="chked">
+    <div class="field"><label for="cedTxt">${esEd?'Cómo tiene que decir':'Qué hay que mirar, escrito como lo va a leer el que audita'}</label>
+      <textarea id="cedTxt" data-ced="texto" rows="2" placeholder="Ej.: El layout del sector está publicado, visible y actualizado en el acceso">${esc(E.texto||'')}</textarea></div>
+    <div class="filters" style="margin:8px 0 0">
+      ${esEd?'':`<div class="field" style="min-width:130px"><label for="cedSec">Sección</label>
+        <select id="cedSec" data-ced="codigo">${(cl.secciones||[]).map(b=>`<option value="${esc(b.codigo)}"${E.codigo===b.codigo?' selected':''}>${esc(b.codigo)} · ${esc(b.nombre||'')}</option>`).join('')}</select></div>`}
+      <div class="field" style="min-width:150px"><label for="cedSev">Severidad</label>
+        <select id="cedSev" data-ced="severidad">${['critico','mayor','menor'].map(k=>`<option value="${k}"${E.severidad===k?' selected':''}>${SEV[k].l}${k==='critico'?' · deja el sector en rojo':''}</option>`).join('')}</select></div>
+      <div class="field" style="min-width:150px"><label for="cedBlo">Bloque</label>
+        <select id="cedBlo" data-ced="bloque">
+          <option value="A"${E.bloque!=='B'?' selected':''}>A · puntúa</option>
+          <option value="B"${E.bloque==='B'?' selected':''}>B · infraestructura, no baja el puntaje</option></select></div>
+    </div>
+    ${esEd?'':`<div class="filters" style="margin:8px 0 0">
+      <div class="field" style="flex:2;min-width:220px"><label for="cedNC">No cumple si aparece al menos uno (uno por línea, opcional)</label>
+        <textarea id="cedNC" data-ced="noCumple" rows="2" placeholder="Layout faltante&#10;Layout desactualizado&#10;Layout tapado o ilegible">${esc(E.noCumple||'')}</textarea></div>
+      <div class="field" style="flex:1;min-width:180px"><label for="cedDn">Dónde mirar (opcional)</label>
+        <input id="cedDn" data-ced="donde" value="${esc(E.donde||'')}" placeholder="El acceso al sector y el tablero"></div>
+    </div>`}
+    <div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button class="btn primary sm" data-ced-guardar="${esEd?'editar':'nuevo'}">${esEd?'Guardar el enunciado':'Agregar el punto'}</button>
+      <button class="btn ghost sm" data-ced-cancel="1">Cancelar</button>
+    </div>
+    <div class="soft2" style="margin-top:8px">${esEd
+      ? 'Queda corregido para todas las auditorías que se hagan de acá en adelante. Las ya guardadas no se tocan.'
+      : 'Queda en la checklist de este sector, así que la próxima auditoría ya lo pregunta. No cambia las auditorías ya guardadas.'}</div>
+  </div>`;
+}
+
 /* ---------- la foto es parte de la respuesta, no un adorno ----------
    Pedido de la Gerencia: «al momento de hacer las auditorías, que no te deje avanzar si
    no subís la foto en caso de que no cumpla». La razón práctica: sin foto el sector
@@ -13755,16 +13976,7 @@ function vPendientes(){
    que pidió Calidad: un extintor bloqueado no se compensa con orden en el resto. */
 function criticosDe(a){
   if(!a||!a.respuestas)return [];
-  const cl=state.checklists.find(c=>c.id===a.checklistId);
-  if(!cl)return [];
-  const out=[];
-  (cl.secciones||[]).forEach(s=>(s.items||[]).forEach(it=>{
-    if((it.severidad||'menor')!=='critico')return;
-    const r=a.respuestas[it.id];
-    if(!r||r.v==null||r.v==='na')return;
-    if(esFalla({modo:a.modo},r.v))out.push({codigo:s.codigo,texto:it.texto,obs:r.obs||'',id:it.id});
-  }));
-  return out;
+  return criticosEn(state.checklists.find(c=>c.id===a.checklistId),a.respuestas,a.modo);
 }
 const hayCritico=a=>criticosDe(a).length>0;
 /* el sector queda descalificado si su última auditoría del mes trae un crítico */
@@ -13776,16 +13988,21 @@ function criticoSector(secId,a,m){
   for(const x of L){const c=criticosDe(x); if(c.length)return {aud:x,items:c}}
   return null;
 }
-function avisoCriticoHTML(a){
-  const c=criticosDe(a);
-  if(!c.length)return '';
+/* El cartel del punto crítico. Se usa en dos momentos distintos: sobre una
+   auditoría ya guardada —el expediente, el informe— y sobre la que se está
+   haciendo en el piso, que todavía no existe como documento. Por eso el cuerpo
+   recibe la lista de críticos y no la auditoría. */
+function avisoCriticoLista(c,extra){
+  if(!c||!c.length)return '';
   return `<div class="notice crit" style="margin-bottom:14px"><div>
     <b>Punto crítico: el sector queda en rojo.</b>
     ${c.length===1?'Se registró un criterio crítico incumplido':'Se registraron '+c.length+' criterios críticos incumplidos'}, de modo que el
     resultado no determina el semáforo. El sector queda <b>descalificado del reconocimiento y de la mejora continua</b> de este mes
     hasta que el hallazgo se cierre con efectividad verificada.
+    ${extra?`<br>${extra}`:''}
     <ul style="margin:8px 0 0;padding-left:18px">${c.map(x=>`<li><b>${esc(x.codigo||'')}</b> ${esc(x.texto)}${x.obs?' — '+esc(x.obs):''}</li>`).join('')}</ul></div></div>`;
 }
+function avisoCriticoHTML(a){ return avisoCriticoLista(criticosDe(a)) }
 
 /* ================= seguimiento de efectividad =================
    Verificación mensual: 30 días después de cargada la evidencia se vuelve a mirar.
@@ -14336,7 +14553,7 @@ function vChecklists(){
   const nG=g=>todas.filter(c=>g==='inactivas'?c.activa===false:grupoDe(c)===g).length;
   return `${avisoDb()}
   <div class="head"><div><h1>Checklists</h1><p>El instrumento. Cada ítem lleva bloque (A puntúa, B es infraestructura), severidad, <b>la lista de lo que lo deja en «no cumple»</b> y <b>dónde hay que mirar</b>, y si corresponde la marca de registro sin fotografía. Las checklists <b>por sector</b> son las que usa el líder y la auditoría externa en ese sector; las <b>por tipo</b> quedan de respaldo para sectores nuevos.</p></div>
-  <div class="headbtns">${esAdmin()&&sectoresSinChk().length?`<button class="btn primary" id="btnGenSector" title="Carga la checklist propia de cada sector: Auditoría CAT 4S + BPA Logística + ítems del sector">＋ Cargar las checklists por sector (${sectoresSinChk().length})</button>`:''}${esAdmin()&&chkSinDetalle().length?`<button class="btn primary" id="btnDetChk" title="Le agrega a cada ítem qué se verifica, qué lo deja en «no cumple» y dónde mirar. No pisa lo que ya esté escrito.">✎ Cargar el «qué mirar» (${chkSinDetalle().length})</button>`:''}${esAdmin()&&(chkSinItems().length||faltaBPA())?`<button class="btn primary" id="btnChkOps" title="Agrega los puntos del «check list operaciones» que faltaban, y carga la BPA de Logística como checklist aparte. No modifica ni borra nada de lo que ya está.">＋ Puntos del check list operaciones${chkSinItems().length?' ('+chkSinItems().length+')':''}</button>`:''}<button class="btn" id="btnNuevaCl">＋ En blanco</button></div></div>
+  <div class="headbtns">${esAdmin()&&sectoresSinChk().length?`<button class="btn primary" id="btnGenSector" title="Carga la checklist propia de cada sector: Auditoría CAT 4S + BPA Logística + ítems del sector">＋ Cargar las checklists por sector (${sectoresSinChk().length})</button>`:''}${esAdmin()&&chkSinDetalle().length?`<button class="btn primary" id="btnDetChk" title="Le agrega a cada ítem qué se verifica, qué lo deja en «no cumple» y dónde mirar. No pisa lo que ya esté escrito.">✎ Cargar el «qué mirar» (${chkSinDetalle().length})</button>`:''}${esAdmin()&&(faltaGeneral()||chkPorSectorViejas().length)?`<button class="btn primary" id="btnChkGen" data-ck="chkgen" title="Carga los diez puntos iguales para todas las áreas y deja inactivas las 33 listas por sector. No se borra nada: las auditorías ya hechas se siguen leyendo.">${state.confirmKey==='chkgen'?'¿Unificar? Las '+chkPorSectorViejas().length+' listas por sector quedan inactivas · tocá de nuevo':'⇄ Usar el check list general para áreas'}</button>`:''}${esAdmin()&&!faltaGeneral()&&(chkSinItems().length||faltaBPA())?`<button class="btn" id="btnChkOps" title="Agrega los puntos del «check list operaciones» que faltaban, y carga la BPA de Logística como checklist aparte. No modifica ni borra nada de lo que ya está.">＋ Puntos del check list operaciones${chkSinItems().length?' ('+chkSinItems().length+')':''}</button>`:''}<button class="btn" id="btnNuevaCl">＋ En blanco</button></div></div>
   <div class="filters">
     <div class="field"><label for="clfG">Ver</label><select id="clfG">${[['all','Todas ('+todas.length+')'],['sector','5S por sector ('+nG('sector')+')'],['tipo','5S por tipo ('+nG('tipo')+')'],['pilar','De pilares · Seguridad ('+nG('pilar')+')'],['inactivas','Inactivas ('+nG('inactivas')+')']].map(([v,l])=>`<option value="${v}"${state.clf.g===v?' selected':''}>${l}</option>`).join('')}</select></div>
     <div class="field" style="min-width:220px"><label for="clfQ">Buscar sector o nombre</label><input type="search" id="clfQ" value="${esc(state.clf.q)}" placeholder="Ej.: comedor"></div>
@@ -16295,6 +16512,19 @@ document.addEventListener('click',async e=>{
   if(t.closest&&t.closest('[data-miclave]')){go('manual');setTimeout(()=>{const n=$('#miclave');if(n)n.scrollIntoView({behavior:'smooth',block:'start'});const c=$('#cvNueva');if(c)c.focus()},120);return}
   if(t.id==='btnGenSector'){await generarChecklistsSector();return}
   if(t.id==='btnDetChk'){await completarDetalleChecklists();return}
+  const cn=t.closest('[data-ced-nuevo]');
+  if(cn&&state.wiz){state.chkEd=Object.assign(itemNuevoChk(cn.dataset.cedNuevo),
+    {cl:state.wiz.checklistId,modo:'nuevo',cerca:cn.dataset.cedCerca});render();return}
+  const ce=t.closest('[data-ced-editar]');
+  if(ce&&state.wiz){
+    const cl=state.checklists.find(c=>c.id===state.wiz.checklistId);
+    const it=(cl&&(cl.secciones||[]).flatMap(b=>b.items||[]).find(x=>x.id===ce.dataset.cedEditar))||null;
+    if(it){state.chkEd=Object.assign({},it,{cl:cl.id,modo:'editar'});render()}
+    return}
+  if(t.closest('[data-ced-cancel]')){state.chkEd=null;render();return}
+  const cg=t.closest('[data-ced-guardar]');
+  if(cg&&state.chkEd){await guardarItemChk(state.chkEd.cl,cg.dataset.cedGuardar);return}
+  if(t.id==='btnChkGen'){await unificarChecklists();return}
   if(t.id==='btnChkOps'){await agregarItemsQueFaltan();return}
   if(t.id==='btnMarcVolver'){await volverMarcadores();return}
   const mno=t.closest('[data-marcno]');
@@ -16512,6 +16742,8 @@ document.addEventListener('click',async e=>{
   if(inf){state.openInf=inf.dataset.inf;state.view='informe';window.scrollTo(0,0);render();return}
   const eo=t.closest('[data-exp-open]');
   if(eo&&!t.closest('[data-del-audit]')&&!t.closest('[data-inf]')){state.openExp=eo.dataset.expOpen;state.view='expedientes';window.scrollTo(0,0);render();return}
+  const dlf=t.closest('[data-dl-fotos]');
+  if(dlf){await bajarFotosAuditoria(dlf.dataset.dlFotos);return}
   const dexp=t.closest('[data-dl-exp]');
   if(dexp){descargarExpediente(dexp.dataset.dlExp);return}
   /* bajar un documento adjunto a una mejora */
