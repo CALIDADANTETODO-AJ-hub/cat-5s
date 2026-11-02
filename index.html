@@ -795,6 +795,12 @@ table.dgt td.dgn{text-align:right;font-variant-numeric:tabular-nums;white-space:
   box-shadow:var(--shadow);transition:transform .1s;display:flex;flex-direction:column;gap:8px
 }
 .seccard:hover{transform:translateY(-2px)}
+/* Un botón que pide confirmación tiene que parecer que la pide. Antes sólo
+   cambiaba el texto y seguía verde: se tocaba una vez, se leía el cambio y se
+   daba por hecho. */
+.btn.armado{background:var(--crit)!important;border-color:var(--crit)!important;color:#fff!important;
+  animation:latido 1.1s ease-in-out infinite}
+@keyframes latido{0%,100%{box-shadow:0 0 0 0 rgba(156,43,32,.45)}55%{box-shadow:0 0 0 7px rgba(156,43,32,0)}}
 .chkops{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0;justify-content:center}
 .chked{margin-top:12px;padding:13px;border:1px dashed var(--line);border-radius:13px;background:var(--surface-2);text-align:left}
 .seccard:hover .audir{background:var(--brand);color:#fff;border-color:var(--brand)}
@@ -1804,9 +1810,20 @@ Object.keys(ZPLANO).forEach(function(slug){
 function checklistsAptas(cls,sec){
   const propias=cls.filter(c=>c.sectores&&c.sectores.length&&c.sectores.indexOf(sec.id)>=0);
   const porTipo=cls.filter(c=>!(c.sectores&&c.sectores.length)&&(!c.tipos||!c.tipos.length||c.tipos.indexOf(sec.tipo||'general')>=0));
-  if(!propias.length)return porTipo;
-  /* las del sector, y además las de tipo que sean de pilar (Seguridad) o que no tengan su equivalente propio */
-  return propias.concat(porTipo.filter(c=>c.pilar&&!propias.some(x=>x.pilar===c.pilar)));
+  /* Las checklists de pilar no son 5S: son el instrumento de la auditoría interna
+     del pilar, que lleva una persona concreta —el pilar Seguridad lo lleva la
+     Jefatura de SySO—. Antes se le ofrecían a cualquiera que fuera a auditar un
+     sector, y al jefe que iba a hacer su 5S le aparecían dos listas sin saber
+     cuál era la suya. Ahora sólo las ve quien lleva ese pilar. */
+  /* «quien lleva el pilar» es quien lo trabaja, no quien lo administra: para
+     Calidad pilaresQueCarga() devuelve los seis, y entonces a la Líder CAT le
+     volvían a aparecer dos listas al auditar un sector. Acá se mira el rol real. */
+  const rolAud=(state.sesion&&state.sesion.rol)||'';
+  const llevaPilares=['syso','sysoana','rrhh','enfermeria'].indexOf(rolAud)>=0;
+  const mios=llevaPilares?pilaresQueCarga():[];
+  const dePilar=c=>c.pilar&&mios.indexOf(c.pilar)>=0;
+  if(!propias.length)return porTipo.filter(c=>!c.pilar||dePilar(c));
+  return propias.concat(porTipo.filter(c=>dePilar(c)&&!propias.some(x=>x.pilar===c.pilar)));
 }
 const ESCALA4=[{v:0,l:'No cumple'},{v:1,l:'Deficiente'},{v:2,l:'Aceptable'},{v:3,l:'Bueno'},{v:4,l:'Excelente'}];
 const HAB=[
@@ -2168,7 +2185,7 @@ const validada=a=>true;
 const pendientes=()=>[];
 const ESTCARGA={pendiente:{l:'Cargada',k:'ok'},validada:{l:'Cargada',k:'ok'},devuelta:{l:'Cargada',k:'ok'}};
 /* las auditorías de checklists de pilar no entran en el tablero 5S: cada una alimenta su pilar */
-const pilarDeAudit=a=>a.pilarId!=null?a.pilarId:(((state.checklists.find(c=>c.id===a.checklistId)||{}).pilar)||'');
+const pilarDeAudit=a=>a.pilarId!=null?a.pilarId:(((chkDeAudit(a)||{}).pilar)||'');
 const es5S=a=>!pilarDeAudit(a);
 function auditoriasFiltradas(){return baseFiltro(state.auditorias.filter(a=>tipoAud(a)!=='interna'&&validada(a)&&es5S(a)))}
 function internasFiltradas(){return baseFiltro(state.auditorias.filter(a=>tipoAud(a)==='interna'&&validada(a)&&es5S(a)))}
@@ -2206,7 +2223,7 @@ function coherenciaDe(a){
       &&String(x.fecha)<=String(a.fecha)&&diasEntreIso(x.fecha,a.fecha)<=COH_DIAS)
     .sort((x,y)=>String(y.fecha).localeCompare(String(x.fecha)))[0];
   if(!prev)return null;
-  const cl=state.checklists.find(c=>c.id===a.checklistId)||{};
+  const cl=chkDeAudit(a)||{};
   const clP=state.checklists.find(c=>c.id===prev.checklistId)||cl;
   const RA=a.respuestas||{}, RI=prev.respuestas||{};
   let comp=0; const disc=[];
@@ -2350,7 +2367,7 @@ function temaDeDiag(code){
    cumplen; no cumple si alguno falla; vacío si esa auditoría no miró nada de ese tema */
 function temasDe5S(a){
   if(!a||!a.respuestas)return {};
-  const cl=state.checklists.find(c=>c.id===a.checklistId); if(!cl)return {};
+  const cl=chkDeAudit(a); if(!cl)return {};
   const out={};
   (cl.secciones||[]).forEach(sec=>(sec.items||[]).forEach(it=>{
     const r=a.respuestas[it.id]; if(!r||r.v==null||r.v==='na')return;
@@ -2692,7 +2709,9 @@ function vistaInicial(){
    cambiar cualquier cosa igual. La bitácora sigue registrando a la persona real. */
 const verComo=()=>state.verComo||null;
 const yoReal=()=>state.sesionReal||state.sesion;
-const soyAdminReal=()=>{const s=yoReal();return !s||s.rol==='admin'};
+/* «Ver como» es con lo que Calidad revisa qué ve cada perfil antes de publicar un
+   cambio. La Líder CAT administra igual que admin, así que también lo necesita. */
+const soyAdminReal=()=>{const s=yoReal();return !s||s.rol==='admin'||s.rol==='lider'};
 function entrarComo(id){
   const u=state.usuarios.find(x=>x.id===id);
   if(!u||!soyAdminReal())return;
@@ -5081,6 +5100,7 @@ async function guardarAuditoria(){
   const ok=await guardarDoc(COL.au+'/'+id,{
     sitioId:sec.sitioId,sitioNombre:sec.sitioNombre,sectorId:sec.id,sectorNombre:sec.nombre,zona:sec.zona||'operativa',tipo:sec.tipo||'general',
     checklistId:cl.id,checklistNombre:cl.nombre,checklistVersion:cl.version||'',modo:cl.modo||'binario',pilarId:cl.pilar||'',
+    chkSnap:snapDe(cl),
     auditor:state.auditor.trim(),fecha:d.fecha,tipoAuditoria:tipoAud(d),
     estado:'validada',validadaPor:'',validadaEl:'',obsValidacion:'',
     auditorSector:d.auditorSector||'',auditorSectorNombre:(sectorDe(d.auditorSector)||{}).nombre||'',
@@ -6261,6 +6281,40 @@ function armarChecklistGeneral(){
       +'y dónde mirar.'}};
 }
 const faltaGeneral=()=>!state.checklists.some(c=>c.id===CHK_GEN_ID);
+/* Las auditorías que todavía dependen de una checklist viva para poder mostrar
+   su detalle. Mientras queden, borrar las listas viejas pierde información. */
+function audSinSnap(){
+  return (state.auditorias||[]).filter(a=>!(a.chkSnap&&a.chkSnap.secciones)
+    &&a.checklistId&&state.checklists.some(c=>c.id===a.checklistId));
+}
+async function guardarPreguntasEnAuditorias(){
+  if(!esAdmin()){toast('Esa parte la maneja Calidad');return}
+  const L=audSinSnap();
+  if(!L.length){toast('Todas las auditorías ya tienen sus preguntas guardadas');return}
+  let n=0;
+  for(const a of L){
+    const cl=state.checklists.find(c=>c.id===a.checklistId);
+    if(!cl)continue;
+    const d=Object.assign({},a,{chkSnap:snapDe(cl),modificado:new Date().toISOString()});
+    delete d.id;
+    if(await guardarDoc(COL.au+'/'+a.id,d))n++;
+  }
+  toast(n+' auditoría'+(n===1?'':'s')+' con sus preguntas guardadas adentro');
+  render();
+}
+/* Recién cuando ninguna auditoría depende de ellas, borrarlas no pierde nada. */
+const chkBorrables=()=>state.checklists.filter(c=>c.activa===false&&!c.pilar
+  &&c.id!==CHK_GEN_ID&&c.sectores&&c.sectores.length&&c.sectores.length<5);
+const sePuedenBorrar=()=>!audSinSnap().length&&chkBorrables().length>0;
+async function borrarChecklistsViejas(){
+  if(!esAdmin()){toast('Esa parte la maneja Calidad');return}
+  if(audSinSnap().length){toast('Primero guardá las preguntas en las auditorías');return}
+  const L=chkBorrables();
+  let n=0;
+  for(const c of L){ if(await borrarDoc(COL.cl+'/'+c.id))n++ }
+  toast(n+' checklist'+(n===1?'':'s')+' vieja'+(n===1?'':'s')+' eliminada'+(n===1?'':'s'));
+  render();
+}
 /* las que quedan para desactivar: las de sector que no son la general ni la de BPA */
 function chkPorSectorViejas(){
   return state.checklists.filter(c=>c.activa!==false&&c.id!==CHK_GEN_ID&&c.id!==CHK_BPA_ID
@@ -11318,7 +11372,7 @@ function detalleExpediente(a){
   state.fexp=state.fexp||{s:'all',v:'all'};
   const fS=state.fexp.s, fV=state.fexp.v;
   const resS=(function(){
-    const m={}, c2=state.checklists.find(c=>c.id===a.checklistId);
+    const m={}, c2=chkDeAudit(a);
     (c2&&c2.secciones||[]).forEach(function(x){
       const g=m[x.codigo]={ok:0,no:0};
       (x.items||[]).forEach(function(it){
@@ -11623,7 +11677,7 @@ function vInforme(){
   if(!a){state.openInf=null;return vExpedientes()}
   const ev=evidenciasDe(a.id),fotos=ev.filter(e=>e.esImagen&&e.data),arch=ev.filter(e=>!e.esImagen||!e.data);
   const hs=state.hallazgos.filter(h=>h.auditoriaId===a.id);
-  const cl=state.checklists.find(c=>c.id===a.checklistId);
+  const cl=chkDeAudit(a);
   const nv=nivelAud(a),st=estadoCarga(a);
   const cumple=a.cumple!=null?a.cumple:Math.max(0,(a.evaluados||0)-(a.fallas||0));
   const ef=estadoFirma(a);
@@ -11962,7 +12016,7 @@ async function sumarCapitulosManual(){
    Acá se compara la versión que está corriendo contra la que está publicada, leyendo
    sólo el primer pedazo del archivo, y si no coinciden aparece el cartel con el botón
    para recargar de verdad. */
-const APP_VER=143;
+const APP_VER=145;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -12371,6 +12425,7 @@ async function guardarWiz(){
     sitioId:sec.sitioId,sitioNombre:sec.sitioNombre,sectorId:sec.id,sectorNombre:sec.nombre,
     zona:sec.zona||'operativa',tipo:sec.tipo||'general',
     checklistId:cl.id,checklistNombre:cl.nombre,checklistVersion:cl.version||'',modo:cl.modo||'binario',pilarId:cl.pilar||'',
+    chkSnap:snapDe(cl),
     auditor:state.auditor.trim(),fecha:w.fecha,tipoAuditoria:w.tipo,quincena:quincenaDe(w.fecha),
     auditorJefe:w.tipo==='interna'?(jefeQueAudita(quincenaDe(w.fecha),sec.id)||''):'',
     auditorJefeNombre:w.tipo==='interna'?(nombreJefe(jefeQueAudita(quincenaDe(w.fecha),sec.id))||''):'',
@@ -13974,9 +14029,25 @@ function vPendientes(){
    Un solo ítem crítico en «no cumple» deja al sector en rojo, no importa el porcentaje,
    y lo descalifica del reconocimiento y de la mejora continua de ese mes. Es la regla
    que pidió Calidad: un extintor bloqueado no se compensa con orden en el resto. */
+/* ================= las preguntas de una auditoría =================
+   Una auditoría firmada tiene que poder leerse sola. Las respuestas siempre se
+   guardaron adentro; las preguntas no, vivían en la checklist. Eso tenía dos
+   consecuencias malas: no se podía borrar una checklist vieja sin romper los
+   informes, y si alguien editaba un enunciado, el informe de hace tres meses
+   pasaba a mostrar el texto nuevo sobre respuestas viejas.
+   Desde la v145 cada auditoría guarda su propia copia (`chkSnap`). Para las que
+   ya estaban se copia con el botón de Checklists. Esta función devuelve la copia
+   si existe y, si no, la checklist viva. */
+function chkDeAudit(a){
+  if(!a)return null;
+  if(a.chkSnap&&a.chkSnap.secciones)return a.chkSnap;
+  return state.checklists.find(c=>c.id===a.checklistId)||null;
+}
+const snapDe=cl=>cl?{id:cl.id,nombre:cl.nombre,version:cl.version||'',modo:cl.modo||'binario',
+  pilar:cl.pilar||'',secciones:JSON.parse(JSON.stringify(cl.secciones||[]))}:null;
 function criticosDe(a){
   if(!a||!a.respuestas)return [];
-  return criticosEn(state.checklists.find(c=>c.id===a.checklistId),a.respuestas,a.modo);
+  return criticosEn(chkDeAudit(a),a.respuestas,a.modo);
 }
 const hayCritico=a=>criticosDe(a).length>0;
 /* el sector queda descalificado si su última auditoría del mes trae un crítico */
@@ -14553,7 +14624,7 @@ function vChecklists(){
   const nG=g=>todas.filter(c=>g==='inactivas'?c.activa===false:grupoDe(c)===g).length;
   return `${avisoDb()}
   <div class="head"><div><h1>Checklists</h1><p>El instrumento. Cada ítem lleva bloque (A puntúa, B es infraestructura), severidad, <b>la lista de lo que lo deja en «no cumple»</b> y <b>dónde hay que mirar</b>, y si corresponde la marca de registro sin fotografía. Las checklists <b>por sector</b> son las que usa el líder y la auditoría externa en ese sector; las <b>por tipo</b> quedan de respaldo para sectores nuevos.</p></div>
-  <div class="headbtns">${esAdmin()&&sectoresSinChk().length?`<button class="btn primary" id="btnGenSector" title="Carga la checklist propia de cada sector: Auditoría CAT 4S + BPA Logística + ítems del sector">＋ Cargar las checklists por sector (${sectoresSinChk().length})</button>`:''}${esAdmin()&&chkSinDetalle().length?`<button class="btn primary" id="btnDetChk" title="Le agrega a cada ítem qué se verifica, qué lo deja en «no cumple» y dónde mirar. No pisa lo que ya esté escrito.">✎ Cargar el «qué mirar» (${chkSinDetalle().length})</button>`:''}${esAdmin()&&(faltaGeneral()||chkPorSectorViejas().length)?`<button class="btn primary" id="btnChkGen" data-ck="chkgen" title="Carga los diez puntos iguales para todas las áreas y deja inactivas las 33 listas por sector. No se borra nada: las auditorías ya hechas se siguen leyendo.">${state.confirmKey==='chkgen'?'¿Unificar? Las '+chkPorSectorViejas().length+' listas por sector quedan inactivas · tocá de nuevo':'⇄ Usar el check list general para áreas'}</button>`:''}${esAdmin()&&!faltaGeneral()&&(chkSinItems().length||faltaBPA())?`<button class="btn" id="btnChkOps" title="Agrega los puntos del «check list operaciones» que faltaban, y carga la BPA de Logística como checklist aparte. No modifica ni borra nada de lo que ya está.">＋ Puntos del check list operaciones${chkSinItems().length?' ('+chkSinItems().length+')':''}</button>`:''}<button class="btn" id="btnNuevaCl">＋ En blanco</button></div></div>
+  <div class="headbtns">${esAdmin()&&sectoresSinChk().length?`<button class="btn primary" id="btnGenSector" title="Carga la checklist propia de cada sector: Auditoría CAT 4S + BPA Logística + ítems del sector">＋ Cargar las checklists por sector (${sectoresSinChk().length})</button>`:''}${esAdmin()&&chkSinDetalle().length?`<button class="btn primary" id="btnDetChk" title="Le agrega a cada ítem qué se verifica, qué lo deja en «no cumple» y dónde mirar. No pisa lo que ya esté escrito.">✎ Cargar el «qué mirar» (${chkSinDetalle().length})</button>`:''}${esAdmin()&&(faltaGeneral()||chkPorSectorViejas().length)?`<button class="btn ${state.confirmKey==='chkgen'?'armado':'primary'}" id="btnChkGen" data-ck="chkgen" title="Carga los diez puntos iguales para todas las áreas y deja inactivas las listas por sector. No se borra nada: las auditorías ya hechas se siguen leyendo.">${state.confirmKey==='chkgen'?'⚠ TOCÁ DE NUEVO para unificar · '+chkPorSectorViejas().length+' listas por sector quedan inactivas':'⇄ Usar el check list general para áreas'}</button>`:''}${esAdmin()&&audSinSnap().length?`<button class="btn" id="btnSnap" title="Copia las preguntas dentro de cada auditoría ya hecha, para que su informe se lea aunque la checklist se borre.">⤓ Guardar las preguntas en las ${audSinSnap().length} auditorías</button>`:''}${esAdmin()&&sePuedenBorrar()?`<button class="btn ${state.confirmKey==='chkdel'?'armado':''}" id="btnChkDel" data-ck="chkdel" title="Elimina definitivamente las checklists inactivas por sector. Las auditorías ya guardaron sus preguntas, así que no se pierde nada.">${state.confirmKey==='chkdel'?'⚠ TOCÁ DE NUEVO para eliminar '+chkBorrables().length+' checklists inactivas':'🗑 Eliminar las '+chkBorrables().length+' checklists viejas'}</button>`:''}${esAdmin()&&!faltaGeneral()&&(chkSinItems().length||faltaBPA())?`<button class="btn" id="btnChkOps" title="Agrega los puntos del «check list operaciones» que faltaban, y carga la BPA de Logística como checklist aparte. No modifica ni borra nada de lo que ya está.">＋ Puntos del check list operaciones${chkSinItems().length?' ('+chkSinItems().length+')':''}</button>`:''}<button class="btn" id="btnNuevaCl">＋ En blanco</button></div></div>
   <div class="filters">
     <div class="field"><label for="clfG">Ver</label><select id="clfG">${[['all','Todas ('+todas.length+')'],['sector','5S por sector ('+nG('sector')+')'],['tipo','5S por tipo ('+nG('tipo')+')'],['pilar','De pilares · Seguridad ('+nG('pilar')+')'],['inactivas','Inactivas ('+nG('inactivas')+')']].map(([v,l])=>`<option value="${v}"${state.clf.g===v?' selected':''}>${l}</option>`).join('')}</select></div>
     <div class="field" style="min-width:220px"><label for="clfQ">Buscar sector o nombre</label><input type="search" id="clfQ" value="${esc(state.clf.q)}" placeholder="Ej.: comedor"></div>
@@ -16525,6 +16596,8 @@ document.addEventListener('click',async e=>{
   const cg=t.closest('[data-ced-guardar]');
   if(cg&&state.chkEd){await guardarItemChk(state.chkEd.cl,cg.dataset.cedGuardar);return}
   if(t.id==='btnChkGen'){await unificarChecklists();return}
+  if(t.id==='btnSnap'){await guardarPreguntasEnAuditorias();return}
+  if(t.id==='btnChkDel'){await borrarChecklistsViejas();return}
   if(t.id==='btnChkOps'){await agregarItemsQueFaltan();return}
   if(t.id==='btnMarcVolver'){await volverMarcadores();return}
   const mno=t.closest('[data-marcno]');
