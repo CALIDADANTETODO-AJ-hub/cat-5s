@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<!--CATVER:193-->
+<!--CATVER:195-->
 <title>CAT · Calidad Ante Todo</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Figtree:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
@@ -1610,6 +1610,72 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
 .gate .rolopt span{display:block;font-size:12.5px;color:#6d7a73;line-height:1.45;margin-top:2px}
 .railfoot .who b{display:block;font-size:13px;color:var(--ink);font-weight:600;line-height:1.3}
 .railfoot .who i{display:block;font-style:normal;font-size:11.5px;color:var(--ink-3);margin:2px 0 9px}
+
+/* v194 · celular: ninguna pantalla se corre de costado. Lo ancho (tablas, pestañas)
+   se desliza dentro de su propia caja; el resto se acomoda al ancho del teléfono. */
+.grid>*{min-width:0}
+main{overflow-wrap:break-word}
+@media (max-width:700px){
+  .mbody table{display:block;overflow-x:auto;max-width:100%;-webkit-overflow-scrolling:touch}
+  .ptabs{overflow-x:auto;flex-wrap:nowrap;-webkit-overflow-scrolling:touch;scrollbar-width:thin}
+  .ptabs>*{flex:0 0 auto}
+  .zsolo{white-space:normal}
+  /* cierre de la auditoría: un botón debajo del otro, primero el que guarda */
+  .pnav{flex-wrap:wrap}
+  .pnav>.btn,.pnav>.soft2{flex:1 1 100%;justify-content:center}
+  .pnav>.btn.primary{order:-1;min-height:48px}
+}
+
+/* v195 · el menú en verde oscuro: el blanco cansaba la vista. Se cambian los colores
+   sólo dentro del menú, así todo lo que hay adentro se acomoda solo. */
+.rail,.mbar{
+  --surface:#1B4A41;--surface-2:rgba(255,255,255,.08);--surface-3:rgba(255,255,255,.14);
+  --line:rgba(255,255,255,.13);--line-strong:rgba(255,255,255,.3);
+  --ink:#F1F5F2;--ink-2:#D3E2DA;--ink-3:#9DBAAE;
+  --accent:#E9CF3A;--accent-2:#F3E07E;--accent-soft:rgba(233,207,58,.16);
+  color-scheme:dark;color:var(--ink);
+}
+.rail{background:#143F37;border-right-color:#0F322B}
+.mbar{background:#143F37;border-bottom-color:#0F322B}
+.rail .brand .mark{background:#FFFFFF;border-radius:11px;padding:3px}
+.mbar img{background:#FFFFFF;border-radius:9px;padding:2px}
+.rail .nav[aria-current="true"]{background:#EEF4F0;color:#123B33;font-weight:600}
+.rail .nav[aria-current="true"] svg{color:#123B33}
+.rail .navsitio select{background:#1B4A41;color:#F1F5F2;border-color:rgba(255,255,255,.24)}
+.rail .navsitio select option{background:#FFFFFF;color:#153731}
+.rail .btn.primary{color:#123B33}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .rail,:root:not([data-theme="light"]) .mbar{background:#0D2722;border-color:#0A1F1B}}
+:root[data-theme="dark"] .rail,:root[data-theme="dark"] .mbar{background:#0D2722;border-color:#0A1F1B}
+.rail input{color:var(--ink)}
+/* panel de seguimiento */
+.segdist{display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface-2);margin:2px 0 12px}
+.segdist i{display:block;height:100%}
+.segdist i+i{border-left:2px solid var(--surface)}
+.seglg{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13.5px;color:var(--ink-2)}
+.seglg b{font-variant-numeric:tabular-nums;color:var(--ink);margin-left:2px}
+.seglg span::before{content:'';display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:7px;background:var(--c);vertical-align:-1px}
+.segvar{font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.segvar.up{color:var(--ok)}.segvar.dn{color:var(--crit)}
+.segav{display:flex;align-items:center;gap:8px}
+.segav .bar{flex:1;min-width:48px;height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.segav .bar i{display:block;height:100%;background:var(--accent)}
+.segmini{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;padding:14px 16px}
+.segmini>div{border:1px solid var(--line);border-radius:12px;padding:10px 12px;min-width:0}
+.segmini .k{font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);font-weight:700}
+.segmini .v{font-size:24px;font-weight:800;margin-top:4px;font-variant-numeric:tabular-nums}
+.segnota{font-size:12.5px;color:var(--ink-3);padding:0 16px 14px;line-height:1.55}
+.segpie{padding:4px 2px 0}
+.segsub{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-3);font-weight:700;padding:16px 16px 6px}
+@media (max-width:700px){.segmini{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media print{
+  body.print-seg .headbtns,body.print-seg .backbtn,body.print-seg .notice,body.print-seg .mbar,body.print-seg .segnota .btn{display:none!important}
+  body.print-seg .panel{box-shadow:none;border:1px solid #ccc}
+  body.print-seg .panel header{break-after:avoid}
+  body.print-seg tr,body.print-seg .segmini,body.print-seg .kpi{break-inside:avoid}
+  body.print-seg .tw{overflow:visible}
+  body.print-seg table{font-size:11px}
+  body.print-seg main{padding:0;max-width:none}
+}
 </style>
 
 <div class="gate" id="gate" hidden></div>
@@ -1619,7 +1685,7 @@ tr.esc td{background:color-mix(in srgb,var(--crit-soft) 55%,transparent)}
     <button class="railclose" id="btnMenuCerrar">✕ Cerrar menú</button>
     <div class="brand">
       <div class="mark"><img src="data:image/png;base64,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" alt="Calidad Ante Todo"></div>
-      <div><b>CAT</b><span>Sistema de gestión</span><span class="ver" id="verLbl" hidden>versión 193</span><span class="hoyr" id="hoyRail"></span></div>
+      <div><b>CAT</b><span>Sistema de gestión</span><span class="ver" id="verLbl" hidden>versión 195</span><span class="hoyr" id="hoyRail"></span></div>
     </div>
     <div id="navdyn"></div>
     <div class="railfoot" id="railfoot"></div>
@@ -2153,7 +2219,7 @@ const guardarEstructura=()=>guardarDoc('config/estructura',{sitios:state.sitios,
      · No se toca la clave de nadie: se escribe sobre el documento que ya existe.
      · No se pisa la estructura entera: se corrigen los sectores uno por uno.
      · Queda anotado en `config/migrado` para que no se repita, y en la bitácora. */
-const MIGRA_ID='v190';
+const MIGRA_ID='v195';
 /* marcas que deja puestas la actualización: quién ve las pantallas de Gerencia y
    quién puede editar los manuales */
 const MIGRA_MARCAS={
@@ -2234,7 +2300,8 @@ async function ponerAlDia(){
        «etiqueta», que pasa a «etiqueta» en todas las checklists, también en las
        de pilar: lo pidió Calidad para todo el sistema, no sólo para la 5S. */
     let kc=0;
-    for(const c of (state.checklists||[]).slice()){
+    const yaChk=!!(prev.v188||prev.v189||prev.v190);
+    for(const c of (yaChk?[]:(state.checklists||[]).slice())){
       const doc=JSON.parse(JSON.stringify(c));let cambio=false;
       (doc.secciones||[]).forEach(sx=>{
         if(typeof sx.nombre==='string'){const v=sinRotulo(sx.nombre);if(v!==sx.nombre){sx.nombre=v;cambio=true}}
@@ -2293,6 +2360,14 @@ async function ponerAlDia(){
           nota:'Lanzamiento de la plataforma: lo anterior queda como línea base'};
         if(await guardarDoc('config/lanzamiento',L)){state.lanz=L;if(state._hallRaw)aplicarLanz();
           hecho.push('lanzamiento al '+fmtDate(L.fecha)+': plan de acción, pendientes y puntajes desde cero')}
+      }
+    }
+    /* 6 · v195: Víctor Rodríguez (CEO) ve toda la plataforma, en modo consulta */
+    if(!prev.v195){
+      const u=(state.usuarios||[]).find(x=>x.id==='victor.rodriguez');
+      if(u&&!(u.verTodo&&u.verGer)){
+        const d=Object.assign({},u,{verGer:true,verTodo:true,actualizado:new Date().toISOString()});delete d.id;
+        if(await guardarDoc('usuarios/'+u.id,d))hecho.push('Víctor Rodríguez ve toda la plataforma');
       }
     }
     await guardarDoc('config/migrado',Object.assign({},prev,{[MIGRA_ID]:new Date().toISOString()}));
@@ -3014,7 +3089,9 @@ function veoExpediente(a){
   return veoSector(a.sectorId);
 }
 /* cartel que explica el recorte, así nadie cree que el sistema está fallando */
+const auditando=()=>!!(state.wiz&&state.wiz.sectorId&&['intaud','audgen','audsec','piso'].indexOf(state.view)>=0);
 function avisoSector(){
+  if(auditando())return '';
   const L=sectoresQueVeo();
   if(!L||!state.sesion)return '';
   const rol=state.sesion.rol;
@@ -3219,8 +3296,19 @@ function latidoTablet(){
    en Arrocera, en Itauguá ni en las plantas, así que el menú le muestra su sitio y nada más. */
 const RESTR_SITIO=['sitio','sector','jefe','planta','syso','sysoana'];
 const restringidoASitio=()=>!!(state.sesion&&RESTR_SITIO.indexOf(state.sesion.rol)>=0&&state.sesion.sitioId);
+/* «Ve todo»: la Dirección general (Víctor Rodríguez, CEO) consulta toda la plataforma.
+   No edita la configuración ni usa las herramientas de administración; para auditar
+   sigue valiendo la designación del Comité. */
+const VER_TODO_NO=['checklists','sectores','usuarios','reglas','papelera','bitacora','rotacion','audint','seginf',
+  'mantplan','validar','piso','audgen','audsec','calendario','coherencia','etiquetas'];
+const veTodo=()=>marcaUsr('verTodo');
 function puede(v){
   if(!v)return true;
+  /* la configuración es sólo de Calidad, también para quien tiene «Ve gerencia»
+     (antes esa marca la abría por la lista de la Líder CAT) */
+  if(['checklists','sectores','usuarios','reglas','papelera','bitacora'].indexOf(v)>=0)return esAdmin();
+  if(v==='seguimiento')return veGerencia();
+  if(veTodo()&&VER_TODO_NO.indexOf(v)<0)return true;
   /* la auditoría interna no la habilita el rol sino el pilar: el que lleva un pilar
      entra a la suya, sea jefe, referente o lo que sea. Si no lleva ninguno, no la ve. */
   if(v==='audint'||v==='seginf'){
@@ -3385,7 +3473,7 @@ async function entrarGate(){
       sectorNombre:sec?sec.nombre:'',jefeId:entra.jefeId||'',
       debeCambiar:!!entra.debeCambiar,desde:new Date().toISOString()});
     aplicarSesion();state.gateErr='';
-    state.view=entra.rol==='gerencia'?'gerencia':(entra.rol==='admin'?'resumen'
+    state.view=entra.rol==='gerencia'?'seguimiento':(entra.rol==='admin'?'seguimiento'
       :(entra.rol==='planta'?'etiquetas'
       :(entra.rol==='mejoras'?'hallazgos'   /* su trabajo es cerrar los hallazgos de su sector */
       :(entra.rol==='rrhh'||entra.rol==='enfermeria'?'pilares':'piso'))));
@@ -3407,7 +3495,7 @@ async function entrarGate(){
       state.acceso=d;
     }else if(!coincide(mias,g)){state.gateErr='Esa no es la clave de administración.';render();return}
     guardarSesion({nombre:(state.acceso&&state.acceso.titular)||'Administración',usuario:'admin',rol:'admin',sitioId:'',sectorId:'',sectorNombre:'',desde:new Date().toISOString()});
-    aplicarSesion();state.gateErr='';state.view='resumen';registrar('ingresó','Ingreso al sistema');render();return;
+    aplicarSesion();state.gateErr='';state.view='seguimiento';registrar('ingresó','Ingreso al sistema');render();return;
   }
   state.gateErr='Ese usuario no existe. Solicitar el alta a Gerencia de Calidad.';render();
 }
@@ -3433,7 +3521,8 @@ const USUARIOS_CD=[
   {n:'Rossmarys Aiva',u:'raiva',r:'admin',g:'Calidad',obs:'Líder CAT'},
   {n:'Zully Galeano',u:'zully.galeano',r:'gerencia',g:'Calidad',obs:'Gerente de Calidad'},
   {n:'Óscar Benítez',u:'oscar.benitez',r:'gerencia',g:'Dirección',obs:'Gerente del Centro de Distribución'},
-  {n:'Víctor Rodríguez',u:'victor.rodriguez',r:'gerencia',g:'Dirección',obs:'Dirección'},
+  {n:'Víctor Rodríguez',u:'victor.rodriguez',r:'gerencia',g:'Dirección',obs:'CEO · Dirección general · ve toda la plataforma',
+   m:{verGer:true,verTodo:true,editaMan:true,audGen:true}},
   /* Comité CAT · auditores generales: revisan y vuelven a medir la efectividad */
   {n:'Ernesto Córdova',u:'ernesto.cordova',r:'comite',g:'Comité CAT',obs:'Auditor general del Comité CAT'},
   /* Pilar Seguridad */
@@ -3451,6 +3540,7 @@ const USUARIOS_CD=[
   {n:'Alicia Agüero',u:'alicia.aguero',r:'jefe',j:'j-alicia',g:'Jefes de sector',obs:'Jefatura de administración'},
   {n:'Alfonso Gamarra',u:'alfonso.gamarra',r:'jefe',j:'j-alfonso',g:'Jefes de sector',obs:'Jefatura de seguridad patrimonial'},
   {n:'Viviana Sánchez',u:'viviana.sanchez',r:'comite',g:'Comité CAT',obs:'Auditora general del Comité CAT · jefatura de calidad y ambiente'},
+  {n:'Gabriela Díaz',u:'gabriela.diaz',r:'jefe',g:'Comité CAT',obs:'Auditora general designada por el Comité CAT',m:{audGen:true}},
   /* Líderes 5S por sector */
   {n:'Lucio Villanueva',u:'lucio.villanueva',r:'sector',s:'s-boston',g:'Líderes 5S',obs:'Boston recepción'},
   {n:'Domingo Recalde',u:'domingo.recalde',r:'sector',s:'s-boston',g:'Líderes 5S',obs:'Boston almacenamiento y preparado'},
@@ -3479,6 +3569,14 @@ function listaUsuarios(){
      se sabe que vale (antes se perdía en el siguiente repintado) */
   else state.lu=state.lu.map(x=>Object.assign({},x,{estado:(x.estado==='creado'||x.estado==='entrega')?x.estado
     :(existeUsuario(x.u)?'ya':x.estado)}));
+  /* v195: también entran los usuarios cargados a mano o por una puesta al día (por
+     ejemplo, los auditores que designó el Comité): si no tienen clave, se les entrega */
+  const yaL={};state.lu.forEach(x=>yaL[x.u]=1);
+  (state.usuarios||[]).forEach(u=>{
+    if(!u||!u.id||yaL[u.id]||u.id==='admin'||u.rol==='admin')return;
+    state.lu.push({n:u.nombre||u.id,u:u.id,r:u.rol||'sitio',g:'Otros usuarios',obs:'Cargado en Usuarios',
+      s:u.sectorId||'',j:u.jefeId||'',sit:u.sitioId||'',clave:claveNueva(),estado:'ya'});
+  });
   return state.lu;
 }
 /* Calidad pega acá la columna "Usuario" y la columna "Clave inicial" de su
@@ -3606,7 +3704,7 @@ async function prepararEntrega(){
   let ok=0,err=0;const quien=(state.sesion&&state.sesion.nombre)||'Calidad';
   for(const x of L){
     const ya=usuarioDe(x.u);
-    const d=Object.assign({},ya||{nombre:x.n,rol:x.r,activo:true,
+    const d=Object.assign({},ya||Object.assign({},x.m||{},{nombre:x.n,rol:x.r,activo:true}),ya?{}:{
         sitioId:(x.r==='admin'||x.r==='gerencia')?'':(x.sit||'p-cd'),
         sectorId:x.r==='sector'?(x.s||''):'',jefeId:x.r==='jefe'?(x.j||''):'',
         creado:new Date().toISOString(),creadoPor:quien},
@@ -3670,7 +3768,7 @@ async function crearTanda(){
     const ya=usuarioDe(x.u);
     /* al que ya está y tiene clave no se le toca nada */
     if(ya&&(ya.hashes||[]).length)continue;
-    const d={nombre:x.n,rol:x.r,activo:true,debeCambiar:true,
+    const d={...(ya?{}:(x.m||{})),nombre:x.n,rol:x.r,activo:true,debeCambiar:true,
       sitioId:(x.r==='admin'||x.r==='gerencia')?'':(x.sit||'p-cd'),
       sectorId:x.r==='sector'?(x.s||''):'',jefeId:x.r==='jefe'?(x.j||''):'',
       /* la clave va ACÁ: es de donde la lee la pantalla de ingreso */
@@ -3904,6 +4002,10 @@ function vUsuarios(){
       title="Le abre las mismas pantallas que ve la Gerencia: resumen, tablero, tendencia y pilares.">
       <input type="checkbox" data-uverger="${esc(u.id)}"${u.verGer?' checked':''} style="width:auto;margin:0">
       Ve gerencia</label>
+    <label style="display:flex;align-items:center;gap:7px;margin-top:5px;font-size:12px;color:var(--ink-2);cursor:pointer"
+      title="Dirección general: consulta toda la plataforma, incluido el seguimiento de Calidad y el uso de la plataforma. No edita la configuración.">
+      <input type="checkbox" data-uvertodo="${esc(u.id)}"${u.verTodo?' checked':''} style="width:auto;margin:0">
+      Ve todo</label>
     <label style="display:flex;align-items:center;gap:7px;margin-top:5px;font-size:12px;color:var(--ink-2);cursor:pointer"
       title="Puede editar el manual de los pilares y el Manual CAT, sin tener la administración.">
       <input type="checkbox" data-ueditman="${esc(u.id)}"${u.editaMan?' checked':''} style="width:auto;margin:0">
@@ -4159,6 +4261,13 @@ document.addEventListener('change',e=>{
     guardarDoc('usuarios/'+u.id,d).then(ok=>{if(ok)toast(u.nombre+(t.checked
       ?' ve las pantallas de Gerencia':' ya no ve las pantallas de Gerencia'));render()});
     return}
+  if(t.dataset&&t.dataset.uvertodo!=null&&esAdmin()){
+    const u=usuarioDe(t.dataset.uvertodo); if(!u)return;
+    const d=Object.assign({},u,{verTodo:!!t.checked,actualizado:new Date().toISOString()},t.checked?{verGer:true}:{});
+    delete d.id;
+    guardarDoc('usuarios/'+u.id,d).then(ok=>{if(ok)toast(u.nombre+(t.checked
+      ?' consulta toda la plataforma':' deja de ver toda la plataforma'));render()});
+    return}
   if(t.dataset&&t.dataset.ueditman!=null&&esAdmin()){
     const u=usuarioDe(t.dataset.ueditman); if(!u)return;
     const d=Object.assign({},u,{editaMan:!!t.checked,actualizado:new Date().toISOString()});
@@ -4407,7 +4516,7 @@ function render(){
   if(state.tv.on){renderTV();return}
   $('#tvroot').innerHTML='';$('#app').style.display='';
   if(!state.dbTried)return;
-  const views={intcump:vIntCump,intexp:()=>vExpedientes('interna'),histplan:()=>vHistPlan('externa'),histplanint:()=>vHistPlan('interna'),intaud:vIntAud,intplan:()=>vHallazgos('interna'),intpend:()=>vPendientes('interna'),avisos:vAvisos,mensajes:vMensajes,efectividad:vEfectividad,informetrim:vInformeTrim,pendientes:vPendientes,tendencia:vTendencia,manual:vManual,manualaud:vManualAud,manualcat:vManualCat,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,mantplan:vMantPlan,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
+  const views={intcump:vIntCump,seguimiento:vSeguimiento,intexp:()=>vExpedientes('interna'),histplan:()=>vHistPlan('externa'),histplanint:()=>vHistPlan('interna'),intaud:vIntAud,intplan:()=>vHallazgos('interna'),intpend:()=>vPendientes('interna'),avisos:vAvisos,mensajes:vMensajes,efectividad:vEfectividad,informetrim:vInformeTrim,pendientes:vPendientes,tendencia:vTendencia,manual:vManual,manualaud:vManualAud,manualcat:vManualCat,aprobacion:vAprobacion,reglas:vReglas,tarjetas:vTarjetas,calendario:vCalendario,coherencia:vCoherencia,audext:vAudExt,informe:vInforme,copa:vCopa,sanciones:vSanciones,mejoras:vMejoras,validar:vValidar,resumen:vResumen,impacto:vImpacto,ahorro:vImpactoMacro,tablero:vTablero,piso:vPiso,mantplan:vMantPlan,audgen:vAudGen,audsec:vAudSec,audint:vAudInt,carga:vCarga,seginf:vSegInf,expedientes:vExpedientes,cumplimiento:vCumplimiento,papelera:vPapelera,auditar:vAuditar,auditorias:vAuditorias,hallazgos:vHallazgos,buenas:vBuenas,pantalla:vPantalla,layouts:vLayouts,rotacion:vRotacion,checklists:vChecklists,sectores:vSectores,pilares:vPilares,evolucion:vEvolucion,gerencia:vGerencia,usuarios:vUsuarios,bitacora:vBitacora,etiquetas:vEtiquetas,productos:vProductos};
   const hayAtras=(state.hist&&state.hist.length)||state.openAudit||state.openExp||state.openInf||(state.etq&&state.etq.ver)||state.view==='productos';
   if(state.sesion&&state.sesion.debeCambiar&&state.sesion.usuario&&state.sesion.usuario!=='admin'&&!verComo()){
     $('#main').innerHTML=pantallaCambioObligado();
@@ -8418,12 +8527,12 @@ function vAudTipo(k){
   /* al entrar desde el menú se fija el tipo; si ya estaba auditando, no se le pisa el trabajo */
   if(state.audK!==k){ state.audK=k; if(state.wiz.step===0)state.wiz.tipo=C.tipo; }
   const h=vPiso().replace('<h1>Auditar</h1>','<h1>'+esc(C.t)+'</h1>');
-  return `<div class="audnota"><div><b>${esc(C.t)}.</b> ${esc(C.d)}</div></div>`+h;
+  return (auditando()?'':`<div class="audnota"><div><b>${esc(C.t)}.</b> ${esc(C.d)}</div></div>`)+h;
 }
 const vAudGen=()=>vAudTipo('audgen');
 /* la auditoría interna rotativa entre jefes: el mismo asistente, con la checklist 5S */
 function vIntAud(){
-  return `<div class="audnota"><div><b>Auditoría interna.</b> La revisión cruzada entre jefes de sector, con la checklist 5S. Nadie audita su propio sector y el reparto cambia cada semana. No puntúa el oficial: sus acciones van al plan de acción interno y se verifican en la próxima auditoría interna.</div></div>`+vPiso('interna');
+  return (auditando()?'':`<div class="audnota"><div><b>Auditoría interna.</b> La revisión cruzada entre jefes de sector, con la checklist 5S. Nadie audita su propio sector y el reparto cambia cada semana. No puntúa el oficial: sus acciones van al plan de acción interno y se verifican en la próxima auditoría interna.</div></div>`)+vPiso('interna');
 }
 const vAudSec=()=>vAudTipo('audsec');
 /* la misma pantalla, pero entrando como Calidad: es la auditoría externa de pilar.
@@ -11910,6 +12019,7 @@ const GUIA=[
  ['intplan','Plan de acción interno','Las acciones que salen de la auditoría interna, separadas de las de la auditoría 5S.'],
  ['intpend','Pendientes internos','Lo que quedó abierto de la auditoría interna. Lo verifica el jefe que audita el sector la próxima vez.'],
  ['intexp','Auditorías internas realizadas','Cada auditoría interna con su informe, separada de las auditorías 5S.'],
+ ['seguimiento','Seguimiento gerencial','La auditoría 5S externa sector por sector, el plan de acción, lo vencido, el informe del trimestre y quién usa la plataforma, en una sola pantalla que se imprime.'],
  ['intcump','Cumplimiento de la auditoría interna','El resultado de la interna en el conjunto y sector por sector, y si cada jefe realizó las que le tocaron.'],
  ['histplanint','Histórico del plan de acción interno','Las acciones de la auditoría interna que ya se cerraron, y cómo.'],
  ['histplan','Histórico del plan de acción','Las acciones de la auditoría 5S que ya se cerraron: qué se hizo, cuándo y cómo se verificó.'],
@@ -12936,7 +13046,7 @@ async function sumarCapitulosManual(){
    que el del archivo estaba viejo—. Comparaba 111 contra la versión en curso y concluía
    que no había nada nuevo. Desde la 148 lee una marca propia, `CATVER:N`, que el build
    escribe al principio del archivo a partir de APP_VER: no hay forma de que se desfase. */
-const APP_VER=193;
+const APP_VER=195;
 async function chequearVersion(){
   if(state.local)return;
   try{
@@ -15338,6 +15448,198 @@ function misPendientes(){
    El resultado de la interna rotativa, en el conjunto y sector por sector, y si
    cada jefe hizo las que le tocaron desde el lanzamiento. No se mezcla con el
    puntaje oficial: la columna de la auditoría 5S está sólo para comparar. */
+/* ================= seguimiento gerencial (v195) =================
+   Una sola pantalla para la Dirección y para Calidad: cómo está cada sector en la
+   auditoría 5S externa, cómo avanza su plan de acción, qué está vencido y de quién,
+   el informe del trimestre y —para Calidad y la Dirección general— quién usa la
+   plataforma. Todo cuenta desde el lanzamiento; la auditoría anterior queda como
+   línea base para comparar. Se imprime tal cual. */
+const veUsoPlataforma=()=>esAdmin()||veTodo();
+function sparkMini(vals){
+  vals=(vals||[]).filter(v=>v!=null);
+  if(vals.length<2)return '<span style="color:var(--ink-3)">—</span>';
+  const W=92,H=26,P=3;const x=i=>P+i*(W-2*P)/(vals.length-1),y=v=>H-P-(Math.max(0,Math.min(100,v))/100)*(H-2*P);
+  const d=vals.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+','+y(v).toFixed(1)).join(' ');
+  const u=vals[vals.length-1];
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" height="${H}" aria-hidden="true" style="display:block">
+    <line x1="${P}" y1="${y(VERDE).toFixed(1)}" x2="${W-P}" y2="${y(VERDE).toFixed(1)}" stroke="var(--line-strong)" stroke-dasharray="2 3"/>
+    <path d="${d}" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
+    <circle cx="${x(vals.length-1).toFixed(1)}" cy="${y(u).toFixed(1)}" r="2.6" fill="var(--accent)"/></svg>`;
+}
+function usoPlataforma(){
+  const hoy=todayISO(),d7=masDiasIso(hoy,-7),d30=masDiasIso(hoy,-30);
+  const us=(state.usuarios||[]).filter(u=>u&&u.activo!==false&&u.rol!=='admin'&&u.id!=='admin');
+  const L=us.map(u=>{
+    const I=ingresosDe(u.id);const ult=String(I.ult||'').slice(0,10);
+    const n30=(I.fechas||[]).filter(f=>String(f).slice(0,10)>=d30).length;
+    const est=!I.n?{o:0,k:'crit',l:'Nunca ingresó'}:(ult>=d7?{o:3,k:'ok',l:'Activo'}
+      :(ult>=d30?{o:2,k:'warn',l:'Uso esporádico'}:{o:1,k:'crit',l:'Sin uso reciente'}));
+    return {u,I,n30,est,aud:actividadDe(u).aud,
+      sinClave:!(u.hashes||[]).length||u.debeCambiar===true};
+  });
+  L.sort((a,b)=>a.est.o-b.est.o||String(a.u.nombre||a.u.id).localeCompare(String(b.u.nombre||b.u.id)));
+  return {L,tot:L.length,act:L.filter(x=>x.est.o===3).length,esp:L.filter(x=>x.est.o===2).length,
+    alguna:L.filter(x=>x.I.n).length,nunca:L.filter(x=>!x.I.n).length};
+}
+function vSeguimiento(){
+  if(state.db&&!state.loaded.au)return `<div class="head"><div><h1>Seguimiento gerencial</h1><p>Cargando datos…</p></div></div>`;
+  const desde=fechaLanz();
+  const sitioN=state.f.sitio==='all'?'todos los sitios':((sitioCat(state.f.sitio)||{}).corto||'el sitio');
+  const secs=sectoresPuntaje();
+  const ids=secs.map(x=>x.id);
+  const ext=(state.auditorias||[]).filter(a=>tipoAud(a)!=='interna'&&es5S(a)&&a.pct!=null&&ids.indexOf(a.sectorId)>=0);
+  const post=ext.filter(a=>validada(a)).sort((a,b)=>String(a.fecha).localeCompare(String(b.fecha)));
+  const base=ultimaPorSector(ext.filter(esLineaBase));
+  const baseF=Object.values(base).map(a=>String(a.fecha).slice(0,10)).sort().slice(-1)[0]||'';
+  const ult=ultimaPorSector(post);
+  const vig=Object.values(ult);
+  const prom=pooled(vig),promBase=pooled(Object.values(base));
+  const nv=nivel(prom);
+  const cat={ok:0,warn:0,crit:0};vig.forEach(a=>{const k=nivelAud(a).k;if(cat[k]!=null)cat[k]++});
+  const sinAud=Math.max(0,secs.length-vig.length);
+  const hs=(state.hallazgos||[]).filter(h=>ids.indexOf(h.sectorId)>=0&&trackHall(h)==='externa');
+  const ab=hs.filter(abierto),ve=hs.filter(vencido),ce=hs.filter(h=>h.estado==='cerrado');
+  const enPl=ce.length?Math.round(ce.filter(cerradoEnPlazo).length/ce.length*100):null;
+  const avance=hs.length?Math.round(ce.length/hs.length*100):null;
+  const respDe=sid=>((auditadoDe(sectorDe(sid)||{})||{}).nombre)||'';
+  const filas=secs.map(sc=>{
+    const serie=post.filter(a=>a.sectorId===sc.id).map(a=>a.pct);
+    const u=ult[sc.id]||null,b=base[sc.id]||null;
+    const prev=serie.length>1?serie[serie.length-2]:(b?b.pct:null);
+    const delta=(u&&prev!=null)?Math.round((u.pct-prev)*10)/10:null;
+    const H=hs.filter(h=>h.sectorId===sc.id);
+    return {sc,u,b,serie:(b?[b.pct]:[]).concat(serie),delta,ref:serie.length>1?'vs anterior':'vs línea base',
+      hab:H.filter(abierto).length,hve:H.filter(vencido).length,hce:H.filter(h=>h.estado==='cerrado').length,ht:H.length};
+  }).sort((x,y)=>{
+    if(!!x.u!==!!y.u)return x.u?-1:1;
+    if(x.u&&y.u)return (x.u.pct-y.u.pct)||x.sc.nombre.localeCompare(y.sc.nombre);
+    return ((x.b?x.b.pct:999)-(y.b?y.b.pct:999))||x.sc.nombre.localeCompare(y.sc.nombre);
+  });
+  /* quién tiene los pendientes: el responsable del sector (líder 5S o jefe) */
+  const porResp={};
+  ab.forEach(h=>{const r=String(h.responsable||'').trim()||respDe(h.sectorId)||'Sin responsable cargado';
+    const R=porResp[r]=porResp[r]||{n:0,v:0,s:{}};R.n++;if(vencido(h))R.v++;R.s[h.sectorNombre||nombreSector(h.sectorId)]=1});
+  const resp=Object.keys(porResp).map(k=>Object.assign({r:k},porResp[k])).sort((a,b)=>b.v-a.v||b.n-a.n||a.r.localeCompare(b.r));
+  const venc=ve.slice().sort((a,b)=>String(a.fechaLimite).localeCompare(String(b.fechaLimite))).slice(0,12);
+  const dias=f=>Math.max(0,Math.round((new Date(todayISO()+'T12:00:00')-new Date(String(f).slice(0,10)+'T12:00:00'))/864e5));
+  const T=trimActual(),D=datosTrim(T.a,T.t,'all');
+  const U=veUsoPlataforma()?usoPlataforma():null;
+  const pct=(a,b)=>b?Math.round(a/b*100):0;
+  const dist=[['ok','Verde',cat.ok,'var(--ok)'],['warn','Amarillo',cat.warn,'var(--warn)'],['crit','Rojo',cat.crit,'var(--crit)'],
+    ['na','Sin auditoría',sinAud,'var(--line-strong)']];
+  const varHTML=f=>f.delta==null?'<span style="color:var(--ink-3)">—</span>'
+    :`<span class="segvar ${f.delta>0?'up':(f.delta<0?'dn':'')}">${f.delta>0?'▲':(f.delta<0?'▼':'=')} ${n1(Math.abs(f.delta))}</span><div class="sm" style="white-space:nowrap">${f.ref}</div>`;
+  return `${avisoDb()}
+  <div class="head"><div><div class="eyebrow2">Dirección · ${esc(sitioN)}</div><h1>Seguimiento gerencial</h1>
+    <p>La auditoría 5S externa sector por sector, el plan de acción y lo vencido${U?', y quién usa la plataforma':''}.
+       Cuenta desde el lanzamiento${desde?' ('+fmtDate(desde)+')':''}${baseF?'; la auditoría del '+fmtDate(baseF)+' queda como línea base para comparar':''}.</p></div>
+    <div class="headbtns"><button class="btn" data-go="informetrim">Informe trimestral</button>
+      <button class="btn" data-go="evolucion">Evolución por sector</button>
+      <button class="btn primary" id="btnSegImp">Imprimir</button></div></div>
+
+  <div class="grid g4" style="margin-bottom:16px">
+    <div class="kpi"><div class="k">Cumplimiento 5S · ${esc(sitioN)}</div>
+      <div class="v">${prom==null?'—':n1(prom)}<small>${prom==null?'':'%'}</small></div>
+      <div class="m">${prom==null?'<span>sin auditorías desde el lanzamiento</span>':`<span class="badge ${nv.k} dot">${nv.l}</span>`}
+        ${promBase!=null?`<span>línea base ${n1(promBase)} %</span>`:''}</div></div>
+    <div class="kpi"><div class="k">Sectores auditados</div><div class="v">${vig.length}<small>/${secs.length}</small></div>
+      <div class="m"><span>${desde?'desde el '+fmtDate(desde):'auditoría externa'}</span></div></div>
+    <div class="kpi"><div class="k">Plan de acción abierto</div><div class="v">${ab.length}</div>
+      <div class="m">${ve.length?`<span class="badge crit dot">${ve.length} vencida${ve.length===1?'':'s'}</span>`:'<span>ninguna vencida</span>'}</div></div>
+    ${U?`<div class="kpi"><div class="k">Usan la plataforma</div><div class="v">${U.act}<small>/${U.tot}</small></div>
+      <div class="m"><span>ingresaron en los últimos 7 días</span></div></div>`
+    :`<div class="kpi"><div class="k">Avance del plan</div><div class="v">${avance==null?'—':avance}<small>${avance==null?'':'%'}</small></div>
+      <div class="m"><span>${ce.length} cerrada${ce.length===1?'':'s'} de ${hs.length}</span></div></div>`}
+  </div>
+
+  <section class="panel segp" style="margin-bottom:16px"><header><h3>Estado de los sectores</h3>
+    <span class="sub">la última auditoría 5S externa de cada sector</span></header>
+    <div class="body">
+      <div class="segdist" role="img" aria-label="Sectores por color">${dist.filter(x=>x[2]).map(x=>`<i style="width:${pct(x[2],secs.length)}%;background:${x[3]}" title="${x[1]}: ${x[2]}"></i>`).join('')}</div>
+      <div class="seglg">${dist.map(x=>`<span style="--c:${x[3]}">${x[1]} <b>${x[2]}</b></span>`).join('')}</div>
+    </div></section>
+
+  <section class="panel segp" style="margin-bottom:16px"><header><h3>Nivel de cumplimiento por sector</h3>
+    <span class="sub">primero los que están más lejos de la meta</span></header>
+    ${post.length?'':`<div class="segnota" style="padding-top:12px">Todavía no hay auditorías 5S externas desde el lanzamiento.
+      ${baseF?'La columna <b>Línea base</b> muestra la auditoría del '+fmtDate(baseF)+' como referencia.':''}</div>`}
+    <div class="tw"><table><thead><tr><th style="min-width:170px">Sector</th><th class="r" style="width:96px">Línea base</th>
+      <th style="width:150px">Última auditoría</th><th style="width:124px">Variación</th><th style="width:104px">Evolución</th>
+      <th class="r" style="width:96px">Abiertas</th><th class="r" style="width:96px">Vencidas</th><th style="width:150px">Avance del plan</th></tr></thead><tbody>
+    ${filas.map(f=>{const k=f.u?nivelAud(f.u):null,av=f.ht?pct(f.hce,f.ht):null;
+      return `<tr><td><b>${esc(f.sc.nombre)}</b><div class="sm">${(f.sc.zona||'operativa')==='apoyo'?'Zona de apoyo':'Zona operativa'}</div></td>
+        <td class="r num">${f.b?n1(f.b.pct)+' %':'<span style="color:var(--ink-3)">—</span>'}</td>
+        <td>${f.u?`<span class="badge ${k.k} dot">${n1(f.u.pct)} %</span><div class="sm">${fmtDate(f.u.fecha)}</div>`:'<span style="color:var(--ink-3)">sin auditoría</span>'}</td>
+        <td>${varHTML(f)}</td>
+        <td>${sparkMini(f.serie)}</td>
+        <td class="r num">${f.hab||'<span style="color:var(--ink-3)">0</span>'}</td>
+        <td class="r num">${f.hve?`<b style="color:var(--crit)">${f.hve}</b>`:'<span style="color:var(--ink-3)">0</span>'}</td>
+        <td>${av==null?'<span style="color:var(--ink-3)">sin acciones</span>':`<div class="segav"><div class="bar"><i style="width:${av}%"></i></div><span class="num">${av} %</span></div>`}</td></tr>`}).join('')}
+    </tbody></table></div></section>
+
+  <section class="panel segp" style="margin-bottom:16px"><header><h3>Plan de acción y pendientes</h3>
+    <span class="sub">acciones de la auditoría 5S externa desde el lanzamiento</span></header>
+    <div class="segmini">
+      <div><div class="k">Abiertas</div><div class="v">${ab.length}</div></div>
+      <div><div class="k">Vencidas</div><div class="v"${ve.length?' style="color:var(--crit)"':''}>${ve.length}</div></div>
+      <div><div class="k">Cerradas</div><div class="v">${ce.length}</div></div>
+      <div><div class="k">Cerradas en plazo</div><div class="v">${enPl==null?'—':enPl+' %'}</div></div>
+    </div>
+    ${resp.length?`<div class="tw"><table><thead><tr><th style="min-width:180px">Responsable</th><th style="min-width:180px">Sectores</th>
+      <th class="r" style="width:110px">Pendientes</th><th class="r" style="width:110px">Vencidos</th></tr></thead><tbody>
+      ${resp.map(r=>`<tr><td><b>${esc(r.r)}</b></td><td class="sm">${esc(Object.keys(r.s).join(' · '))}</td>
+        <td class="r num">${r.n}</td><td class="r num">${r.v?`<b style="color:var(--crit)">${r.v}</b>`:'0'}</td></tr>`).join('')}
+    </tbody></table></div>`:'<div class="empty"><b>Sin pendientes abiertos</b>Las acciones aparecen acá cuando una auditoría 5S externa registra un «no cumple».</div>'}
+    ${venc.length?`<div class="segsub">Acciones vencidas, de la más antigua a la más reciente</div>
+    <div class="tw"><table><thead><tr><th style="min-width:150px">Sector</th><th style="min-width:240px">Acción</th>
+      <th style="width:110px">Venció</th><th class="r" style="width:110px">Días de atraso</th><th style="min-width:150px">Responsable</th></tr></thead><tbody>
+      ${venc.map(h=>`<tr><td><b>${esc(h.sectorNombre||nombreSector(h.sectorId))}</b></td><td class="sm">${esc(String(h.item||h.descripcion||'').slice(0,140))}</td>
+        <td class="sm">${fmtDate(h.fechaLimite)}</td><td class="r num"><b style="color:var(--crit)">${dias(h.fechaLimite)}</b></td>
+        <td class="sm">${esc(String(h.responsable||'').trim()||respDe(h.sectorId)||'—')}</td></tr>`).join('')}
+    </tbody></table></div>`:''}
+    <div class="segnota" style="padding-top:12px">Los pendientes se verifican en la próxima auditoría: si cumple, la acción se cierra y pasa al histórico.
+      <button class="btn sm ghost" data-go="pendientes" style="margin-left:6px">Ver los pendientes</button>
+      <button class="btn sm ghost" data-go="hallazgos">Ver el plan de acción</button></div>
+  </section>
+
+  <section class="panel segp" style="margin-bottom:16px"><header><h3>Informe trimestral · ${esc(trimL(T.t))} ${T.a}</h3>
+    <span class="sub">efectividad de los planes de acción y mejoras del trimestre</span></header>
+    <div class="segmini">
+      <div><div class="k">Verificaciones</div><div class="v">${D.ver.length}</div></div>
+      <div><div class="k">Efectividad</div><div class="v">${D.prom==null?'—':n1(D.prom)+' %'}</div></div>
+      <div><div class="k">Mejoras implementadas</div><div class="v">${D.mej.length}</div></div>
+      <div><div class="k">Reincidencias</div><div class="v"${D.reinc.length?' style="color:var(--crit)"':''}>${D.reinc.length}</div></div>
+    </div>
+    <div class="segnota">${D.ver.length?(D.promPrev!=null?'El trimestre anterior cerró en '+n1(D.promPrev)+' %. ':'')
+      :'Todavía no hay verificaciones de efectividad confirmadas en el trimestre. '}
+      <button class="btn sm ghost" data-go="informetrim">Abrir el informe completo</button></div>
+  </section>
+
+  ${U?`<section class="panel segp" style="margin-bottom:16px"><header><h3>Uso de la plataforma</h3>
+    <span class="sub">todos los sitios · ingresos desde el lanzamiento</span></header>
+    <div class="segmini">
+      <div><div class="k">Personas con usuario</div><div class="v">${U.tot}</div></div>
+      <div><div class="k">Activas · 7 días</div><div class="v">${U.act}</div></div>
+      <div><div class="k">Uso esporádico</div><div class="v">${U.esp}</div></div>
+      <div><div class="k">Nunca ingresaron</div><div class="v"${U.nunca?' style="color:var(--crit)"':''}>${U.nunca}</div></div>
+    </div>
+    ${U.tot?`<div class="tw"><table><thead><tr><th style="min-width:180px">Persona</th><th style="min-width:170px">Perfil</th>
+      <th class="r" style="width:120px">Ingresos · 30 días</th><th style="width:150px">Último ingreso</th>
+      <th class="r" style="width:100px">Auditorías</th><th style="width:150px">Estado</th></tr></thead><tbody>
+      ${U.L.map(x=>`<tr><td><b>${esc(x.u.nombre||x.u.id)}</b></td>
+        <td class="sm">${esc(rolLabel(x.u.rol))}${x.u.sectorId?' · '+esc(nombreSector(x.u.sectorId)):''}</td>
+        <td class="r num">${x.n30||'<span style="color:var(--ink-3)">0</span>'}</td>
+        <td class="sm">${x.I.ult?fmtDate(String(x.I.ult).slice(0,10)):'—'}</td>
+        <td class="r num">${x.aud||'<span style="color:var(--ink-3)">0</span>'}</td>
+        <td><span class="badge ${x.est.k} dot">${x.est.l}</span>${!x.I.n&&x.sinClave?'<div class="sm">clave inicial sin usar</div>':''}</td></tr>`).join('')}
+    </tbody></table></div>`:'<div class="empty"><b>Sin usuarios cargados</b>Se cargan en Configuración → Usuarios.</div>'}
+  </section>`:''}
+
+  <div class="segnota segpie"><b>Cómo leer este panel.</b> Verde desde ${VERDE} %, amarillo desde ${ROJO} % y rojo por debajo;
+    un criterio crítico sin cumplir deja la auditoría en rojo aunque el porcentaje sea alto. La variación compara con la auditoría
+    anterior del sector o, si es la primera, con la línea base. Una acción está vencida cuando pasó su fecha límite sin cerrarse.
+    ${U?'Activo: ingresó en los últimos 7 días; uso esporádico: en los últimos 30.':''}</div>`;
+}
 function vIntCump(){
   const secs=sectoresRotacion();
   const ids=secs.map(x=>x.id);
@@ -16381,6 +16683,7 @@ NAVITEMS.histplan=Object.assign({},NAVITEMS.auditorias,{l:'Histórico del plan d
 NAVITEMS.histplanint=Object.assign({},NAVITEMS.auditorias,{l:'Histórico del plan de acción interno',badge:''});
 NAVITEMS.manualaud.l='Manual de auditoría CAT';
 NAVITEMS.intcump=Object.assign({},NAVITEMS.cumplimiento,{l:'Cumplimiento de la auditoría interna',badge:''});
+NAVITEMS.seguimiento={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><path d="M4.8 10.8V8.6M8 10.8V5.4M11.2 10.8V7.2"/></svg>',l:'Seguimiento gerencial',badge:''};
 NAVITEMS.efectividad={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M1.8 12.6l3.4-4 2.5 2.2 5.2-5.8"/><path d="M9.6 5h3.6v3.5"/><path d="M1.8 14.3h12.4"/></svg>',l:'Efectividad del plan',badge:''};
 NAVITEMS.bitacora={svg:'<svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 1.5h8l2.5 2.5v10.5h-10.5z"/><path d="M5.5 7h5M5.5 9.5h5M5.5 12h3"/></svg>',l:'Bitácora',badge:''};
 const GRUPOS=[{id:'cd',nombre:'CAT CD'},{id:'industria',nombre:'CAT Industrias'}];
@@ -16413,7 +16716,7 @@ const MENU5S=[
    /* v192: el informe trimestral y la evolución por sector pasan a Dirección, que es
       lo que mira la gerencia; Seguimiento de Calidad lo ve sólo Calidad; las reglas
       y la papelera bajan a Configuración */
-   [['Dirección',['resumen','tablero','informetrim','evolucion','impacto','ahorro','tendencia']],
+   [['Dirección',['seguimiento','resumen','tablero','informetrim','evolucion','impacto','ahorro','tendencia']],
     ['Histórico de auditorías',['expedientes','auditorias','histplan']],
     ['Seguimiento de Calidad',['efectividad','aprobacion','audext','seginf','tarjetas','buenas','sanciones','pantalla']]]],
  /* La auditoría interna rotativa entre jefes vuelve (v189), con su propio plan de
@@ -16540,7 +16843,7 @@ function navHTML(){
       const cuerpo=vs.map(v=>navItem(v,ds)).join('')
         +(subs||[]).map((sb,si)=>{
             /* el seguimiento de Calidad es de Calidad: a nadie más le aparece */
-            if(sb[0]==='Seguimiento de Calidad'&&!esAdmin())return '';
+            if(sb[0]==='Seguimiento de Calidad'&&!esAdmin()&&!veTodo())return '';
             const c=sb[1].map(v=>navItem(v,ds)).join('');
             return c?navFold('mb:'+st.id+':'+gi+':'+si,sb[0],c,'grp'):''}).join('');
       if(!cuerpo)return '';
@@ -19105,6 +19408,8 @@ document.addEventListener('click',async e=>{
     if(n)render();return}
   if(t.id==='btnCsvUsuarios'&&esAdmin()){csvUsuarios();return}
   if(t.id==='btnFichas'&&esAdmin()){imprimirFichas();return}
+  if(t.id==='btnSegImp'){document.body.classList.add('print-seg');
+    setTimeout(()=>{window.print();document.body.classList.remove('print-seg')},60);return}
   if(t.id==='btnPlanilla'&&esAdmin()){imprimirPlanilla();return}
   if(t.id==='btnEntrega'&&esAdmin()){await prepararEntrega();return}
   const cl=t.closest?null:null;
